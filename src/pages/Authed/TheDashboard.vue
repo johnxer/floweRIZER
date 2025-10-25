@@ -5,7 +5,7 @@
         </h2>
 
 
-        <div class="grid lg:grid-cols-4 xl:grid-cols-5 gap-8">
+        <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-8">
             <div class="self-end">
                 <div class="text-lg font-semibold text-gray-600 text-center">
 
