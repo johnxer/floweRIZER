@@ -1,6 +1,6 @@
 <template>
-    <li class="group bg-gray-50 p-2 rounded-xl hover:bg-gray-100 flex items-center transition-colors duration-600">
-        <span class="material-symbols-outlined opacity-0 w-0 group-hover:opacity-100 group-hover:w-4 group-hover:mr-4 text-xl cursor-move transition-all duration-300">
+    <li class="group p-2 rounded-xl bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 flex items-center transition-colors duration-600">
+        <span class="material-symbols-outlined opacity-0 w-0 group-hover:opacity-100 group-hover:w-4 group-hover:mr-4 text-xl cursor-move transition-all duration-300 text-gray-700 dark:text-white/50">
             drag_handle
         </span>
         <router-link
@@ -8,14 +8,21 @@
             class="block w-full"
         >
         
-            <div class="grid grid-cols-[30px_1fr] gap-4 items-center">
+            <div class="grid grid-cols-[30px_1fr] gap-3 items-center">
                 <div class="w-full h-0 pb-[100%] overflow-hidden rounded-full relative">
                     <img
+                        v-if="plant.imgSrc"
                         :src="plant.imgSrc"
                         class="absolute object-cover h-full w-full"
                     />
+                    <img 
+                        v-else
+                        src="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg" 
+                        alt="🌱" 
+                        class="absolute object-cover h-full w-full"
+                    />
                 </div>
-                <div class="text-sm text-gray-700">
+                <div class="text-sm text-gray-700 dark:text-white/50">
                     {{ plant.name }}
                 </div>
 

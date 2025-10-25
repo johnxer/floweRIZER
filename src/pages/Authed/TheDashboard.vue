@@ -48,7 +48,7 @@ const rooms = ref([
             {
                 id: 2,
                 name: 'Ficus picus',
-                imgSrc: 'https://images.unsplash.com/photo-1437964706703-40b90bdf563b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1074',
+                // imgSrc: 'https://images.unsplash.com/photo-1437964706703-40b90bdf563b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1074',
                 desc: 'Danish lemon drops biscuit carrot cake jelly beans tootsie roll. Shortbread muffin tart soufflé tootsie roll sesame snaps sugar plum ice cream. Tootsie roll brownie danish gingerbread ice cream pastry. Dragée icing chupa chups caramels cotton candy. Oat cake chocolate cake macaroon chupa chups jelly beans chocolate cake cookie. Sweet jelly-o candy toffee chocolate bar jelly beans candy tootsie roll. Apple pie jelly gummi bears jujubes cupcake icing sesame snaps soufflé. Jelly beans lollipop candy canes icing shortbread gummi bears biscuit lemon drops gummi bears. Chocolate cake lollipop sweet cake pudding. Jelly-o chocolate sweet cake sweet roll. Chupa chups donut halvah lollipop cookie chocolate cake chocolate cake. Marshmallow topping chocolate cake candy lollipop chocolate cake. Sweet gingerbread wafer cookie muffin dragée shortbread soufflé. Gummies croissant sesame snaps danish tiramisu.',
             }
         ]

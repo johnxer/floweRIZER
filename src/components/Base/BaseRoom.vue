@@ -56,7 +56,7 @@
                         No plants in the room yet...
                         </span>
                     </div> -->
-                    <button class="px-3 py-1 text-sm bg-primary-500 rounded-xl text-white mb-2">
+                    <button class="bg-primary text-white border border-2 border-primary rounded-full px-3 py-1 text-sm cursor-pointer hover:bg-transparent hover:text-primary transition-colors mb-2">
                         Add a new plant
                     </button>
                     <div class="text-xs text-gray-400">
