@@ -25,9 +25,9 @@
 
         </div>
         <div
-            class="min-h-[200px] w-full"
+            class="min-h-[120px] lg:min-h-[200px] w-full"
             :class="{
-                'flex items-center border border-gray-200 rounded-xl': !room.plants
+                'flex items-center border border-gray-200 dark:border-gray-800 rounded-xl': !room.plants
             }"
         >
             <div v-if="room.plants">
@@ -56,7 +56,7 @@
                         No plants in the room yet...
                         </span>
                     </div> -->
-                    <button class="bg-primary text-white border border-2 border-primary rounded-full px-3 py-1 text-sm cursor-pointer hover:bg-transparent hover:text-primary transition-colors mb-2">
+                    <button class="border border-2 border-primary rounded-full px-3 py-1 text-sm cursor-pointer bg-primary text-white dark:text-primary-800 hover:bg-transparent hover:text-primary transition-all duration-600 mb-2">
                         Add a new plant
                     </button>
                     <div class="text-xs text-gray-400">

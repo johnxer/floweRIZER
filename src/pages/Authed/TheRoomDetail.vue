@@ -1,20 +1,25 @@
 <template>
     <div>
-        Room {{ roomId }}
+        <base-page-title>
+            Room {{ roomId }}
+        </base-page-title>
+        <div>
+
+        </div>
     </div>
 </template>
 
 <script setup>
-    defineProps({
-        roomId: {
-            type: String,
-            required: true
-        },
-    })
-    
+import BasePageTitle from '../../components/Base/BasePageTitle.vue';
+
+defineProps({
+    roomId: {
+        type: String,
+        required: true
+    },
+})
+
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

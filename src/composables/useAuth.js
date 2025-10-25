@@ -5,7 +5,6 @@ import { auth } from '../firebase/config';
 export const useLogIn = () => {
     const error = ref(null);
     const isPending = ref(false);
-    // const authedUser = ref(null)
 
     const logInUser = async (data) => {
         isPending.value = true;
@@ -33,7 +32,6 @@ export const useLogIn = () => {
 export const useSignUp = () => {
     const error = ref(null);
     const isPending = ref(false);
-    // const newUser = ref(null);
 
     const signUpUser = async (data) => {
         isPending.value = true;

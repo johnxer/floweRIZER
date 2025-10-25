@@ -1,9 +1,8 @@
 <template>
     <div>
-        <h2 class="text-center text-3xl font-bold mb-10 text-gray-300">
+        <base-page-title>
             Dashboard
-        </h2>
-
+        </base-page-title>
 
         <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-8">
             <div class="self-end">
@@ -11,7 +10,7 @@
 
                 </div>
                 <div class="min-h-[200px] w-full relative">
-                    <button class="absolute inset-0 w-full h-full cursor-pointer font-bold text-2xl border-2 border-dashed border-primary-500 text-primary-500 rounded-xl hover:border-primary-700 hover:text-primary-700 transition-all">
+                    <button class="absolute inset-0 w-full h-full cursor-pointer font-bold text-2xl border-2 border-dashed border-primary-500 text-primary-500 rounded-xl hover:border-primary-700 hover:text-primary-700 transition-all duration-600">
                         Add new room
                     </button>
                 </div>
@@ -30,6 +29,7 @@
 import { ref } from 'vue';
 
 
+import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 import BaseRoom from '../../components/Base/BaseRoom.vue';
 
 const rooms = ref([

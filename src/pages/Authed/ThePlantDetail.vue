@@ -1,20 +1,25 @@
 <template>
     <div>
-        Plant {{ plantName }}
+        <base-page-title>
+            Plant {{ plantId }}
+        </base-page-title>
+        <div>
+
+        </div>
     </div>
 </template>
 
 <script setup>
 
-    defineProps({
-        plantName: {
-            type: String,
-            required: true
-        }
-    })
+import BasePageTitle from '../../components/Base/BasePageTitle.vue';
+
+defineProps({
+    plantId: {
+        type: String,
+        required: true
+    }
+})
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

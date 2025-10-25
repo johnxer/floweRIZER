@@ -1,5 +1,8 @@
 <template>
-    <header class="min-h-[60px] px-6 sticky t-0 bg-white shadow-lg flex items-center dark:bg-gray-950 dark:border-b border-gray-800 justify-between">
+    <header class="min-h-[60px] px-6 sticky top-0 z-1 bg-white shadow-lg flex items-center dark:bg-gray-950 dark:border-b border-gray-800 justify-between">
+        <router-link
+            :to="{name: 'TheDashboard'}"
+        >
         <h1 class="font-roboto text-2xl font-bold text-primary flex gap-3">
             <span class="noto-color-emoji-regular">
                 🌱
@@ -8,11 +11,12 @@
                 <span class="text-primary-500">{{ firstString }}</span> <span class="text-primary-700">{{ secondString }}</span>
             </span>
         </h1>
+        </router-link>
         <slot name="center" />
         <!-- <slot name="end"/> -->
         <div>
             <v-dropdown>
-                <button class="text-3xl relative cursor-pointer">
+                <button class="text-3xl relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600">
                     <span class="material-symbols-outlined">
                         menu
                     </span>
