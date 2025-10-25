@@ -10,7 +10,7 @@
             <slot />
             <span
                 v-if="iconName"
-                class="material-symbols-outlined transition"
+                class="material-symbols-outlined transition text-2xl"
                 :class="{
                 'text-primary/50 peer-focus:text-primary' : !errorText,
                 'text-red-500 dark:text-red-900 focus-within:text-red-300 dark:peer-focus:text-red-700' : errorText

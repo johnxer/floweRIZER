@@ -15,9 +15,10 @@
                     name="fade"
                     mode="out-in"
                 >
-                    <div v-if="error">
-                        {{ error }}
-                    </div>
+                    <base-form-error-message
+                        v-if="error"
+                        :error-message="error"
+                    />
                 </transition>
                 <div class="space-y-4">
                     <base-input-wrapper
@@ -27,26 +28,32 @@
                         <input
                             type="email"
                             placeholder="Enter email..."
-                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold text-white/80 peer"
+                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold dark:text-white/80 text-gray-500/80 peer"
                             v-model.trim="form.email"
                             @input="formErrors.email = null"
                         />
                     </base-input-wrapper>
 
-                    <base-input-wrapper icon-name="lock" :error-text="formErrors.password">
+                    <base-input-wrapper
+                        icon-name="lock"
+                        :error-text="formErrors.password"
+                    >
                         <input
                             type="password"
                             placeholder="Enter password..."
-                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold text-white/80 peer"
+                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold dark:text-white/80 text-gray-500/80 peer"
                             v-model.trim="form.password"
                         />
                     </base-input-wrapper>
 
-                    <base-input-wrapper icon-name="lock" :error-text="formErrors.passwordRepeat">
+                    <base-input-wrapper
+                        icon-name="lock"
+                        :error-text="formErrors.passwordRepeat"
+                    >
                         <input
                             type="password"
                             placeholder="Repeat password..."
-                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold text-white/80 peer"
+                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold dark:text-white/80 text-gray-500/80 peer"
                             v-model.trim="form.passwordRepeat"
                         />
                     </base-input-wrapper>
@@ -63,6 +70,7 @@
 <script setup>
 
 import BaseButton from '../Base/BaseButton.vue';
+import BaseFormErrorMessage from '../Base/BaseFormErrorMessage.vue';
 import BaseInputWrapper from '../Base/BaseInputWrapper.vue';
 
 
@@ -126,22 +134,17 @@ const clearForm = () => {
 
 
 
-const submitForm = () => {
+const submitForm = async () => {
     if (!validateForm()) return
 
     const data = {
         email: form.value.email,
         password: form.value.password,
-        // passwordRepeat: passwordRepeat.value
     }
 
-    console.log(data)
-
-    // signUpUser(data)
+    await signUpUser(data)
 
     clearForm();
-
-
 }
 
 

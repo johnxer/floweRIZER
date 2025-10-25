@@ -50,6 +50,16 @@
   --color-avocado-600: oklch(0.53 0.12 118.34);
 
   --color-primary: oklch(0.7589 0.1655 124.95);
+
+  --color-primary-100: oklch(0.96 0.04 124.95);
+  --color-primary-200: oklch(0.88 0.09 124.95);
+  --color-primary-300: oklch(0.81 0.12 124.95);
+  --color-primary-400: oklch(0.77 0.15 124.95);
+  --color-primary-500: var(--color-primary);
+  --color-primary-600: oklch(0.65 0.17 124.95);
+  --color-primary-700: oklch(0.54 0.16 124.95);
+  --color-primary-800: oklch(0.44 0.14 124.95);
+  --color-primary-900: oklch(0.34 0.10 124.95);
   /*--ease-fluid: cubic-bezier(0.3, 0, 0, 1);
   --ease-snappy: cubic-bezier(0.2, 0, 0, 1); 
   */

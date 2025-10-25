@@ -1,22 +1,21 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { ref } from 'vue';
+import { auth } from '../firebase/config';
 
-export const useLogin = () => {};
-
-export const useSignUp = () => {
-    // const auth = getAuth();
-
+export const useLogIn = () => {
     const error = ref(null);
     const isPending = ref(false);
-    const newUser = ref(null);
+    // const authedUser = ref(null)
 
-    const signUpUser = async () => {
+    const logInUser = async (data) => {
         isPending.value = true;
 
         try {
-            const newUser = await createUserWithEmailAndPassword(auth, email, password);
+            const response = await signInWithEmailAndPassword(auth, data.email, data.password);
 
-            return newUser;
+            console.log(response.user)
+
+            return response.user;
         } catch (err) {
             error.value = err.message;
         } finally {
@@ -27,7 +26,33 @@ export const useSignUp = () => {
     return {
         error,
         isPending,
-        newUser,
+        logInUser
+    }
+};
+
+export const useSignUp = () => {
+    const error = ref(null);
+    const isPending = ref(false);
+    // const newUser = ref(null);
+
+    const signUpUser = async (data) => {
+        isPending.value = true;
+
+        try {
+            const user = await createUserWithEmailAndPassword(auth, data.email, data.password);
+
+            return user;
+        } catch (err) {
+            error.value = err.message;
+        } finally {
+            isPending.value = false;
+        }
+    };
+
+    return {
+        error,
+        isPending,
+        // newUser,
         signUpUser,
     };
 };
