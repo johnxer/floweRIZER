@@ -1,6 +1,6 @@
 <template>
     <div>
-        Plant {{ roomName }}
+        Plant {{ plantName }}
     </div>
 </template>
 

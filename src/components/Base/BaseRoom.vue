@@ -2,7 +2,7 @@
     <div>
         <div class="text-xl font-semibold text-gray-600 flex items-start justify-center gap-2">
             <router-link 
-                :to="{ name: 'TheRoom', params: { roomId: room.id } }"
+                :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
                 class="hover:text-primary-600 transition-colors peer order-2"
             >
                 {{ room.name }}

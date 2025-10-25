@@ -24,8 +24,14 @@ const routes = [
     },
     {
         path: '/room/:roomId',
-        name: 'TheRoom',
+        name: 'TheRoomDetail',
         component: () => import('../pages/Authed/TheRoomDetail.vue'),
+        props: true,
+    },
+    {
+        path: '/plant/:plantId',
+        name: 'ThePlantDetail',
+        component: () => import('../pages/Authed/ThePlantDetail.vue'),
         props: true,
     },
     {
