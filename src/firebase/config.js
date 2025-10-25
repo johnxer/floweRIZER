@@ -2,9 +2,11 @@ import { initializeApp } from 'firebase/app';
 
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAbnsqTP-Bfl1ptAm9oy2ailHm3LPRs7u0",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "flower-organizer.firebaseapp.com",
   projectId: "flower-organizer",
   storageBucket: "flower-organizer.firebasestorage.app",
@@ -16,3 +18,4 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app)
