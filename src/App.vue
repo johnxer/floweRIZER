@@ -21,6 +21,7 @@
 <script setup>
 import { ref } from 'vue';
 import TheHeader from './components/UI/TheHeader.vue';
+import TheLogoCircle from './components/UI/TheLogoCircle.vue';
 
 const projectName = import.meta.env.VITE_PROJECT_NAME
 
