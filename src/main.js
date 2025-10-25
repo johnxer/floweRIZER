@@ -1,13 +1,31 @@
-import { createPinia } from 'pinia'
-import { createApp } from 'vue'
-import router from './router'
+import { createApp } from 'vue';
+import App from './App.vue';
 
-import App from './App.vue'
-import './assets/main.css'
+import { createPinia } from 'pinia';
+import router from './router';
 
-const app = createApp(App)
+import './firebase/config';
+import { useAuthStore } from './stores/useAuthStore';
 
-app.use(createPinia())
+
+import FloatingVue from 'floating-vue';
+import 'floating-vue/dist/style.css';
+
+import './assets/main.css';
+
+const app = createApp(App);
+
+const pinia = createPinia()
+
+app.use(pinia)
 app.use(router)
+app.use(FloatingVue)
 
-app.mount('#app')
+const authStore = useAuthStore()
+
+const init = async () => {
+  await authStore.initAuth() 
+  app.mount('#app')
+}
+
+init()

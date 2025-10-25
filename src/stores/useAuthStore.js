@@ -2,60 +2,22 @@ import { defineStore } from 'pinia';
 
 import { auth } from '../firebase/config';
 
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { ref } from 'vue';
-
-// export const useAuthSore = defineStore('useAuthStore', {
-//   state: () => ({ count: 0 }),
-//   actions: {
-//     increment() {
-//       this.count++
-//     },
-//   },
-// })
-
-// export const useAuthSore = defineStore('useAuthStore', {
-//   state: () => ({
-//     user: null,
-//   }),
-
-//   actions: {
-//     init() {
-//       onAuthStateChanged(auth, (user) => {
-//         this.user = user;
-//       });
-//     },
-//   },
-
-//   getters: {
-//     isAuthenticated: (state) => !!state.user,
-//   },
-// })
 
 export const useAuthStore = defineStore('useAuthStore', () => {
     const user = ref(null);
-    const isAuthReady = ref(false);
-    const unsubscribe = ref(null);
+    // const isAuthReady = ref(false);
 
-    const initAuth = () => {
-        if (unsubscribe.value) return;
-
-        unsubscribe.value = onAuthStateChanged(auth, (firebaseUser) => {
-            if (firebaseUser) {
-                user.value = firebaseUser;
-            } else {
-                user.value = null;
-            }
-            isAuthReady.value = true;
-        });
-    };
-
-    onUnmounted(() => {
-        if (unsubscribe.value) {
-            unsubscribe.value();
-            unsubscribe.value = null;
-        }
-    });
+    const initAuth = async () => {
+        return await new Promise((resolve) => {
+            onAuthStateChanged(auth, (_user) => {
+                user.value = _user || null
+                // isAuthReady.value = true
+                resolve(_user)
+            })
+        })
+    }
 
     const error = ref(null);
     const isPending = ref(false);
@@ -67,6 +29,7 @@ export const useAuthStore = defineStore('useAuthStore', () => {
         try {
             await signOut(auth);
 
+            console.log('loggin iyt')
             return true;
         } catch (err) {
             error.value = err.message;
@@ -77,7 +40,7 @@ export const useAuthStore = defineStore('useAuthStore', () => {
 
     return {
         user,
-        isAuthReady,
+        // isAuthReady,
         initAuth,
         error,
         isPending,
