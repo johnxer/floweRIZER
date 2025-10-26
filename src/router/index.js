@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { auth } from '../firebase/config';
 
 const routes = [
     // {
@@ -20,6 +21,7 @@ const routes = [
         component: () => import('../pages/Authed/TheDashboard.vue'),
         meta: {
             title: 'Dashboard',
+            requiresAuth: true,
         },
     },
     {
@@ -27,12 +29,18 @@ const routes = [
         name: 'TheRoomDetail',
         component: () => import('../pages/Authed/TheRoomDetail.vue'),
         props: true,
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: '/plant/:plantId',
         name: 'ThePlantDetail',
         component: () => import('../pages/Authed/ThePlantDetail.vue'),
         props: true,
+        meta: {
+            requiresAuth: true,
+        },
     },
     {
         path: '/:pathMatch(.*)*',
@@ -56,12 +64,29 @@ router.afterEach((to) => {
     const projectName = import.meta.env.VITE_PROJECT_NAME;
 
     if (roomName) {
-        document.title = `${decodeURIComponent(roomName)} | ${projectName}`
+        document.title = `${decodeURIComponent(roomName)} | ${projectName}`;
     } else if (to.meta.title) {
         document.title = `${to.meta.title} | ${projectName}`;
     } else {
         document.title = projectName;
     }
 });
+
+router.beforeEach((to, from, next) => {
+    const isAuthenticated = !!auth.currentUser;
+
+    if (to.meta.requiresAuth && !isAuthenticated) {
+        next({ name: 'NotAuthed', query: { redirect: to.fullPath } });
+    } else if ((to.name === 'NotAuthed' && isAuthenticated)) {
+        if (from.name) {
+            next(from.fullPath);
+        } else {
+            next({ name: 'TheDashboard' });
+        }
+    } else {
+        next();
+    }
+});
+
 
 export default router;

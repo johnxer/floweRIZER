@@ -19,11 +19,15 @@
             </transition>
 
         </router-view>
+        <the-chat 
+            v-if="isAuthed"
+        />
     </div>
 </template>
 
 <script setup>
 
+import TheChat from './components/AIChat/TheChat.vue';
 import TheHeader from './components/UI/TheHeader.vue';
 import TheLogoCircle from './components/UI/TheLogoCircle.vue';
 

@@ -22,11 +22,13 @@
                 :room="room"
             />
         </div>
+        
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+
 
 
 import BasePageTitle from '../../components/Base/BasePageTitle.vue';
