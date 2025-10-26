@@ -78,7 +78,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useFlowerChat } from '../../composables/useFlowerChat';
 
@@ -102,13 +102,13 @@ const question = ref('')
 const chatMessages = ref([])
 
 
-const email = user.value.email;
+const email = computed(() => user.value?.email);
 
 const submitQuestion = async () => {
-    console.log(question.value)
+    if (!question.value || !email.value) return
 
     const userData = {
-        user: email,
+        user: email.value,
         question: question.value,
         date: new Date()
     }
@@ -116,8 +116,6 @@ const submitQuestion = async () => {
     chatMessages.value.push(userData)
 
     const success = await askFlowerBot(question.value);
-
-    
 
     if (success) {
         console.log(answer.value)
@@ -129,9 +127,9 @@ const submitQuestion = async () => {
         }
 
         chatMessages.value.push(aiData)
-    
-        inputText.value = ''
     }
+
+    question.value = ''
 
 }
 

@@ -19,7 +19,7 @@ import ChatWindowWrapper from './ChatWindowWrapper.vue';
 const isChatShown = ref(false)
 
 const showChat = () => {
-    isChatShown.value = !isChatShown.value
+  isChatShown.value = !isChatShown.value
 }
 
 </script>
