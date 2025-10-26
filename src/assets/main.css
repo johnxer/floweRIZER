@@ -96,3 +96,12 @@
         @apply transition-transform duration-500;
     }
 }
+
+
+.v-popper--theme-tooltip {
+    @apply text-sm max-w-[400px]
+}
+
+.v-popper--theme-tooltip .v-popper__inner {
+    @apply dark:text-white/75 dark:bg-black
+}

@@ -1,6 +1,9 @@
 <template>
     <div>
-        <chat-floating-button @click="showChat" /> 
+        <chat-floating-button
+            @click="showChat"
+            :class="{'hover:scale-110' : !isChatShown,}"
+        />
 
         <transition
             name="fade"
@@ -19,7 +22,7 @@ import ChatWindowWrapper from './ChatWindowWrapper.vue';
 const isChatShown = ref(false)
 
 const showChat = () => {
-  isChatShown.value = !isChatShown.value
+    isChatShown.value = !isChatShown.value
 }
 
 </script>

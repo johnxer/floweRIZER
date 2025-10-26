@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed bottom-22 right-6 w-84 h-120 bg-white shadow-xl rounded-xl border border-gray-100">
+    <div class="fixed bottom-22 right-6 w-84 h-120 bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-100 dark:border-gray-950">
         <div class="flex flex-col h-full">
             <ul
                 v-if="chatMessages"
@@ -110,11 +110,11 @@
 
                 </li>
             </ul>
-            <div class="border-t border-gray-200">
+            <div class="border-t border-gray-200 dark:border-gray-800">
                 <input
                     type="text"
                     placeholder="Write your question..."
-                    class="px-4 py-3 w-full focus:outline-0 bg-gray-50 focus:bg-gray-50 transition-colors duration-600 rounded-b-xl text-sm"
+                    class="px-4 py-3 w-full focus:outline-0 bg-gray-50 focus:bg-gray-50 transition-colors duration-600 rounded-b-xl text-sm dark:bg-gray-800 dark:text-white/75 focus:bg-gray-800"
                     @keyup.enter="submitQuestion"
                     :disabled="isLoading"
                     v-model.trim="question"

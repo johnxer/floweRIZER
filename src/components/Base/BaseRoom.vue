@@ -7,17 +7,16 @@
             >
                 {{ room.name }}
             </router-link>
-            <v-tooltip
-                :disabled="!room.desc"
-                class="relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600"
+            <span
+                class="material-symbols-outlined text-3xl relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 cursor-help"
+                v-tooltip="{
+                        content: room.desc,
+                        disabled: !room.desc,
+                        triggers: ['click'],
+                    }"
             >
-                <template #popper>
-                    {{ room.desc }}
-                </template>
-                <span class="material-symbols-outlined text-3xl">
-                    {{ room.icon }}
-                </span>
-            </v-tooltip>
+                {{ room.icon }}
+            </span>
             <span class="material-symbols-outlined text-3xl order-3 opacity-0 peer-hover:opacity-100 peer-hover:translate-x-2 text-primary-600/25 transition-all duration-600">
                 arrow_right_alt
             </span>
@@ -56,7 +55,7 @@
                         No plants in the room yet...
                         </span>
                     </div> -->
-                    <button class="border border-2 border-primary rounded-full px-3 py-1 text-sm cursor-pointer bg-primary text-white dark:text-primary-800 hover:bg-transparent hover:text-primary transition-all duration-600 mb-2">
+                    <button class="border border-2 border-primary rounded-full px-3 py-1 text-sm cursor-pointer bg-primary text-white dark:text-primary-800 hover:bg-transparent hover:text-primary transition-all duration-600 mb-2 hover:-translate-y-1 font-semibold">
                         Add a new plant
                     </button>
                     <div class="text-xs text-gray-400">
