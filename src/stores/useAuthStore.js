@@ -15,14 +15,20 @@ export const useAuthStore = defineStore('useAuthStore', () => {
         return await new Promise((resolve) => {
             onAuthStateChanged(auth, async (_user) => {
                 if (_user) {
-                    user.value = _user;
+                    user.value = {
+                        uid: _user.uid,
+                        email: _user.email,
+                        displayName: _user.displayName,
+                        photoURL: _user.photoURL || '',
+                        metadata: _user.metadata,
+                    };
 
                     try {
                         const userReference = doc(db, 'users', _user.uid);
                         const userSnapshot = await getDoc(userReference);
 
-                        const lastSignIn = new Date(_user.metadata.lastSignInTime)
-                        const lastLoginStored = userSnapshot.exists() ? userSnapshot.data().lastLogin?.toDate?.() : null
+                        const lastSignIn = new Date(_user.metadata.lastSignInTime);
+                        const lastLoginStored = userSnapshot.exists() ? userSnapshot.data().lastLogin?.toDate?.() : null;
 
                         if (!userSnapshot.exists()) {
                             await setDoc(userReference, {
@@ -33,12 +39,11 @@ export const useAuthStore = defineStore('useAuthStore', () => {
                                 lastLogin: serverTimestamp(),
                             });
                             console.log('New user profile created in Firestore');
-                        } else if(!lastLoginStored || lastSignIn > lastLoginStored) {
+                        } else if (!lastLoginStored || lastSignIn > lastLoginStored) {
                             await setDoc(userReference, { lastLogin: serverTimestamp() }, { merge: true });
                             console.log('Updated user last login in Firestore');
                         } else {
-                            console.log('Session restored — skipping lastLogin update')
-
+                            console.log('Session restored — skipping lastLogin update');
                         }
                     } catch (err) {
                         error.value = err.message;

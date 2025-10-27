@@ -60,7 +60,7 @@
                     >
                         Add a new plant
                     </router-link>
-                    <div class="text-xs text-gray-400">
+                    <div class="text-xs text-gray-400 dark:text-gray-600">
                         or drag one from another room
                     </div>
                 </div>

@@ -15,7 +15,7 @@
         <slot name="center" />
         <!-- <slot name="end"/> -->
         <div>
-            <v-dropdown>
+            <v-dropdown trap-focus>
                 <button class="text-3xl relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600">
                     <span class="material-symbols-outlined">
                         menu
