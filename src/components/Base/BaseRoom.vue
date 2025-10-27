@@ -10,10 +10,9 @@
             <span
                 class="material-symbols-outlined text-3xl relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 cursor-help"
                 v-tooltip="{
-                        content: room.desc,
-                        disabled: !room.desc,
-                        triggers: ['click'],
-                    }"
+                    content: room.desc,
+                    disabled: !room.desc,
+                }"
             >
                 {{ room.icon }}
             </span>

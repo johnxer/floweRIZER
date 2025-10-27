@@ -1,26 +1,52 @@
 import { defineStore } from 'pinia';
 
-import { auth } from '../firebase/config';
+import { auth, db } from '../firebase/config';
 
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 
 export const useAuthStore = defineStore('useAuthStore', () => {
     const user = ref(null);
-    // const isAuthReady = ref(false);
+    const error = ref(null);
+    const isPending = ref(false);
 
     const initAuth = async () => {
         return await new Promise((resolve) => {
-            onAuthStateChanged(auth, (_user) => {
-                user.value = _user || null
-                // isAuthReady.value = true
-                resolve(_user)
-            })
-        })
-    }
+            onAuthStateChanged(auth, async (_user) => {
+                if (_user) {
+                    user.value = _user;
 
-    const error = ref(null);
-    const isPending = ref(false);
+                    try {
+                        const userReference = doc(db, 'users', _user.uid);
+                        const userSnapshot = await getDoc(userReference);
+
+                        if (!userSnapshot.exists()) {
+                            await setDoc(userReference, {
+                                email: _user.email,
+                                displayName: _user.displayName || '',
+                                photoUrl: _user.photoURL || '',
+                                createdAt: serverTimestamp(),
+                                lastLogin: serverTimestamp(),
+                            });
+                            console.log('New user profile created in Firestore')
+
+                        } else {
+                            await setDoc(userReference, { lastLogin: serverTimestamp() }, { merge: true });
+                                console.log('Updated user last login in Firestore')
+                        }
+                    } catch (err) {
+                        error.value = err.message
+                    }
+                    resolve(_user)
+                } else {
+                    user.value = null;
+                    resolve(null)
+                }
+
+            });
+        });
+    };
 
     const logOutUser = async () => {
         error.value = null;
@@ -29,7 +55,7 @@ export const useAuthStore = defineStore('useAuthStore', () => {
         try {
             await signOut(auth);
 
-            console.log('loggin iyt')
+            console.log('User is logging out');
             return true;
         } catch (err) {
             error.value = err.message;

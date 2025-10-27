@@ -12,7 +12,7 @@ export const useLogIn = () => {
         try {
             const response = await signInWithEmailAndPassword(auth, data.email, data.password);
 
-            console.log(response.user)
+            console.log(response.user);
 
             return response.user;
         } catch (err) {
@@ -25,8 +25,8 @@ export const useLogIn = () => {
     return {
         error,
         isPending,
-        logInUser
-    }
+        logInUser,
+    };
 };
 
 export const useSignUp = () => {
@@ -50,7 +50,6 @@ export const useSignUp = () => {
     return {
         error,
         isPending,
-        // newUser,
         signUpUser,
     };
 };

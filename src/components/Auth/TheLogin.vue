@@ -20,7 +20,7 @@
                         v-if="error"
                         :error-message="error"
                     />
-                    
+
                 </transition>
                 <div class="space-y-4">
 
@@ -126,7 +126,4 @@ const submitForm = async () => {
     }
 
 }
-
-
-
 </script>

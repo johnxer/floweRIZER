@@ -6,7 +6,7 @@ import { ref } from 'vue';
 export const useFlowerChat = () => {
     const answer = ref('');
     const error = ref(null);
-    const isLoading = ref(false);
+    const isPending = ref(false);
 
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const MODEL_NAME = import.meta.env.VITE_GEMINI_MODEL_NAME;
@@ -16,12 +16,12 @@ export const useFlowerChat = () => {
    
     const askFlowerBot = async (question) => {
         if (!question || !ai) {
-            if (!ai) error.value = 'Gemini API Key není načten.';
+            if (!ai) error.value = 'Gemini API Key not loaded';
             return;
         }
 
         error.value = null;
-        isLoading.value = true;
+        isPending.value = true;
 
         try {
             console.log(`asking ${MODEL_NAME}...`);
@@ -48,7 +48,7 @@ export const useFlowerChat = () => {
             console.error('Gemini API error:', err);
             error.value = err.response?.data?.error?.message || err.message;
         } finally {
-            isLoading.value = false;
+            isPending.value = false;
         }
     };
 
@@ -56,7 +56,7 @@ export const useFlowerChat = () => {
     return {
         answer,
         error,
-        isLoading,
+        isPending,
         askFlowerBot,
     };
 };
