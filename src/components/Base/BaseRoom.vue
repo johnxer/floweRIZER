@@ -54,9 +54,12 @@
                         No plants in the room yet...
                         </span>
                     </div> -->
-                    <button class="border border-2 border-primary rounded-full px-3 py-1 text-sm cursor-pointer bg-primary text-white dark:text-primary-800 hover:bg-transparent hover:text-primary transition-all duration-600 mb-2 hover:-translate-y-1 font-semibold">
+                    <router-link
+                        class="border border-2 border-primary rounded-full px-3 py-1 text-sm cursor-pointer bg-primary text-white dark:text-primary-800 hover:bg-transparent hover:text-primary transition-all duration-600 mb-2 hover:-translate-y-1 font-semibold inline-block align-top"
+                        :to="{name: 'AddPlant'}"
+                    >
                         Add a new plant
-                    </button>
+                    </router-link>
                     <div class="text-xs text-gray-400">
                         or drag one from another room
                     </div>

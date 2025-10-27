@@ -10,9 +10,12 @@
 
                 </div>
                 <div class="min-h-[200px] w-full relative">
-                    <button class="absolute inset-0 w-full h-full cursor-pointer font-bold text-2xl border-2 border-dashed border-primary-500 text-primary-500 rounded-xl hover:border-primary-700 hover:text-primary-700 transition-all duration-600">
+                    <router-link
+                        class="absolute inset-0 w-full h-full cursor-pointer font-bold text-2xl border-2 border-dashed border-primary-500 text-primary-500 rounded-xl hover:border-primary-700 hover:text-primary-700 transition-all duration-600 flex items-center justify-center"
+                        :to="{ name: 'AddRoom' }"
+                    >
                         Add new room
-                    </button>
+                    </router-link>
                 </div>
             </div>
 
@@ -22,7 +25,7 @@
                 :room="room"
             />
         </div>
-        
+
     </div>
 </template>
 

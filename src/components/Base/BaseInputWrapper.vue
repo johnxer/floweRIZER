@@ -1,10 +1,11 @@
 <template>
     <div>
         <div 
-            class="flex flex-row-reverse items-center gap-2 border-b transition"
+            class="gap-2 border-b transition"
             :class="{
                 'border-primary/50 focus-within:border-primary' : !errorText,
-                'border-red-500 dark:border-red-900 focus-within:border-red-500 dark:focus-within:border-red-900' : errorText
+                'border-red-500 dark:border-red-900 focus-within:border-red-500 dark:focus-within:border-red-900' : errorText,
+                'flex flex-row-reverse items-center' :iconName
             }"
         >
             <slot />

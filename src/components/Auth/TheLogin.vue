@@ -23,7 +23,6 @@
 
                 </transition>
                 <div class="space-y-4">
-
                     <base-input-wrapper
                         icon-name="email"
                         :error-text="formErrors.email"

@@ -23,7 +23,16 @@
                 </button>
                 <template #popper>
                     <div class="text-base max-w-[300px] font-normal p-4">
-                        <ul>
+                        <ul class="space-y-3">
+                            <li>
+                                <router-link
+                                    class="text-gray-600 hover:text-gray-800 cursor-pointer transition-colors duration-600 block"
+                                    :to="{name: 'Account'}"
+                                    v-close-popper="true"
+                                >
+                                    Account
+                                </router-link>
+                            </li>
                             <li>
                                 <button
                                     class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600"

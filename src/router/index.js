@@ -25,6 +25,15 @@ const routes = [
         },
     },
     {
+        path: '/account',
+        name: 'Account',
+        component: () => import('../pages/Authed/AccountSettings.vue'),
+        meta: {
+            title: 'Account',
+            requiresAuth: true,
+        },
+    },
+    {
         path: '/room/:roomId',
         name: 'TheRoomDetail',
         component: () => import('../pages/Authed/TheRoomDetail.vue'),
@@ -39,6 +48,44 @@ const routes = [
         component: () => import('../pages/Authed/ThePlantDetail.vue'),
         props: true,
         meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/plant/add',
+        name: 'AddPlant',
+        component: () => import('../pages/Authed/AddEditPlant.vue'),
+        meta: {
+            title: 'Add new plant',
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/plant/edit/:id',
+        name: 'EditPlant',
+        component: () => import('../pages/Authed/AddEditPlant.vue'),
+        props: true,
+        meta: {
+            title: 'Edit plant',
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/room/add',
+        name: 'AddRoom',
+        component: () => import('../pages/Authed/AddEditRoom.vue'),
+        meta: {
+            title: 'Add new room',
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/room/edit/:id',
+        name: 'EditRoom',
+        component: () => import('../pages/Authed/AddEditRoom.vue'),
+        props: true,
+        meta: {
+            title: 'Edit room',
             requiresAuth: true,
         },
     },
