@@ -21,6 +21,9 @@ export const useAuthStore = defineStore('useAuthStore', () => {
                         const userReference = doc(db, 'users', _user.uid);
                         const userSnapshot = await getDoc(userReference);
 
+                        const lastSignIn = new Date(_user.metadata.lastSignInTime)
+                        const lastLoginStored = userSnapshot.exists() ? userSnapshot.data().lastLogin?.toDate?.() : null
+
                         if (!userSnapshot.exists()) {
                             await setDoc(userReference, {
                                 email: _user.email,
@@ -29,21 +32,22 @@ export const useAuthStore = defineStore('useAuthStore', () => {
                                 createdAt: serverTimestamp(),
                                 lastLogin: serverTimestamp(),
                             });
-                            console.log('New user profile created in Firestore')
-
-                        } else {
+                            console.log('New user profile created in Firestore');
+                        } else if(!lastLoginStored || lastSignIn > lastLoginStored) {
                             await setDoc(userReference, { lastLogin: serverTimestamp() }, { merge: true });
-                                console.log('Updated user last login in Firestore')
+                            console.log('Updated user last login in Firestore');
+                        } else {
+                            console.log('Session restored — skipping lastLogin update')
+
                         }
                     } catch (err) {
-                        error.value = err.message
+                        error.value = err.message;
                     }
-                    resolve(_user)
+                    resolve(_user);
                 } else {
                     user.value = null;
-                    resolve(null)
+                    resolve(null);
                 }
-
             });
         });
     };
