@@ -19,8 +19,9 @@
                     <base-form-message-box
                         v-if="error"
                         message-type="error"
-                        :message-text="error"
-                    />
+                    >
+                        {{ error }}
+                    </base-form-message-box>
 
                 </transition>
                 <div class="space-y-4">

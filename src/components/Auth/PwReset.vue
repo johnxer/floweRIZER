@@ -13,8 +13,9 @@
             <base-form-message-box
                 v-else-if="isSuccess"
                 message-type="success"
-                message-text="Password reset link sent! Please check your email."
-            />
+            >
+                Password reset link sent! Please check your email.
+            </base-form-message-box>
             <div v-else>
                 <transition
                     name="fade"
@@ -23,8 +24,9 @@
                     <base-form-message-box
                         v-if="error"
                         message-type="error"
-                        :message-text="error"
-                    />
+                    >
+                        {{ error }}
+                    </base-form-message-box>
                 </transition>
                 <div class="space-y-4">
                     <base-input-wrapper

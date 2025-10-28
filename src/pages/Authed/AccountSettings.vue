@@ -12,7 +12,7 @@
                         mode="out-in"
                     >
                         <div
-                            v-if="isPendingUpload"
+                            v-if="isPending"
                             class="animate-pulse bg-gray-200 dark:bg-gray-700 w-full h-full absolute flex items-center justify-center"
                         >
                             <svg
@@ -66,12 +66,25 @@
                     name="fade"
                     mode="out-in"
                 >
-                    <div
-                        v-if="errorUploadImage"
-                        class="bg-red-500 text-white rounded-xl px-4 py-2 dark:bg-red-900 dark:text-white/50 mt-4"
+                    <base-form-message-box
+                        v-if="errorUploadImage || errorUpdateImage"
+                        message-type="error"
+                        class="mt-4"
                     >
-                        {{ errorUploadImage }}
-                    </div>
+                        {{ errorUploadImage || errorUpdateImage }}
+                    </base-form-message-box>
+                </transition>
+                <transition
+                    name="fade"
+                    mode="out-in"
+                >
+                    <base-form-message-box
+                        v-if="isSuccessImage"
+                        message-type="success"
+                        class="mt-4"
+                    >
+                        Image changed successfully
+                    </base-form-message-box>
                 </transition>
             </div>
             <div>
@@ -80,36 +93,31 @@
                     novalidate
                 >
                     <div class="space-y-4">
-                        <div>
-                            <label
-                                for="user-name"
-                                class="block text-gray-400 dark:text-white/35"
-                            >
-                                Your username
-                            </label>
+                        <base-input-wrapper-authed
+                            field-label="Your username"
+                            field-id="user-name"
+                        >
                             <input
                                 type="text"
                                 id="user-name"
                                 placeholder="Enter user name..."
-                                class="px-4 py-3 rounded-xl border-2 border-gray-300 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 dark:border-gray-500"
+                                class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 dark:border-gray-500"
                             >
-                        </div>
-                        <div>
-                            <label
-                                for="email"
-                                class="flex text-gray-400 dark:text-white/35 justify-between items-end"
-                            >
-                                Your email <small>Cannot be changed</small>
-                            </label>
+                        </base-input-wrapper-authed>
+                        <base-input-wrapper-authed
+                            field-label="Your email"
+                            field-label-extra="Cannot be changed"
+                            field-id="email"
+                        >
                             <input
                                 type="email"
                                 id="email"
                                 placeholder="Enter email..."
-                                class="px-4 py-3 rounded-xl border-2 border-gray-300 w-full read-only:cursor-not-allowed focus:outline-0 read-only:opacity-50 text-gray-500 dark:text-white/75 dark:border-gray-500"
+                                class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full read-only:cursor-not-allowed focus:outline-0 read-only:opacity-50 text-gray-500 dark:text-white/75 dark:border-gray-500"
                                 readonly
                                 v-model="emailValue"
                             >
-                        </div>
+                        </base-input-wrapper-authed>
                     </div>
                     <base-button class="mt-8">
                         Save
@@ -132,24 +140,27 @@
 
 import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 import BaseButton from '../../components/Base/BaseButton.vue';
-import { computed, ref, watch, watchEffect } from 'vue';
+import BaseFormMessageBox from '../../components/Base/BaseFormMessageBox.vue';
+import { computed, ref } from 'vue';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { storeToRefs } from 'pinia';
 import { useStorage } from '../../composables/useStorage';
 import { updateProfile } from 'firebase/auth';
-import { auth } from '../../firebase/config';
+import { auth, db } from '../../firebase/config';
+import BaseInputWrapperAuthed from '../../components/Base/BaseInputWrapperAuthed.vue';
+import { doc, updateDoc } from 'firebase/firestore';
 
 const {
     user
 } = storeToRefs(useAuthStore())
-
 
 const {
     error: errorUploadImage,
     url,
     filePath,
     isPending: isPendingUpload,
-    uploadImage
+    uploadImage,
+    deleteImageByUrl
 } = useStorage()
 
 const userAvatarURL = computed(() => {
@@ -162,24 +173,69 @@ const form = ref({
     displayName: user.value.displayName || '',
 })
 
+const errorUpdateImage = ref(null)
+
+const isPendingUpdateImage = ref(false)
+
+const isSuccessImage = ref(false)
+
+isSuccessImage.value = false
+
+const isPending = computed(() => isPendingUpload.value || isPendingUpdateImage.value)
+
+const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+
 const handleFile = async (e) => {
     const selectedFile = e.target.files[0];
 
-    // need to also add the js extension filter
-    if (selectedFile) {
-        const success = await uploadImage('avatars', user.value, selectedFile)
+    console.log(selectedFile)
 
-        // need to delete the old image here 
+    if (!selectedFile || !allowedFormats.includes(selectedFile.type)) {
+        console.log(`${selectedFile.type} is not allowed`)
+        return
+    }
 
-        if (success && auth.currentUser) {
+    const oldPhotoUrl = user.value?.photoURL || null
 
-            await updateProfile(auth.currentUser, {
-                photoURL: url.value,
-            })
+    const success = await uploadImage('avatars', user.value, selectedFile)
 
-            user.value.photoURL = url.value
+    if (!success && auth.currentUser) return
+
+    isPendingUpdateImage.value = true;
+    errorUpdateImage.value = null;
+
+    try {
+        await updateProfile(auth.currentUser, {
+            photoURL: url.value,
+        })
+
+        const uid = user.value?.uid || auth.currentUser.uid
+
+        const userReference = doc(db, 'users', uid);
+
+        await updateDoc(userReference, {
+            photoUrl: url.value,
+        });
+
+        user.value = {
+            ...user.value,
+            photoURL: url.value,
         }
 
+        if (oldPhotoUrl) {
+            await deleteImageByUrl(oldPhotoUrl)
+        }
+
+
+    } catch (err) {
+        errorUpdateImage.value = err.message
+    } finally {
+        isPendingUpdateImage.value = false;
+
+        isSuccessImage.value = true
+
+        await new Promise((resolve) => setTimeout(resolve, 3000))
+        isSuccessImage.value = false
     }
 }
 

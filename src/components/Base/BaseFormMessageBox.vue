@@ -7,25 +7,18 @@
         <span class="material-symbols-outlined transition text-xl relative top-[-1px]">
             {{ messageIconClass }}
         </span>
-        {{ messageText }}
+        <slot />
     </div>
 </template>
 
 <script setup>
 import { computed } from 'vue';
-
-
     const props = defineProps({
-        messageText: {
-            type: String,
-            required: true
-        },
         messageType: {
             type: String,
             required: true
         }
     })
-
 
     const messageTypeMap = [
         {
@@ -42,10 +35,12 @@ import { computed } from 'vue';
     ]
 
     const messageIconClass = computed(() => {
+        console.log(messageTypeMap.filter(m => m.type === props.messageType)[0].iconClass)
         return messageTypeMap.filter(m => m.type === props.messageType)[0].iconClass
     })
 
     const messageColorClasses = computed(() => {
+        console.log(messageTypeMap.filter(m => m.type === props.messageType)[0].colorClasses)
         return messageTypeMap.filter(m => m.type === props.messageType)[0].colorClasses
     })
 

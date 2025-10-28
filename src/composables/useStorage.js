@@ -1,4 +1,4 @@
-import { getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage"
+import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage"
 import { ref } from "vue"
 import { storage } from "../firebase/config"
 
@@ -21,17 +21,13 @@ export const useStorage = () => {
 
         const fileRef = storageRef(storage, filePath.value)
 
-        console.log(fileRef)
-
         try {
 
             await uploadBytes(fileRef, file)
 
             url.value = await getDownloadURL(fileRef)
 
-            console.log('File URL:', url.value)
-
-            return true;
+           return true;
 
         } catch (err) {
             error.value = err.message
@@ -42,12 +38,32 @@ export const useStorage = () => {
         }
     }
 
+    const deleteImageByUrl = async(imageUrl) => {
+        error.value = null;
+        isPending.value = true;
+
+        const imageToDeleteRefference = storageRef(storage, imageUrl);
+
+            try {
+                await deleteObject(imageToDeleteRefference)
+
+                return true;
+            } catch (err) {
+                error.value = err.message
+                return false;
+
+            } finally {
+                isPending.value = false
+            }
+    }
+
     return {
         error,
         url,
         filePath,
         isPending,
-        uploadImage
+        uploadImage,
+        deleteImageByUrl
     }
 }
 
