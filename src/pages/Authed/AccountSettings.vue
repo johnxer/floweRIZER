@@ -119,20 +119,35 @@
                             >
                         </base-input-wrapper-authed>
                     </div>
-                    <base-button class="mt-8">
+                    <base-button
+                        class="mt-8"
+                        btn-style="notRounded"
+                        btn-size="base"
+                    >
                         Save
                     </base-button>
 
                     <hr class="border-gray-300 dark:border-gray-800 my-6" />
-                    <button
-                        type="button"
-                        class=""
+                    <base-button
+                        btn-style="notRounded"
+                        btn-size="base"
+                        btn-color="danger"
+                        @click="toggleModal"
                     >
                         Delete account
-                    </button>
+                    </base-button>
                 </form>
             </div>
         </div>
+        <base-modal
+            :modal-toggle="isModalOpen"
+            @close-modal="toggleModal"
+        >
+            <div>
+
+                </div>
+            
+        </base-modal>
     </div>
 </template>
 
@@ -141,6 +156,7 @@
 import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 import BaseButton from '../../components/Base/BaseButton.vue';
 import BaseFormMessageBox from '../../components/Base/BaseFormMessageBox.vue';
+import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
 import { computed, ref } from 'vue';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { storeToRefs } from 'pinia';
@@ -236,6 +252,16 @@ const handleFile = async (e) => {
 
         await new Promise((resolve) => setTimeout(resolve, 3000))
         isSuccessImage.value = false
+    }
+}
+
+const isModalOpen = ref(false)
+
+const toggleModal = (state) => {
+    if (typeof state === 'boolean') {
+        isModalOpen.value = state
+    } else {
+        isModalOpen.value = !isModalOpen.value
     }
 }
 

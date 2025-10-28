@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex flex-col">
         <label
             :for="fieldId"
             class="block text-gray-400 dark:text-white/35 text-sm"

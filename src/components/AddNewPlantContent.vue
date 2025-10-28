@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div class="bg-gray-50 px-4 py-3 sm:flex sm:px-6 dark:bg-gray-700/25 text-xl border-b border-gray-200 text-gray-500">
+    <base-modal-content>
+        <template #modalTitle>
             Create new plant
-        </div>
-        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        </template>
+        <div>
             <form
                 @submit.prevent=""
                 novalidate
@@ -37,18 +37,23 @@
                         />
                     </base-input-wrapper-authed>
                 </div>
-                <base-button class="mt-8">
+                <base-button
+                    class="mt-8"
+                    btn-style="notRounded"
+                    btn-size="base"
+                >
                     Create
                 </base-button>
             </form>
         </div>
-    </div>
+    </base-modal-content>
 </template>
 
 <script setup>
 
 import BaseButton from './Base/BaseButton.vue';
 import BaseInputWrapperAuthed from './Base/BaseInputWrapperAuthed.vue';
+import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
 </script>
 

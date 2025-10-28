@@ -1,5 +1,5 @@
 <template>
-    <li class="group p-2 rounded-xl bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 flex items-center transition-colors duration-600">
+    <li class="group p-2 rounded-xl bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-900 flex items-center transition-colors duration-600">
         <span class="material-symbols-outlined lg:opacity-0 lg:group-hover:opacity-100 w-4 lg:w-0 lg:group-hover:w-4 mr-4 lg:mr-0 lg:group-hover:mr-4 text-xl cursor-move transition-all duration-300 text-gray-700 dark:text-white/50">
             drag_handle
         </span>

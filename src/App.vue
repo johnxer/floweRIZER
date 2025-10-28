@@ -4,7 +4,7 @@
         :project-title="projectName"
     >
     </the-header>
-    <div class="container mt-8 mx-auto px-6">
+    <div class="container mt-8 mx-auto px-6 pb-8">
         <the-logo-circle
             v-if="!isAuthed"
             :project-title="projectName"

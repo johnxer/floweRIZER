@@ -10,27 +10,24 @@
             <add-new-room-content />
         </base-modal>
 
-        <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <div class="self-end">
-                <div class="text-lg font-semibold text-gray-600 text-center">
-
-                </div>
-                <div class="min-h-[200px] w-full relative">
-                    <button
-                        type="button"
-                        class="absolute inset-0 w-full h-full cursor-pointer font-bold text-2xl border-2 border-dashed border-primary-500 text-primary-500 rounded-xl hover:border-primary-700 hover:text-primary-700 transition-all duration-600 flex items-center justify-center"
-                        @click="toggleModal"
-                    >
-                        Add new room
-                    </button>
-                </div>
-            </div>
+        <div class="grid lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-8">
 
             <base-room
                 v-for="room in rooms"
                 :key="room.id"
                 :room="room"
             />
+            <div class="self-end">
+                <div class="min-h-[60px] lg:min-h-[200px] w-full relative">
+                    <button
+                        type="button"
+                        class="absolute inset-0 w-full h-full cursor-pointer font-bold text-xl lg:text-2xl border-2 border-dashed border-primary-500 text-primary-500 rounded-xl hover:border-primary-700 hover:text-primary-700 transition-all duration-600 flex items-center justify-center"
+                        @click="toggleModal"
+                    >
+                        Add new room
+                    </button>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -41,7 +38,7 @@ import { ref } from 'vue';
 
 
 import AddNewRoomContent from '../../components/AddNewRoomContent.vue';
-import BaseModal from '../../components/Base/BaseModal.vue';
+import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
 import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 import BaseRoom from '../../components/Base/BaseRoom.vue';
 

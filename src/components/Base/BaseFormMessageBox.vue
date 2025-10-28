@@ -34,15 +34,9 @@ import { computed } from 'vue';
         }
     ]
 
-    const messageIconClass = computed(() => {
-        console.log(messageTypeMap.filter(m => m.type === props.messageType)[0].iconClass)
-        return messageTypeMap.filter(m => m.type === props.messageType)[0].iconClass
-    })
+    const messageIconClass = computed(() => messageTypeMap.find(m => m.type === props.messageType).iconClass)
 
-    const messageColorClasses = computed(() => {
-        console.log(messageTypeMap.filter(m => m.type === props.messageType)[0].colorClasses)
-        return messageTypeMap.filter(m => m.type === props.messageType)[0].colorClasses
-    })
+    const messageColorClasses = computed(() => messageTypeMap.find(m => m.type === props.messageType).colorClasses)
 
 </script>
 

@@ -1,10 +1,90 @@
 <template>
-    <button class="bg-primary text-white dark:text-primary-800 border border-2 border-primary rounded-full px-2 py-2 w-full text-xl cursor-pointer hover:bg-transparent hover:text-primary transition-all duration-600 disabled:bg-primary/50 disabled:border-primary/0 disabled:hover:text-white disabled:cursor-not-allowed">
+    <button 
+        class="px-2 border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed"
+        :class="[
+            buttonSizeClasses,
+            buttonStyleClasses,
+            buttonColorClasses,
+            {'w-full' : btnFullWidth}
+        ]"
+    >
         <slot />
     </button>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+
+
+const props = defineProps({
+    btnSize: {
+        type: String,
+        required: false,
+        default: 'lg'
+    },
+    btnStyle: {
+        type: String,
+        required: false,
+        default: 'base'
+    },
+    btnColor: {
+        type: String,
+        required: false,
+        default: 'base'
+    },
+    btnFullWidth: {
+        type: Boolean,
+        required: false,
+        default: true
+    }
+})
+
+const sizeMap = [
+    {
+        type: 'lg',
+        classes: 'py-2 text-xl'
+    },
+    {
+        type: 'base',
+        classes: 'py-2 text-base'
+    },
+    {
+        type: 'sm',
+        classes: 'py-1 text-sm'
+    }
+]
+
+const styleMap = [
+    {
+        type: 'base',
+        classes: 'rounded-full'
+    },
+    {
+        type: 'notRounded',
+        classes: 'rounded-xl'
+    }
+]
+
+const colorMap = [
+    {
+        type: 'base',
+        classes: 'bg-primary text-white dark:text-primary-800 border-primary hover:bg-transparent hover:text-primary disabled:bg-primary/50 disabled:border-primary/0 disabled:hover:text-white'
+    },
+    {
+        type: 'danger',
+        classes: 'bg-red-500 text-white dark:text-red-800 border-red-500 hover:bg-transparent hover:text-red-500 disabled:bg-red-500/50 disabled:border-red-500/0 disabled:hover:text-white'
+    }
+]
+
+
+const buttonSizeClasses = computed(() => sizeMap.find(m => m.type === props.btnSize).classes)
+
+const buttonStyleClasses = computed(() => styleMap.find(m => m.type === props.btnStyle).classes)
+
+const buttonColorClasses = computed(() => colorMap.find(m => m.type === props.btnColor).classes)
+    
+
+
 
 </script>
 
