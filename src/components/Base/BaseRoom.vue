@@ -54,23 +54,34 @@
                         No plants in the room yet...
                         </span>
                     </div> -->
-                    <router-link
+                    <button
+                        type="button"
                         class="border border-2 border-primary rounded-full px-3 py-1 text-sm cursor-pointer bg-primary text-white dark:text-primary-800 hover:bg-transparent hover:text-primary transition-all duration-600 mb-2 hover:-translate-y-1 font-semibold inline-block align-top"
-                        :to="{name: 'AddPlant'}"
+                        @click="toggleModal"
                     >
                         Add a new plant
-                    </router-link>
+                    </button>
                     <div class="text-xs text-gray-400 dark:text-gray-600">
                         or drag one from another room
                     </div>
                 </div>
             </div>
         </div>
+        <base-modal
+            :modal-toggle="isModalOpen"
+            @close-modal="toggleModal"
+        >
+
+            <add-new-plant-content />
+        </base-modal>
     </div>
 </template>
 
 <script setup>
 
+import { ref } from 'vue';
+import AddNewPlantContent from '../AddNewPlantContent.vue';
+import BaseModal from './BaseModal.vue';
 import BasePlantListItem from './BasePlantListItem.vue';
 
 defineProps({
@@ -79,6 +90,16 @@ defineProps({
         required: true
     }
 })
+
+const isModalOpen = ref(false)
+
+const toggleModal = (state) => {
+    if (typeof state === 'boolean') {
+        isModalOpen.value = state
+    } else {
+        isModalOpen.value = !isModalOpen.value
+    }
+}
 
 </script>
 
