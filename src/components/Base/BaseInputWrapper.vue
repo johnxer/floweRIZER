@@ -26,7 +26,7 @@
         >
             <div
                 v-if="errorText"
-                class="text-red-500 dark:text-red-900 text-end"
+                class="text-red-500 dark:text-red-900 text-end text-xs"
             >
                 {{ errorText }}
             </div>

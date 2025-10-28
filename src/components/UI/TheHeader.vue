@@ -36,7 +36,7 @@
                             <li>
                                 <button
                                     class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600"
-                                    @click="logoutHandle"
+                                    @click="handleLogout"
                                     v-close-popper="true"
                                 >
                                     Log out
@@ -91,8 +91,7 @@ const isCenterSlotEmpty = computed(() => !slots.center || slots.center().length 
 
 console.log(user.value)
 
-const logoutHandle = async () => {
-    console.log('aaa');
+const handleLogout = async () => {
     const success = await logOutUser();
 
     if (success) {

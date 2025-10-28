@@ -1,7 +1,7 @@
 <template>
     <form
-        @submit.prevent="submitForm()"
         novalidate
+        @submit.prevent="submitForm()"
     >
         <transition
             name="fade"
@@ -10,7 +10,11 @@
             <div v-if="isPending">
                 Loading...
             </div>
-
+            <base-form-message-box
+                v-else-if="isSuccess"
+                message-type="success"
+                message-text="Password reset link sent! Please check your email."
+            />
             <div v-else>
                 <transition
                     name="fade"
@@ -21,7 +25,6 @@
                         message-type="error"
                         :message-text="error"
                     />
-
                 </transition>
                 <div class="space-y-4">
                     <base-input-wrapper
@@ -36,21 +39,9 @@
                             @input="formErrors.email = null"
                         />
                     </base-input-wrapper>
-                    <base-input-wrapper
-                        icon-name="lock"
-                        :error-text="formErrors.password"
-                    >
-                        <input
-                            type="password"
-                            placeholder="Enter password..."
-                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold dark:text-white/80 text-gray-500/80 peer"
-                            v-model.trim="form.password"
-                            @input="formErrors.password = null"
-                        />
-                    </base-input-wrapper>
                 </div>
                 <base-button class="mt-8">
-                    Login
+                    Reset password
                 </base-button>
             </div>
         </transition>
@@ -58,32 +49,24 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { usePwReset } from '../../composables/useAuth';
 import BaseButton from '../Base/BaseButton.vue';
 import BaseFormMessageBox from '../Base/BaseFormMessageBox.vue';
 import BaseInputWrapper from '../Base/BaseInputWrapper.vue';
 
-
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useLogIn } from '../../composables/useAuth';
-
 const router = useRouter()
-
 
 const {
     error,
     isPending,
-    logInUser
-} = useLogIn()
-
-
+    resetEmail,
+} = usePwReset()
 
 const form = ref({
     email: '',
-    password: ''
 })
-
-const formErrors = ref({})
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -96,35 +79,32 @@ const validateForm = () => {
         formErrors.value.email = 'Wrong email format'
     }
 
-    if (!form.value.password) {
-        formErrors.value.password = 'Password cannot be empty'
-    } else if (form.value.password < 8) {
-        formErrors.value.password = 'Password cannot be shorter than 8 chars'
-    }
-
     return Object.keys(formErrors.value).length === 0
 }
 
+const isSuccess = ref(false)
 
-const clearForm = () => {
-    form.value.email = '';
-    form.value.password = '';
-}
+const formErrors = ref({})
+
+const emit = defineEmits(['pw-reset-done'])
 
 const submitForm = async () => {
-    if (!validateForm()) return
+    isSuccess.value = false
+    if (!validateForm()) return;
 
-    const data = {
-        email: form.value.email,
-        password: form.value.password
-    }
-
-    const success = await logInUser(data)
+    const success = await resetEmail(form.value.email)
 
     if (success) {
-        router.push({ name: 'TheDashboard' })
-        clearForm();
-    }
+        form.value.email = ''
+        isSuccess.value = true
 
+        setTimeout(() => {
+            emit('pw-reset-done')
+        }, 3000);
+
+    }
 }
+
 </script>
+
+<style lang="scss" scoped></style>

@@ -1,7 +1,5 @@
 <template>
-    <button
-        class="bg-primary text-white dark:text-primary-800 border border-2 border-primary rounded-full px-2 py-2 w-full text-xl cursor-pointer hover:bg-transparent hover:text-primary transition-all duration-600"
-    >
+    <button class="bg-primary text-white dark:text-primary-800 border border-2 border-primary rounded-full px-2 py-2 w-full text-xl cursor-pointer hover:bg-transparent hover:text-primary transition-all duration-600 disabled:bg-primary/50 disabled:border-primary/0 disabled:hover:text-white disabled:cursor-not-allowed">
         <slot />
     </button>
 </template>
@@ -10,6 +8,4 @@
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

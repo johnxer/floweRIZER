@@ -15,9 +15,10 @@
                     name="fade"
                     mode="out-in"
                 >
-                    <base-form-error-message
+                    <base-form-message-box
                         v-if="error"
-                        :error-message="error"
+                        message-type="error"
+                        :message-text="error"
                     />
                 </transition>
                 <div class="space-y-4">
@@ -82,7 +83,7 @@
 <script setup>
 
 import BaseButton from '../Base/BaseButton.vue';
-import BaseFormErrorMessage from '../Base/BaseFormErrorMessage.vue';
+import BaseFormMessageBox from '../Base/BaseFormMessageBox.vue';
 import BaseInputWrapper from '../Base/BaseInputWrapper.vue';
 
 
