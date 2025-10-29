@@ -30,10 +30,6 @@
                                 <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-400 opacity-75" />
                                 <span class="relative inline-flex size-2 rounded-full bg-primary-500" />
                             </span>
-                            <!-- <span
-                                
-                                class="w-2 h-2 rounded-full bg-red-500 block absolute top-0 right-0"
-                            /> -->
                         </span>
                     </button>
                     <template #popper>
@@ -84,7 +80,7 @@
                                             :to="{ name: 'Account' }"
                                             v-close-popper="true"
                                         >
-                                            Account
+                                            Profile
                                         </router-link>
                                     </li>
                                     <li>

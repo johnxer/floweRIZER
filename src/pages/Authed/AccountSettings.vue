@@ -1,7 +1,7 @@
 <template>
     <div>
         <base-page-title>
-            Account
+            Profile
         </base-page-title>
 
         <div class="lg:max-w-[600px] md:max-w-[400px] max-w-full grid lg:grid-cols-[auto_1fr] mx-auto gap-8 items-start grid-cols-[1fr]">
@@ -101,7 +101,20 @@
                                 v-model="emailValue"
                             >
                         </base-input-wrapper-authed>
+                        <base-input-wrapper-authed
+                            field-label="Theme colour"
+                            field-id="theme-color"
+                        >
+                            <div class="rounded-lg overflow-hidden w-[30px] h-[30px] relative border-2 border-gray-300">
+                                <input
+                                    type="color"
+                                    id="theme-color"
+                                    class="focus:outline-0 border-0 p-0 absolute inset-0 w-full h-full cursor-pointer"
+                                >
+                            </div>
+                        </base-input-wrapper-authed>
                     </div>
+                    
                     <base-button
                         class="mt-8"
                         btn-style="notRounded"
