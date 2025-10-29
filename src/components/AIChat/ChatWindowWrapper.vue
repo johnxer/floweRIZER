@@ -22,12 +22,12 @@
 
                 </button>
             </div>
-            <div
+            <base-loader
                 v-if="isPendingGet"
-                class="p-4 text-center text-gray-400 grow-1 flex items-center justify-center"
+                class="grow-1 text-gray-400 text-sm flex items-center justify-center"
             >
                 Loading chat...
-            </div>
+            </base-loader>
             <div
                 v-else-if="!activeChatId"
                 class="p-4 text-center text-gray-400 grow-1 flex items-center justify-center"
@@ -102,7 +102,7 @@
                     <span class="material-symbols-outlined text-2xl">
                         network_intelligence
                     </span>
-                    AI is thinking
+                    AI is thinking...
                 </li>
             </ul>
             <div class="border-t border-gray-200 dark:border-gray-800">
@@ -124,10 +124,12 @@ import { computed, nextTick, onMounted, onUpdated, ref } from 'vue';
 
 import { formatDistanceToNow } from 'date-fns';
 
+import BaseLoader from '../Base/BaseLoader.vue';
+
 import { storeToRefs } from 'pinia';
 import { useActiveChat } from '../../composables/useActiveChat';
 import { useFlowerChat } from '../../composables/useFlowerChat';
-import { useGetData } from '../../composables/useGetData';
+import { useGetChatData } from '../../composables/useGetChatData';
 import { useSendData } from '../../composables/useSendData';
 import { useAuthStore } from '../../stores/useAuthStore';
 
@@ -149,7 +151,7 @@ const {
 const {
     isPending: isPendingSend,
     error: errorSend,
-    sendData
+    sendDataChats
 } = useSendData()
 
 const {
@@ -159,7 +161,7 @@ const {
 const {
     messages,
     isPending: isPendingGet
-} = useGetData(activeChatId)
+} = useGetChatData(activeChatId)
 
 
 const handleEndChat = async () => {
@@ -194,7 +196,7 @@ const submitQuestion = async () => {
 
 
 
-    await sendData(activeChatId.value, userData)
+    await sendDataChats(activeChatId.value, userData)
 
     const success = await askFlowerBot(question.value);
 
@@ -207,7 +209,7 @@ const submitQuestion = async () => {
             message: answer.value,
         }
 
-        await sendData(activeChatId.value, aiData)
+        await sendDataChats(activeChatId.value, aiData)
 
         question.value = ''
     }

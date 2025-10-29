@@ -1,6 +1,6 @@
 <template>
     <button 
-        class="px-2 border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed"
+        class="border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed"
         :class="[
             buttonSizeClasses,
             buttonStyleClasses,
@@ -42,15 +42,18 @@ const props = defineProps({
 const sizeMap = [
     {
         type: 'lg',
-        classes: 'py-2 text-xl'
+        classes: 'px-2 py-2 text-xl'
     },
     {
         type: 'base',
-        classes: 'py-2 text-base'
+        classes: 'px-2 py-2 text-base'
     },
     {
         type: 'sm',
-        classes: 'py-1 text-sm'
+        classes: 'px-2 py-1 text-sm'
+    },{
+        type: 'custom',
+        classes: ''
     }
 ]
 

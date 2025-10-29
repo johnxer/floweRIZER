@@ -52,44 +52,6 @@ const routes = [
         },
     },
     {
-        path: '/plant/add',
-        name: 'AddPlant',
-        component: () => import('../pages/Authed/AddEditPlant.vue'),
-        meta: {
-            title: 'Add new plant',
-            requiresAuth: true,
-        },
-    },
-    {
-        path: '/plant/edit/:id',
-        name: 'EditPlant',
-        component: () => import('../pages/Authed/AddEditPlant.vue'),
-        props: true,
-        meta: {
-            title: 'Edit plant',
-            requiresAuth: true,
-        },
-    },
-    {
-        path: '/room/add',
-        name: 'AddRoom',
-        component: () => import('../pages/Authed/AddEditRoom.vue'),
-        meta: {
-            title: 'Add new room',
-            requiresAuth: true,
-        },
-    },
-    {
-        path: '/room/edit/:id',
-        name: 'EditRoom',
-        component: () => import('../pages/Authed/AddEditRoom.vue'),
-        props: true,
-        meta: {
-            title: 'Edit room',
-            requiresAuth: true,
-        },
-    },
-    {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: () => import('../pages/NotFound.vue'),

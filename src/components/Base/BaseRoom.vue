@@ -1,6 +1,5 @@
 <template>
-    <div>
-
+    <div class="group/card">
         <div class="text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 lg:justify-center">
             <router-link
                 :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
@@ -12,89 +11,133 @@
                 </span>
             </router-link>
             <span
-                class="material-symbols-outlined text-3xl relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 cursor-help"
+                class="material-symbols-outlined text-3xl relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 cursor-help relative"
                 v-tooltip="{
                     content: room.desc,
                     disabled: !room.desc,
                 }"
             >
                 {{ room.icon }}
+                <div class="size-3 absolute top-0 right-0 bg-gray-600 opacity-0 group-hover:opacity-100 text-white rounded-full flex items-center justify-center transition-opacity duration-600" >
+                    <span class="material-symbols-outlined text-3xs leading-none align-top">
+                        question_mark
+                    </span>
+                </div>
             </span>
-
         </div>
 
-
-
-
         <div
-            class="min-h-[120px] lg:min-h-[200px] w-full"
-            :class="room.plants ? 'bg-gray-50 rounded-xl' : 'flex items-center border border-gray-200 dark:border-gray-800 rounded-xl'"
+            class="min-h-[120px] lg:min-h-[200px] w-full rounded-xl relative p-2"
+            :class="[
+                plants?.length || isPending ? 'bg-gray-50' : 'flex flex-col items-center justify-center border border-gray-200 dark:border-gray-800',
+
+            ]"
         >
-            <div v-if="room.plants">
-                <transition-group
-                    name="fade"
-                    tag="ul"
-                    class="p-2 space-y-2"
-                >
-                    <base-plant-list-item
-                        v-for="plant in room.plants"
-                        :key="plant.id"
-                        :plant="plant"
-                    />
-                </transition-group>
-            </div>
+            <!-- to be styled and used later -->
             <div
-                v-else
-                class="w-full"
+                class="size-3 rounded-full absolute top-0 left-0"
+                :style="{ 'backgroundColor': room.color }"
             >
-                <div class="text-center">
-                    <!-- <div class="text-sm text-blue-400/50 flex flex-col items-center justify-center mb-6">
-                        <span class="material-symbols-outlined text-3xl">
-                            info
-                        </span>
-                        <span>
-                        No plants in the room yet...
-                        </span>
-                    </div> -->
-                    <base-button
-                        type="button"
-                        @click="toggleModal"
-                        class="mb-2 hover:-translate-y-1 inline-block align-top"
-                        :btn-full-width="false"
-                        btn-size="sm"
+
+            </div>
+            <transition
+                name="fade"
+                mode="out-in"
+            >
+                <base-loader 
+                    v-if="isPending"
+                    position-type="absolute"
+                />
+                <div v-else-if="plants">
+                    <transition-group
+                        v-if="plants.length"
+                        name="fade"
+                        tag="ul"
+                        class="space-y-2 mb-4"
                     >
-                        Add a new plant
-                    </base-button>
-                    <div class="text-xs text-gray-400 dark:text-gray-600">
-                        or drag one from another room
+
+
+                        <base-plant-list-item
+                            v-for="plant in plants"
+                            :key="plant.id"
+                            :plant="plant"
+                        >
+                        </base-plant-list-item>
+                    </transition-group>
+                    <div class="w-full">
+                        <div class="text-center">
+                            <!-- <div class="text-sm text-blue-400/50 flex flex-col items-center justify-center mb-6">
+                                <span class="material-symbols-outlined text-3xl">
+                                    info
+                                </span>
+                                <span>
+                                No plants in the room yet...
+                                </span>
+                            </div> -->
+                            <base-button
+                                type="button"
+                                @click="toggleModal()"
+                                class="mb-2 py-1 pl-1 inline-flex align-top items-center leading-none"
+                                :btn-full-width="false"
+                                btn-size="custom"
+                            >
+                                <!-- Add a new plant -->
+
+                                <span class="material-symbols-outlined text-xl mr-1">
+                                    add
+                                </span><span class="w-0 group-hover/card:w-[42px] overflow-hidden transition-all duration-400 text-sm flex">Plant</span>
+
+                            </base-button>
+                            <div class="text-xs text-gray-400 dark:text-gray-600">
+                                or drag one from another room
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </transition>
         </div>
         <base-modal
             :modal-toggle="isModalOpen"
             @close-modal="toggleModal"
         >
 
-            <add-new-plant-content />
+            <add-new-plant-content
+                :room-id="room.id"
+                @close-modal="toggleModal"
+            />
         </base-modal>
     </div>
 </template>
 
 <script setup>
-
 import { ref } from 'vue';
-import AddNewPlantContent from '../AddNewPlantContent.vue';
+
 import BaseButton from './BaseButton.vue';
+import BaseLoader from './BaseLoader.vue';
 import BaseModal from './BaseModal/BaseModal.vue';
 import BasePlantListItem from './BasePlantListItem.vue';
 
-defineProps({
+import AddNewPlantContent from '../AddNewPlantContent.vue';
+
+import { useGetData } from '../../composables/useGetData';
+
+const props = defineProps({
     room: {
         type: Object,
         required: true
     }
 })
+
+
+const {
+    error,
+    isPending,
+    items: plants
+} = useGetData(`rooms/${props.room.id}/plants`)
+
+console.log(props.room.id)
+console.log(`rooms/${props.room.id}/plants`)
+console.log(plants.value)
 
 const isModalOpen = ref(false)
 
@@ -105,6 +148,9 @@ const toggleModal = (state) => {
         isModalOpen.value = !isModalOpen.value
     }
 }
+
+
+
 
 </script>
 

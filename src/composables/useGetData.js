@@ -1,57 +1,69 @@
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { storeToRefs } from 'pinia';
-import { onUnmounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import { db } from '../firebase/config';
 import { useAuthStore } from '../stores/useAuthStore';
 
-export const useGetData = (chatIdRef) => {
+export const useGetData = (dataType) => {
     const { user } = storeToRefs(useAuthStore());
 
-    const messages = ref([]);
     const error = ref(null);
     const isPending = ref(true);
 
-    let unsubscribe = null;
+    const items = ref([]);
 
-    const attachListener = (uid, chatId) => {
-        if (unsubscribe) unsubscribe();
-        if (!uid || !chatId) return;
+    const itemPath = `users/${user.value.uid}/${dataType}`;
 
-        const messagesPath = `users/${uid}/chats/${chatId}/messages`;
+    console.log('itemPath', itemPath)
 
-        console.log('Listening to chat:', messagesPath);
+    let unsubscribe = null
 
-        const q = query(collection(db, messagesPath), orderBy('createdAt', 'asc'));
+    const q = query(collection(db, itemPath), orderBy('createdAt', 'desc'));
+    const startListener = () => {
+        if (!user.value?.uid) {
+            error.value = 'User not authenticated';
+            isPending.value = false;
+            return;
+        }
 
         unsubscribe = onSnapshot(
             q,
             (snapshot) => {
-                messages.value = snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-
+                items.value = snapshot.docs.map((doc) => {
+                    return {
+                        id: doc.id,
+                        ...doc.data(),
+                    };
+                });
                 isPending.value = false;
             },
             (err) => {
+                console.error(err);
                 error.value = err.message;
                 isPending.value = false;
             }
+            
         );
     };
 
-    watch(
-        [() => user.value?.uid, chatIdRef],
-        ([uid, chatId]) => {
-            if (!uid || !chatId) return;
-            attachListener(uid, chatId);
-        },
-        { immediate: true }
+    onMounted(() => {
+        if (user.value?.uid) startListener();
+    });
+
+    watch(() => user.value?.uid, (newUid) => {
+            if (newUid && !unsubscribe) {
+                startListener();
+            }
+        }
     );
 
     onUnmounted(() => {
-        if (unsubscribe) unsubscribe();
+        unsubscribe();
     });
 
-    return { messages, error, isPending };
+    return {
+        error,
+        isPending,
+        items,
+    };
 };
