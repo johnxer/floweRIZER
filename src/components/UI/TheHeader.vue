@@ -1,57 +1,106 @@
 <template>
     <header class="min-h-[60px] px-6 sticky top-0 z-1 bg-white shadow-lg flex items-center dark:bg-gray-950 dark:border-b border-gray-800 justify-between">
-        <router-link
-            :to="{name: 'TheDashboard'}"
-        >
-        <h1 class="font-roboto text-2xl font-bold text-primary flex gap-3">
-            <span class="noto-color-emoji-regular">
-                🌱
-            </span>
-            <span class="flex">
-                <span class="text-primary-500">{{ firstString }}</span> <span class="text-primary-700">{{ secondString }}</span>
-            </span>
-        </h1>
+        <router-link :to="{ name: 'TheDashboard' }">
+            <h1 class="font-roboto text-2xl font-bold text-primary flex gap-3">
+                <span class="noto-color-emoji-regular">
+                    🌱
+                </span>
+                <span class="flex">
+                    <span class="text-primary-500">{{ firstString }}</span> <span class="text-primary-700">{{ secondString }}</span>
+                </span>
+            </h1>
         </router-link>
         <slot name="center" />
+
         <!-- <slot name="end"/> -->
         <div>
-            <v-dropdown trap-focus>
-                <button class="text-3xl relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600">
-                    <span class="material-symbols-outlined">
-                        menu
-                    </span>
-                </button>
-                <template #popper>
-                    <div class="text-base max-w-[300px] font-normal p-4">
-                        <ul class="space-y-3">
-                            <li>
-                                <router-link
-                                    class="text-gray-600 hover:text-gray-800 cursor-pointer transition-colors duration-600 block"
-                                    :to="{name: 'Account'}"
-                                    v-close-popper="true"
+            <div class="flex gap-5 items-center">
+                <v-dropdown trap-focus>
+                    <button
+                        class="relative  transition-colors duration-600 flex"
+                        :class="hasNotifications ? 'cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600' : 'cursor-default text-gray-200 dark:text-gray-800'"
+                        :disabled="!hasNotifications"
+                    >
+                        <span class="material-symbols-outlined text-2xl relative">
+                            notifications
+                            <span
+                                v-if="hasNotifications"
+                                class="w-2 h-2 rounded-full bg-red-500 block absolute top-0 right-0"
+                            />
+                        </span>
+                    </button>
+                    <template #popper>
+                        <div class="text-base max-w-[300px] font-normal p-4">
+                            <transition-group
+                                name="fade"
+                                tag="ul"
+                                class="text-sm"
+                            >
+                                <li
+                                    v-for="notification in notifications"
+                                    :key="notification.id"
+                                    class="border-b last:border-0 border-gray-200 pb-2 mb-2 last:pb-0 last:mb-0"
                                 >
-                                    Account
-                                </router-link>
-                            </li>
-                            <li>
-                                <button
-                                    class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600"
-                                    @click="handleLogout"
-                                    v-close-popper="true"
-                                >
-                                    Log out
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </template>
-            </v-dropdown>
+                                    <div v-html="notification.action" />
+                                    <div class="text-end">
+                                        <button
+                                            type="button"
+                                            class="mt-2 text-primary flex-inline align-top cursor-pointer hover:underline"
+                                            @click="handleDismissNotification(notification.id)"
+                                        >
+                                            Dismiss
+                                        </button>
+                                    </div>
+                                </li>
+                            </transition-group>
+                        </div>
+                    </template>
+                </v-dropdown>
+                <div class="border p-2 rounded-xl border-gray-200">
+                    <v-dropdown trap-focus>
+                        <button class="relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center">
+                            <img
+                                :src="user?.photoURL"
+                                class="w-[30px] h-[30px] rounded-xl object-cover"
+                            />
+                            <span class="text-sm">{{ user?.displayName || 'not set yet' }}</span>
+                            <span class="material-symbols-outlined text-2xl">
+                                menu
+                            </span>
+                        </button>
+                        <template #popper>
+                            <div class="text-base max-w-[300px] font-normal p-4">
+                                <ul class="space-y-3">
+                                    <li>
+                                        <router-link
+                                            class="text-gray-600 hover:text-gray-800 cursor-pointer transition-colors duration-600 block"
+                                            :to="{ name: 'Account' }"
+                                            v-close-popper="true"
+                                        >
+                                            Account
+                                        </router-link>
+                                    </li>
+                                    <li>
+                                        <button
+                                            class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600"
+                                            @click="handleLogout"
+                                            v-close-popper="true"
+                                        >
+                                            Log out
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
+                    </v-dropdown>
+                </div>
+            </div>
         </div>
     </header>
 </template>
 
 <script setup>
-import { computed, useSlots } from 'vue';
+import { computed, ref, useSlots } from 'vue';
 
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
@@ -95,9 +144,53 @@ const handleLogout = async () => {
     const success = await logOutUser();
 
     if (success) {
-        router.push({name: 'NotAuthed'})
+        router.push({ name: 'NotAuthed' })
     }
 }
+
+
+const hasNotifications = computed(() => notifications.value.length)
+
+
+const typeNotificationsMap = [
+    {
+        id: 1,
+        action: 'Water plant ##plantName## within 24 hours'
+    },
+    {
+        id: 2,
+        action: 'Fertilize ##plantName## this week'
+    }
+]
+
+const notificationsArrayFromFB = ref([
+    {
+        id: 1,
+        type: 1, // water within 24 hours
+        object: 'Orchid',
+    },
+    {
+        id: 2,
+        type: 1, // water within 24 hours
+        object: 'Cactus',
+    }
+])
+
+const notifications = computed(() => {
+    return notificationsArrayFromFB.value.map(n => {
+        const typeD = typeNotificationsMap.find(m => m.id === n.type)
+
+        return {
+            ...n,
+            action: typeD ? typeD.action.replace('##plantName##', `<strong>${n.object}</strong>`) : 'Unknown action'
+        }
+    })
+})
+
+const handleDismissNotification = (notificationId) => {
+    notificationsArrayFromFB.value = notificationsArrayFromFB.value.filter(i => i.id !== notificationId)
+}
+
 
 </script>
 
