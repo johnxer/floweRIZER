@@ -1,11 +1,11 @@
 <template>
     <div
-        class="fixed w-[300px] bottom-0 top-[60px] bg-white px-8 pb-8 pt-12 transition-all duration-600 ease-in-out"
-        :class="isOpen ? 'right-0 shadow-2xl' : '-right-[300px] shadow-none'"
+        class="fixed w-full left-0 md:left-auto md:w-[300px] bottom-0 md:top-[60px] bg-white px-4 py-2 md:px-8 md:pb-8 md:pt-12 transition-all duration-600 ease-in-out shadow-menu"
+        :class="isOpen ? 'md:right-0 md:shadow-2xl' : 'md:-right-[300px] md:shadow-none'"
     >
         <button
             type="button"
-            class="absolute -left-[20px] top-2 size-[40px] rounded-full bg-white border-2 border-gray-300 flex items-center justify-center cursor-pointer text-3xl text-gray-300 transition-all duration-600 hover:border-gray-400 hover:text-gray-400"
+            class="absolute -left-[20px] top-2 size-[40px] rounded-full bg-white border-2 border-gray-300 items-center justify-center cursor-pointer text-3xl text-gray-300 transition-all duration-600 hover:border-gray-400 hover:text-gray-400 hidden md:flex"
             :class="isOpen ? 'opacity-100 -left-[20px]' : 'opacity-0 left-0'"
             @click="handleSidebarMenu"
         >
@@ -13,35 +13,25 @@
                 keyboard_arrow_right
             </span>
         </button>
-        <ul class="space-y-3">
-            <li>
-                <router-link
-                    class="text-gray-600 hover:text-primary-500 cursor-pointer transition-colors duration-600 block py-2 flex gap-2 items-center"
-                    :to="{ name: 'TheDashboard' }"
-                    @click="handleSidebarMenu"
-                >
-                    <span class="material-symbols-outlined text-3xl">
-                        potted_plant
-                    </span>
-                    Dashboard
-                </router-link>
-            </li>
-            <li>
-                <router-link
-                    class="text-gray-600 hover:text-primary-500 cursor-pointer transition-colors duration-600 block py-2 flex gap-2 items-center"
-                    :to="{ name: 'Account' }"
-                    @click="handleSidebarMenu"
-                >
-                    <span class="material-symbols-outlined text-3xl">
-                        face
-                    </span>
-                    Profile
-                </router-link>
-            </li>
+        <ul class="md:space-y-3 flex gap-10 md:block">
+            <base-menu-link 
+                link-destination="TheDashboard"
+                link-icon="potted_plant"
+                link-title="Dashboard"
+                class="w-1/2"
+                @click="handleSidebarMenu"
+            />
+            <base-menu-link 
+                link-destination="Account"
+                link-icon="face"
+                link-title="Profile"
+                class="w-1/2"
+                @click="handleSidebarMenu"
+            />
 
-            <li>
+            <li class="hidden md:block">
                 <button
-                    class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center"
+                    class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center flex-col md:flex-row"
                     @click="handleLogout"
                 >
                     <span class="material-symbols-outlined text-3xl">
@@ -57,6 +47,8 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/useAuthStore';
+
+import BaseMenuLink from '../Base/BaseMenuLink.vue';
 
 defineProps({
     isOpen: {

@@ -57,7 +57,7 @@
                             field-label="Room colour"
                             field-id="room-color"
                         >
-                            <div class="rounded-lg overflow-hidden w-[30px] h-[30px] relative border-2 border-gray-300">
+                            <div class="rounded-lg overflow-hidden size-[34px] relative border-2 border-gray-300">
                                 <input
                                     type="color"
                                     id="room-color"

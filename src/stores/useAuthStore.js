@@ -78,6 +78,8 @@ export const useAuthStore = defineStore('useAuthStore', () => {
 
             await updateProfile(auth.currentUser, data);
 
+            user.value = { ...user.value, ...data };
+
             return true;
         } catch (err) {
             error.value = err.message;

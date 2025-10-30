@@ -1,120 +1,118 @@
 <template>
-    <div class="fixed bottom-22 right-6 w-84 h-120 bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-100 dark:border-gray-950">
-        <div class="flex flex-col h-full">
-            <div class="bg-white rounded-t-xl px-4 py-3 shadow-lg relative z-1 flex justify-between items-center dark:bg-gray-800">
-                <div class="text-primary text-xl">
-                    FlowerChat
-                </div>
-                <button
-                    v-if="activeChatId"
-                    class="text-red-300 hover:text-red-900 cursor-pointer transition-colors duration-600 text-2xl flex dark:text-red-500/50"
-                    @click="handleEndChat"
-                    v-close-popper="true"
-                >
-                    <span
-                        class="material-symbols-outlined"
-                        v-tooltip="{
-                            content: 'End chat',
-                        }"
-                    >
-                        call_end
-                    </span>
-
-                </button>
+    <div class="flex flex-col h-full">
+        <div class="bg-white rounded-t-xl px-4 py-3 shadow-lg relative z-1 flex justify-between items-center dark:bg-gray-800">
+            <div class="text-primary text-xl">
+                FlowerChat
             </div>
-            <base-loader
-                v-if="isPendingGet"
-                class="grow-1 text-gray-400 text-sm flex items-center justify-center"
+            <button
+                v-if="activeChatId"
+                class="text-red-300 hover:text-red-900 cursor-pointer transition-colors duration-600 text-2xl flex dark:text-red-500/50"
+                @click="handleEndChat"
+                v-close-popper="true"
             >
-                Loading chat...
-            </base-loader>
-            <div
-                v-else-if="!activeChatId"
-                class="p-4 text-center text-gray-400 grow-1 flex items-center justify-center"
-            >
-                Chat ended
-            </div>
-            <ul
-                v-else
-                class="p-4 overflow-auto space-y-4 grow-1"
-                ref="scrollWrapper"
-            >
-                <li class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm bg-primary-100 rounded-tr-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-100 after:-left-2">
-                    <div class="text-xs mb-1 flex items-center gap-1 text-primary-700/50">
-                        <span class="material-symbols-outlined text-base">
-                            network_intelligence
-                        </span>
-                        AI adviser
-                    </div>
-                    <p class="text-sm text-primary-700">
-                        Hi, I'm a floweRIZER AI Chat Bot. Ask me any question about the plants.
-                    </p>
-                </li>
-
-                <li
-                    v-for="message in messages"
-                    :key="message.id"
+                <span
+                    class="material-symbols-outlined"
+                    v-tooltip="{
+                        content: 'End chat',
+                    }"
                 >
-                    <div
-                        class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm"
-                        :class="message.role === 'ai' ?
-                            'bg-primary-100 rounded-tr-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-100 after:-left-2' :
-                            'bg-primary-500 rounded-tl-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-l-[0.5rem] after:border-transparent after:border-l-primary-500 after:-right-2'"
-                    >
-                        <div
-                            class="text-xs mb-1 flex items-center gap-1"
-                            :class="message.role === 'ai' ?
-                                'text-primary-700/50' :
-                                'text-white/75'"
-                        >
-                            <span class="material-symbols-outlined text-base">
+                    call_end
+                </span>
 
-                                {{
-                                    message.role === 'ai' ? 'network_intelligence' : 'face'
-                                }}
-
-                            </span>
-                            {{ message.user }}
-                        </div>
-                        <p
-                            class="text-sm"
-                            :class="message.role === 'ai' ?
-                                'text-primary-700' :
-                                'text-white'"
-                        >
-                            {{ message.message }}
-                        </p>
-                        <div
-                            class="text-[10px] text-end italic"
-                            :class="message.role === 'ai' ?
-                                'text-primary-700/50' :
-                                'text-white/75'"
-                        >
-
-                            {{ formatTimestamp(message.createdAt) }}
-                        </div>
-                    </div>
-                </li>
-                <li
-                    v-if="isPendingAI"
-                    class="animate-pulse flex items-center gap-2 text-gray-500 text-sm justify-end"
-                >
-                    <span class="material-symbols-outlined text-2xl">
+            </button>
+        </div>
+        <base-loader
+            v-if="isPendingGet"
+            class="grow-1 text-gray-400 text-sm flex items-center justify-center"
+        >
+            Loading chat...
+        </base-loader>
+        <div
+            v-else-if="!activeChatId"
+            class="p-4 text-center text-gray-400 grow-1 flex items-center justify-center"
+        >
+            Chat ended
+        </div>
+        <ul
+            v-else
+            class="p-4 overflow-auto space-y-4 grow-1"
+            ref="scrollWrapper"
+        >
+            <li class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm bg-primary-100 rounded-tr-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-100 after:-left-2">
+                <div class="text-xs mb-1 flex items-center gap-1 text-primary-700/50">
+                    <span class="material-symbols-outlined text-base">
                         network_intelligence
                     </span>
-                    AI is thinking...
-                </li>
-            </ul>
-            <div class="border-t border-gray-200 dark:border-gray-800">
-                <input
-                    type="text"
-                    placeholder="Write your question..."
-                    class="px-4 py-3 w-full focus:outline-0 bg-gray-50 focus:bg-gray-50 transition-colors duration-600 rounded-b-xl text-sm dark:bg-gray-800 dark:text-white/75 dark:focus:bg-gray-800 disabled:animate-pulse disabled:text-gray-400 disabled:cursor-wait"
-                    @keyup.enter="submitQuestion"
-                    :disabled="isPendingAI"
-                    v-model.trim="question"
+                    AI adviser
+                </div>
+                <p class="text-sm text-primary-700">
+                    Hi, I'm a floweRIZER AI Chat Bot. Ask me any question about the plants.
+                </p>
+            </li>
+
+            <li
+                v-for="message in messages"
+                :key="message.id"
+            >
+                <div
+                    class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm"
+                    :class="message.role === 'ai' ?
+                        'bg-primary-100 rounded-tr-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-100 after:-left-2' :
+                        'bg-primary-500 rounded-tl-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-l-[0.5rem] after:border-transparent after:border-l-primary-500 after:-right-2'"
                 >
-            </div>
+                    <div
+                        class="text-xs mb-1 flex items-center gap-1"
+                        :class="message.role === 'ai' ?
+                            'text-primary-700/50' :
+                            'text-white/75'"
+                    >
+                        <span class="material-symbols-outlined text-base">
+
+                            {{
+                                message.role === 'ai' ? 'network_intelligence' : 'face'
+                            }}
+
+                        </span>
+                        {{ message.user }}
+                    </div>
+                    <p
+                        class="text-sm"
+                        :class="message.role === 'ai' ?
+                            'text-primary-700' :
+                            'text-white'"
+                    >
+                        {{ message.message }}
+                    </p>
+                    <div
+                        class="text-[10px] text-end italic"
+                        :class="message.role === 'ai' ?
+                            'text-primary-700/50' :
+                            'text-white/75'"
+                    >
+
+                        {{ formatTimestamp(message.createdAt) }}
+                    </div>
+                </div>
+            </li>
+            <li
+                v-if="isPendingAI"
+                class="animate-pulse flex items-center gap-2 text-gray-500 text-sm justify-end"
+            >
+                <span class="material-symbols-outlined text-2xl">
+                    network_intelligence
+                </span>
+                AI is thinking...
+            </li>
+        </ul>
+        <div class="border-t border-gray-200 dark:border-gray-800">
+            <input
+                type="text"
+                placeholder="Write your question..."
+                class="px-4 py-3 w-full focus:outline-0 bg-gray-50 focus:bg-gray-50 transition-colors duration-600 rounded-b-xl text-sm dark:bg-gray-800 dark:text-white/75 dark:focus:bg-gray-800 disabled:animate-pulse disabled:text-gray-400 disabled:cursor-wait"
+                @keyup.enter="submitQuestion"
+                :disabled="isPendingAI"
+                v-model.trim="question"
+            >
         </div>
     </div>
 </template>

@@ -48,7 +48,10 @@
                     v-if="isPending"
                     position-type="absolute"
                 />
-                <div v-else-if="plants">
+                <div 
+                v-else-if="plants"
+                class="w-full"
+                >
                     <transition-group
                         v-if="plants.length"
                         name="fade"
@@ -77,7 +80,7 @@
                             <base-button
                                 type="button"
                                 @click="toggleModal()"
-                                class="mb-2 py-1 pl-1 inline-flex align-top items-center leading-none"
+                                class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
                                 :btn-full-width="false"
                                 btn-size="custom"
                             >
@@ -85,7 +88,7 @@
 
                                 <span class="material-symbols-outlined text-xl mr-1">
                                     add
-                                </span><span class="w-0 group-hover/card:w-[42px] overflow-hidden transition-all duration-400 text-sm flex">Plant</span>
+                                </span><span class="w-auto md:w-0 group-hover/card:w-[42px] overflow-hidden transition-all duration-400 text-sm flex">Plant</span>
 
                             </base-button>
                             <div class="text-xs text-gray-400 dark:text-gray-600">

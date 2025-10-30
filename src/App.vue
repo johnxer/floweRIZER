@@ -5,7 +5,10 @@
         @toggle-sidebar="toggleSidebar"
     >
     </the-header>
-    <div class="container mt-8 mx-auto px-6 pb-8">
+    <div 
+        class="container mt-8 mx-auto px-4 md:px-6 "
+        :class="isAuthed ? 'pb-[170px] md:pb-8' : 'pb-8'"
+    >
         <the-logo-circle
             v-if="!isAuthed"
             :project-title="projectName"

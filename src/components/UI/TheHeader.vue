@@ -1,5 +1,5 @@
 <template>
-    <header class="min-h-[60px] px-6 sticky top-0 z-1 bg-white shadow-lg flex items-center dark:bg-gray-950 dark:border-b border-gray-800 justify-between">
+    <header class="min-h-[60px] px-4 md:px-6 sticky top-0 z-1 bg-white shadow-lg flex items-center dark:bg-gray-950 dark:border-b border-gray-800 justify-between">
         <router-link :to="{ name: 'TheDashboard' }">
             <h1 class="font-roboto text-2xl font-bold text-primary flex gap-3">
                 <span class="noto-color-emoji-regular">
@@ -17,7 +17,7 @@
             <div class="flex gap-5 items-center">
                 <v-dropdown trap-focus>
                     <button
-                        class="relative  transition-colors duration-600 flex"
+                        class="relative transition-colors duration-600 flex"
                         :class="hasNotifications ? 'cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600' : 'cursor-default text-gray-200 dark:text-gray-800'"
                         :disabled="!hasNotifications"
                     >
@@ -59,7 +59,19 @@
                         </div>
                     </template>
                 </v-dropdown>
-                <div>
+                <div class="md:hidden">
+                    <button
+                        class="text-gray-400 hover:text-red-500 cursor-pointer transition-colors duration-600 flex"
+                        @click="handlelogout"
+                    >
+                        <span class="material-symbols-outlined text-2xl">
+                            logout
+                        </span>
+                    </button>
+
+                </div>
+
+                <div class="hidden md:flex">
                     <button
                         class="relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center border p-2 rounded-xl border-gray-200"
                         @click="handleSidebarMenu"

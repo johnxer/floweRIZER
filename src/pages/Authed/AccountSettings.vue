@@ -5,7 +5,7 @@
         </base-page-title>
 
         <div class="lg:max-w-[600px] md:max-w-[400px] max-w-full grid lg:grid-cols-[auto_1fr] mx-auto gap-8 items-start grid-cols-[1fr]">
-            <div class="w-[200px]">
+            <div class="w-full md:w-[200px]">
                 <div class="w-[200px] h-[200px] relative rounded-full overflow-hidden shadow-2xl border-2 border-white dark:border-gray-700 mx-auto">
                     <transition
                         name="fade"
@@ -115,7 +115,7 @@
                                 field-label="Theme colour"
                                 field-id="theme-color"
                             >
-                                <div class="rounded-lg overflow-hidden w-[30px] h-[30px] relative border-2 border-gray-300">
+                                <div class="rounded-lg overflow-hidden size-[34px] relative border-2 border-gray-300">
                                     <input
                                         type="color"
                                         id="theme-color"
