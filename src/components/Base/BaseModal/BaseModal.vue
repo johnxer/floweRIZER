@@ -34,7 +34,7 @@
                             <DialogPanel class="w-full max-w-lg sm:my-8 py-8 relative">
                                 <button
                                     type="button"
-                                    class="absolute top-0 text-2xl text-white right-0 cursor-pointer"
+                                    class="absolute top-0 text-2xl text-white right-0 cursor-pointer hover:opacity-50 transiton-opacity duration-600"
                                     @click="closeModalHandle"
                                     ref="cancelButtonRef"
                                 >

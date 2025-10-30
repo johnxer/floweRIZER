@@ -23,7 +23,7 @@
                     >
                         <span class="material-symbols-outlined text-2xl relative">
                             notifications
-                            <span 
+                            <span
                                 v-if="hasNotifications"
                                 class="absolute top-0 right-0 flex size-2"
                             >
@@ -59,43 +59,20 @@
                         </div>
                     </template>
                 </v-dropdown>
-                <div class="border p-2 rounded-xl border-gray-200">
-                    <v-dropdown trap-focus>
-                        <button class="relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center">
-                            <img
-                                :src="user?.photoURL"
-                                class="w-[30px] h-[30px] rounded-xl object-cover"
-                            />
-                            <span class="text-sm">{{ user?.displayName || 'not set yet' }}</span>
-                            <span class="material-symbols-outlined text-2xl">
-                                menu
-                            </span>
-                        </button>
-                        <template #popper>
-                            <div class="text-base max-w-[300px] font-normal p-4">
-                                <ul class="space-y-3">
-                                    <li>
-                                        <router-link
-                                            class="text-gray-600 hover:text-gray-800 cursor-pointer transition-colors duration-600 block"
-                                            :to="{ name: 'Account' }"
-                                            v-close-popper="true"
-                                        >
-                                            Profile
-                                        </router-link>
-                                    </li>
-                                    <li>
-                                        <button
-                                            class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600"
-                                            @click="handleLogout"
-                                            v-close-popper="true"
-                                        >
-                                            Log out
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </template>
-                    </v-dropdown>
+                <div>
+                    <button
+                        class="relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center border p-2 rounded-xl border-gray-200"
+                        @click="handleSidebarMenu"
+                    >
+                        <img
+                            :src="user?.photoURL"
+                            class="w-[30px] h-[30px] rounded-xl object-cover"
+                        />
+                        <span class="text-sm">{{ user?.displayName || 'not set yet' }}</span>
+                        <span class="material-symbols-outlined text-2xl">
+                            menu
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -106,10 +83,10 @@
 import { computed, ref, useSlots } from 'vue';
 
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/useAuthStore';
 
-const router = useRouter()
+// const router = useRouter()
 
 const props = defineProps({
     projectTitle: {
@@ -124,9 +101,9 @@ const {
     isPending,
 } = storeToRefs(useAuthStore());
 
-const {
-    logOutUser,
-} = useAuthStore();
+// const {
+//     logOutUser,
+// } = useAuthStore();
 
 
 const matchString = /[A-Z]/;
@@ -143,13 +120,13 @@ const isCenterSlotEmpty = computed(() => !slots.center || slots.center().length 
 
 console.log(user.value)
 
-const handleLogout = async () => {
-    const success = await logOutUser();
+// const handleLogout = async () => {
+//     const success = await logOutUser();
 
-    if (success) {
-        router.push({ name: 'NotAuthed' })
-    }
-}
+//     if (success) {
+//         router.push({ name: 'NotAuthed' })
+//     }
+// }
 
 
 const hasNotifications = computed(() => notifications.value.length)
@@ -192,6 +169,12 @@ const notifications = computed(() => {
 
 const handleDismissNotification = (notificationId) => {
     notificationsArrayFromFB.value = notificationsArrayFromFB.value.filter(i => i.id !== notificationId)
+}
+
+const emit = defineEmits(['toggle-sidebar'])
+
+const handleSidebarMenu = () => {
+    emit('toggle-sidebar')
 }
 
 

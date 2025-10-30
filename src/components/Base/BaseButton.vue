@@ -76,6 +76,10 @@ const colorMap = [
     {
         type: 'danger',
         classes: 'bg-red-500 text-white dark:text-red-800 border-red-500 hover:bg-transparent hover:text-red-500 disabled:bg-red-500/50 disabled:border-red-500/0 disabled:hover:text-white'
+    },
+    {
+        type: 'neutral',
+        classes: 'bg-gray-200 text-gray-400 dark:text-gray-200 border-gray-200 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white'
     }
 ]
 

@@ -21,12 +21,12 @@
                     cy="12"
                     r="10"
                     stroke="currentColor"
-                    stroke-width="4"
+                    stroke-width="2"
                 ></circle>
                 <path
                     class="opacity-75"
                     fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    d="M3.8,19.3l1.5-1.3c-1.4-1.6-2.3-3.7-2.3-5.9C3,7,7,3,12,3V1C5.9,1,1,5.9,1,12s1,5.3,2.8,7.3Z"
                 ></path>
             </svg>
             <slot />

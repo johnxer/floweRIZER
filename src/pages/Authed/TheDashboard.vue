@@ -7,10 +7,10 @@
             name="fade"
             mode="out-in"
         >
-                <base-loader 
-                    v-if="isPending"
-                    class="static"
-                />
+            <base-loader
+                v-if="isPending"
+                class="static"
+            />
             <div
                 v-else-if="rooms"
                 class="grid lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-8"

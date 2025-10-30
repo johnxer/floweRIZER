@@ -15,9 +15,7 @@
                             v-if="isPending"
                             class="animate-pulse bg-gray-200 dark:bg-gray-700 w-full h-full absolute flex items-center justify-center"
                         >
-                            <base-loader 
-                                position-type="absolute"
-                            />
+                            <base-loader position-type="absolute" />
                         </div>
                         <label
                             v-else
@@ -85,6 +83,7 @@
                                 id="user-name"
                                 placeholder="Enter user name..."
                                 class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 dark:border-gray-500"
+                                v-model="form.userName"
                             >
                         </base-input-wrapper-authed>
                         <base-input-wrapper-authed
@@ -101,7 +100,7 @@
                                 v-model="emailValue"
                             >
                         </base-input-wrapper-authed>
-                        <base-input-wrapper-authed
+                        <!-- <base-input-wrapper-authed
                             field-label="Theme colour"
                             field-id="theme-color"
                         >
@@ -110,11 +109,12 @@
                                     type="color"
                                     id="theme-color"
                                     class="focus:outline-0 border-0 p-0 absolute inset-0 w-full h-full cursor-pointer"
+                                    v-model="form.themeColor"
                                 >
                             </div>
-                        </base-input-wrapper-authed>
+                        </base-input-wrapper-authed> -->
                     </div>
-                    
+
                     <base-button
                         class="mt-8"
                         btn-style="notRounded"
@@ -123,7 +123,7 @@
                         Save
                     </base-button>
 
-                    <hr class="border-gray-300 dark:border-gray-800 my-6" />
+                    <hr class="border-gray-200 dark:border-gray-800 my-6" />
                     <base-button
                         btn-style="notRounded"
                         btn-size="base"
@@ -139,10 +139,10 @@
             :modal-toggle="isModalOpen"
             @close-modal="toggleModal"
         >
-            <div>
+            <confirm-delete-account-content 
+                @close-modal="toggleModal"
+            />
 
-                </div>
-            
         </base-modal>
     </div>
 </template>
@@ -154,6 +154,8 @@ import BaseButton from '../../components/Base/BaseButton.vue';
 import BaseFormMessageBox from '../../components/Base/BaseFormMessageBox.vue';
 import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
 import BaseLoader from '../../components/Base/BaseLoader.vue';
+
+import ConfirmDeleteAccountContent from '../../components/Base/ConfirmDeleteAccountContent.vue';
 
 import { computed, ref } from 'vue';
 import { useAuthStore } from '../../stores/useAuthStore';
@@ -185,6 +187,7 @@ const emailValue = user.value?.email;
 
 const form = ref({
     displayName: user.value.displayName || '',
+    // themeColor: '#99c23b'
 })
 
 const errorUpdateImage = ref(null)
@@ -262,6 +265,12 @@ const toggleModal = (state) => {
         isModalOpen.value = !isModalOpen.value
     }
 }
+
+
+
+
+
+
 
 </script>
 

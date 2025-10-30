@@ -45,6 +45,7 @@
     --color-avocado-600: oklch(0.53 0.12 118.34);
 
     --color-primary: oklch(0.7589 0.1655 124.95);
+    /* --color-primary: var(--primary-color-user-500); */
 
     --color-primary-100: oklch(0.96 0.04 124.95);
     --color-primary-200: oklch(0.88 0.09 124.95);

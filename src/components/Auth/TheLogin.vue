@@ -7,9 +7,10 @@
             name="fade"
             mode="out-in"
         >
-            <div v-if="isPending">
-                Loading...
-            </div>
+            <base-loader
+                v-if="isPending"
+                class="static"
+            />
 
             <div v-else>
                 <transition
@@ -62,6 +63,7 @@
 import BaseButton from '../Base/BaseButton.vue';
 import BaseFormMessageBox from '../Base/BaseFormMessageBox.vue';
 import BaseInputWrapper from '../Base/BaseInputWrapper.vue';
+import BaseLoader from '../Base/BaseLoader.vue';
 
 
 import { ref } from 'vue';
