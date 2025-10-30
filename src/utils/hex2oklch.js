@@ -65,5 +65,3 @@ export const generateOklchShades = hex => {
     }
     return shades
 }
-
-// console.log(hexToOklch('#ff0000')); 
