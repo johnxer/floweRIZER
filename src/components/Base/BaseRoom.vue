@@ -29,7 +29,7 @@
         <div
             class="min-h-[120px] lg:min-h-[200px] w-full rounded-xl relative p-2"
             :class="[
-                plants?.length || isPending ? 'bg-gray-50' : 'flex flex-col items-center justify-center border border-gray-200 dark:border-gray-800',
+                plants?.length || isPending ? 'bg-gray-50 dark:bg-gray-900' : 'flex flex-col items-center justify-center border border-gray-200 dark:border-gray-800',
 
             ]"
         >

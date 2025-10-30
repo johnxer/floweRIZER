@@ -1,7 +1,7 @@
 <template>
-    <div class="h-[200px] w-[200px] rounded-full border border-primary-200/50 bg-white dark:bg-gray-900 dark:border-0 mx-auto overflow-hidden relative mb-6 flex items-center justify-center inset-shadow-sm inset-shadow-primary-300/25 dark:inset-shadow-none">
+    <div class="size-[200px] rounded-full border border-primary-200/50 bg-white dark:bg-gray-900 dark:border-0 mx-auto overflow-hidden relative mb-6 flex items-center justify-center inset-shadow-sm inset-shadow-primary-300/25 dark:inset-shadow-none">
 
-        <h1 class="font-roboto text-2xl font-bold flex flex-col items-center absolute h-full w-full inset-0 justify-center">
+        <h1 class="font-roboto text-2xl font-bold flex flex-col items-center absolute size-full inset-0 justify-center">
             <span class="noto-color-emoji-regular text-7xl mb-4">
                 🌱
             </span>

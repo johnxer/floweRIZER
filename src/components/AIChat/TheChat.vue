@@ -8,7 +8,7 @@
         <transition name="fade" mode="out-in">
             <div
                 v-if="isChatShown"
-                class="fixed bottom-[176px] md:bottom-22 right-6 w-84 h-120 bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-100 dark:border-gray-950"
+                class="fixed bottom-[146px] md:bottom-22 right-6 w-84 h-120 bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-100 dark:border-gray-950 z-1"
             >
                 <chat-window-wrapper />
             </div>

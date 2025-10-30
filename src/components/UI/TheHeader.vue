@@ -1,5 +1,5 @@
 <template>
-    <header class="min-h-[60px] px-4 md:px-6 sticky top-0 z-1 bg-white shadow-lg flex items-center dark:bg-gray-950 dark:border-b border-gray-800 justify-between">
+    <header class="min-h-[60px] px-4 md:px-6 sticky top-0 z-1 bg-white shadow-lg flex items-center dark:bg-gray-900 dark:border-b border-gray-800 justify-between">
         <router-link :to="{ name: 'TheDashboard' }">
             <h1 class="font-roboto text-2xl font-bold text-primary flex gap-3">
                 <span class="noto-color-emoji-regular">
@@ -78,7 +78,7 @@
                     >
                         <img
                             :src="user?.photoURL"
-                            class="w-[30px] h-[30px] rounded-xl object-cover"
+                            class="size-[30px] rounded-lg object-cover"
                         />
                         <span class="text-sm">{{ user?.displayName || 'Not set yet' }}</span>
                         <span class="material-symbols-outlined text-2xl">

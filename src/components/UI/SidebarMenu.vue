@@ -1,6 +1,6 @@
 <template>
     <div
-        class="fixed w-full left-0 md:left-auto md:w-[300px] bottom-0 md:top-[60px] bg-white px-4 py-2 md:px-8 md:pb-8 md:pt-12 transition-all duration-600 ease-in-out shadow-menu"
+        class="fixed w-full left-0 md:left-auto md:w-[300px] bottom-0 md:top-[60px] bg-white px-4 py-1 md:px-8 md:pb-8 md:pt-12 transition-all duration-600 ease-in-out shadow-menu dark:bg-gray-900"
         :class="isOpen ? 'md:right-0 md:shadow-2xl' : 'md:-right-[300px] md:shadow-none'"
     >
         <button

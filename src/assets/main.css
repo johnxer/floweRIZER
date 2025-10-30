@@ -122,7 +122,22 @@
     @apply dark:text-white/75 dark:bg-black text-xs/5;
 }
 
-
 .is-active {
-    color: var(--color-primary)
+    color: var(--color-primary);
+}
+
+.modal-backdrop {
+    @apply bg-gray-900/75;
+
+    position: fixed;
+    top: 0;
+    inset-inline-end: 0;
+    bottom: 0;
+    inset-inline-start: 0;
+    z-index: 1040;
+    backdrop-filter: blur(5px);
+}
+
+.modal-backdrop.fade {
+    opacity: 0;
 }

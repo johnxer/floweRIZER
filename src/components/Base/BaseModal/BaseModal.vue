@@ -20,7 +20,7 @@
                     <div class="fixed inset-0 bg-gray-500/75 transition-opacity dark:bg-gray-900/50" />
                 </TransitionChild>
 
-                <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                <div class="fixed inset-0 z-10 w-screen overflow-y-auto modal-backdrop">
                     <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                         <TransitionChild
                             as="template"
@@ -34,7 +34,7 @@
                             <DialogPanel class="w-full max-w-lg sm:my-8 py-8 relative">
                                 <button
                                     type="button"
-                                    class="absolute top-0 text-2xl text-white right-0 cursor-pointer hover:opacity-50 transiton-opacity duration-600"
+                                    class="absolute top-0 text-3xl text-white dark:text-white/50 right-0 cursor-pointer hover:opacity-50 transiton-opacity duration-600"
                                     @click="closeModalHandle"
                                     ref="cancelButtonRef"
                                 >
@@ -46,9 +46,6 @@
                                     <div class="bg-white dark:bg-gray-800">
                                         <slot />
                                     </div>
-                                    <!-- <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 dark:bg-gray-700/25">
-                                        <slot name="actions"/>
-                                    </div> -->
                                 </div>
                             </DialogPanel>
                         </TransitionChild>

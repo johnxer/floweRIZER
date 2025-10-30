@@ -71,11 +71,11 @@ const styleMap = [
 const colorMap = [
     {
         type: 'base',
-        classes: 'bg-primary text-white dark:text-primary-800 border-primary hover:bg-transparent hover:text-primary disabled:bg-primary/50 disabled:border-primary/0 disabled:hover:text-white'
+        classes: 'bg-primary text-white dark:bg-primary-900 dark:text-primary-600 border-primary dark:border-primary-900 hover:bg-transparent hover:text-primary disabled:bg-primary/50 disabled:border-primary/0 disabled:hover:text-white'
     },
     {
         type: 'danger',
-        classes: 'bg-red-500 text-white dark:text-red-800 border-red-500 hover:bg-transparent hover:text-red-500 disabled:bg-red-500/50 disabled:border-red-500/0 disabled:hover:text-white'
+        classes: 'bg-red-500 text-white dark:bg-red-900 dark:text-red-600 border-red-500 dark:border-red-900 hover:bg-transparent hover:text-red-500 disabled:bg-red-500/50 disabled:border-red-500/0 disabled:hover:text-white'
     },
     {
         type: 'neutral',
