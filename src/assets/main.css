@@ -9,9 +9,6 @@
 }
 
 @import 'tailwindcss';
-/* @plugin "@tailwindcss/forms"; */
-
-
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined';
     font-weight: normal;
@@ -44,30 +41,29 @@
     --color-avocado-500: oklch(0.84 0.18 117.33);
     --color-avocado-600: oklch(0.53 0.12 118.34);
 
-    --color-primary: oklch(0.7589 0.1655 124.95);
-    /* --color-primary: var(--primary-color-user-500); */
+    /* --color-primary: oklch(0.7589 0.1655 124.95); */
+    --color-primary: var(--primary-color-user-500);
 
-    --color-primary-100: oklch(0.96 0.04 124.95);
-    --color-primary-200: oklch(0.88 0.09 124.95);
-    --color-primary-300: oklch(0.81 0.12 124.95);
-    --color-primary-400: oklch(0.77 0.15 124.95);
+    --color-primary-100: var(--primary-color-user-100);
+    --color-primary-200: var(--primary-color-user-200);
+    --color-primary-300: var(--primary-color-user-300);
+    --color-primary-400: var(--primary-color-user-400);
     --color-primary-500: var(--color-primary);
-    --color-primary-600: oklch(0.65 0.17 124.95);
-    --color-primary-700: oklch(0.54 0.16 124.95);
-    --color-primary-800: oklch(0.44 0.14 124.95);
-    --color-primary-900: oklch(0.34 0.1 124.95);
+    --color-primary-600: var(--primary-color-user-600);
+    --color-primary-700: var(--primary-color-user-700);
+    --color-primary-800: var(--primary-color-user-800);
+    --color-primary-900: var(--primary-color-user-900);
+
     /*--ease-fluid: cubic-bezier(0.3, 0, 0, 1);
-  --ease-snappy: cubic-bezier(0.2, 0, 0, 1); 
-  */
+    --ease-snappy: cubic-bezier(0.2, 0, 0, 1); 
+    */
 
     /* for custom font, that generates class "font-nunito" */
     --font-nunito: 'Nunito', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
     --font-roboto: 'Roboto', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
 
-
-    --text-2xs: 0.625rem; 
-    --text-3xs: 0.5rem; 
-
+    --text-2xs: 0.625rem;
+    --text-3xs: 0.5rem;
 }
 
 @layer base {
@@ -116,11 +112,10 @@
     }
 }
 
-
 .v-popper--theme-tooltip {
-    @apply text-sm max-w-[400px]
+    @apply text-sm max-w-[400px];
 }
 
 .v-popper--theme-tooltip .v-popper__inner {
-    @apply dark:text-white/75 dark:bg-black text-xs/5
+    @apply dark:text-white/75 dark:bg-black text-xs/5;
 }
