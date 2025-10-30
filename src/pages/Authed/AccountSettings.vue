@@ -69,79 +69,92 @@
                 </transition>
             </div>
             <div>
-                <form
-                    @submit.prevent=""
-                    novalidate
-                >
-                    <div class="space-y-4">
-                        <base-input-wrapper-authed
-                            field-label="Your username"
-                            field-id="user-name"
-                        >
-                            <input
-                                type="text"
-                                id="user-name"
-                                placeholder="Enter user name..."
-                                class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 dark:border-gray-500"
-                                v-model="form.userName"
+                <div class="relative">
+                    <transition
+                        name="fade"
+                        mode="out-in"
+                    >
+                        <base-loader
+                            v-if="isPendingProfileUpdate"
+                            position-type="absolute"
+                            class="bg-white/80 z-1"
+                        />
+                    </transition>
+                    <form
+                        @submit.prevent="submitForm"
+                        novalidate
+                    >
+                        <div class="space-y-4">
+                            <base-input-wrapper-authed
+                                field-label="Your username"
+                                field-id="user-name"
                             >
-                        </base-input-wrapper-authed>
-                        <base-input-wrapper-authed
-                            field-label="Your email"
-                            field-label-extra="Cannot be changed"
-                            field-id="email"
-                        >
-                            <input
-                                type="email"
-                                id="email"
-                                placeholder="Enter email..."
-                                class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full read-only:cursor-not-allowed focus:outline-0 read-only:opacity-50 text-gray-500 dark:text-white/75 dark:border-gray-500"
-                                readonly
-                                v-model="emailValue"
-                            >
-                        </base-input-wrapper-authed>
-                        <!-- <base-input-wrapper-authed
-                            field-label="Theme colour"
-                            field-id="theme-color"
-                        >
-                            <div class="rounded-lg overflow-hidden w-[30px] h-[30px] relative border-2 border-gray-300">
                                 <input
-                                    type="color"
-                                    id="theme-color"
-                                    class="focus:outline-0 border-0 p-0 absolute inset-0 w-full h-full cursor-pointer"
-                                    v-model="form.themeColor"
+                                    type="text"
+                                    id="user-name"
+                                    placeholder="Enter user name..."
+                                    class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 dark:border-gray-500"
+                                    v-model="form.userName"
                                 >
-                            </div>
-                        </base-input-wrapper-authed> -->
-                    </div>
+                            </base-input-wrapper-authed>
+                            <base-input-wrapper-authed
+                                field-label="Your email"
+                                field-label-extra="Cannot be changed"
+                                field-id="email"
+                            >
+                                <input
+                                    type="email"
+                                    id="email"
+                                    placeholder="Enter email..."
+                                    class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full read-only:cursor-not-allowed focus:outline-0 read-only:opacity-50 text-gray-500 dark:text-white/75 dark:border-gray-500"
+                                    readonly
+                                    v-model="emailValue"
+                                >
+                            </base-input-wrapper-authed>
+                            <base-input-wrapper-authed
+                                field-label="Theme colour"
+                                field-id="theme-color"
+                            >
+                                <div class="rounded-lg overflow-hidden w-[30px] h-[30px] relative border-2 border-gray-300">
+                                    <input
+                                        type="color"
+                                        id="theme-color"
+                                        class="focus:outline-0 border-0 p-0 absolute inset-0 w-full h-full cursor-pointer"
+                                        v-model="form.themeColor"
+                                    >
+                                </div>
+                            </base-input-wrapper-authed>
+                        </div>
 
-                    <base-button
-                        class="mt-8"
-                        btn-style="notRounded"
-                        btn-size="base"
-                    >
-                        Save
-                    </base-button>
+                        <base-button
+                            class="mt-8"
+                            btn-style="notRounded"
+                            btn-size="base"
+                        >
+                            Save
+                        </base-button>
 
-                    <hr class="border-gray-200 dark:border-gray-800 my-6" />
-                    <base-button
-                        btn-style="notRounded"
-                        btn-size="base"
-                        btn-color="danger"
-                        @click="toggleModal"
-                    >
-                        Delete account
-                    </base-button>
-                </form>
+                    </form>
+                </div>
+
+                <hr class="border-gray-200 dark:border-gray-800 my-6" />
+                <base-button
+                    btn-style="notRounded"
+                    btn-size="base"
+                    btn-color="danger"
+                    :disabled="isPendingProfileUpdate"
+                    @click="toggleModal"
+                >
+                    Delete account
+                </base-button>
+
             </div>
         </div>
         <base-modal
             :modal-toggle="isModalOpen"
             @close-modal="toggleModal"
         >
-            <confirm-delete-account-content 
-                @close-modal="toggleModal"
-            />
+            <confirm-delete-account-content @close-modal="toggleModal" />
 
         </base-modal>
     </div>
@@ -149,26 +162,33 @@
 
 <script setup>
 
-import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 import BaseButton from '../../components/Base/BaseButton.vue';
 import BaseFormMessageBox from '../../components/Base/BaseFormMessageBox.vue';
-import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
 import BaseLoader from '../../components/Base/BaseLoader.vue';
+import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
+import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 
 import ConfirmDeleteAccountContent from '../../components/Base/ConfirmDeleteAccountContent.vue';
 
-import { computed, ref } from 'vue';
-import { useAuthStore } from '../../stores/useAuthStore';
 import { storeToRefs } from 'pinia';
-import { useStorage } from '../../composables/useStorage';
-import { updateProfile } from 'firebase/auth';
-import { auth, db } from '../../firebase/config';
+import { computed, ref } from 'vue';
 import BaseInputWrapperAuthed from '../../components/Base/BaseInputWrapperAuthed.vue';
-import { doc, updateDoc } from 'firebase/firestore';
+import { useStorage } from '../../composables/useStorage';
+import { auth } from '../../firebase/config';
+import { useAuthStore } from '../../stores/useAuthStore';
+
+import { updateProfile } from 'firebase/auth';
+import { useUpdateData } from '../../composables/useUpdateData';
 
 const {
-    user
+    user,
+    error: errorUserStore,
+    isPending: isPendingUserStore
 } = storeToRefs(useAuthStore())
+
+const {
+    updateProfileData
+} = useAuthStore()
 
 const {
     error: errorUploadImage,
@@ -179,6 +199,12 @@ const {
     deleteImageByUrl
 } = useStorage()
 
+const {
+    error: errorProfileUpdate,
+    isPending: isPendingProfileUpdate,
+    updateUserData,
+} = useUpdateData()
+
 const userAvatarURL = computed(() => {
     return user.value?.photoURL || 'https://via.placeholder.com/200?text=No+Avatar'
 })
@@ -186,8 +212,8 @@ const userAvatarURL = computed(() => {
 const emailValue = user.value?.email;
 
 const form = ref({
-    displayName: user.value.displayName || '',
-    // themeColor: '#99c23b'
+    userName: user.value.displayName || '',
+    themeColor: '#99c23b'
 })
 
 const errorUpdateImage = ref(null)
@@ -205,12 +231,7 @@ const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
 const handleFile = async (e) => {
     const selectedFile = e.target.files[0];
 
-    console.log(selectedFile)
-
-    if (!selectedFile || !allowedFormats.includes(selectedFile.type)) {
-        console.log(`${selectedFile.type} is not allowed`)
-        return
-    }
+    if (!selectedFile || !allowedFormats.includes(selectedFile.type)) return
 
     const oldPhotoUrl = user.value?.photoURL || null
 
@@ -221,6 +242,10 @@ const handleFile = async (e) => {
     isPendingUpdateImage.value = true;
     errorUpdateImage.value = null;
 
+    const data = {
+        photoURL: url.value,
+    }
+
     try {
         await updateProfile(auth.currentUser, {
             photoURL: url.value,
@@ -228,11 +253,7 @@ const handleFile = async (e) => {
 
         const uid = user.value?.uid || auth.currentUser.uid
 
-        const userReference = doc(db, 'users', uid);
-
-        await updateDoc(userReference, {
-            photoUrl: url.value,
-        });
+        await updateUserData('users', uid, data)
 
         user.value = {
             ...user.value,
@@ -242,7 +263,6 @@ const handleFile = async (e) => {
         if (oldPhotoUrl) {
             await deleteImageByUrl(oldPhotoUrl)
         }
-
 
     } catch (err) {
         errorUpdateImage.value = err.message
@@ -267,9 +287,51 @@ const toggleModal = (state) => {
 }
 
 
+const formErrors = ref({})
+
+const validateForm = () => {
+    formErrors.value = {}
+
+    if (!form.value.userName) {
+        formErrors.value.userName = 'Username cannot be empty'
+    }
+
+    return Object.keys(formErrors.value).length === 0
+}
+
+// const clearForm = () => {
+
+// }
+
+const submitForm = async () => {
+    if (!validateForm()) return
+
+    const dataProfile = {
+        displayName: form.value.userName,
+
+    }
+
+    const data = {
+        customColor: form.value.themeColor,
+        ...dataProfile
+    }
+
+    console.log(data)
+    console.log(dataProfile)
+    console.log(user.value.uid)
+
+    const successProfile = await updateProfileData(dataProfile)
+    const successUserDb = await updateUserData('users', user.value.uid, data)
 
 
+    if (successProfile && successUserDb) {
 
+        console.log('success')
+        // clearForm()
+    }
+
+
+}
 
 
 </script>

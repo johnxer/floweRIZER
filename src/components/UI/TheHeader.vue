@@ -68,7 +68,7 @@
                             :src="user?.photoURL"
                             class="w-[30px] h-[30px] rounded-xl object-cover"
                         />
-                        <span class="text-sm">{{ user?.displayName || 'not set yet' }}</span>
+                        <span class="text-sm">{{ user?.displayName || 'Not set yet' }}</span>
                         <span class="material-symbols-outlined text-2xl">
                             menu
                         </span>

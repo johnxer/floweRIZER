@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 import { auth, db } from '../firebase/config';
 
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 
@@ -73,6 +73,20 @@ export const useAuthStore = defineStore('useAuthStore', () => {
         }
     };
 
+    const updateProfileData = async (data) => {
+        try {
+
+            await updateProfile(auth.currentUser, data);
+
+            return true;
+        } catch (err) {
+            error.value = err.message;
+            return false;
+        } finally {
+            isPending.value = false;
+        }
+    };
+
     return {
         user,
         // isAuthReady,
@@ -80,5 +94,9 @@ export const useAuthStore = defineStore('useAuthStore', () => {
         error,
         isPending,
         logOutUser,
+        updateProfileData
     };
+
+    
+
 });

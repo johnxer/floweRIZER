@@ -69,7 +69,7 @@ export const usePwReset = () => {
         try {
             const response = await sendPasswordResetEmail(auth, email);
 
-            console.log(response)
+            console.log(response);
             return true;
         } catch (err) {
             if (err.code === 'auth/user-not-found') {
