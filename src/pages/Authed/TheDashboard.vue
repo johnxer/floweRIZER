@@ -16,9 +16,10 @@
                 class="grid lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-8"
             >
                 <base-room
-                    v-for="room in rooms"
+                    v-for="(room, index) in rooms"
                     :key="room.id"
                     :room="room"
+                    :is-first="index === 0"
                 />
                 <div class="self-end">
                     <div class="min-h-[60px] lg:min-h-[200px] w-full relative">

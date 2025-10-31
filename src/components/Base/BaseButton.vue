@@ -51,7 +51,8 @@ const sizeMap = [
     {
         type: 'sm',
         classes: 'px-2 py-1 text-sm'
-    },{
+    },
+    {
         type: 'custom',
         classes: ''
     }
@@ -65,6 +66,10 @@ const styleMap = [
     {
         type: 'notRounded',
         classes: 'rounded-xl'
+    },
+    {
+        type: 'notRoundedMd',
+        classes: 'rounded-md'
     }
 ]
 
@@ -79,7 +84,7 @@ const colorMap = [
     },
     {
         type: 'neutral',
-        classes: 'bg-gray-200 text-gray-400 dark:text-gray-200 border-gray-200 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white'
+        classes: 'bg-gray-200 text-gray-500 dark:text-gray-200 border-gray-200 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white'
     }
 ]
 

@@ -46,6 +46,9 @@ export const useGetData = (dataType) => {
         );
     };
 
+
+
+
     onMounted(() => {
         if (user.value?.uid) startListener();
     });
@@ -61,6 +64,7 @@ export const useGetData = (dataType) => {
         unsubscribe();
     });
 
+    
     return {
         error,
         isPending,

@@ -48,7 +48,7 @@
                                     <div class="text-end">
                                         <button
                                             type="button"
-                                            class="mt-2 text-primary flex-inline align-top cursor-pointer hover:underline"
+                                            class="mt-2 text-primary inline-flex align-top cursor-pointer hover:underline"
                                             @click="handleDismissNotification(notification.id)"
                                         >
                                             Dismiss

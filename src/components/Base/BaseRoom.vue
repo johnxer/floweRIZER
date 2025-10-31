@@ -1,29 +1,85 @@
 <template>
     <div class="group/card">
-        <div class="text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 lg:justify-center">
+        <div class="text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between">
             <router-link
                 :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
-                class="hover:text-primary-600 transition-colors duration-600 order-2 flex items-start gap-2"
+                class="hover:text-primary-600 transition-colors duration-600 flex items-start gap-2"
             >
+                <span class="material-symbols-outlined text-3xl relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600">
+                    {{ room.icon }}
+                </span>
                 {{ room.name }}
-                <span class="material-symbols-outlined text-3xl order-3 lg:opacity-0 group-hover:opacity-100 group-hover:translate-x-2 text-primary-600/25 transition-all duration-600">
+                <span class="material-symbols-outlined text-3xl lg:opacity-0 group-hover:opacity-100 group-hover:translate-x-2 text-primary-600/25 transition-all duration-600">
                     arrow_right_alt
                 </span>
             </router-link>
-            <span
+            <!-- <span
                 class="material-symbols-outlined text-3xl relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 cursor-help relative"
                 v-tooltip="{
                     content: room.desc,
                     disabled: !room.desc,
+                    triggers: ['hover', 'touch']
                 }"
             >
                 {{ room.icon }}
-                <div class="size-3 absolute top-0 right-0 bg-gray-600 opacity-0 group-hover:opacity-100 text-white rounded-full flex items-center justify-center transition-opacity duration-600" >
+                <div class="size-3 absolute top-0 right-0 bg-gray-600 md:opacity-0 group-hover:opacity-100 text-white rounded-full flex items-center justify-center transition-opacity duration-600">
                     <span class="material-symbols-outlined text-3xs leading-none align-top">
                         question_mark
                     </span>
                 </div>
-            </span>
+            </span> -->
+            <v-dropdown
+                trap-focus
+                popper-class="md:w-[400px] px-4"
+                @show="onShow"
+                @hide="onHide"
+            >
+                <button
+                    type="button"
+                    class="md:opacity-0 group-hover/card:opacity-100 text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
+                    :class="{'md:opacity-100 text-red-500 dark:text-red-900' : isOpen}"
+                >
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+                </button>
+                <template #popper>
+                    <div class="p-4">
+                        <div class="text-lg mb-2 text-gray-700">
+                            <strong>
+                                Delete this room?
+                            </strong>
+                        </div>
+                        <div class="text-gray-600 text-sm">
+                            The plants linked to it will no longer be associated with any room.
+                        </div>
+                        <div class="mt-4 flex justify-between">
+                            <base-button
+                                btn-style="notRoundedMd"
+                                btn-size="sm"
+                                btn-color="neutral"
+                                :btn-full-width="false"
+                                class="min-w-1/3"
+                                v-close-popper="true"
+                            >
+                                Keep This Room
+                            </base-button>
+                            <base-button
+                                btn-style="notRoundedMd"
+                                btn-size="sm"
+                                btn-color="danger"
+                                :btn-full-width="false"
+                                class="min-w-1/2"
+                                v-close-popper="true"
+                                @click="deleteRoom"
+                            >
+                                Yes, Delete This Room
+                            </base-button>
+
+                        </div>
+                    </div>
+                </template>
+            </v-dropdown>
         </div>
 
         <div
@@ -44,13 +100,13 @@
                 name="fade"
                 mode="out-in"
             >
-                <base-loader 
+                <base-loader
                     v-if="isPending"
                     position-type="absolute"
                 />
-                <div 
-                v-else-if="plants"
-                class="w-full"
+                <div
+                    v-else-if="plants"
+                    class="w-full"
                 >
                     <transition-group
                         v-if="plants.length"
@@ -91,7 +147,10 @@
                                 </span><span class="w-auto md:w-0 group-hover/card:w-[42px] overflow-hidden transition-all duration-400 text-sm flex">Plant</span>
 
                             </base-button>
-                            <div class="text-xs text-gray-400 dark:text-gray-600">
+                            <div
+                                v-if="isFirst"
+                                class="text-xs text-gray-400 dark:text-gray-600"
+                            >
                                 or drag one from another room
                             </div>
                         </div>
@@ -128,6 +187,10 @@ const props = defineProps({
     room: {
         type: Object,
         required: true
+    },
+    isFirst: {
+        type: Boolean,
+        default: false
     }
 })
 
@@ -152,8 +215,10 @@ const toggleModal = (state) => {
     }
 }
 
+const isOpen = ref(false)
 
-
+const onShow = () => (isOpen.value = true)
+const onHide = () => (isOpen.value = false)
 
 </script>
 
