@@ -30,7 +30,7 @@
                                 type="file"
                                 id="user-image"
                                 name="user-image"
-                                accept="image/png, image/jpeg"
+                                accept="image/png, image/jpeg, image/jpg, image/gif"
                                 class="opacity-0"
                                 @change="handleFile"
                             />

@@ -1,6 +1,8 @@
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage"
+import { v4 as uuidv4 } from 'uuid'
 import { ref } from "vue"
 import { storage } from "../firebase/config"
+
 
 
 export const useStorage = () => {
@@ -13,11 +15,21 @@ export const useStorage = () => {
     const isPending = ref(false)
 
 
-    const uploadImage = async (folder, user, file) => {
+    const uploadImage = async (folder, user, file, subFolder = '') => {
         error.value = null;
         isPending.value = true;
 
-        filePath.value = `${folder}/${user.uid}/${file.name}`
+
+        const timeStamp = Date.now()
+
+        const uniqueFileName = `${timeStamp}_${uuidv4()}_${file.name}`
+
+        const subFolderPath = subFolder ? `${subFolder}/` : ''
+
+        const fullPath = subFolderPath + uniqueFileName
+
+        filePath.value = `${folder}/${user.uid}/${fullPath}`
+        
 
         const fileRef = storageRef(storage, filePath.value)
 

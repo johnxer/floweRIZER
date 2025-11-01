@@ -14,18 +14,18 @@
                     />
                 </span>
             </base-page-title>
-            <div class="lg:max-w-[600px] md:max-w-[400px] max-w-full mx-auto">
+            <div class="lg:max-w-[500px] md:max-w-[400px] max-w-full mx-auto">
                 <div class="text-gray-400 text-sm mb-1">
                     Created on {{ formattedDate }}
                 </div>
-                <div class="mb-8 bg-gray-100 rounded-xl p-4 text-gray-500">
+                <div class="mb-8 bg-gray-100 dark:bg-gray-900 rounded-xl p-4 text-gray-500 dark:text-gray-400">
                     <div>
                         {{ detailsRoom.desc }}
                     </div>
                 </div>
                 <div class="">
                     <div>
-                        <div class="bg-gray-100 rounded-xl p-4 text-gray-500 group/card">
+                        <div class="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 text-gray-500 hover:rext-gray-400 group/card">
                             <transition-group
                                 v-if="plants.length"
                                 name="fade"
@@ -36,6 +36,7 @@
                                     v-for="plant in plants"
                                     :key="plant.id"
                                     :plant="plant"
+                                    :show-more-details="true"
                                 />
                             </transition-group>
                             <div class="text-center">

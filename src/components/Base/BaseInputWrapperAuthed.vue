@@ -35,7 +35,8 @@ defineProps({
     },
     fieldLabel: {
         type: String,
-        required: true,
+        required: false,
+        default: null
     },
     fieldLabelExtra: {
         type: String,
