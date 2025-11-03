@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <base-container>
         <base-page-title>
             Dashboard
         </base-page-title>
@@ -25,7 +25,7 @@
                     <div class="min-h-[60px] lg:min-h-[200px] w-full relative">
                         <button
                             type="button"
-                            class="absolute inset-0 w-full h-full cursor-pointer font-bold text-xl lg:text-2xl border-2 border-dashed border-primary-500 text-primary-500 rounded-xl hover:border-primary-700 hover:text-primary-700 transition-all duration-600 flex items-center justify-center"
+                            class="absolute inset-0 w-full h-full cursor-pointer font-bold text-xl lg:text-2xl border-2 border-dashed border-primary-500 dark:border-primary-700 text-primary-500 dark:text-primary-700 rounded-xl hover:border-primary-700 dark:hover:border-primary-800 hover:text-primary-700 dark:hover:text-primary-800 transition-all duration-600 flex items-center justify-center"
                             @click="toggleModal"
                         >
                             Add new room
@@ -40,7 +40,7 @@
         >
             <add-new-room-content @close-modal="toggleModal" />
         </base-modal>
-    </div>
+    </base-container>
 </template>
 
 <script setup>
@@ -48,6 +48,7 @@ import { ref } from 'vue';
 
 import AddNewRoomContent from '../../components/AddNewRoomContent.vue';
 
+import BaseContainer from '../../components/Base/BaseContainer.vue';
 import BaseLoader from '../../components/Base/BaseLoader.vue';
 import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
 import BasePageTitle from '../../components/Base/BasePageTitle.vue';

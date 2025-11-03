@@ -1,7 +1,7 @@
 <template>
-    <header class="min-h-[60px] px-4 md:px-6 sticky top-0 z-1 bg-white shadow-lg flex items-center dark:bg-gray-900 dark:border-b border-gray-800 justify-between">
+    <header class="min-h-[60px] px-4 md:px-6 sticky top-0 z-2 bg-white shadow-lg flex items-center dark:bg-gray-900 dark:border-b border-gray-800 justify-between">
         <router-link :to="{ name: 'TheDashboard' }">
-            <h1 class="font-roboto text-2xl font-bold text-primary flex gap-3">
+            <h1 class="font-roboto text-xl md:text-2xl font-bold text-primary flex gap-3">
                 <span class="noto-color-emoji-regular">
                     🌱
                 </span>
@@ -70,17 +70,21 @@
                     </button>
 
                 </div>
-
+                <!-- <router-link
+                    class="relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center flex md:hidden"
+                    :to="{ name: 'Account' }"
+                >
+                    <img
+                        :src="user?.photoURL"
+                        class="size-[30px] rounded-lg object-cover"
+                    />
+                    <span class="text-sm">{{ user?.displayName || 'Not set yet' }}</span>
+                </router-link> -->
                 <div class="hidden md:flex">
                     <button
-                        class="relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center border p-2 rounded-xl border-gray-200"
+                        class="cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center p-2"
                         @click="handleSidebarMenu"
                     >
-                        <img
-                            :src="user?.photoURL"
-                            class="size-[30px] rounded-lg object-cover"
-                        />
-                        <span class="text-sm">{{ user?.displayName || 'Not set yet' }}</span>
                         <span class="material-symbols-outlined text-2xl">
                             menu
                         </span>

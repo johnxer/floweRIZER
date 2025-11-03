@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <base-container>
         <base-page-title>
             Profile
         </base-page-title>
@@ -157,12 +157,13 @@
             <confirm-delete-account-content @close-modal="toggleModal" />
 
         </base-modal>
-    </div>
+    </base-container>
 </template>
 
 <script setup>
 
 import BaseButton from '../../components/Base/BaseButton.vue';
+import BaseContainer from '../../components/Base/BaseContainer.vue';
 import BaseFormMessageBox from '../../components/Base/BaseFormMessageBox.vue';
 import BaseLoader from '../../components/Base/BaseLoader.vue';
 import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';

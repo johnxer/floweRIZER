@@ -28,58 +28,76 @@
                     </span>
                 </div>
             </span> -->
-            <v-dropdown
-                trap-focus
-                popper-class="md:w-[400px] px-4"
-                @show="onShow"
-                @hide="onHide"
-            >
+            <div class="flex gap-3">
                 <button
                     type="button"
                     class="md:opacity-0 group-hover/card:opacity-100 text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
-                    :class="{'md:opacity-100 text-red-500 dark:text-red-900' : isOpen}"
+                    v-tooltip="{
+                        content: 'Edit room',
+                        container: 'body'
+                    }"
                 >
                     <span class="material-symbols-outlined">
-                        delete
+                        edit
                     </span>
                 </button>
-                <template #popper>
-                    <div class="p-4">
-                        <div class="text-lg mb-2 text-gray-700">
-                            <strong>
-                                Delete this room?
-                            </strong>
-                        </div>
-                        <div class="text-gray-600 text-sm">
-                            The plants linked to it will no longer be associated with any room.
-                        </div>
-                        <div class="mt-4 flex justify-between">
-                            <base-button
-                                btn-style="notRoundedMd"
-                                btn-size="sm"
-                                btn-color="neutral"
-                                :btn-full-width="false"
-                                class="min-w-1/3"
-                                v-close-popper="true"
-                            >
-                                Keep This Room
-                            </base-button>
-                            <base-button
-                                btn-style="notRoundedMd"
-                                btn-size="sm"
-                                btn-color="danger"
-                                :btn-full-width="false"
-                                class="min-w-1/2"
-                                v-close-popper="true"
-                                @click="deleteRoom"
-                            >
-                                Yes, Delete This Room
-                            </base-button>
+                <v-dropdown
+                    trap-focus
+                    popper-class="md:w-[400px] px-4"
+                    @show="onShow"
+                    @hide="onHide"
+                >
+                    <button
+                        type="button"
+                        class="md:opacity-0 group-hover/card:opacity-100 text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
+                        :class="{ 'md:opacity-100 text-red-500 dark:text-red-900': isOpen }"
+                        v-tooltip="{
+                            content: 'Delete room',
+                            container: 'body'
+                        }"
+                    >
+                        <span class="material-symbols-outlined">
+                            delete
+                        </span>
+                    </button>
+                    <template #popper>
+                        <div class="p-4">
+                            <div class="text-lg mb-2 text-gray-700">
+                                <strong>
+                                    Delete this room?
+                                </strong>
+                            </div>
+                            <div class="text-gray-600 text-sm">
+                                The plants linked to it will no longer be associated with any room.
+                            </div>
+                            <div class="mt-4 flex justify-between">
+                                <base-button
+                                    btn-style="notRoundedMd"
+                                    btn-size="sm"
+                                    btn-color="neutral"
+                                    :btn-full-width="false"
+                                    class="min-w-1/3"
+                                    v-close-popper="true"
+                                >
+                                    Keep This Room
+                                </base-button>
+                                <base-button
+                                    btn-style="notRoundedMd"
+                                    btn-size="sm"
+                                    btn-color="danger"
+                                    :btn-full-width="false"
+                                    class="min-w-1/2"
+                                    v-close-popper="true"
+                                    @click="deleteRoom"
+                                >
+                                    Yes, Delete This Room
+                                </base-button>
 
+                            </div>
                         </div>
-                    </div>
-                </template>
-            </v-dropdown>
+                    </template>
+                </v-dropdown>
+            </div>
         </div>
 
         <div
@@ -90,12 +108,12 @@
             ]"
         >
             <!-- to be styled and used later -->
-            <div
+            <!-- <div
                 class="size-3 rounded-full absolute top-0 left-0"
                 :style="{ 'backgroundColor': room.color }"
             >
 
-            </div>
+            </div> -->
             <transition
                 name="fade"
                 mode="out-in"
@@ -117,11 +135,20 @@
 
 
                         <base-plant-list-item
-                            v-for="plant in plants"
+                            v-for="plant in displayedPlants"
                             :key="plant.id"
                             :plant="plant"
+                            :is-draggable="true"
                         >
                         </base-plant-list-item>
+                        <base-button
+                            btn-style="notRounded"
+                            btn-size="sm"
+                            btn-color="neutral"
+                            @click="toggleShowAll"
+                        >
+                            Show {{ displayedLabel }}
+                        </base-button>
                     </transition-group>
                     <div class="w-full">
                         <div class="text-center">
@@ -172,7 +199,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import BaseButton from './BaseButton.vue';
 import BaseLoader from './BaseLoader.vue';
@@ -194,16 +221,25 @@ const props = defineProps({
     }
 })
 
-
 const {
     error,
     isPending,
     items: plants
 } = useGetData(`rooms/${props.room.id}/plants`)
 
-console.log(props.room.id)
-console.log(`rooms/${props.room.id}/plants`)
-console.log(plants.value)
+const maxVisible = 3
+
+const showAll = ref(false)
+const buttonLabel = ref('more')
+
+const displayedPlants = computed(() => showAll.value ? plants.value : plants.value.slice(0, maxVisible))
+const displayedLabel = computed(() => showAll.value ? buttonLabel.value = 'less' : buttonLabel.value = 'more')
+
+
+const toggleShowAll = () => {
+    showAll.value = !showAll.value
+
+}
 
 const isModalOpen = ref(false)
 

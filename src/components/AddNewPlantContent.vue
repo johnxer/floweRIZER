@@ -173,7 +173,7 @@ const {
 } = useStorage()
 
 
-const error = computed(() => errorSendData.value || errorUpload.value)
+// const error = computed(() => errorSendData.value || errorUpload.value)
 const isPending = computed(() => isPendingSendData.value || isPendingUpload.value)
 
 const form = ref({
@@ -195,6 +195,8 @@ const handleFile = (e) => {
 
     selectFileName.value = form.value.file.name
 
+    if (!selectFileName.value || !allowedFormats.includes(selectFileName.value.type)) return
+
 }
 
 const validateForm = () => {
@@ -213,7 +215,7 @@ const validateForm = () => {
 
 const clearForm = () => {
     form.value.name = ''
-    form.value.imgSrc = ''
+    form.value.file = null
     form.value.desc = ''
 }
 

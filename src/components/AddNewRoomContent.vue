@@ -54,6 +54,36 @@
 
                         </base-input-wrapper-authed>
                         <base-input-wrapper-authed
+                            field-label="Image"
+                            field-id="room-image"
+                        >
+                            <div class="flex gap-2 items-center">
+                                <label
+                                    for="room-image"
+                                    class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-2 py-2 text-base rounded-xl cursor-pointer bg-gray-200 text-gray-500 dark:text-gray-200 border-gray-200 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden"
+                                >
+                                    Upload file
+                                    <input
+                                        id="room-image"
+                                        type="file"
+                                        class="hidden"
+                                        accept="image/png, image/jpeg, image/jpg, image/gif"
+                                        @change="handleFile"
+                                    >
+                                </label>
+                                <div
+                                    v-if="selectFileName"
+                                    class="text-sm text-gray-500 inline-flex align-top gap-1 items-center"
+                                >
+                                    <span class="material-symbols-outlined text-2xl">
+                                        image
+                                    </span>
+                                    {{ selectFileName }}
+
+                                </div>
+                            </div>
+                        </base-input-wrapper-authed>
+                        <!-- <base-input-wrapper-authed
                             field-label="Room colour"
                             field-id="room-color"
                         >
@@ -65,7 +95,7 @@
                                     v-model="form.color"
                                 >
                             </div>
-                        </base-input-wrapper-authed>
+                        </base-input-wrapper-authed> -->
                         <base-input-wrapper-authed
                             field-label="Description"
                             field-id="room-description"
@@ -96,8 +126,11 @@
 
 <script setup>
 
+import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useSendData } from '../composables/useSendData';
+import { useStorage } from '../composables/useStorage';
+import { useAuthStore } from '../stores/useAuthStore';
 import { useRoomStore } from '../stores/useRoomStore';
 import BaseButton from './Base/BaseButton.vue';
 import BaseInputWrapperAuthed from './Base/BaseInputWrapperAuthed.vue';
@@ -105,26 +138,54 @@ import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
 
 const {
+    user
+} = storeToRefs(useAuthStore())
+
+const {
     roomIcons: icons,
-    roomDefaultColor: color
+    // roomDefaultColor: color
 } = useRoomStore()
 
 const {
-    isPending,
-    error,
+    error: errorSendData,
+    isPending: isPendingSendData,
     sendDataRooms
 } = useSendData()
 
+const {
+    error: errorUpload,
+    url,
+    filePath,
+    isPending: isPendingUpload,
+    uploadImage,
+} = useStorage()
+
+// const error = computed(() => errorSendData.value || errorUpload.value)
+const isPending = computed(() => isPendingSendData.value || isPendingUpload.value)
 
 const form = ref({
     name: '',
     icon: '',
-    color: color,
+    file: null,
+    // color: color,
     description: ''
 })
 
 
 const formErrors = ref({})
+
+const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+
+const selectFileName = ref(null)
+
+const handleFile = (e) => {
+    form.value.file = e.target.files[0];
+
+    selectFileName.value = form.value.file.name
+
+    if (!selectFileName.value || !allowedFormats.includes(selectFileName.value.type)) return
+
+}
 
 const validateForm = () => {
     formErrors.value = {}
@@ -141,27 +202,42 @@ const validateForm = () => {
 }
 
 const clearForm = () => {
-    form.value.name = '#99c23b'
+    form.value.name = ''
     form.value.icon = ''
-    form.value.color = color
+    form.value.imgSrc = ''
+    // form.value.color = color
     form.value.desc = ''
 }
 
 const emit = defineEmits(['close-modal'])
 
+const data = ref({});
+
 const submitForm = async () => {
     if (!validateForm()) return;
 
-    const data = {
+    data.value = {
         name: form.value.name,
         icon: form.value.icon,
-        color: form.value.color,
+        // color: form.value.color,
         desc: form.value.desc,
     }
 
-    console.log(data)
+    if (form.value.file) {
+        const uploadSuccess = await uploadImage('rooms', user.value, form.value.file)
 
-    const success = await sendDataRooms(data)
+        if (uploadSuccess) {
+
+            data.value = {
+                ...data.value,
+                imgSrc: url.value,
+            }
+        }
+    }
+
+
+
+    const success = await sendDataRooms(data.value)
 
     if (success) {
         clearForm();

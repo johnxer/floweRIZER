@@ -5,13 +5,14 @@
         @toggle-sidebar="toggleSidebar"
     >
     </the-header>
-    <div 
+    <!-- <div
         class="container mt-8 mx-auto px-4 md:px-6 "
         :class="isAuthed ? 'pb-[170px] md:pb-8' : 'pb-8'"
-    >
+    > -->
         <the-logo-circle
-            v-if="!isAuthed"
+            v-else
             :project-title="projectName"
+            class="mt-8"
         />
 
         <router-view v-slot="{ Component }">
@@ -24,13 +25,11 @@
 
         </router-view>
         <the-chat v-if="isAuthed" />
-    </div>
-    <!-- :class="isSidebarOpen ? 'right-0 shadow-2xl' : '-right-[300px] shadow-none'" -->
-    <sidebar-menu 
-        v-if="isAuthed" 
+    <!-- </div> -->
+    <sidebar-menu
+        v-if="isAuthed"
         @toggle-sidebar="toggleSidebar"
         :isOpen="isSidebarOpen"
-
     />
 </template>
 
