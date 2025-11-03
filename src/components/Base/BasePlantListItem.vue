@@ -70,11 +70,11 @@
                         {{ plant.desc }}
                     </div>
                     <div>
-                        <ul class="flex items-center gap-4">
+                        <ul class="flex items-center gap-4 transition-all duration-600 md:opacity-0 group-hover:opacity-100">
                             <li>
                                 <button
                                     type="button"
-                                    class="flex text-xl text-gray-500 hover:text-primary-500 cursor-pointer transition-colors duration-600"
+                                    class="flex text-xl text-gray-500 hover:text-primary-500 cursor-pointer "
                                     v-tooltip="{
                                         content: 'Edit',
                                         container: 'body'
@@ -86,19 +86,73 @@
                                 </button>
                             </li>
                             <li>
-                                <button
+                                <v-dropdown
+                                    trap-focus
+                                    popper-class="md:w-[400px] px-4"
+                                    @show="onShow"
+                                    @hide="onHide"
+                                >
+                                    <button
+                                        type="button"
+                                        class="text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex"
+                                        :class="{ 'md:opacity-100 text-red-500 dark:text-red-900': isOpen }"
+                                        v-tooltip="{
+                                            content: 'Delete plant',
+                                            container: 'body'
+                                        }"
+                                    >
+                                        <span class="material-symbols-outlined">
+                                            delete
+                                        </span>
+                                    </button>
+                                    <template #popper>
+                                        <div class="p-4">
+                                            <div class="text-lg mb-2 text-gray-700">
+                                                <strong>
+                                                    Delete this plant?
+                                                </strong>
+                                            </div>
+                                            <div class="mt-4 flex justify-between">
+                                                <base-button
+                                                    btn-style="notRoundedMd"
+                                                    btn-size="sm"
+                                                    btn-color="neutral"
+                                                    :btn-full-width="false"
+                                                    class="min-w-1/3"
+                                                    v-close-popper="true"
+                                                >
+                                                    Keep This Plant
+                                                </base-button>
+                                                <base-button
+                                                    btn-style="notRoundedMd"
+                                                    btn-size="sm"
+                                                    btn-color="danger"
+                                                    :btn-full-width="false"
+                                                    class="min-w-1/2"
+                                                    v-close-popper="true"
+                                                    @click="deletePlant"
+                                                >
+                                                    Yes, Delete This Plant
+                                                </base-button>
+
+                                            </div>
+                                        </div>
+                                    </template>
+                                </v-dropdown>
+                                <!-- <button
                                     type="button"
                                     class="flex text-xl text-gray-500 hover:text-primary-500 cursor-pointer transition-colors duration-600"
                                     v-tooltip="{
                                         content: 'Delete',
                                         container: 'body'
                                     }"
+                                    @click=""
                                 >
                                     <span class="material-symbols-outlined">
                                         delete
                                     </span>
 
-                                </button>
+                                </button> -->
                             </li>
                         </ul>
                     </div>
@@ -114,10 +168,15 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
+import { useDeleteData } from '../../composables/useDeleteData';
+import { useAuthStore } from '../../stores/useAuthStore';
 
+import BaseButton from "../../components/Base/BaseButton.vue";
+import { useStorage } from '../../composables/useStorage';
 
-defineProps({
+const props = defineProps({
     plant: {
         type: Object,
         required: true
@@ -131,9 +190,29 @@ defineProps({
         type: Boolean,
         required: false,
         default: false,
+    },
+    roomId: {
+        type: String,
+        required: true,
     }
 })
 
+const {
+    user
+} = storeToRefs(useAuthStore())
+
+const {
+    error,
+    isPending,
+    deleteData
+} = useDeleteData()
+
+
+const {
+    error: errorUploadImage,
+    isPending: isPendingUpload,
+    deleteImageByUrl
+} = useStorage()
 
 const isWatered = ref(false)
 
@@ -142,6 +221,34 @@ const handleWatering = () => {
     isWatered.value = !isWatered.value
 }
 
+
+const deletePlant = async () => {
+    const collectionPath = `users/${user.value.uid}/rooms/${props.roomId}/plants/`
+    const documentId = props.plant.id
+
+    const documentImgSrc = props.plant.imgSrc
+
+    let successDelete = true;
+    let success = false;
+
+    if (documentImgSrc) {
+        console.log(documentImgSrc)
+        successDelete = await deleteImageByUrl(props.plant.imgSrc)
+    }
+
+    if (successDelete) {
+        console.log(collectionPath)
+        console.log(documentId)
+
+        success = await deleteData(collectionPath, documentId)
+    }
+
+}
+
+const isOpen = ref(false)
+
+const onShow = () => (isOpen.value = true)
+const onHide = () => (isOpen.value = false)
 
 </script>
 

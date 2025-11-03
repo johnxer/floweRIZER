@@ -52,6 +52,7 @@
                                         :key="plant.id"
                                         :plant="plant"
                                         :show-more-details="true"
+                                        :room-id="roomId"
                                     />
                                 </transition-group>
                                 <div class="text-center">
