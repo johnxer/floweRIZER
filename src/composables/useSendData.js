@@ -89,6 +89,14 @@ export const useSendData = () => {
 
         const plantCollection = collection(db, `users/${user.value.uid}/rooms/${roomId}/plants`);
         
+        if (data.wateredNow) {
+            data = {
+                ...data,
+                lastWateredDate: serverTimestamp()
+            }
+            
+        }
+
 
         try {
             await addDoc(plantCollection, {

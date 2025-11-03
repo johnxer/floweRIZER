@@ -12,7 +12,7 @@
                 <base-loader
                     v-if="isPending"
                     position-type="absolute"
-                    class="bg-white/80 z-1"
+                    class="bg-white/80 dark:bg-gray-800/80 z-1"
                 />
             </transition>
             <form
@@ -43,7 +43,7 @@
                         <div class="flex gap-2 items-center">
                             <label
                                 for="plant-image"
-                                class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-2 py-2 text-base rounded-xl cursor-pointer bg-gray-200 text-gray-500 dark:text-gray-200 border-gray-200 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden"
+                                class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-2 py-2 text-base rounded-xl cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden"
                             >
                                 Upload file
                                 <input

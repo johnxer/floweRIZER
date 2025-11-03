@@ -21,7 +21,8 @@
                     :room="room"
                     :is-first="index === 0"
                 />
-                <div class="self-end">
+                <div class="self-start">
+                    <div class="min-h-[30px] mb-2 hidden md:block"/>
                     <div class="min-h-[60px] lg:min-h-[200px] w-full relative">
                         <button
                             type="button"

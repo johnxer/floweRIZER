@@ -61,7 +61,7 @@
                 </v-dropdown>
                 <div class="md:hidden">
                     <button
-                        class="text-gray-400 hover:text-red-500 cursor-pointer transition-colors duration-600 flex"
+                        class="text-gray-400 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-900 cursor-pointer transition-colors duration-600 flex"
                         @click="handlelogout"
                     >
                         <span class="material-symbols-outlined text-2xl">
@@ -134,7 +134,7 @@ const slots = useSlots()
 const isCenterSlotEmpty = computed(() => !slots.center || slots.center().length === 0)
 // const isEndSlotEmpty = computed(() => !slots.end || slots.end().length === 0)
 
-console.log(user.value)
+// console.log(user.value)
 
 // const handleLogout = async () => {
 //     const success = await logOutUser();

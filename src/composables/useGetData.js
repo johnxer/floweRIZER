@@ -14,8 +14,6 @@ export const useGetData = (dataType) => {
 
     const itemPath = `users/${user.value.uid}/${dataType}`;
 
-    console.log('itemPath', itemPath)
-
     let unsubscribe = null
 
     const q = query(collection(db, itemPath), orderBy('createdAt', 'desc'));
@@ -36,7 +34,6 @@ export const useGetData = (dataType) => {
                     };
 
                 });
-                // console.log('aaaaaa', items.value)
                 isPending.value = false;
             },
             (err) => {

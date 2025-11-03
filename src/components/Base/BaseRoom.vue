@@ -11,7 +11,7 @@
                 <span class="material-symbols-outlined text-3xl relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600">
                     {{ room.icon }}
                 </span>
-                {{ room.name }}
+                {{ unassignedRoomName }}
                 <span class="material-symbols-outlined text-3xl lg:opacity-0 group-hover:opacity-100 group-hover:translate-x-2 text-primary-600/25 transition-all duration-600">
                     arrow_right_alt
                 </span>
@@ -37,7 +37,7 @@
             >
                 <button
                     type="button"
-                    class="md:opacity-0 group-hover/card:opacity-100 text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
+                    class="md:opacity-0 group-hover/card:opacity-100 text-2xl text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
                     v-tooltip="{
                         content: 'Edit room',
                         container: 'body'
@@ -147,10 +147,12 @@
                         >
                         </base-plant-list-item>
                     </transition-group>
+
                     <base-button
-                        btn-style="notRounded"
+                        v-if="showButton"
+                        btn-style="notRoundedMd"
                         btn-size="sm"
-                        btn-color="neutral"
+                        btn-color="neutral-alt"
                         class="mb-4"
                         @click="toggleShowAll"
                     >
@@ -257,6 +259,8 @@ const buttonLabel = ref('more')
 const displayedPlants = computed(() => showAll.value ? plants.value : plants.value.slice(0, maxVisible))
 const displayedLabel = computed(() => showAll.value ? buttonLabel.value = 'less' : buttonLabel.value = 'more')
 
+const showButton = computed(() => plants.value.length > maxVisible)
+
 
 const toggleShowAll = () => {
     showAll.value = !showAll.value
@@ -280,9 +284,11 @@ const onHide = () => (isOpen.value = false)
 
 const deleteRoom = async () => {
     await movePlants(user.value.uid, props.room.id, 'unassigned')
-    
+
     await deleteData(`users/${user.value.uid}/rooms`, props.room.id)
 }
+
+const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)
 
 </script>
 

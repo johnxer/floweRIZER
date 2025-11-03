@@ -7,7 +7,7 @@
             <div class="relative w-full h-[200px] md:h-[300px] overflow-hidden flex items-center justify-center shadow-xl before:absolute before:inset-0 before:bg-black/30">
                 <img
                     :src="detailsRoom.imgSrc"
-                    class="w-full object-cover"
+                    class="w-full object-cover dark:brightness-50"
                 >
                 <base-page-title
                      class="absolute"
@@ -17,7 +17,7 @@
                         <span class="material-symbols-outlined">
                             {{ detailsRoom.icon }}
                         </span>
-                        {{ detailsRoom.name }}
+                        {{ unassignedRoomName }}
                         <!-- <div
                             class="rounded-full size-3"
                             :style="{ backgroundColor: detailsRoom.color }"
@@ -30,14 +30,17 @@
                     <div class="text-gray-400 text-sm mb-1">
                         Created on {{ formattedDate }}
                     </div>
-                    <div class="mb-8 bg-gray-100 dark:bg-gray-900 rounded-xl p-4 text-gray-500 dark:text-gray-400">
+                    <div class="mb-8 text-gray-500 dark:text-gray-400 text-sm">
                         <div>
                             {{ detailsRoom.desc }}
                         </div>
                     </div>
                     <div class="">
                         <div>
-                            <h3 class="text-xl mb-1 text-gray-600 text-center">
+                            <h3 
+                                v-if="plants.length"
+                                class="text-2xl mb-1 text-gray-600 text-center"
+                            >
                                 Plants
                             </h3>
                             <div class="group/card">
@@ -141,7 +144,7 @@ const toggleModal = (state) => {
     }
 }
 
-
+const unassignedRoomName = computed(() => detailsRoom.value.name === 'Unassigned' ? 'Unassigned plants' : detailsRoom.value.name)
 
 </script>
 
