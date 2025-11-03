@@ -44,6 +44,7 @@ export const useSignUp = () => {
             const user = await createUserWithEmailAndPassword(auth, data.email, data.password);
 
             return user;
+            
         } catch (err) {
             error.value = err.message;
         } finally {

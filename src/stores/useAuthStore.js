@@ -25,6 +25,7 @@ export const useAuthStore = defineStore('useAuthStore', () => {
 
                     try {
                         const userReference = doc(db, 'users', _user.uid);
+                        const unassignedRoomReference = doc(db, `users/${uid}/rooms/unassigned`);
                         const userSnapshot = await getDoc(userReference);
 
                         const lastSignIn = new Date(_user.metadata.lastSignInTime);
@@ -38,6 +39,13 @@ export const useAuthStore = defineStore('useAuthStore', () => {
                                 createdAt: serverTimestamp(),
                                 lastLogin: serverTimestamp(),
                             });
+
+                            await setDoc(unassignedRoomReference, {
+                                name: 'Unassigned',
+                                createdAt: serverTimestamp(),
+                                isSystem: true,
+                            })
+
                             console.log('New user profile created in Firestore');
                         } else if (!lastLoginStored || lastSignIn > lastLoginStored) {
                             await setDoc(userReference, { lastLogin: serverTimestamp() }, { merge: true });

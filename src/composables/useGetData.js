@@ -34,7 +34,9 @@ export const useGetData = (dataType) => {
                         id: doc.id,
                         ...doc.data(),
                     };
+
                 });
+                // console.log('aaaaaa', items.value)
                 isPending.value = false;
             },
             (err) => {

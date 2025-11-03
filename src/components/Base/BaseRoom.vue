@@ -1,5 +1,8 @@
 <template>
-    <div class="group/card">
+    <div
+        v-if="!room.isSystem || room.isSystem && plants?.length"
+        class="group/card"
+    >
         <div class="text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between">
             <router-link
                 :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
@@ -28,7 +31,10 @@
                     </span>
                 </div>
             </span> -->
-            <div class="flex gap-3">
+            <div
+                v-if="!room.isSystem"
+                class="flex gap-3"
+            >
                 <button
                     type="button"
                     class="md:opacity-0 group-hover/card:opacity-100 text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
@@ -132,24 +138,24 @@
                         tag="ul"
                         class="space-y-2 mb-4"
                     >
-
-
                         <base-plant-list-item
                             v-for="plant in displayedPlants"
                             :key="plant.id"
                             :plant="plant"
+                            :room-id="room.id"
                             :is-draggable="true"
                         >
                         </base-plant-list-item>
-                        <base-button
-                            btn-style="notRounded"
-                            btn-size="sm"
-                            btn-color="neutral"
-                            @click="toggleShowAll"
-                        >
-                            Show {{ displayedLabel }}
-                        </base-button>
                     </transition-group>
+                    <base-button
+                        btn-style="notRounded"
+                        btn-size="sm"
+                        btn-color="neutral"
+                        class="mb-4"
+                        @click="toggleShowAll"
+                    >
+                        Show {{ displayedLabel }}
+                    </base-button>
                     <div class="w-full">
                         <div class="text-center">
                             <!-- <div class="text-sm text-blue-400/50 flex flex-col items-center justify-center mb-6">
@@ -208,7 +214,10 @@ import BasePlantListItem from './BasePlantListItem.vue';
 
 import AddNewPlantContent from '../AddNewPlantContent.vue';
 
+import { storeToRefs } from 'pinia';
+import { useDeleteData } from '../../composables/useDeleteData';
 import { useGetData } from '../../composables/useGetData';
+import { useAuthStore } from '../../stores/useAuthStore';
 
 const props = defineProps({
     room: {
@@ -226,6 +235,19 @@ const {
     isPending,
     items: plants
 } = useGetData(`rooms/${props.room.id}/plants`)
+
+const {
+    error: errorDelete,
+    isPending: isPendingDelete,
+    movedCount,
+    deleteData,
+    movePlants,
+} = useDeleteData()
+
+const { 
+    user 
+} = storeToRefs(useAuthStore())
+
 
 const maxVisible = 3
 
@@ -255,6 +277,12 @@ const isOpen = ref(false)
 
 const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
+
+const deleteRoom = async () => {
+    await movePlants(user.value.uid, props.room.id, 'unassigned')
+    
+    await deleteData(`users/${user.value.uid}/rooms`, props.room.id)
+}
 
 </script>
 
