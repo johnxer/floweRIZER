@@ -23,7 +23,6 @@ export const useUpdateData = () => {
         }
     };
 
-   
     return {
         error,
         isPending,

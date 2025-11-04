@@ -1,6 +1,6 @@
 <template>
     <div>
-        <base-container v-if="isPendingRoom">
+        <base-container v-if="isPending">
             <base-loader />
         </base-container>
         <div v-else>
@@ -38,14 +38,14 @@
                     <div class="">
                         <div>
                             <h3 
-                                v-if="plants.length"
+                                v-if="existPlants"
                                 class="text-2xl mb-1 text-gray-600 text-center"
                             >
                                 Plants
                             </h3>
                             <div class="group/card">
                                 <transition-group
-                                    v-if="plants.length"
+                                    v-if="existPlants"
                                     name="fade"
                                     tag="ul"
                                     class="space-y-2 mb-4"
@@ -70,7 +70,13 @@
 
                                         <span class="material-symbols-outlined text-xl mr-1">
                                             add
-                                        </span><span class="w-auto md:w-0 group-hover/card:w-[42px] overflow-hidden transition-all duration-400 text-sm flex">Plant</span>
+                                        </span>
+                                        <span 
+                                            class="transition-all duration-400 text-sm flex"
+                                            :class="existPlants ? 'md:w-0 group-hover/card:w-[42px] overflow-hidden' : 'w-[42px]'"
+                                        >
+                                            Plant
+                                        </span>
 
                                     </base-button>
                                 </div>
@@ -129,6 +135,10 @@ const {
     items: plants,
 } = useGetData(`rooms/${props.roomId}/plants`)
 
+const isPending = computed(() => {
+    return isPendingRoom.value || isPendingPlants.value
+})
+
 const formattedDate = computed(() => {
     const createdAt = detailsRoom.value?.createdAt
     return createdAt?.toDate ? format(createdAt.toDate(), 'MMM d, yyyy') : '—'
@@ -145,6 +155,8 @@ const toggleModal = (state) => {
 }
 
 const unassignedRoomName = computed(() => detailsRoom.value.name === 'Unassigned' ? 'Unassigned plants' : detailsRoom.value.name)
+
+const existPlants = computed(() => plants.value?.length)
 
 </script>
 
