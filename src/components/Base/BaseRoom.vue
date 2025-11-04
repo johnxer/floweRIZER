@@ -1,7 +1,7 @@
 <template>
     <div
         v-if="!room.isSystem || room.isSystem && plants?.length"
-        class="group/card"
+        class="group/card flex flex-col"
     >
         <div class="text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between">
             <router-link
@@ -107,10 +107,11 @@
         </div>
 
         <div
-            class="min-h-[120px] lg:min-h-[200px] w-full rounded-xl relative p-2"
+            class="min-h-[120px] lg:min-h-[200px] w-full rounded-xl relative flex flex-col grow"
             :class="[
-                plants?.length || isPending ? 'bg-gray-50 dark:bg-gray-900' : 'flex flex-col items-center justify-center border border-gray-200 dark:border-gray-800',
-
+                !plants?.length && !isPending 
+                ? 'items-center justify-center border border-gray-200 dark:border-gray-800' 
+                : 'bg-gray-50 dark:bg-gray-900'
             ]"
         >
             <!-- to be styled and used later -->
@@ -131,63 +132,66 @@
                 <div
                     v-else-if="plants"
                     class="w-full"
+                    :class="dragStore.isDragging ? 'h-full grow flex flex-col justify-center p-0' : 'p-2'" 
                 >
-                    <transition-group
-                        v-if="plants.length"
-                        name="fade"
+                    <v-draggable
+                        :list="plants"
+                        group="plants"
+                        item-key="id"
                         tag="ul"
-                        class="space-y-2 mb-4"
+                        :data-room-id="props.room.id"
+                        class="w-full rounded-xl relative flex flex-col gap-2 transition-all duration-300"
+                        :class="[
+                            plants?.length
+                                ? 'bg-gray-50 dark:bg-gray-900'
+                                : 'flex flex-col items-start justify-start border-gray-200 dark:border-gray-800',
+                            isDragOver
+                                ? 'border-2 border-primary bg-primary/5 shadow-md scale-[1.01]'
+                                : 'border-primary/0',
+                            dragStore.isDragging 
+                                ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2 border'
+                                : 'border-none'
+                        ]"
+                        @dragenter.prevent="onDragEnterZone"
+                        @dragleave.prevent="onDragLeaveZone"
+                        @dragover.prevent
+                        @add="onAdd"
+                        @start="onStart"
+                        @end="onEnd"
                     >
-                        <base-plant-list-item
-                            v-for="plant in displayedPlants"
-                            :key="plant.id"
-                            :plant="plant"
-                            :room-id="room.id"
-                            :is-draggable="true"
+                        <template #item="{ element }">
+                            <BasePlantListItem
+                                :plant="element"
+                                :room-id="props.room.id"
+                                :data-plant-id="element.id"
+                                class="cursor-move w-full"
+                            />
+                        </template>
+
+                    </v-draggable>
+                    <div
+                        v-if="!dragStore.isDragging"
+                        class="w-full text-center mt-2"
+                    >
+                        <base-button
+                            type="button"
+                            class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
+                            :btn-full-width="false"
+                            btn-size="custom"
+                            @click="toggleModal()"
                         >
-                        </base-plant-list-item>
-                    </transition-group>
-
-                    <base-button
-                        v-if="showButton"
-                        btn-style="notRoundedMd"
-                        btn-size="sm"
-                        btn-color="neutral-alt"
-                        class="mb-4"
-                        @click="toggleShowAll"
-                    >
-                        Show {{ displayedLabel }}
-                    </base-button>
-                    <div class="w-full">
-                        <div class="text-center">
-                            <!-- <div class="text-sm text-blue-400/50 flex flex-col items-center justify-center mb-6">
-                                <span class="material-symbols-outlined text-3xl">
-                                    info
-                                </span>
-                                <span>
-                                No plants in the room yet...
-                                </span>
-                            </div> -->
-                            <base-button
-                                type="button"
-                                @click="toggleModal()"
-                                class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
-                                :btn-full-width="false"
-                                btn-size="custom"
-                            >
-                                <!-- Add a new plant -->
-
-                                <span class="material-symbols-outlined text-xl mr-1">
-                                    add
-                                </span><span class="w-auto md:w-0 group-hover/card:w-[42px] overflow-hidden transition-all duration-400 text-sm flex">Plant</span>
-
-                            </base-button>
-                            <div
-                                v-if="isFirst"
-                                class="text-xs text-gray-400 dark:text-gray-600"
-                            >
-                                or drag one from another room
-                            </div>
+                            <span class="material-symbols-outlined text-xl mr-1">
+                                add
+                            </span>
+                            <span class="w-auto md:w-0 group-hover/card:w-[42px] overflow-hidden transition-all duration-400 text-sm flex">
+                                Plant
+                            </span>
+                        </base-button>
+                        <div
+                            v-if="isFirst"
+                            class="text-xs text-gray-400 dark:text-gray-600"
+                        >
+                            or drag one from another room
                         </div>
                     </div>
                 </div>
@@ -207,7 +211,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 
 import BaseButton from './BaseButton.vue';
 import BaseLoader from './BaseLoader.vue';
@@ -221,6 +225,10 @@ import { useDeleteData } from '../../composables/useDeleteData';
 import { useGetData } from '../../composables/useGetData';
 import { useAuthStore } from '../../stores/useAuthStore';
 
+import vDraggable from 'vuedraggable';
+import { useDragStore } from '../../stores/useDragStore';
+
+
 const props = defineProps({
     room: {
         type: Object,
@@ -229,7 +237,7 @@ const props = defineProps({
     isFirst: {
         type: Boolean,
         default: false
-    }
+    },
 })
 
 const {
@@ -244,28 +252,78 @@ const {
     movedCount,
     deleteData,
     movePlants,
+    movePlant
 } = useDeleteData()
 
-const { 
-    user 
+const {
+    user
 } = storeToRefs(useAuthStore())
 
+const dragStore = useDragStore()
 
-const maxVisible = 3
+const isDragOver = ref(false)
+const isDragging = ref(false)
+const draggedItemId = ref(null)
+const sourceRoomId = ref(null)
 
-const showAll = ref(false)
-const buttonLabel = ref('more')
+const onStart = (e) => {
+    draggedItemId.value = e.item.dataset.plantId
+    sourceRoomId.value = e.from.dataset.roomId
+    isDragOver.value = false
+    dragStore.startDrag(e.item.dataset.plantId)
+    sourceRoomId.value = e.from.dataset.roomId
+}
 
-const displayedPlants = computed(() => showAll.value ? plants.value : plants.value.slice(0, maxVisible))
-const displayedLabel = computed(() => showAll.value ? buttonLabel.value = 'less' : buttonLabel.value = 'more')
+const onEnd = () => {
+    isDragOver.value = false
+    dragStore.endDrag()
+    isDragOver.value = false
+    draggedItemId.value = null
+    sourceRoomId.value = null
+}
 
-const showButton = computed(() => plants.value.length > maxVisible)
+const onDragEnterZone = (e) => {
+    if (!isDragOver.value) {
+        isDragOver.value = true
+    }
+}
+const onDragLeaveZone = (e) => {
+    const related = e.relatedTarget
+    if (!related || !e.currentTarget.contains(related)) {
+        isDragOver.value = false
+    }
+}
+
+const onAdd = async (e) => {
+    isDragOver.value = false
+
+    const toRoomId = e.to.dataset.roomId
+    const fromRoomId = e.from.dataset.roomId
+    const plantId = e.item.dataset.plantId
+
+    if (!plantId || fromRoomId === toRoomId) return
 
 
-const toggleShowAll = () => {
-    showAll.value = !showAll.value
+    await movePlant(user.value.uid, fromRoomId, toRoomId, plantId)
+
+    await nextTick()
 
 }
+// const maxVisible = 3
+
+// const showAll = ref(false)
+// const buttonLabel = ref('more')
+
+// const displayedPlants = computed(() => showAll.value ? plants.value : plants.value.slice(0, maxVisible))
+// const displayedLabel = computed(() => showAll.value ? buttonLabel.value = 'less' : buttonLabel.value = 'more')
+
+// const showButton = computed(() => plants.value.length > maxVisible)
+
+
+// const toggleShowAll = () => {
+//     showAll.value = !showAll.value
+
+// }
 
 const isModalOpen = ref(false)
 

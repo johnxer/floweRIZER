@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
 
@@ -50,15 +50,44 @@ export const useDeleteData = () => {
 
                     movedCount.value++;
                 } catch (err) {
-                    console.log(err.message)
+                    console.log(err.message);
                 }
             }
-            
+
             return movedCount.value;
         } catch (err) {
             error.value = err.message;
 
             return 0;
+        } finally {
+            isPending.value = false;
+        }
+    };
+
+    const movePlant = async (uid, oldRoomId, newRoomId, plantId) => {
+        isPending.value = true;
+        error.value = null;
+
+        try {
+            const oldPlantReference = doc(db, `users/${uid}/rooms/${oldRoomId}/plants`, plantId);
+            const oldSnap = await getDoc(oldPlantReference);
+
+            if (!oldSnap.exists()) {
+                throw new Error('Plant not found');
+            }
+
+            const plantData = oldSnap.data();
+
+            const newPlantReference = doc(db, `users/${uid}/rooms/${newRoomId}/plants`, plantId);
+            await setDoc(newPlantReference, plantData);
+
+            await deleteDoc(oldPlantReference);
+
+            return true;
+        } catch (err) {
+            error.value = err.message;
+            console.error('Move plant failed:', err);
+            return false;
         } finally {
             isPending.value = false;
         }
@@ -70,5 +99,6 @@ export const useDeleteData = () => {
         movedCount,
         deleteData,
         movePlants,
+        movePlant
     };
 };
