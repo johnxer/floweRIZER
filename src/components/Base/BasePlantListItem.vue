@@ -57,7 +57,7 @@
 
             <div
                 class="p-2 md:p-4 rounded-xl transition-all duration-600 mt-4 text-gray-600 dark:text-gray-500"
-                :class="isWatered ? 'bg-white/60' : 'bg-gray-200 dark:bg-gray-900/50'"
+                :class="isWatered ? 'bg-white/60 dark:bg-white/5' : 'bg-gray-200 dark:bg-gray-900/25'"
             >
                 <div class="grid grid-cols-[1fr_auto] gap-4">
                     <div>

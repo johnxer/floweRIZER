@@ -131,8 +131,8 @@
                 />
                 <div
                     v-else-if="plants"
-                    class="w-full"
-                    :class="dragStore.isDragging ? 'h-full grow flex flex-col justify-center p-0' : 'p-2'" 
+                    class="w-full p-0"
+                    :class="dragStore.isDragging ? 'h-full grow flex flex-col' : ''" 
                 >
                     <v-draggable
                         :list="plants"
@@ -143,7 +143,7 @@
                         class="w-full rounded-xl relative flex flex-col gap-2 transition-all duration-300"
                         :class="[
                             plants?.length
-                                ? 'bg-gray-50 dark:bg-gray-900'
+                                ? 'bg-gray-50 dark:bg-gray-900 p-2'
                                 : 'flex flex-col items-start justify-start border-gray-200 dark:border-gray-800',
                             isDragOver
                                 ? 'border-2 border-primary bg-primary/5 shadow-md scale-[1.01]'
@@ -171,11 +171,12 @@
                     </v-draggable>
                     <div
                         v-if="!dragStore.isDragging"
-                        class="w-full text-center mt-2"
+                        class="w-full text-center "
+                        :class="plants?.length ? 'mb-2' : 'my-2'"
                     >
                         <base-button
                             type="button"
-                            class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
+                            class="py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
                             :btn-full-width="false"
                             btn-size="custom"
                             @click="toggleModal()"
