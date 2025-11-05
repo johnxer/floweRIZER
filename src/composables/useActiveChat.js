@@ -1,56 +1,58 @@
 import { addDoc, collection, doc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
-import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
 import { useAuthStore } from '../stores/useAuthStore';
 
 export const useActiveChat = () => {
-    const { user } = storeToRefs(useAuthStore());
+    const authStore = useAuthStore();
     const activeChatId = ref(null);
     const isPending = ref(false);
     const error = ref(null);
 
     const getOrCreateChat = async () => {
-        if (!user.value) return null;
+        if (!authStore.user) return null;
         isPending.value = true;
+        error.value = null;
 
-        const chatsReference = collection(db, `users/${user.value.uid}/chats`);
+        try {
+            const chatsReference = collection(db, `users/${authStore.user?.uid}/chats`);
 
-        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+            const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
 
-        const q = query(chatsReference, where('isActive', '==', true), where('lastMessageAt', '>', oneHourAgo));
+            const q = query(chatsReference, where('isActive', '==', true), where('lastMessageAt', '>', oneHourAgo));
 
-        const snapshot = await getDocs(q);
+            const snapshot = await getDocs(q);
 
-        if (!snapshot.empty) {
-            const existingChat = snapshot.docs[0];
-            activeChatId.value = existingChat.id;
-            // console.log('Found existing chat:', activeChatId.value);
-        } else {
-            const newChat = await addDoc(chatsReference, {
-                createdAt: serverTimestamp(),
-                lastMessageAt: serverTimestamp(),
-                isActive: true,
-            });
-            activeChatId.value = newChat.id;
-            // console.log('Created new chat:', activeChatId.value);
+            if (!snapshot.empty) {
+                const existingChat = snapshot.docs[0];
+                activeChatId.value = existingChat.id;
+            } else {
+                const newChat = await addDoc(chatsReference, {
+                    createdAt: serverTimestamp(),
+                    lastMessageAt: serverTimestamp(),
+                    isActive: true,
+                });
+                activeChatId.value = newChat.id;
+            }
+
+            return activeChatId.value;
+        } catch (err) {
+            error.value = err.message;
+            return null;
+        } finally {
+            isPending.value = false;
         }
-
-        isPending.value = false;
-        return activeChatId.value;
     };
 
     const endChat = async () => {
-        if (!user.value || !activeChatId.value) return;
+        if (!authStore.user || !activeChatId.value) return;
 
         try {
-            const chatReference = doc(db, `users/${user.value.uid}/chats/${activeChatId.value}`);
+            const chatReference = doc(db, `users/${authStore.user?.uid}/chats/${activeChatId.value}`);
             await updateDoc(chatReference, { isActive: false });
-            // console.log('Chat ended successfully');
             activeChatId.value = null;
         } catch (err) {
             error.value = err.message;
-            // console.error('Failed to end chat:', err.message);
         }
     };
 

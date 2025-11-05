@@ -91,13 +91,13 @@ import BaseLoader from '../Base/BaseLoader.vue';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useSignUp } from '../../composables/useAuth';
+import { useAuthActions } from '../../composables/useAuth';
 
 const {
     error,
     isPending,
     signUpUser,
-} = useSignUp()
+} = useAuthActions()
 
 
 const form = ref({

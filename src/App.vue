@@ -42,18 +42,15 @@ import SidebarMenu from './components/UI/SidebarMenu.vue';
 import TheHeader from './components/UI/TheHeader.vue';
 import TheLogoCircle from './components/UI/TheLogoCircle.vue';
 
-import { storeToRefs } from 'pinia';
 import { computed, ref, watchEffect } from 'vue';
 import { useAuthStore } from './stores/useAuthStore';
 
-const {
-    user,
-} = storeToRefs(useAuthStore());
+const authStore = useAuthStore();
 
+const isAuthed = computed(() => !!authStore.user)
 
 const projectName = import.meta.env.VITE_PROJECT_NAME
 
-const isAuthed = computed(() => user.value)
 
 
 const baseColor = ref('#99c23b')

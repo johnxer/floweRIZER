@@ -179,6 +179,7 @@ import { auth } from '../../firebase/config';
 import { useAuthStore } from '../../stores/useAuthStore';
 
 import { updateProfile } from 'firebase/auth';
+import { useAuth } from '../../composables/useAuth';
 import { useUpdateData } from '../../composables/useUpdateData';
 
 const {
@@ -189,7 +190,7 @@ const {
 
 const {
     updateProfileData
-} = useAuthStore()
+} = useAuth()
 
 const {
     error: errorUploadImage,

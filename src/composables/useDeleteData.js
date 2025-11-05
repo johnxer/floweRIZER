@@ -38,15 +38,15 @@ export const useDeleteData = () => {
                 return 0;
             }
 
-            for (const plantDoc of snapshot.docs) {
+            for (const plantDocument of snapshot.docs) {
                 try {
-                    const plantData = plantDoc.data();
+                    const plantData = plantDocument.data();
 
-                    const newPlantsReference = doc(db, `users/${uid}/rooms/${newRoomId}/plants`, plantDoc.id);
+                    const newPlantsReference = doc(db, `users/${uid}/rooms/${newRoomId}/plants`, plantDocument.id);
 
                     await setDoc(newPlantsReference, plantData);
 
-                    await deleteDoc(plantDoc.ref);
+                    await deleteDoc(plantDocument.ref);
 
                     movedCount.value++;
                 } catch (err) {

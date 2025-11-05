@@ -137,7 +137,6 @@
 
 <script setup>
 
-import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useSendData } from '../composables/useSendData';
 import { useStorage } from '../composables/useStorage';
@@ -154,9 +153,8 @@ const props = defineProps({
     }
 })
 
-const {
-    user
-} = storeToRefs(useAuthStore())
+const authStore = useAuthStore()
+
 
 const {
     error: errorSendData,
@@ -227,11 +225,6 @@ const data = ref({});
 const submitForm = async () => {
     if (!validateForm()) return
 
-    console.log(user.value)
-    console.log(`${props.roomId}/${form.value.file}`)
-
-
-
     data.value = {
         name: form.value.name,
         desc: form.value.desc,
@@ -241,7 +234,7 @@ const submitForm = async () => {
 
 
     if (form.value.file) {
-        const uploadSuccess = await uploadImage('plants', user.value, form.value.file)
+        const uploadSuccess = await uploadImage('plants', authStore.user, form.value.file)
 
         if (uploadSuccess) {
 

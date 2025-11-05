@@ -24,9 +24,7 @@ export const useFlowerChat = () => {
         isPending.value = true;
 
         try {
-            console.log(`asking ${MODEL_NAME}...`);
-
-            
+           
             const response = await ai.models.generateContent({
                 model: MODEL_NAME,
 
@@ -41,11 +39,9 @@ export const useFlowerChat = () => {
             });
 
             answer.value = response.text;
-            console.log("Gemini answer:", answer.value);
 
             return true;
         } catch (err) {
-            console.error('Gemini API error:', err);
             error.value = err.response?.data?.error?.message || err.message;
         } finally {
             isPending.value = false;

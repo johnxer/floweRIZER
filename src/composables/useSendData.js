@@ -1,26 +1,34 @@
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
 import { useAuthStore } from '../stores/useAuthStore';
 
 export const useSendData = () => {
+    const authStore = useAuthStore();
+
     const isPending = ref(false);
     const error = ref(null);
 
-    const { user } = storeToRefs(useAuthStore());
+    const getUid = () => {
+        const uid = authStore.user?.uid;
+
+        if (!uid) {
+            error.value = 'User not authenticated';
+            return null;
+        }
+
+        return uid;
+    };
 
     const sendDataChats = async (chatId, data) => {
+        const uid = getUid();
 
-        if (!user.value) {
-            error.value = 'User not authenticated';
-            return false;
-        }
+        if (!uid) return false;
 
         isPending.value = true;
         error.value = null;
 
-        const chatPath = `users/${user.value.uid}/chats/${chatId}`;
+        const chatPath = `users/${uid}/chats/${chatId}`;
         const chatReference = doc(db, chatPath);
         const messagesReference = collection(db, `${chatPath}/messages`);
 
@@ -48,16 +56,14 @@ export const useSendData = () => {
     };
 
     const sendDataRooms = async (data) => {
+        const uid = getUid();
 
-        if (!user.value) {
-            error.value = 'User not authenticated';
-            return false;
-        }
+        if (!uid) return false;
 
         isPending.value = true;
         error.value = null;
 
-        const roomPath = `users/${user.value.uid}/rooms`;
+        const roomPath = `users/${uid}/rooms`;
         const roomReference = collection(db, `${roomPath}`);
 
         try {
@@ -78,25 +84,21 @@ export const useSendData = () => {
     };
 
     const sendDataPlants = async (data, roomId) => {
+        const uid = getUid();
 
-        if (!user.value) {
-            error.value = 'User not authenticated';
-            return false;
-        }
+        if (!uid) return false;
 
         isPending.value = true;
         error.value = null;
 
-        const plantCollection = collection(db, `users/${user.value.uid}/rooms/${roomId}/plants`);
-        
+        const plantCollection = collection(db, `users/${uid}/rooms/${roomId}/plants`);
+
         if (data.wateredNow) {
             data = {
                 ...data,
-                lastWateredDate: serverTimestamp()
-            }
-            
+                lastWateredDate: serverTimestamp(),
+            };
         }
-
 
         try {
             await addDoc(plantCollection, {
@@ -113,7 +115,6 @@ export const useSendData = () => {
         }
     };
 
-    
     return {
         isPending,
         error,

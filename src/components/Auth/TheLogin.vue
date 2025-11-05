@@ -68,7 +68,7 @@ import BaseLoader from '../Base/BaseLoader.vue';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useLogIn } from '../../composables/useAuth';
+import { useAuthActions } from '../../composables/useAuth';
 
 const router = useRouter()
 
@@ -77,7 +77,7 @@ const {
     error,
     isPending,
     logInUser
-} = useLogIn()
+} = useAuthActions()
 
 
 

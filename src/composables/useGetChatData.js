@@ -1,11 +1,10 @@
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { storeToRefs } from 'pinia';
 import { onUnmounted, ref, watch } from 'vue';
 import { db } from '../firebase/config';
 import { useAuthStore } from '../stores/useAuthStore';
 
 export const useGetChatData = (chatIdRef) => {
-    const { user } = storeToRefs(useAuthStore());
+    const authStore = useAuthStore()
 
     const messages = ref([]);
     const error = ref(null);
@@ -18,8 +17,6 @@ export const useGetChatData = (chatIdRef) => {
         if (!uid || !chatId) return;
 
         const messagesPath = `users/${uid}/chats/${chatId}/messages`;
-
-        console.log('Listening to chat:', messagesPath);
 
         const q = query(collection(db, messagesPath), orderBy('createdAt', 'asc'));
 
@@ -41,7 +38,7 @@ export const useGetChatData = (chatIdRef) => {
     };
 
     watch(
-        [() => user.value?.uid, chatIdRef],
+        [() => authStore.user?.uid, chatIdRef],
         ([uid, chatId]) => {
             if (!uid || !chatId) return;
             attachListener(uid, chatId);

@@ -1,41 +1,39 @@
 import { doc, onSnapshot } from 'firebase/firestore';
-import { storeToRefs } from 'pinia';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onUnmounted, ref, watchEffect } from 'vue';
 import { db } from '../firebase/config';
 import { useAuthStore } from '../stores/useAuthStore';
 
 export const useGetDetails = (dataType) => {
-    const { user } = storeToRefs(useAuthStore());
-    
+    const authStore = useAuthStore();
+
     const error = ref(null);
     const isPending = ref(true);
     const details = ref(null);
 
-    const detailPath = `users/${user.value.uid}/${dataType}`;
-
-    console.log('detailPath', detailPath)
-
-    const docReference = doc(db, detailPath);
-
     let unsubscribe = null;
 
-    const startListener = () => {
-        if (!user.value?.uid) {
+    const startListener = (uid) => {
+        error.value = null;
+        isPending.value = true
+
+        if (!uid) {
             error.value = 'User not authenticated';
             isPending.value = false;
             return;
         }
 
+        const detailPath = `users/${uid}/${dataType}`;
+        const docReference = doc(db, detailPath);
+
         unsubscribe = onSnapshot(
             docReference,
-            (docSnap) => {
-                if (docSnap.exists()) {
+            (snapshot) => {
+                if (snapshot.exists()) {
                     details.value = {
-                        id: docSnap.id,
-                        ...docSnap.data(),
+                        id: snapshot.id,
+                        ...snapshot.data(),
                     };
                 } else {
-                    console.warn('Document not found');
                     details.value = null;
                 }
 
@@ -48,12 +46,23 @@ export const useGetDetails = (dataType) => {
         );
     };
 
-    onMounted(() => startListener());
+    watchEffect(() => {
+        const uid = authStore.user?.uid;
+
+        if (!uid) {
+            if (unsubscribe) unsubscribe();
+            unsubscribe = null;
+            details.value = null;
+            isPending.value = false;
+            return;
+        }
+
+        if (unsubscribe) unsubscribe();
+        startListener(uid);
+    });
 
     onUnmounted(() => {
-        if (unsubscribe) {
-            unsubscribe();
-        }
+        if (unsubscribe) unsubscribe();
     });
 
     return {

@@ -152,9 +152,8 @@ const {
     sendDataChats
 } = useSendData()
 
-const {
-    user
-} = storeToRefs(useAuthStore())
+const authStore = useAuthStore()
+
 
 const {
     messages,
@@ -171,7 +170,7 @@ const handleEndChat = async () => {
 
 const question = ref('')
 
-const email = computed(() => user.value?.email);
+const email = computed(() => authStore.user?.email);
 
 const formatTimestamp = (timestamp) => {
     if (!timestamp || !timestamp.seconds) {

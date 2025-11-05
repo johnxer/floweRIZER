@@ -109,9 +109,9 @@
         <div
             class="min-h-[120px] lg:min-h-[200px] w-full rounded-xl relative flex flex-col grow"
             :class="[
-                !plants?.length && !isPending 
-                ? 'items-center justify-center border border-gray-200 dark:border-gray-800' 
-                : 'bg-gray-50 dark:bg-gray-900'
+                !plants?.length && !isPending
+                    ? 'items-center justify-center border border-gray-200 dark:border-gray-800'
+                    : 'bg-gray-50 dark:bg-gray-900'
             ]"
         >
             <!-- to be styled and used later -->
@@ -132,7 +132,7 @@
                 <div
                     v-else-if="plants"
                     class="w-full p-0"
-                    :class="dragStore.isDragging ? 'h-full grow flex flex-col' : ''" 
+                    :class="dragStore.isDragging ? 'h-full grow flex flex-col' : ''"
                 >
                     <v-draggable
                         :list="plants"
@@ -140,17 +140,17 @@
                         item-key="id"
                         tag="ul"
                         :data-room-id="props.room.id"
-                        class="w-full rounded-xl relative flex flex-col gap-2 transition-all duration-300"
+                        class="w-full rounded-xl relative flex flex-col gap-2 transition-all duration-300 border-2"
                         :class="[
                             plants?.length
                                 ? 'bg-gray-50 dark:bg-gray-900 p-2'
                                 : 'flex flex-col items-start justify-start border-gray-200 dark:border-gray-800',
                             isDragOver
-                                ? 'border-2 border-primary bg-primary/5 shadow-md scale-[1.01]'
+                                ? 'border-primary bg-primary/5 shadow-md'
                                 : 'border-primary/0',
-                            dragStore.isDragging 
+                            dragStore.isDragging
                                 ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2 border'
-                                : 'border-none'
+                                : ''
                         ]"
                         @dragenter.prevent="onDragEnterZone"
                         @dragleave.prevent="onDragLeaveZone"
@@ -221,7 +221,6 @@ import BasePlantListItem from './BasePlantListItem.vue';
 
 import AddNewPlantContent from '../AddNewPlantContent.vue';
 
-import { storeToRefs } from 'pinia';
 import { useDeleteData } from '../../composables/useDeleteData';
 import { useGetData } from '../../composables/useGetData';
 import { useAuthStore } from '../../stores/useAuthStore';
@@ -256,9 +255,7 @@ const {
     movePlant
 } = useDeleteData()
 
-const {
-    user
-} = storeToRefs(useAuthStore())
+const authStore = useAuthStore()
 
 const dragStore = useDragStore()
 
@@ -305,7 +302,7 @@ const onAdd = async (e) => {
     if (!plantId || fromRoomId === toRoomId) return
 
 
-    await movePlant(user.value.uid, fromRoomId, toRoomId, plantId)
+    await movePlant(authStore.user?.uid, fromRoomId, toRoomId, plantId)
 
     await nextTick()
 
@@ -342,9 +339,13 @@ const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
 const deleteRoom = async () => {
-    await movePlants(user.value.uid, props.room.id, 'unassigned')
+    const uid = authStore.user?.uid
+    
+    if (!uid) return
 
-    await deleteData(`users/${user.value.uid}/rooms`, props.room.id)
+    await movePlants(uid, props.room.id, 'unassigned')
+
+    await deleteData(`users/${uid}/rooms`, props.room.id)
 }
 
 const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)

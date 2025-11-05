@@ -7,9 +7,8 @@
             name="fade"
             mode="out-in"
         >
-            <div v-if="isPending">
-                Loading...
-            </div>
+            <base-loader v-if="isPending" />
+                
             <base-form-message-box
                 v-else-if="isSuccess"
                 message-type="success"
@@ -53,10 +52,11 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { usePwReset } from '../../composables/useAuth';
+import { useAuthActions } from '../../composables/useAuth';
 import BaseButton from '../Base/BaseButton.vue';
 import BaseFormMessageBox from '../Base/BaseFormMessageBox.vue';
 import BaseInputWrapper from '../Base/BaseInputWrapper.vue';
+import BaseLoader from '../Base/BaseLoader.vue';
 
 const router = useRouter()
 
@@ -64,7 +64,7 @@ const {
     error,
     isPending,
     resetEmail,
-} = usePwReset()
+} = useAuthActions()
 
 const form = ref({
     email: '',

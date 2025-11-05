@@ -126,7 +126,6 @@
 
 <script setup>
 
-import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useSendData } from '../composables/useSendData';
 import { useStorage } from '../composables/useStorage';
@@ -137,9 +136,8 @@ import BaseInputWrapperAuthed from './Base/BaseInputWrapperAuthed.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
 
-const {
-    user
-} = storeToRefs(useAuthStore())
+const authStore = useAuthStore()
+
 
 const {
     roomIcons: icons,
@@ -224,7 +222,7 @@ const submitForm = async () => {
     }
 
     if (form.value.file) {
-        const uploadSuccess = await uploadImage('rooms', user.value, form.value.file)
+        const uploadSuccess = await uploadImage('rooms', authStore.user, form.value.file)
 
         if (uploadSuccess) {
 

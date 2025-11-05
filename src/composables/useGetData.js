@@ -1,28 +1,30 @@
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { storeToRefs } from 'pinia';
-import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { onUnmounted, ref, watchEffect } from 'vue';
 import { db } from '../firebase/config';
 import { useAuthStore } from '../stores/useAuthStore';
 
 export const useGetData = (dataType) => {
-    const { user } = storeToRefs(useAuthStore());
+    const authStore = useAuthStore();
 
     const error = ref(null);
     const isPending = ref(true);
 
     const items = ref([]);
 
-    const itemPath = `users/${user.value.uid}/${dataType}`;
+    let unsubscribe = null;
 
-    let unsubscribe = null
+    const startListener = (uid) => {
+        error.value = null;
+        isPending.value = true;
 
-    const q = query(collection(db, itemPath), orderBy('createdAt', 'desc'));
-    const startListener = () => {
-        if (!user.value?.uid) {
+        if (!uid) {
             error.value = 'User not authenticated';
             isPending.value = false;
             return;
         }
+
+        const itemPath = `users/${uid}/${dataType}`;
+        const q = query(collection(db, itemPath), orderBy('createdAt', 'desc'));
 
         unsubscribe = onSnapshot(
             q,
@@ -32,38 +34,34 @@ export const useGetData = (dataType) => {
                         id: doc.id,
                         ...doc.data(),
                     };
-
                 });
                 isPending.value = false;
             },
             (err) => {
-                console.error(err);
                 error.value = err.message;
                 isPending.value = false;
             }
-            
         );
     };
 
-
-
-
-    onMounted(() => {
-        if (user.value?.uid) startListener();
-    });
-
-    watch(() => user.value?.uid, (newUid) => {
-            if (newUid && !unsubscribe) {
-                startListener();
-            }
+    watchEffect(() => {
+        const uid = authStore.user?.uid;
+        if (!uid) {
+            if (unsubscribe) unsubscribe();
+            unsubscribe = null;
+            items.value = [];
+            isPending.value = false;
+            return;
         }
-    );
+
+        if (unsubscribe) unsubscribe();
+        startListener(uid);
+    });
 
     onUnmounted(() => {
-        unsubscribe();
+        if (unsubscribe) unsubscribe();
     });
 
-    
     return {
         error,
         isPending,

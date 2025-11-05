@@ -56,8 +56,8 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../../stores/useAuthStore';
 
+import { useAuth } from '../../composables/useAuth';
 import BaseMenuLink from '../Base/BaseMenuLink.vue';
 
 defineProps({
@@ -68,13 +68,9 @@ defineProps({
     }
 })
 
-// const {
-//     user,
-// } = storeToRefs(useAuthStore());
-
 const {
     logOutUser,
-} = useAuthStore();
+} = useAuth();
 
 const router = useRouter()
 
@@ -82,7 +78,10 @@ const handleLogout = async () => {
     const success = await logOutUser();
 
     if (success) {
-        router.push({ name: 'NotAuthed' })
+        await router.push({ name: 'NotAuthed' })
+    } else {
+            console.error('Logout failed')
+
     }
 }
 

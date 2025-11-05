@@ -70,16 +70,6 @@
                     </button>
 
                 </div>
-                <!-- <router-link
-                    class="relative cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center flex md:hidden"
-                    :to="{ name: 'Account' }"
-                >
-                    <img
-                        :src="user?.photoURL"
-                        class="size-[30px] rounded-lg object-cover"
-                    />
-                    <span class="text-sm">{{ user?.displayName || 'Not set yet' }}</span>
-                </router-link> -->
                 <div class="hidden md:flex">
                     <button
                         class="cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center p-2"
@@ -98,29 +88,12 @@
 <script setup>
 import { computed, ref, useSlots } from 'vue';
 
-import { storeToRefs } from 'pinia';
-// import { useRouter } from 'vue-router';
-import { useAuthStore } from '../../stores/useAuthStore';
-
-// const router = useRouter()
-
 const props = defineProps({
     projectTitle: {
         type: String,
         required: true
     }
 })
-
-const {
-    user,
-    error,
-    isPending,
-} = storeToRefs(useAuthStore());
-
-// const {
-//     logOutUser,
-// } = useAuthStore();
-
 
 const matchString = /[A-Z]/;
 
@@ -132,18 +105,6 @@ const secondString = props.projectTitle.substring(indexTitle)
 const slots = useSlots()
 
 const isCenterSlotEmpty = computed(() => !slots.center || slots.center().length === 0)
-// const isEndSlotEmpty = computed(() => !slots.end || slots.end().length === 0)
-
-// console.log(user.value)
-
-// const handleLogout = async () => {
-//     const success = await logOutUser();
-
-//     if (success) {
-//         router.push({ name: 'NotAuthed' })
-//     }
-// }
-
 
 const hasNotifications = computed(() => notifications.value.length)
 

@@ -143,7 +143,6 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { useDeleteData } from '../../composables/useDeleteData';
 import { useAuthStore } from '../../stores/useAuthStore';
@@ -183,9 +182,8 @@ const props = defineProps({
     }
 })
 
-const {
-    user
-} = storeToRefs(useAuthStore())
+const authStore = useAuthStore()
+
 
 const {
     error,
@@ -226,11 +224,7 @@ const handleWatering = async () => {
         lastWateredDate: serverTimestamp()
     }
 
-    const success = await updateUserData(`users/${user.value?.uid}/rooms/${props.roomId}/plants`, props.plant.id, data)
-
-    // if (success) {
-    //     isWatered.value = !isWatered.value
-    // }
+    const success = await updateUserData(`users/${authStore.user?.uid}/rooms/${props.roomId}/plants`, props.plant.id, data)
 }
 
 const isWatered = computed(() => {
@@ -240,7 +234,7 @@ const isWatered = computed(() => {
 
 
 const deletePlant = async () => {
-    const collectionPath = `users/${user.value.uid}/rooms/${props.roomId}/plants/`
+    const collectionPath = `users/${authStore.user.uid}/rooms/${props.roomId}/plants/`
     const documentId = props.plant.id
 
     const documentImgSrc = props.plant.imgSrc

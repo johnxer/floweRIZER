@@ -22,9 +22,7 @@ export const useRoomStore = defineStore('useRoomStore', () => {
         }
     ]
 
-
     const roomDefaultColor = '#99c23b'
-
 
     return {
         roomIcons,
