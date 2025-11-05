@@ -13,7 +13,7 @@
             />
             <div
                 v-else-if="rooms"
-                class="grid lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-8 items-stretch"
+                class="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 lg:gap-8 items-stretch"
             >
                 <base-room
                     v-for="room in rooms"

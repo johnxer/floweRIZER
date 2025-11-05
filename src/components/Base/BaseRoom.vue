@@ -152,6 +152,9 @@
                                 ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2 border'
                                 : ''
                         ]"
+                        ghost-class="drag-ghost"
+                        chosen-class="drag-chosen"
+                        drag-class="drag-dragging"
                         @dragenter.prevent="onDragEnterZone"
                         @dragleave.prevent="onDragLeaveZone"
                         @dragover.prevent
@@ -340,7 +343,7 @@ const onHide = () => (isOpen.value = false)
 
 const deleteRoom = async () => {
     const uid = authStore.user?.uid
-    
+
     if (!uid) return
 
     await movePlants(uid, props.room.id, 'unassigned')
@@ -352,4 +355,5 @@ const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Un
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
