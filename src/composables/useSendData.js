@@ -103,6 +103,7 @@ export const useSendData = () => {
         try {
             await addDoc(plantCollection, {
                 ...data,
+                userId: uid,
                 createdAt: serverTimestamp(),
             });
 

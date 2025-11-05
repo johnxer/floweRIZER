@@ -44,7 +44,14 @@
                                     :key="notification.id"
                                     class="border-b last:border-0 border-gray-200 pb-2 mb-2 last:pb-0 last:mb-0"
                                 >
-                                    <div v-html="notification.action" />
+                                    <div class="flex gap-2 items-start">
+                                        <span class="material-symbols-outlined text-xl text-gray-300 relative -top-[1px]">
+                                            info
+                                        </span>
+
+                                        <!-- {{ notifications }} -->
+                                        <div v-html="notification.action" class="text-gray-500"/>
+                                    </div>
                                     <div class="text-end">
                                         <button
                                             type="button"
@@ -86,7 +93,11 @@
 </template>
 
 <script setup>
-import { computed, ref, useSlots } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
+import { computed, useSlots } from 'vue';
+import { useGetDataByUserId } from '../../composables/useGetData';
+
+import { differenceInDays } from 'date-fns';
 
 const props = defineProps({
     projectTitle: {
@@ -108,6 +119,32 @@ const isCenterSlotEmpty = computed(() => !slots.center || slots.center().length 
 
 const hasNotifications = computed(() => notifications.value.length)
 
+const {
+    error,
+    isPending,
+    items: plants
+} = useGetDataByUserId('plants')
+
+const notificationsArrayFromFB = computed(() => {
+
+  if (!plants.value?.length) return []
+
+  return plants.value
+    .filter(p => {
+        if (!p.lastWateredDate) return true
+
+        const lastWatered = p.lastWateredDate.toDate
+            ? p.lastWateredDate.toDate()
+            : new Date(p.lastWateredDate)
+
+        const daysAgo = differenceInDays(new Date(), lastWatered)
+        return daysAgo > p.wateringFrequency
+  }).map(p => ({
+      ...p,
+      type: 1,
+  }))
+})
+
 
 const typeNotificationsMap = [
     {
@@ -120,32 +157,22 @@ const typeNotificationsMap = [
     }
 ]
 
-const notificationsArrayFromFB = ref([
-    {
-        id: 1,
-        type: 1, // water within 24 hours
-        object: 'Orchid',
-    },
-    {
-        id: 2,
-        type: 1, // water within 24 hours
-        object: 'Cactus',
-    }
-])
-
 const notifications = computed(() => {
     return notificationsArrayFromFB.value.map(n => {
         const typeD = typeNotificationsMap.find(m => m.id === n.type)
 
         return {
+            id: uuidv4(),
             ...n,
-            action: typeD ? typeD.action.replace('##plantName##', `<strong>${n.object}</strong>`) : 'Unknown action'
+            action: typeD ? typeD.action.replace('##plantName##', `<strong>${n.name}</strong>`) : 'Unknown action'
         }
+
+        
     })
 })
 
 const handleDismissNotification = (notificationId) => {
-    notificationsArrayFromFB.value = notificationsArrayFromFB.value.filter(i => i.id !== notificationId)
+    
 }
 
 const emit = defineEmits(['toggle-sidebar'])
