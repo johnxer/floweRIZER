@@ -13,6 +13,7 @@
                             link-icon="potted_plant"
                             link-title="Dashboard"
                             class="w-1/3 md:w-full"
+                            :extra-classes="{'reset-is-active' : !!isChatActive}"
                             @click="handleSidebarMenu"
                         />
                         <base-menu-link
