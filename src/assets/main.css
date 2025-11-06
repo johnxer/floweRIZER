@@ -112,6 +112,10 @@
     .fade-move {
         @apply transition-transform duration-500;
     }
+
+    .header-min-h {
+        min-height: var(--header-h)
+    }
 }
 
 .v-popper--theme-tooltip {

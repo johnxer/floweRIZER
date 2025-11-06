@@ -5,8 +5,7 @@
         :class="{ 'bg-gray-100 shadow-2xl': isScrolled }"
     >
         <div 
-            class="container mx-auto flex items-center justify-between"
-            :class="`min-h-[${headerHeight}px]`"
+            class="container mx-auto flex items-center justify-between header-min-h"
         >
             <router-link :to="{ name: 'TheDashboard' }">
                 <h1 class="font-roboto text-xl md:text-2xl font-bold text-primary flex gap-3">
@@ -232,6 +231,9 @@ const handleScroll = () => {
     }
 }
 
+document.documentElement.style.setProperty('--header-h', `${headerHeight}px`)
+
+
 onMounted(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
 })
@@ -242,4 +244,7 @@ onUnmounted(() => {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+
+</style>
