@@ -1,7 +1,7 @@
 <template>
     <base-modal-content>
         <template #modalTitle>
-            {{ modalTitle }}
+            <span class="noto-color-emoji-regular mr-2">🏠</span>{{ modalTitle }}
         </template>
         <base-loader v-if="isPendingRoom" />
         <div v-else>
@@ -21,6 +21,7 @@
                                 input-id="room-name"
                                 input-placeholder="Enter room name..."
                                 :input-error="!!formErrors.name"
+                                class="w-full"
                                 v-model.trim="form.name"
                                 @input="formErrors.name = null"
                             />
@@ -34,7 +35,7 @@
                                 @change="formErrors.icon = null"
                                 id="room-icon"
                                 class="px-4 py-2 rounded-xl border-2 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 cursor-pointer"
-                                :class="!formErrors.icon ? 'border-gray-300 dark:border-gray-500' : 'border-red-300 dark:border-red-900'"
+                                :class="!formErrors.icon ? 'border-gray-300 dark:border-gray-600' : 'border-red-300 dark:border-red-900'"
                                 v-model="form.icon"
                             >
                                 <option
@@ -88,7 +89,7 @@
                                 <div class="flex gap-2">
                                     <label
                                         for="room-image"
-                                        class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-2 py-2 text-base rounded-xl cursor-pointer bg-gray-200 text-gray-500 dark:text-gray-200 border-gray-200 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden"
+                                        class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-2 py-2 text-base rounded-xl cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden"
                                     >
                                         {{ !!existingImageSrc ? 'Update' : 'Upload' }} file
                                         <input

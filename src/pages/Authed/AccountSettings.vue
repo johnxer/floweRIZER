@@ -4,8 +4,8 @@
             Profile
         </base-page-title> -->
 
-        <div class="lg:max-w-[600px] md:max-w-[400px] max-w-full grid lg:grid-cols-[auto_1fr] mx-auto gap-8 items-start grid-cols-[1fr]">
-            <div class="w-full md:w-[200px]">
+        <div class="md:max-w-[400px] max-w-full grid mx-auto gap-8 items-start grid-cols-[1fr]">
+            <div class="w-full">
                 <div class="w-[200px] h-[200px] relative rounded-full overflow-hidden shadow-2xl border-2 border-white dark:border-gray-700 mx-auto">
                     <transition
                         name="fade"
@@ -94,6 +94,7 @@
                                     input-id="user-name"
                                     input-placeholder="Enter user name..."
                                     :input-error="!!formErrors.userName"
+                                    class="w-full"
                                     v-model.trim="form.userName"
                                     @click="formErrors.userName = null"
                                 />
@@ -107,6 +108,7 @@
                                     input-type="email"
                                     input-id="email"
                                     input-placeholder="Enter email..."
+                                    class="w-full"
                                     readonly
                                     v-model.trim="emailValue"
                                 />

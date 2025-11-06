@@ -41,7 +41,7 @@
                                         close
                                     </span>
                                 </button>
-                                <div class="transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all dark:bg-gray-800 dark:outline dark:-outline-offset-1 dark:outline-white/10">
+                                <div class="transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all dark:bg-gray-800">
                                     <div class="bg-white dark:bg-gray-800">
                                         <slot />
                                     </div>

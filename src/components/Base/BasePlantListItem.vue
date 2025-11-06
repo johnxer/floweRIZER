@@ -2,15 +2,30 @@
     <li
         class="group p-2 rounded-xl transition-all duration-600 relative"
         :class="[
-            isDraggable ? 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700/75 cursor-move' : 'bg-white',
-            { 
+            isDraggable ? 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50 cursor-move' : 'bg-white',
+            {
                 'hover:bg-primary-500/30': isDraggable && isWatered,
-                'bg-primary-500/20': isWatered 
+                'bg-primary-500/20': isWatered
             }
         ]"
     >
         <div class="grid grid-cols-[auto_1fr] gap-3 items-center w-full">
-            <div class="grid grid-cols-[30px_1fr] gap-3 items-center">
+            <div class="grid grid-cols-[auto_30px_1fr] gap-3 items-center">
+                <div
+                    class="rounded-full size-6  flex items-center justify-center relative"
+                    :class="isWatered ? 'dark:bg-primary-800' : 'dark:bg-gray-800 '"
+                >
+                    <span
+                        class="material-symbols-outlined w-full text-center text-sm"
+                        :class="isWatered ? 'text-primary-300 dark:text-primary-200' : 'text-gray-700 dark:text-gray-500'"
+                    >
+                        {{ isWatered ? 'humidity_high' : 'water_drop' }}
+                    </span>
+                    <span
+                        v-if="isWateredNow"
+                        class="absolute inline-flex h-full w-full animate-plant-watered rounded-full bg-primary-400 opacity-50"
+                    />
+                </div>
                 <div class="w-full h-0 pb-[100%] overflow-hidden rounded-full relative">
                     <img
                         v-if="plant.imgSrc"
@@ -24,21 +39,28 @@
                         class="absolute object-cover h-full w-full"
                     />
                 </div>
-                <div class="text-sm text-gray-700 dark:text-white/50">
-                    {{ plant.name }}
+                <div>
+                    <div class="text-sm text-gray-700 dark:text-gray-600 font-semibold">
+                        {{ plant.name }}
+                    </div>
+                    <div class="text-xs text-gray-800 dark:text-gray-700">
+                        {{ lastWateredDaysAgo }}
+                    </div>
                 </div>
+
             </div>
             <div class="flex justify-end">
                 <button
                     type="button"
-                    class="cursor-pointer border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-1 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-600 text-gray-500 hover:text-gray-700 dark:hover:text-gray-400 min-w-[70px]"
+                    class="cursor-pointer px-2 py-2 transition-all duration-600 text-primary-500 hover:text-gray-700 dark:hover:text-gray-400 text-2xl flex items-center dark:disabled:text-gray-900 "
+                    :disabled="isWatered"
                     :class="[
-                        isWatered ? '' : '',
-                        { 'group-hover:border-gray-300 dark:group-hover:border-gray-600': isDraggable }
+                        isWatered ? '' : 'animate-float',
+                        { '': isDraggable }
                     ]"
                     @click="handleWatering"
                 >
-                    <div class="inline-flex flex-col items-end justify-center gap-1">
+                    <!-- <div class="inline-flex flex-col items-end justify-center gap-1">
                         <span
                             class="material-symbols-outlined w-full text-center text-sm"
                             :class="{ 'text-primary-500': isWatered }"
@@ -48,7 +70,11 @@
                         <span class="text-2xs">
                             {{ lastWateredDaysAgo }}
                         </span>
-                    </div>
+                    </div> -->
+
+                    <span class="material-symbols-outlined">
+                        humidity_high
+                    </span>
                 </button>
             </div>
         </div>
@@ -56,21 +82,20 @@
             v-if="showMoreDetails"
             class="text-start text-sm"
         >
-
             <div
                 class="p-2 md:p-4 rounded-xl transition-all duration-600 mt-4 text-gray-600 dark:text-gray-500"
-                :class="isWatered ? 'bg-white/60 dark:bg-white/5' : 'bg-gray-200 dark:bg-gray-900/25'"
+                :class="isWatered ? 'bg-white/60 dark:bg-white/5' : 'bg-gray-100 dark:bg-gray-900/25'"
             >
                 <div class="grid grid-cols-[1fr_auto] gap-4">
                     <div>
                         {{ plant.desc }}
                     </div>
                     <div>
-                        <ul class="flex items-center gap-4 transition-all duration-600 md:opacity-0 group-hover:opacity-100">
+                        <ul class="flex items-center gap-4">
                             <li>
                                 <button
                                     type="button"
-                                    class="flex text-xl text-gray-500 hover:text-primary-500 cursor-pointer "
+                                    class="flex text-xl text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 md:opacity-0 group-hover:opacity-100"
                                     v-tooltip="{
                                         content: 'Edit',
                                         container: 'body'
@@ -90,7 +115,7 @@
                                 >
                                     <button
                                         type="button"
-                                        class="text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex"
+                                        class="text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex transition-all duration-600 md:opacity-0 group-hover:opacity-100"
                                         :class="{ 'md:opacity-100 text-red-500 dark:text-red-900': isOpen }"
                                         v-tooltip="{
                                             content: 'Delete plant',
@@ -102,13 +127,11 @@
                                         </span>
                                     </button>
                                     <template #popper>
-                                        <div class="p-4">
-                                            <div class="text-lg mb-2 text-gray-700">
-                                                <strong>
-                                                    Delete this plant?
-                                                </strong>
-                                            </div>
-                                            <div class="mt-4 flex justify-between gap-5">
+                                        <base-popover-content>
+                                            <template #title>
+                                                Delete this plant?
+                                            </template>
+                                            <template #actions>
                                                 <base-button
                                                     btn-style="notRoundedMd"
                                                     btn-size="sm"
@@ -130,9 +153,9 @@
                                                 >
                                                     Yes, Delete This Plant
                                                 </base-button>
+                                            </template>
 
-                                            </div>
-                                        </div>
+                                        </base-popover-content>
                                     </template>
                                 </v-dropdown>
                             </li>
@@ -151,11 +174,13 @@ import { useAuthStore } from '../../stores/useAuthStore';
 
 import { differenceInDays } from "date-fns";
 
-import BaseButton from "../../components/Base/BaseButton.vue";
 import { useStorage } from '../../composables/useStorage';
 
 import { serverTimestamp } from 'firebase/firestore';
 import { useUpdateData } from '../../composables/useUpdateData';
+
+import BaseButton from './BaseButton.vue';
+import BasePopoverContent from './BasePopoverContent.vue';
 
 const {
     error: errorUpdateData,
@@ -202,36 +227,45 @@ const {
 
 // const isWatered = ref(false)
 
-const daysAgo = ref(null)
+const getDaysAgo = computed(() => {
+    if (!props.plant?.lastWateredDate) {
+        return null
+    }
+    const wateredAt = props.plant?.lastWateredDate.toDate()
+    return differenceInDays(new Date(), wateredAt);
+})
 
 const lastWateredDaysAgo = computed(() => {
     let wateringMessage = ''
-    if (!props.plant?.lastWateredDate) {
+    if (getDaysAgo.value === null) {
         wateringMessage = 'Not yet watered'
     } else {
-        const wateredAt = props.plant?.lastWateredDate.toDate()
-        daysAgo.value = differenceInDays(new Date(), wateredAt);
-
-        wateringMessage = daysAgo.value === 0 ?
-            '0 days ago' : daysAgo.value === 1 ?
-                '1 day ago' : `${daysAgo.value} days ago`
+        const days = getDaysAgo.value;
+        wateringMessage = days === 0 ?
+            'Watered 0 days ago' : days === 1 ?
+                'Watered 1 day ago' : `${days} days ago`
     }
 
     return wateringMessage;
 })
 
-const handleWatering = async () => {
+const isWateredNow = ref(false)
 
+const handleWatering = async () => {
     const data = {
         lastWateredDate: serverTimestamp()
     }
 
     const success = await updateUserData(`users/${authStore.user?.uid}/rooms/${props.roomId}/plants`, props.plant.id, data)
+
+    if (success) {
+        isWateredNow.value = true
+    }
 }
 
 const isWatered = computed(() => {
-    if (daysAgo.value === null) return false
-    return props.plant.wateringFrequency > daysAgo.value
+    if (getDaysAgo.value === null) return false
+    return props.plant.wateringFrequency > getDaysAgo.value
 })
 
 

@@ -46,7 +46,8 @@
                     AI adviser
                 </div>
                 <p class="text-sm text-primary-700">
-                    Hi, I'm a floweRIZER AI Chat Bot. Ask me any question about the plants.
+                    Hey plant lover! I’m floweRIZER 🌼<br />
+                    I know (almost) everything about green life — watering, soil, light, you name it! 🌞🌿
                 </p>
             </li>
 
@@ -124,7 +125,6 @@ import { formatDistanceToNow } from 'date-fns';
 
 import BaseLoader from '../Base/BaseLoader.vue';
 
-import { storeToRefs } from 'pinia';
 import { useActiveChat } from '../../composables/useActiveChat';
 import { useFlowerChat } from '../../composables/useFlowerChat';
 import { useGetChatData } from '../../composables/useGetChatData';

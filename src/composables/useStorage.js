@@ -14,11 +14,9 @@ export const useStorage = () => {
 
     const isPending = ref(false)
 
-
     const uploadImage = async (folder, user, file, subFolder = '') => {
         error.value = null;
         isPending.value = true;
-
 
         const timeStamp = Date.now()
 

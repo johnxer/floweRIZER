@@ -1,7 +1,7 @@
 <template>
     <base-modal-content>
         <template #modalTitle>
-            Create new plant
+            <span class="noto-color-emoji-regular mr-2">🌱</span>Create new plant
         </template>
         <div class="relative">
 
@@ -29,6 +29,7 @@
                         <base-input
                             input-id="plant-name"
                             input-placeholder="Enter plant name..."
+                            class="w-full"
                             :input-error="formErrors.name"
                             v-model.trim="form.name"
                             @input="formErrors.name = null"
@@ -80,7 +81,18 @@
                     >
                         <div class="flex gap-2 items-center text-gray-500">
                             Needs water every
-                            <input
+                            <base-input
+                                input-type="number"
+                                input-id="plant-watering"
+                                value="7"
+                                input-placeholder="..."
+                                class="w-[80px]"
+                                v-model.trim="form.watering"
+                                :error="!!formErrors.watering"
+                                @input="formErrors.watering = null"
+                                min="1"
+                            />
+                            <!-- <input
                                 type="number"
                                 id="plant-watering"
                                 value="7"
@@ -90,7 +102,7 @@
                                 v-model.trim="form.watering"
                                 @input="formErrors.watering = null"
                                 min="1"
-                            >
+                            > -->
                             days
                         </div>
                     </base-input-wrapper-authed>
@@ -109,7 +121,7 @@
                                     value="true"
                                     class="sr-only peer"
                                 >
-                                <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary dark:peer-checked:bg-primary"></div>
+                                <div class="relative w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white dark:after:bg-gray-800 after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary dark:peer-checked:bg-primary-800"></div>
                                 <span class="ms-3">
                                     I've watered the plant today
                                 </span>

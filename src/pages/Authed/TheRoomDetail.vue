@@ -48,7 +48,7 @@
                                     v-if="existPlants"
                                     name="fade"
                                     tag="ul"
-                                    class="space-y-2 mb-4"
+                                    class="space-y-4 mb-4"
                                 >
                                     <base-plant-list-item
                                         v-for="plant in plants"

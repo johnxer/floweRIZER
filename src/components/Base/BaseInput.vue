@@ -5,8 +5,11 @@
         :placeholder="inputPlaceholder"
         :value="modelValue"
         @input="handleInput"
-        class="px-4 py-2 rounded-xl border-2 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 read-only:cursor-not-allowed read-only:opacity-50 read-only:focus:border-gray-300 read-only:focus:dark:border-gray-500"
-        :class="!inputError ? 'border-gray-300 dark:border-gray-500' : 'border-red-300 dark:border-red-900'"
+        class="px-4 py-2 rounded-xl border-2 focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 read-only:cursor-not-allowed read-only:opacity-50 read-only:focus:border-gray-300 read-only:focus:dark:border-gray-600"
+        :class="[
+            !inputError ? 'border-gray-300 dark:border-gray-600' : 'border-red-300 dark:border-red-900',
+
+    ]"
     >
 </template>
 
@@ -33,7 +36,12 @@ defineProps({
     inputError: {
         type: Boolean,
         default: false
-    }
+    },
+    // extraClasses: {
+    //     type: String,
+    //     required: false,
+    //     default: ''
+    // }
 })
 
 const emit = defineEmits(['update:modelValue'])

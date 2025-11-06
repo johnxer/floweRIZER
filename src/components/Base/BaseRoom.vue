@@ -1,28 +1,28 @@
 <template>
     <div v-if="!room.isSystem || room.isSystem && plants?.length">
-        <div class="group/card flex flex-col bg-white rounded-xl p-2 relative">
-            <div class="text-2xl size-[40px] absolute top-[-20px] left-[-20px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 bg-white rounded-full flex items-center justify-center shadow-xl">
+        <div class="group/card flex flex-col bg-white dark:bg-gray-900/50 rounded-xl p-2 relative items-center md:items-start">
+            <div class="text-2xl size-[40px] absolute top-[-20px] md:left-[-20px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 bg-white dark:bg-gray-950 rounded-full flex items-center justify-center shadow-xl dark:shadow-none">
                 <span class="material-symbols-outlined">
                     {{ room.icon }}
                 </span>
             </div>
-            <div class="text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between pt-2 px-2">
+            <div class="text-base md:text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between pt-6 md:pt-2 px-2 w-full">
                 <router-link
                     :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
                     class="hover:text-primary-600 transition-colors duration-600 flex items-start gap-2"
                 >
                     {{ unassignedRoomName }}
-                    <span class="material-symbols-outlined text-3xl lg:opacity-0 group-hover:opacity-100 group-hover:translate-x-2 text-primary-600/25 transition-all duration-600">
+                    <span class="material-symbols-outlined text-2xl md:text-3xl lg:opacity-0 group-hover:opacity-100 group-hover:translate-x-2 text-primary-600/25 transition-all duration-600">
                         arrow_right_alt
                     </span>
                 </router-link>
                 <div
                     v-if="!room.isSystem"
-                    class="flex gap-3"
+                    class="flex gap-3 text-xl md:text-2xl"
                 >
                     <button
                         type="button"
-                        class="md:opacity-0 group-hover/card:opacity-100 text-2xl text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
+                        class="md:opacity-0 group-hover/card:opacity-100 text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
                         v-tooltip="{
                             content: 'Edit room',
                             container: 'body'
@@ -41,7 +41,7 @@
                     >
                         <button
                             type="button"
-                            class="md:opacity-0 group-hover/card:opacity-100 text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
+                            class="md:opacity-0 group-hover/card:opacity-100 text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
                             :class="{ 'md:opacity-100 text-red-500 dark:text-red-900': isOpen }"
                             v-tooltip="{
                                 content: 'Delete room',
@@ -53,16 +53,14 @@
                             </span>
                         </button>
                         <template #popper>
-                            <div class="p-4">
-                                <div class="text-lg mb-2 text-gray-700">
-                                    <strong>
-                                        Delete this room?
-                                    </strong>
-                                </div>
-                                <div class="text-gray-600 text-sm">
+                            <base-popover-content>
+                                <template #title>
+                                    Delete this room?
+                                </template>
+                                <template #desc>
                                     The plants linked to it will no longer be associated with any room.
-                                </div>
-                                <div class="mt-4 flex justify-between gap-5">
+                                </template>
+                                <template #actions>
                                     <base-button
                                         btn-style="notRoundedMd"
                                         btn-size="sm"
@@ -84,9 +82,8 @@
                                     >
                                         Yes, Delete This Room
                                     </base-button>
-
-                                </div>
-                            </div>
+                                </template>
+                            </base-popover-content>
                         </template>
                     </v-dropdown>
                 </div>
@@ -125,16 +122,16 @@
                             item-key="id"
                             tag="ul"
                             :data-room-id="props.room.id"
-                            class="w-full rounded-xl relative flex flex-col gap-2 transition-all duration-300 border-2"
+                            class="w-full rounded-xl relative flex flex-col gap-2 transition-all duration-300"
                             :class="[
                                 plants?.length
                                     ? 'p-2'
-                                    : 'flex flex-col items-start justify-start border-gray-200 dark:border-gray-800',
+                                    : 'flex flex-col items-start justify-start ',
                                 isDragOver
-                                    ? 'border-primary bg-primary/5 shadow-md'
-                                    : 'border-primary/0',
+                                    ? 'bg-gray-200/25 shadow-md dark:bg-gray-950/25'
+                                    : '',
                                 dragStore.isDragging
-                                    ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2 border'
+                                    ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2'
                                     : ''
                             ]"
                             ghost-class="drag-ghost"
@@ -193,7 +190,6 @@
             :modal-toggle="isModalOpen"
             @close-modal="toggleModal"
         >
-
             <add-new-plant-content
                 :room-id="room.id"
                 @close-modal="toggleModal"
@@ -220,6 +216,7 @@ import BaseButton from './BaseButton.vue';
 import BaseLoader from './BaseLoader.vue';
 import BaseModal from './BaseModal/BaseModal.vue';
 import BasePlantListItem from './BasePlantListItem.vue';
+import BasePopoverContent from './BasePopoverContent.vue';
 
 import AddNewPlantContent from '../AddNewPlantContent.vue';
 import AddNewRoomContent from '../AddNewRoomContent.vue';

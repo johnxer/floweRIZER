@@ -4,7 +4,7 @@
             <template #modalTitle>
                 Delete Account
             </template>
-            <div class="text-gray-700">
+            <div class="text-gray-600 dark:text-gray-500">
                 <div class="mb-2">
                     Once your account is deleted, all your personal data, preferences, and saved items will be permanently removed.
                 </div>

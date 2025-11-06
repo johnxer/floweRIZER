@@ -1,8 +1,7 @@
 <template>
-
     <header
         class="px-4 md:px-6 sticky top-0 z-2 transition-all"
-        :class="{ 'bg-gray-100 shadow-2xl': isScrolled }"
+        :class="{ 'bg-gray-100 dark:bg-gray-950 shadow-2xl': isScrolled }"
     >
         <div class="container mx-auto flex items-center justify-between header-min-h">
             <router-link :to="{ name: 'TheDashboard' }">
@@ -47,17 +46,17 @@
                                     <li
                                         v-for="notification in notifications"
                                         :key="notification.id"
-                                        class="border-b last:border-0 border-gray-200 pb-2 mb-2 last:pb-0 last:mb-0"
+                                        class="border-b last:border-0 border-gray-200 dark:border-gray-900 pb-2 mb-2 last:pb-0 last:mb-0"
                                     >
                                         <div class="flex gap-2 items-start">
-                                            <span class="material-symbols-outlined text-xl text-gray-300 relative -top-[1px]">
+                                            <span class="material-symbols-outlined text-xl text-gray-300 dark:text-gray-500 relative -top-[1px]">
                                                 info
                                             </span>
 
                                             <!-- {{ notifications }} -->
                                             <div
                                                 v-html="notification.action"
-                                                class="text-gray-500"
+                                                class="text-gray-600 dark:text-gray-500"
                                             />
                                         </div>
                                         <div class="text-end">
@@ -147,6 +146,10 @@ const props = defineProps({
     projectTitle: {
         type: String,
         required: true
+    },
+    isOpen: {
+        type: Boolean,
+        required: true
     }
 })
 
@@ -221,11 +224,10 @@ const handleDismissNotification = (notificationId) => {
 
 const emit = defineEmits(['toggle-sidebar'])
 
-const isSidebarOpen = ref(false)
+const isSidebarOpen = computed(() => props.isOpen)
 
 const handleSidebarMenu = () => {
     emit('toggle-sidebar')
-    isSidebarOpen.value = !isSidebarOpen.value
 }
 
 const isModalOpen = ref(false)

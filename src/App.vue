@@ -3,6 +3,7 @@
         v-if="isAuthed"
         :project-title="projectName"
         @toggle-sidebar="toggleSidebar"
+        :is-open="isSidebarOpen"
     >
     </the-header>
     <!-- <div
@@ -25,11 +26,13 @@
 
         </router-view>
         <the-chat v-if="isAuthed" />
+        <div class="text-white">
+        </div>
     <!-- </div> -->
     <sidebar-menu
         v-if="isAuthed"
         @toggle-sidebar="toggleSidebar"
-        :isOpen="isSidebarOpen"
+        :is-open="isSidebarOpen"
     />
 </template>
 
