@@ -1,14 +1,16 @@
 <template>
     <div v-if="!room.isSystem || room.isSystem && plants?.length">
-        <div class="group/card flex flex-col bg-white rounded-xl p-2">
+        <div class="group/card flex flex-col bg-white rounded-xl p-2 relative">
+            <div class="text-2xl size-[40px] absolute top-[-20px] left-[-20px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 bg-white rounded-full flex items-center justify-center shadow-xl">
+                <span class="material-symbols-outlined">
+                    {{ room.icon }}
+                </span>
+            </div>
             <div class="text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between pt-2 px-2">
                 <router-link
                     :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
                     class="hover:text-primary-600 transition-colors duration-600 flex items-start gap-2"
                 >
-                    <span class="material-symbols-outlined text-3xl relative top-[-2px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600">
-                        {{ room.icon }}
-                    </span>
                     {{ unassignedRoomName }}
                     <span class="material-symbols-outlined text-3xl lg:opacity-0 group-hover:opacity-100 group-hover:translate-x-2 text-primary-600/25 transition-all duration-600">
                         arrow_right_alt
@@ -201,8 +203,8 @@
             :modal-toggle="isModalOpenRoom"
             @close-modal="toggleModalRoom"
         >
-            <add-new-room-content 
-                @close-modal="toggleModalRoom" 
+            <add-new-room-content
+                @close-modal="toggleModalRoom"
                 :prefill-content="true"
                 :room-id="room.id"
             />

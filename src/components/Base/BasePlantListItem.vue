@@ -210,7 +210,7 @@ const lastWateredDaysAgo = computed(() => {
         wateringMessage = 'Not yet watered'
     } else {
         const wateredAt = props.plant?.lastWateredDate.toDate()
-        daysAgo.value = differenceInDays(wateredAt, new Date());
+        daysAgo.value = differenceInDays(new Date(), wateredAt);
 
         wateringMessage = daysAgo.value === 0 ?
             '0 days ago' : daysAgo.value === 1 ?
