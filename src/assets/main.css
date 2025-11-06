@@ -70,7 +70,7 @@
 
 @layer base {
     body {
-        @apply bg-gray-100 text-gray-900 font-roboto antialiased bg-transparent;
+        @apply bg-gray-100 text-gray-900 font-roboto antialiased;
         /* @apply dark:bg-slate-900 dark:text-slate-200; */
     }
 

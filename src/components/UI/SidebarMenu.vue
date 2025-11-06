@@ -1,11 +1,11 @@
 <template>
     <div
-        class="fixed w-full left-0 md:left-auto md:w-[300px] bottom-0 md:top-[60px] bg-white px-4 py-1 md:px-8 md:pb-8 md:pt-12 transition-all duration-600 ease-in-out shadow-menu dark:bg-gray-900 z-10"
+        class="fixed w-full left-0 md:left-auto md:w-[200px] md:top-[70px] bg-white px-4 py-1 md:px-8 md:pb-8 md:pt-12 transition-all duration-600 ease-in-out shadow-menu dark:bg-gray-900 z-10 rounded-l-xl flex items-center"
         :class="isOpen ? 'md:right-0 md:shadow-2xl' : 'md:-right-[300px] md:shadow-none'"
     >
         <button
             type="button"
-            class="absolute -left-[20px] top-2 size-[40px] rounded-full bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-700 items-center justify-center cursor-pointer text-3xl text-gray-300 dark:text-gray-700 transition-all duration-600 hover:border-gray-400 hover:text-gray-400 dark:hover:border-gray-500 dark:hover:text-gray-500 hidden md:flex"
+            class="absolute -left-[20px] size-[40px] rounded-full bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-700 items-center justify-center cursor-pointer text-3xl text-gray-300 dark:text-gray-700 transition-all duration-600 hover:border-gray-400 hover:text-gray-400 dark:hover:border-gray-500 dark:hover:text-gray-500 hidden md:flex"
             :class="isOpen ? 'opacity-100 -left-[20px]' : 'opacity-0 left-0'"
             @click="handleSidebarMenu"
         >

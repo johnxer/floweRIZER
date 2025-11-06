@@ -1,5 +1,5 @@
 <template>
-    <header class="min-h-[60px] px-4 md:px-6 sticky top-0 z-2 bg-white shadow-lg flex items-center dark:bg-gray-900 dark:border-b border-gray-800 justify-between">
+    <header class="min-h-[60px] container mx-auto px-4 md:px-6 sticky top-0 z-2 flex items-center justify-between">
         <router-link :to="{ name: 'TheDashboard' }">
             <h1 class="font-roboto text-xl md:text-2xl font-bold text-primary flex gap-3">
                 <span class="noto-color-emoji-regular">
@@ -50,7 +50,10 @@
                                         </span>
 
                                         <!-- {{ notifications }} -->
-                                        <div v-html="notification.action" class="text-gray-500"/>
+                                        <div
+                                            v-html="notification.action"
+                                            class="text-gray-500"
+                                        />
                                     </div>
                                     <div class="text-end">
                                         <button
@@ -66,6 +69,14 @@
                         </div>
                     </template>
                 </v-dropdown>
+                <base-button
+                    @click="toggleModal"
+                    btn-style="notRoundedMd"
+                    btn-size="sm"
+                    :btn-full-width="false"
+                >
+                    New room
+                </base-button>
                 <div class="md:hidden">
                     <button
                         class="text-gray-400 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-900 cursor-pointer transition-colors duration-600 flex"
@@ -89,15 +100,25 @@
                 </div>
             </div>
         </div>
+        <base-modal
+            :modal-toggle="isModalOpen"
+            @close-modal="toggleModal"
+        >
+            <add-new-room-content @close-modal="toggleModal" />
+        </base-modal>
     </header>
 </template>
 
 <script setup>
 import { v4 as uuidv4 } from 'uuid';
-import { computed, useSlots } from 'vue';
+import { computed, ref, useSlots } from 'vue';
 import { useGetDataByUserId } from '../../composables/useGetData';
 
 import { differenceInDays } from 'date-fns';
+
+import AddNewRoomContent from '../AddNewRoomContent.vue';
+import BaseButton from '../Base/BaseButton.vue';
+import BaseModal from '../Base/BaseModal/BaseModal.vue';
 
 const props = defineProps({
     projectTitle: {
@@ -127,22 +148,22 @@ const {
 
 const notificationsArrayFromFB = computed(() => {
 
-  if (!plants.value?.length) return []
+    if (!plants.value?.length) return []
 
-  return plants.value
-    .filter(p => {
-        if (!p.lastWateredDate) return true
+    return plants.value
+        .filter(p => {
+            if (!p.lastWateredDate) return true
 
-        const lastWatered = p.lastWateredDate.toDate
-            ? p.lastWateredDate.toDate()
-            : new Date(p.lastWateredDate)
+            const lastWatered = p.lastWateredDate.toDate
+                ? p.lastWateredDate.toDate()
+                : new Date(p.lastWateredDate)
 
-        const daysAgo = differenceInDays(new Date(), lastWatered)
-        return daysAgo > p.wateringFrequency
-  }).map(p => ({
-      ...p,
-      type: 1,
-  }))
+            const daysAgo = differenceInDays(new Date(), lastWatered)
+            return daysAgo > p.wateringFrequency
+        }).map(p => ({
+            ...p,
+            type: 1,
+        }))
 })
 
 
@@ -167,12 +188,12 @@ const notifications = computed(() => {
             action: typeD ? typeD.action.replace('##plantName##', `<strong>${n.name}</strong>`) : 'Unknown action'
         }
 
-        
+
     })
 })
 
 const handleDismissNotification = (notificationId) => {
-    
+
 }
 
 const emit = defineEmits(['toggle-sidebar'])
@@ -181,6 +202,15 @@ const handleSidebarMenu = () => {
     emit('toggle-sidebar')
 }
 
+const isModalOpen = ref(false)
+
+const toggleModal = (state) => {
+    if (typeof state === 'boolean') {
+        isModalOpen.value = state
+    } else {
+        isModalOpen.value = !isModalOpen.value
+    }
+}
 
 </script>
 

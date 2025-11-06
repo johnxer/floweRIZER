@@ -1,5 +1,4 @@
 <template>
-    <div>
         <TransitionRoot
             as="template"
             :show="modalToggle"
@@ -53,7 +52,6 @@
                 </div>
             </Dialog>
         </TransitionRoot>
-    </div>
 </template>
 
 <script setup>
