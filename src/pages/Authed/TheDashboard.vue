@@ -10,7 +10,7 @@
             />
             <div
                 v-else-if="rooms"
-                class="grid md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-10 lg:gap-8 items-start"
+                class="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-10 lg:gap-8 items-start"
             >
                 <base-room
                     v-for="room in sortedRooms"
