@@ -25,6 +25,7 @@
                             content: 'Edit room',
                             container: 'body'
                         }"
+                        @click="toggleModalRoom"
                     >
                         <span class="material-symbols-outlined">
                             edit
@@ -59,7 +60,7 @@
                                 <div class="text-gray-600 text-sm">
                                     The plants linked to it will no longer be associated with any room.
                                 </div>
-                                <div class="mt-4 flex justify-between">
+                                <div class="mt-4 flex justify-between gap-5">
                                     <base-button
                                         btn-style="notRoundedMd"
                                         btn-size="sm"
@@ -150,6 +151,7 @@
                                     :room-id="props.room.id"
                                     :data-plant-id="element.id"
                                     class="cursor-move w-full"
+                                    :is-draggable="true"
                                 />
                             </template>
 
@@ -195,6 +197,17 @@
                 @close-modal="toggleModal"
             />
         </base-modal>
+        <base-modal
+            :modal-toggle="isModalOpenRoom"
+            @close-modal="toggleModalRoom"
+        >
+            <add-new-room-content 
+                @close-modal="toggleModalRoom" 
+                :prefill-content="true"
+                :room-id="room.id"
+            />
+        </base-modal>
+
     </div>
 </template>
 
@@ -207,6 +220,7 @@ import BaseModal from './BaseModal/BaseModal.vue';
 import BasePlantListItem from './BasePlantListItem.vue';
 
 import AddNewPlantContent from '../AddNewPlantContent.vue';
+import AddNewRoomContent from '../AddNewRoomContent.vue';
 
 import { useDeleteData } from '../../composables/useDeleteData';
 import { useGetData } from '../../composables/useGetData';
@@ -302,6 +316,16 @@ const toggleModal = (state) => {
         isModalOpen.value = state
     } else {
         isModalOpen.value = !isModalOpen.value
+    }
+}
+
+const isModalOpenRoom = ref(false)
+
+const toggleModalRoom = (state) => {
+    if (typeof state === 'boolean') {
+        isModalOpenRoom.value = state
+    } else {
+        isModalOpenRoom.value = !isModalOpenRoom.value
     }
 }
 

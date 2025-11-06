@@ -2,9 +2,11 @@
     <li
         class="group p-2 rounded-xl transition-all duration-600 relative"
         :class="[
-            isWatered ? 'bg-primary-500/20' : 'bg-gray-100 dark:bg-gray-800',
-            { 'hover:bg-gray-200 dark:hover:bg-gray-700/75 cursor-move': isDraggable },
-            { 'hover:bg-primary-500/30': isDraggable && isWatered }
+            isDraggable ? 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700/75 cursor-move' : 'bg-white',
+            { 
+                'hover:bg-primary-500/30': isDraggable && isWatered,
+                'bg-primary-500/20': isWatered 
+            }
         ]"
     >
         <div class="grid grid-cols-[auto_1fr] gap-3 items-center w-full">
@@ -106,7 +108,7 @@
                                                     Delete this plant?
                                                 </strong>
                                             </div>
-                                            <div class="mt-4 flex justify-between">
+                                            <div class="mt-4 flex justify-between gap-5">
                                                 <base-button
                                                     btn-style="notRoundedMd"
                                                     btn-size="sm"

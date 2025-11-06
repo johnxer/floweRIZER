@@ -145,3 +145,9 @@
 .modal-backdrop.fade {
     opacity: 0;
 }
+
+
+
+.v-popper--theme-dropdown .v-popper__inner{
+    @apply border-none rounded-xl shadow-menu bg-white dark:bg-neutral-800
+}

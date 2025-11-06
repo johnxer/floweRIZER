@@ -83,6 +83,31 @@ export const useSendData = () => {
         }
     };
 
+    const updateDataRooms = async (data, roomId) => {
+        const uid = getUid();
+
+        if (!uid) return false;
+
+        isPending.value = true;
+        error.value = null;
+
+        const roomPath = `users/${uid}/rooms/${roomId}`;
+        const roomReference = doc(db, `${roomPath}`);
+
+        try {
+            await updateDoc(roomReference, {
+                ...data,
+            });
+
+            return true;
+        } catch (err) {
+            error.value = err.message;
+            return false;
+        } finally {
+            isPending.value = false;
+        }
+    };
+
     const sendDataPlants = async (data, roomId) => {
         const uid = getUid();
 
@@ -122,5 +147,6 @@ export const useSendData = () => {
         sendDataChats,
         sendDataRooms,
         sendDataPlants,
+        updateDataRooms
     };
 };
