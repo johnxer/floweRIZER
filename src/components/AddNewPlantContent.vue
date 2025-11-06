@@ -60,7 +60,9 @@
                                 <span class="material-symbols-outlined text-2xl">
                                     image
                                 </span>
-                                {{ selectFileName }}
+                                <span class="text-wrap">
+                                    {{ selectFileName }}
+                                </span>
 
                             </div>
                         </div>
@@ -121,7 +123,7 @@
                                     value="true"
                                     class="sr-only peer"
                                 >
-                                <div class="relative w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white dark:after:bg-gray-800 after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-primary dark:peer-checked:bg-primary-800"></div>
+                                <div class="relative w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white dark:after:bg-gray-900 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-800"></div>
                                 <span class="ms-3">
                                     I've watered the plant today
                                 </span>

@@ -6,7 +6,7 @@
         >
             <base-loader
                 v-if="isPending"
-                class="static"
+                class="flex items-center justify-center absolute top-[60px] md:bottom-[64px] h-[calc(100vh-60px-64px)] inset-x-[0] w-screen"
             />
             <div
                 v-else-if="rooms"

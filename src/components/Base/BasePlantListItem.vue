@@ -2,7 +2,7 @@
     <li
         class="group p-2 rounded-xl transition-all duration-600 relative"
         :class="[
-            isDraggable ? 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50 cursor-move' : 'bg-white',
+            isDraggable ? 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50 cursor-move' : 'bg-white dark:bg-gray-900',
             {
                 'hover:bg-primary-500/30': isDraggable && isWatered,
                 'bg-primary-500/20': isWatered

@@ -116,7 +116,7 @@
     }
 
     .fade-move {
-        @apply transition-transform duration-500;
+        @apply transition-transform duration-600;
     }
 
     .icon-fade-enter-active,
@@ -128,6 +128,39 @@
         opacity: 0;
         transform: scale(0.8) rotate(-90deg);
     }
+
+
+    .chat-slide-enter-active,
+    .chat-slide-leave-active {
+        @apply transition-all duration-600;
+    }
+
+    .chat-slide-enter-from,
+    .chat-slide-leave-to {
+        @apply translate-y-[calc(100%+var(--spacing)*22)] opacity-0;
+        
+    }
+
+    .chat-slide-enter-to,
+    .chat-slide-leave-from {
+        @apply translate-y-0 opacity-100;
+    }
+
+    /* .menu-slide-enter-active,
+    .menu-slide-leave-active {
+        @apply transition-all duration-600;
+    }
+
+    .menu-slide-enter-from,
+    .menu-slide-leave-to {
+        @apply md:-translate-y-[calc(100%+var(--header-h))] md:opacity-0;
+        
+    }
+
+    .menu-slide-enter-to,
+    .menu-slide-leave-from {
+        @apply md:translate-y-0 md:opacity-100;
+    } */
 
     .header-min-h {
         min-height: var(--header-h);
@@ -172,19 +205,19 @@
     @apply dark:text-white/75 dark:bg-black text-xs/5;
 }
 
-.is-active {
-    color: var(--color-primary);
+.is-active:not(.reset-is-active) {
+    @apply text-primary dark:text-primary-700
 }
 
 .modal-backdrop {
-    @apply bg-gray-900/75;
+    @apply bg-gray-800/75 fixed inset-0 z-3;
 
-    position: fixed;
-    top: 0;
+    
+    /* top: 0;
     inset-inline-end: 0;
     bottom: 0;
-    inset-inline-start: 0;
-    z-index: 1040;
+    inset-inline-start: 0; */
+    /* z-index: 1040; */
     backdrop-filter: blur(5px);
 }
 
@@ -193,9 +226,9 @@
 }
 
 .v-popper--theme-dropdown .v-popper__inner {
-    @apply border-none rounded-xl shadow-menu bg-white dark:bg-gray-800;
+    @apply border-none rounded-xl shadow-menu bg-white dark:bg-gray-900;
 }
 .v-popper--theme-dropdown .v-popper__arrow-inner,
 .v-popper--theme-dropdown .v-popper__arrow-outer {
-    @apply border-white dark:border-gray-800;
+    @apply border-white dark:border-gray-900;
 }

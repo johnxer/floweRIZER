@@ -3,7 +3,7 @@
         <div>
             <label
                 :for="fieldId"
-                class="block text-gray-400 dark:text-white/35 text-sm"
+                class="block text-gray-400 dark:text-gray-500 text-sm mb-1"
                 :class="{'flex justify-between' : fieldLabelExtra}"
             >
                 {{ fieldLabel }}

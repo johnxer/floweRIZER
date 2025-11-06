@@ -20,7 +20,7 @@
                 </TransitionChild>
 
                 <div class="fixed inset-0 z-10 w-screen overflow-y-auto modal-backdrop">
-                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div class="flex min-h-full items-start justify-center p-4 text-center sm:items-center sm:p-0">
                         <TransitionChild
                             as="template"
                             enter="ease-out duration-300"
@@ -41,8 +41,8 @@
                                         close
                                     </span>
                                 </button>
-                                <div class="transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all dark:bg-gray-800">
-                                    <div class="bg-white dark:bg-gray-800">
+                                <div class="transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all dark:bg-gray-900">
+                                    <div>
                                         <slot />
                                     </div>
                                 </div>

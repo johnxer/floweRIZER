@@ -1,12 +1,21 @@
 <template>
     <div v-if="!room.isSystem || room.isSystem && plants?.length">
-        <div class="group/card flex flex-col bg-white dark:bg-gray-900/50 rounded-xl p-2 relative items-center md:items-start">
-            <div class="text-2xl size-[40px] absolute top-[-20px] md:left-[-20px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 bg-white dark:bg-gray-950 rounded-full flex items-center justify-center shadow-xl dark:shadow-none">
+        <div
+            class="group/card flex flex-col rounded-xl p-2 relative items-center md:items-start"
+            :class="!!room.isSystem ? 'border-3 border-white dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50'"
+        >
+            <div
+                v-if="!room.isSystem"
+                class="text-2xl size-[40px] absolute top-[-20px] md:left-[-20px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 bg-white dark:bg-gray-950 rounded-full flex items-center justify-center shadow-xl dark:shadow-none"
+            >
                 <span class="material-symbols-outlined">
                     {{ room.icon }}
                 </span>
             </div>
-            <div class="text-base md:text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between pt-6 md:pt-2 px-2 w-full">
+            <div
+                class="text-base md:text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between md:pt-2 px-2 w-full"
+                :class="!!room.isSystem ? 'pt-2' : 'pt-6'"
+            >
                 <router-link
                     :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
                     class="hover:text-primary-600 transition-colors duration-600 flex items-start gap-2"
@@ -157,8 +166,7 @@
                         </v-draggable>
                         <div
                             v-if="!dragStore.isDragging"
-                            class="w-full text-center "
-                            :class="plants?.length ? 'mb-2' : 'my-2'"
+                            class="w-full text-center my-2"
                         >
                             <base-button
                                 type="button"

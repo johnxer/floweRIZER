@@ -18,10 +18,10 @@
 
             <!-- <slot name="end"/> -->
             <div>
-                <div class="flex gap-5 items-center">
+                <div class="flex gap-4 items-center">
                     <v-dropdown trap-focus>
                         <button
-                            class="relative transition-colors duration-600 flex"
+                            class="relative transition-colors duration-600 flex p-2"
                             :class="hasNotifications ? 'cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600' : 'cursor-default text-gray-200 dark:text-gray-800'"
                             :disabled="!hasNotifications"
                         >
@@ -46,7 +46,7 @@
                                     <li
                                         v-for="notification in notifications"
                                         :key="notification.id"
-                                        class="border-b last:border-0 border-gray-200 dark:border-gray-900 pb-2 mb-2 last:pb-0 last:mb-0"
+                                        class="border-b last:border-0 border-gray-200 dark:border-gray-800 pb-2 mb-2 last:pb-0 last:mb-0"
                                     >
                                         <div class="flex gap-2 items-start">
                                             <span class="material-symbols-outlined text-xl text-gray-300 dark:text-gray-500 relative -top-[1px]">

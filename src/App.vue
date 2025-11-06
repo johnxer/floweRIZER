@@ -15,7 +15,6 @@
             :project-title="projectName"
             class="mt-8"
         />
-
         <router-view v-slot="{ Component }">
             <transition
                 name="fade"
@@ -25,13 +24,16 @@
             </transition>
 
         </router-view>
-        <the-chat v-if="isAuthed" />
-        <div class="text-white">
-        </div>
+        <the-chat 
+            v-if="isAuthed" 
+            :is-chat-open="isChatOpen"
+        />
+        
     <!-- </div> -->
     <sidebar-menu
         v-if="isAuthed"
         @toggle-sidebar="toggleSidebar"
+        @toggle-chat="toggleChat"
         :is-open="isSidebarOpen"
     />
 </template>
@@ -74,6 +76,12 @@ const isSidebarOpen = ref(false)
 
 const toggleSidebar = () => {
     isSidebarOpen.value = !isSidebarOpen.value
+}
+
+const isChatOpen = ref(false)
+
+const toggleChat = () => {
+    isChatOpen.value = !isChatOpen.value
 }
 
 </script>
