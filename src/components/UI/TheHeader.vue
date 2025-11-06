@@ -4,9 +4,7 @@
         class="px-4 md:px-6 sticky top-0 z-2 transition-all"
         :class="{ 'bg-gray-100 shadow-2xl': isScrolled }"
     >
-        <div 
-            class="container mx-auto flex items-center justify-between header-min-h"
-        >
+        <div class="container mx-auto flex items-center justify-between header-min-h">
             <router-link :to="{ name: 'TheDashboard' }">
                 <h1 class="font-roboto text-xl md:text-2xl font-bold text-primary flex gap-3">
                     <span class="noto-color-emoji-regular">
@@ -100,9 +98,26 @@
                             class="cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center p-2"
                             @click="handleSidebarMenu"
                         >
-                            <span class="material-symbols-outlined text-2xl">
-                                menu
-                            </span>
+
+                            <transition
+                                name="icon-fade"
+                                mode="out-in"
+                            >
+                                <span
+                                    v-if="isSidebarOpen"
+                                    key="close"
+                                    class="material-symbols-outlined text-2xl transition-transform duration-500 rotate-180"
+                                >
+                                    close
+                                </span>
+                                <span
+                                    v-else
+                                    key="menu"
+                                    class="material-symbols-outlined text-2xl transition-transform duration-500 rotate-0"
+                                >
+                                    menu
+                                </span>
+                            </transition>
                         </button>
                     </div>
                 </div>
@@ -206,8 +221,11 @@ const handleDismissNotification = (notificationId) => {
 
 const emit = defineEmits(['toggle-sidebar'])
 
+const isSidebarOpen = ref(false)
+
 const handleSidebarMenu = () => {
     emit('toggle-sidebar')
+    isSidebarOpen.value = !isSidebarOpen.value
 }
 
 const isModalOpen = ref(false)
@@ -244,7 +262,4 @@ onUnmounted(() => {
 
 </script>
 
-<style lang="scss" scoped>
-
-
-</style>
+<style lang="scss" scoped></style>

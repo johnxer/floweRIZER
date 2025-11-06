@@ -26,15 +26,13 @@
                         field-id="plant-name"
                         :errorText="formErrors.name"
                     >
-                        <input
-                            type="text"
-                            id="plant-name"
-                            placeholder="Enter plant name..."
-                            class="px-4 py-2 rounded-xl border-2 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75"
-                            :class="!formErrors.name ? 'border-gray-300 dark:border-gray-500' : 'border-red-300 dark:border-red-900'"
+                        <base-input
+                            input-id="plant-name"
+                            input-placeholder="Enter plant name..."
+                            :input-error="formErrors.name"
                             v-model.trim="form.name"
                             @input="formErrors.name = null"
-                        >
+                        />
                     </base-input-wrapper-authed>
                     <base-input-wrapper-authed
                         field-label="Image"
@@ -70,10 +68,9 @@
                         field-label="Description"
                         field-id="plant-description"
                     >
-                        <textarea
-                            id="room-description"
-                            placeholder="Enter room description..."
-                            class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full read-only:cursor-not-allowed focus:outline-0 read-only:opacity-50 text-gray-500 dark:text-white/75 dark:border-gray-500 h-[100px]"
+                        <base-textarea 
+                            textarea-id="plant-description"
+                            textarea-placeholder="Enter plant description..."
                             v-model.trim="form.desc"
                         />
                     </base-input-wrapper-authed>
@@ -141,7 +138,11 @@ import { computed, ref } from 'vue';
 import { useSendData } from '../composables/useSendData';
 import { useStorage } from '../composables/useStorage';
 import { useAuthStore } from '../stores/useAuthStore';
+
 import BaseButton from './Base/BaseButton.vue';
+import BaseInput from './Base/BaseInput.vue';
+import BaseTextarea from './Base/BaseTextarea.vue';
+
 import BaseInputWrapperAuthed from './Base/BaseInputWrapperAuthed.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';

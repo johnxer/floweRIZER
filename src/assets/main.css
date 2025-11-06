@@ -113,8 +113,18 @@
         @apply transition-transform duration-500;
     }
 
+    .icon-fade-enter-active,
+    .icon-fade-leave-active {
+        transition: all 0.3s ease;
+    }
+    .icon-fade-enter-from,
+    .icon-fade-leave-to {
+        opacity: 0;
+        transform: scale(0.8) rotate(-90deg);
+    }
+
     .header-min-h {
-        min-height: var(--header-h)
+        min-height: var(--header-h);
     }
 }
 
@@ -146,8 +156,6 @@
     opacity: 0;
 }
 
-
-
-.v-popper--theme-dropdown .v-popper__inner{
-    @apply border-none rounded-xl shadow-menu bg-white dark:bg-neutral-800
+.v-popper--theme-dropdown .v-popper__inner {
+    @apply border-none rounded-xl shadow-menu bg-white dark:bg-neutral-800;
 }

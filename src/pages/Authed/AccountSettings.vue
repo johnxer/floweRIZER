@@ -1,8 +1,8 @@
 <template>
     <base-container>
-        <base-page-title>
+        <!-- <base-page-title>
             Profile
-        </base-page-title>
+        </base-page-title> -->
 
         <div class="lg:max-w-[600px] md:max-w-[400px] max-w-full grid lg:grid-cols-[auto_1fr] mx-auto gap-8 items-start grid-cols-[1fr]">
             <div class="w-full md:w-[200px]">
@@ -77,7 +77,7 @@
                         <base-loader
                             v-if="isPendingProfileUpdate"
                             position-type="absolute"
-                            class="bg-white/80 z-1"
+                            class="bg-gray-100/80 z-1"
                         />
                     </transition>
                     <form
@@ -88,28 +88,28 @@
                             <base-input-wrapper-authed
                                 field-label="Your username"
                                 field-id="user-name"
+                                :errorText="formErrors.userName"
                             >
-                                <input
-                                    type="text"
-                                    id="user-name"
-                                    placeholder="Enter user name..."
-                                    class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 dark:border-gray-500"
-                                    v-model="form.userName"
-                                >
+                                <base-input 
+                                    input-id="user-name"
+                                    input-placeholder="Enter user name..."
+                                    :input-error="!!formErrors.userName"
+                                    v-model.trim="form.userName"
+                                    @click="formErrors.userName = null"
+                                />
                             </base-input-wrapper-authed>
                             <base-input-wrapper-authed
                                 field-label="Your email"
                                 field-label-extra="Cannot be changed"
                                 field-id="email"
                             >
-                                <input
-                                    type="email"
-                                    id="email"
-                                    placeholder="Enter email..."
-                                    class="px-4 py-2 rounded-xl border-2 border-gray-300 w-full read-only:cursor-not-allowed focus:outline-0 read-only:opacity-50 text-gray-500 dark:text-white/75 dark:border-gray-500"
+                                <base-input 
+                                    input-type="email"
+                                    input-id="email"
+                                    input-placeholder="Enter email..."
                                     readonly
-                                    v-model="emailValue"
-                                >
+                                    v-model.trim="emailValue"
+                                />
                             </base-input-wrapper-authed>
                             <base-input-wrapper-authed
                                 field-label="Theme colour"
@@ -165,15 +165,15 @@
 import BaseButton from '../../components/Base/BaseButton.vue';
 import BaseContainer from '../../components/Base/BaseContainer.vue';
 import BaseFormMessageBox from '../../components/Base/BaseFormMessageBox.vue';
+import BaseInput from '../../components/Base/BaseInput.vue';
+import BaseInputWrapperAuthed from '../../components/Base/BaseInputWrapperAuthed.vue';
 import BaseLoader from '../../components/Base/BaseLoader.vue';
 import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
-import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 
 import ConfirmDeleteAccountContent from '../../components/Base/ConfirmDeleteAccountContent.vue';
 
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import BaseInputWrapperAuthed from '../../components/Base/BaseInputWrapperAuthed.vue';
 import { useStorage } from '../../composables/useStorage';
 import { auth } from '../../firebase/config';
 import { useAuthStore } from '../../stores/useAuthStore';
