@@ -152,6 +152,12 @@
                                     ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2'
                                     : ''
                             ]"
+                            filter=".js-water-btn, .js-actions-btn"
+                            :prevent-on-filter="false"
+                            :force-fallback="false"
+                            :fallback-on-body="true"
+                            fallback-class="dragging"
+                            :animation="150"
                             ghost-class="drag-ghost"
                             chosen-class="drag-chosen"
                             drag-class="drag-dragging"
@@ -379,4 +385,21 @@ const editPlant = (plantId) => {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.dragging {
+    opacity: 0.9;
+    transform: scale(1.02);
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+}
+
+.draggable-container {
+    touch-action: none;
+}
+
+.draggable-item {
+    will-change: transform;
+    transform: translateZ(0);
+}
+</style>

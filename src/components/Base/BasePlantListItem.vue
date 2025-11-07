@@ -73,7 +73,7 @@
                             disabled: isWatered
                         }"
                         type="button"
-                        class="cursor-pointer p-2 transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 text-2xl flex items-center disabled:cursor-not-allowed disabled:text-gray-500/20 dark:disabled:text-gray-800 "
+                        class="js-water-btn cursor-pointer p-2 transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 text-2xl flex items-center disabled:cursor-not-allowed disabled:text-gray-500/20 dark:disabled:text-gray-800 "
                         :disabled="isWatered"
                         :class="[
                             isWatered ? '' : 'animate-float',
@@ -104,7 +104,7 @@
                     >
                         <button
                             type="button"
-                            class="p-2 text-2xl text-gray-400 hover:text-gray-700 dark:text-gray-700 dark:hover:text-gray-500 cursor-pointer flex transition-all duration-600"
+                            class="js-actions-btn p-2 text-2xl text-gray-400 hover:text-gray-700 dark:text-gray-700 dark:hover:text-gray-500 cursor-pointer flex transition-all duration-600"
                             :class="{ 'text-gray-700 dark:text-gray-500': isOpen }"
                             v-tooltip="{
                                 content: 'Plant actions',
