@@ -102,6 +102,14 @@
     .card {
         @apply bg-white rounded-lg shadow-md p-4 text-slate-800;
     }
+
+    .modal-backdrop {
+        @apply bg-gray-800/15 fixed inset-0 z-3 backdrop-blur-[5px];
+    }
+
+    .modal-backdrop.fade {
+        @apply opacity-0;
+    }
 }
 
 @layer utilities {
@@ -133,7 +141,6 @@
         transform: scale(0.8) rotate(-90deg);
     }
 
-
     .chat-slide-enter-active,
     .chat-slide-leave-active {
         @apply transition-all duration-600;
@@ -142,7 +149,6 @@
     .chat-slide-enter-from,
     .chat-slide-leave-to {
         @apply translate-y-[calc(100%+var(--spacing)*22)] opacity-0;
-        
     }
 
     .chat-slide-enter-to,
@@ -199,6 +205,30 @@
         animation: plant-watered 1s cubic-bezier(0, 0, 0.2, 1);
         animation-fill-mode: forwards;
     }
+
+    .dragging {
+        @apply opacity-90 z-9999 scale-105;
+    }
+
+    .drag-ghost {
+        @apply opacity-70 scale-105;
+    }
+
+    .drag-chosen {
+        @apply opacity-80;
+    }
+
+    .drag-dragging {
+        @apply cursor-grabbing;
+    }
+
+    .v-draggable {
+        @apply touch-none;
+    }
+
+    .is-active:not(.reset-is-active) {
+        @apply text-primary dark:text-primary-700;
+    }
 }
 
 .v-popper--theme-tooltip {
@@ -207,26 +237,6 @@
 
 .v-popper--theme-tooltip .v-popper__inner {
     @apply dark:text-white/75 dark:bg-black text-xs/5;
-}
-
-.is-active:not(.reset-is-active) {
-    @apply text-primary dark:text-primary-700
-}
-
-.modal-backdrop {
-    @apply bg-gray-800/75 fixed inset-0 z-3;
-
-    
-    /* top: 0;
-    inset-inline-end: 0;
-    bottom: 0;
-    inset-inline-start: 0; */
-    /* z-index: 1040; */
-    backdrop-filter: blur(5px);
-}
-
-.modal-backdrop.fade {
-    opacity: 0;
 }
 
 .v-popper--theme-dropdown .v-popper__inner {

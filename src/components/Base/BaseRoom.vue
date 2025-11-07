@@ -152,6 +152,7 @@
                                     ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2'
                                     : ''
                             ]"
+                            
                             filter=".js-water-btn, .js-actions-btn"
                             :prevent-on-filter="false"
                             :force-fallback="false"

@@ -12,7 +12,7 @@
         ]"
     >
         <div class="relative">
-            <div 
+            <div
                 class="w-full h-0 pb-[100%] overflow-hidden rounded-full relative shrink-0 shadow-popover"
                 :class="isWatered ? '' : 'grayscale'"
             >
@@ -316,4 +316,6 @@ const unassignedRoomPlant = computed(() => props.roomId === 'unassigned')
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>
