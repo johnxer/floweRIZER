@@ -59,10 +59,21 @@
                                                 class="text-gray-600 dark:text-gray-500"
                                             />
                                         </div>
-                                        <div class="text-end">
+                                        <div class="text-end flex justify-end gap-6">
                                             <button
                                                 type="button"
-                                                class="mt-2 text-primary inline-flex align-top cursor-pointer hover:underline"
+                                                class="mt-2 cursor-pointer transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 inline-flex align-top items-center gap-1"
+                                            >
+                                                <span class="material-symbols-outlined text-lg">
+                                                    humidity_high
+                                                </span>
+                                                <span>
+                                                    Water plant
+                                                </span>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="mt-2 text-gray-500 hover:text-gray-700 transition-all duration-600 inline-flex align-top cursor-pointer"
                                                 @click="handleDismissNotification(notification.id)"
                                             >
                                                 Dismiss

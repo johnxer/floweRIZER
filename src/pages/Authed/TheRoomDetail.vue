@@ -6,22 +6,77 @@
         <div v-else>
             <div class="relative w-full h-[200px] md:h-[300px] overflow-hidden flex items-center justify-center shadow-xl before:absolute before:inset-0 before:bg-black/30">
                 <img
-                    :src="detailsRoom.imgSrc"
+                    :src="detailsRoom.imgSrc || '/src/img/room_default.jpg'"
                     class="w-full object-cover dark:brightness-50"
                 >
                 <base-page-title
-                     class="absolute"
-                     :is-default-title="false"
-                    >
+                    class="absolute"
+                    :is-default-title="false"
+                >
                     <span class="inline-flex align-top items-center gap-3">
                         <span class="material-symbols-outlined">
                             {{ detailsRoom.icon }}
                         </span>
-                        {{ unassignedRoomName }}
-                        <!-- <div
-                            class="rounded-full size-3"
-                            :style="{ backgroundColor: detailsRoom.color }"
-                        /> -->
+                        {{ roomName }}
+
+                        <v-dropdown
+                            trap-focus
+                            @show="onShow"
+                            @hide="onHide"
+                        >
+                            <button
+                                type="button"
+                                class="p-2 text-2xl dark:text-white/80 cursor-pointer flex transition-all duration-600 rounded-full bg-black/40 hover:bg-black/80 text-white/80 hover:text-white/90"
+                                :class="{ 'bg-black/80 text-white/90 dark:text-gray-500': isOpen }"
+                                v-tooltip="{
+                                    content: 'Room actions',
+                                    container: 'body'
+                                }"
+                            >
+                                <span class="material-symbols-outlined">
+                                    more_vert
+                                </span>
+                            </button>
+                            <template #popper>
+                                <base-popover-content>
+                                    <template #desc>
+                                        <ul class="space-y-2">
+                                            <li>
+                                                <button
+                                                    type="button"
+                                                    class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
+                                                    @click="toggleModalRoom"
+                                                    v-close-popper
+                                                >
+                                                    <span class="material-symbols-outlined text-xl">
+                                                        edit
+                                                    </span>
+                                                    <span>
+                                                        Edit room
+                                                    </span>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button
+                                                    type="button"
+                                                    class="flex gap-2 items-center text-base text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex transition-all duration-600 p-2"
+                                                    @click="deletePlant"
+                                                >
+                                                    <span class="material-symbols-outlined text-xl">
+                                                        delete
+                                                    </span>
+                                                    <span>
+                                                        Delete room
+                                                    </span>
+                                                </button>
+
+                                            </li>
+                                        </ul>
+                                    </template>
+                                </base-popover-content>
+
+                            </template>
+                        </v-dropdown>
                     </span>
                 </base-page-title>
             </div>
@@ -37,7 +92,7 @@
                     </div>
                     <div class="">
                         <div>
-                            <h3 
+                            <h3
                                 v-if="existPlants"
                                 class="text-2xl mb-1 text-gray-600 text-center"
                             >
@@ -56,6 +111,7 @@
                                         :plant="plant"
                                         :show-more-details="true"
                                         :room-id="roomId"
+                                        @edit-plant="editPlant"
                                     />
                                 </transition-group>
                                 <div class="text-center">
@@ -71,7 +127,7 @@
                                         <span class="material-symbols-outlined text-xl mr-1">
                                             add
                                         </span>
-                                        <span 
+                                        <span
                                             class="transition-all duration-400 text-sm flex"
                                             :class="existPlants ? 'md:w-0 group-hover/card:w-[42px] overflow-hidden' : 'w-[42px]'"
                                         >
@@ -91,7 +147,18 @@
 
                     <add-new-plant-content
                         :room-id="props.roomId"
+                        :plant-id="editPlantId"
                         @close-modal="toggleModal"
+                    />
+                </base-modal>
+                <base-modal
+                    :modal-toggle="isModalOpenRoom"
+                    @close-modal="toggleModalRoom"
+                >
+                    <add-new-room-content
+                        @close-modal="toggleModalRoom"
+                        :prefill-content="true"
+                        :room-id="props.roomId"
                     />
                 </base-modal>
             </base-container>
@@ -108,8 +175,10 @@ import BaseLoader from '../../components/Base/BaseLoader.vue';
 import BaseModal from "../../components/Base/BaseModal/BaseModal.vue";
 import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 import BasePlantListItem from '../../components/Base/BasePlantListItem.vue';
+import BasePopoverContent from '../../components/Base/BasePopoverContent.vue';
 
 import AddNewPlantContent from "../../components/AddNewPlantContent.vue";
+import AddNewRoomContent from "../../components/AddNewRoomContent.vue";
 
 import { useGetData } from '../../composables/useGetData';
 
@@ -149,14 +218,43 @@ const isModalOpen = ref(false)
 const toggleModal = (state) => {
     if (typeof state === 'boolean') {
         isModalOpen.value = state
+        if (state === false) {
+            editPlantId.value = null
+        }
     } else {
         isModalOpen.value = !isModalOpen.value
+        if (!isModalOpen.value) {
+            editPlantId.value = null
+        }
     }
 }
 
-const unassignedRoomName = computed(() => detailsRoom.value.name === 'Unassigned' ? 'Unassigned plants' : detailsRoom.value.name)
+const isModalOpenRoom = ref(false)
+
+const toggleModalRoom = (state) => {
+    if (typeof state === 'boolean') {
+        isModalOpenRoom.value = state
+    } else {
+        isModalOpenRoom.value = !isModalOpenRoom.value
+    }
+}
+
+const isOpen = ref(false)
+
+const onShow = () => (isOpen.value = true)
+const onHide = () => (isOpen.value = false)
+
+const roomName = computed(() => detailsRoom.value.name === 'Unassigned' ? 'Unassigned plants' : detailsRoom.value.name)
 
 const existPlants = computed(() => plants.value?.length)
+
+const editPlantId = ref(null)
+
+const editPlant = (plantId) => {
+    editPlantId.value = plantId
+    toggleModal()
+}
+
 
 </script>
 

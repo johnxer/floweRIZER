@@ -2,7 +2,7 @@
     <div v-if="!room.isSystem || room.isSystem && plants?.length">
         <div
             class="group/card flex flex-col rounded-xl p-2 relative items-center md:items-start"
-            :class="!!room.isSystem ? 'border-3 border-white dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50'"
+            :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50'"
         >
             <div
                 v-if="!room.isSystem"
@@ -12,10 +12,12 @@
                     {{ room.icon }}
                 </span>
             </div>
+
             <div
                 class="text-base md:text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between md:pt-2 px-2 w-full"
                 :class="!!room.isSystem ? 'pt-2' : 'pt-6'"
             >
+
                 <router-link
                     :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
                     class="hover:text-primary-600 transition-colors duration-600 flex items-start gap-2"
@@ -25,6 +27,7 @@
                         arrow_right_alt
                     </span>
                 </router-link>
+
                 <div
                     v-if="!room.isSystem"
                     class="flex gap-3 text-xl md:text-2xl"
@@ -42,6 +45,7 @@
                             edit
                         </span>
                     </button>
+
                     <v-dropdown
                         trap-focus
                         popper-class="md:w-[400px] px-4"
@@ -61,14 +65,17 @@
                                 delete
                             </span>
                         </button>
+
                         <template #popper>
                             <base-popover-content>
                                 <template #title>
                                     Delete this room?
                                 </template>
+
                                 <template #desc>
                                     The plants linked to it will no longer be associated with any room.
                                 </template>
+
                                 <template #actions>
                                     <base-button
                                         btn-style="notRoundedMd"
@@ -95,8 +102,10 @@
                             </base-popover-content>
                         </template>
                     </v-dropdown>
+
                 </div>
             </div>
+
             <div
                 class="min-h-[120px] lg:min-h-[200px] w-full rounded-xl relative flex flex-col grow"
                 :class="[
@@ -137,7 +146,7 @@
                                     ? 'p-2'
                                     : 'flex flex-col items-start justify-start ',
                                 isDragOver
-                                    ? 'bg-gray-200/25 shadow-md dark:bg-gray-950/25'
+                                    ? 'bg-gray-200/25 dark:bg-gray-950/25'
                                     : '',
                                 dragStore.isDragging
                                     ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2'
@@ -158,6 +167,7 @@
                                     :plant="element"
                                     :room-id="props.room.id"
                                     :data-plant-id="element.id"
+                                    @edit-plant="editPlant"
                                     class="cursor-move w-full"
                                     :is-draggable="true"
                                 />
@@ -173,7 +183,7 @@
                                 class="py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
                                 :btn-full-width="false"
                                 btn-size="custom"
-                                @click="toggleModal()"
+                                @click="toggleModal"
                             >
                                 <span class="material-symbols-outlined text-xl mr-1">
                                     add
@@ -200,6 +210,7 @@
         >
             <add-new-plant-content
                 :room-id="room.id"
+                :plant-id="editPlantId"
                 @close-modal="toggleModal"
             />
         </base-modal>
@@ -209,11 +220,9 @@
         >
             <add-new-room-content
                 @close-modal="toggleModalRoom"
-                :prefill-content="true"
                 :room-id="room.id"
             />
         </base-modal>
-
     </div>
 </template>
 
@@ -321,8 +330,14 @@ const isModalOpen = ref(false)
 const toggleModal = (state) => {
     if (typeof state === 'boolean') {
         isModalOpen.value = state
+        if (state === false) {
+            editPlantId.value = null
+        }
     } else {
         isModalOpen.value = !isModalOpen.value
+        if (!isModalOpen.value) {
+            editPlantId.value = null
+        }
     }
 }
 
@@ -352,6 +367,15 @@ const deleteRoom = async () => {
 }
 
 const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)
+
+const editPlantId = ref(null)
+
+const editPlant = (plantId) => {
+    editPlantId.value = plantId
+    toggleModal()
+
+    console.log()
+}
 
 </script>
 

@@ -2,22 +2,24 @@
     <li
         class="group p-2 rounded-xl transition-all duration-600 relative"
         :class="[
-            isDraggable ? 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50 cursor-move' : 'bg-white dark:bg-gray-900',
+            isDraggable ? 'cursor-move' : 'bg-white dark:bg-gray-900',
+            unassignedRoomPlant && isDraggable ? 'bg-gray-200 dark:bg-gray-900 hover:bg-gray-300/75 dark:hover:bg-gray-900/50' : 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50',
             {
-                'hover:bg-primary-500/30': isDraggable && isWatered,
-                'bg-primary-500/20': isWatered
+                
+                '': isDraggable && isWatered,
+                '': isWatered
             }
         ]"
     >
         <div class="grid grid-cols-[auto_1fr] gap-3 items-center w-full">
             <div class="grid grid-cols-[auto_30px_1fr] gap-3 items-center">
                 <div
-                    class="rounded-full size-6  flex items-center justify-center relative"
-                    :class="isWatered ? 'dark:bg-primary-800' : 'dark:bg-gray-800 '"
+                    class="rounded-full size-6 flex items-center justify-center relative inset-shadow-xs"
+                    :class="isWatered ? 'bg-primary-300/15 dark:bg-primary-800' : 'bg-gray-300/50 dark:bg-gray-800 '"
                 >
                     <span
                         class="material-symbols-outlined w-full text-center text-sm"
-                        :class="isWatered ? 'text-primary-300 dark:text-primary-200' : 'text-gray-700 dark:text-gray-500'"
+                        :class="isWatered ? 'text-primary-300 dark:text-primary-200' : 'text-gray-400 dark:text-gray-500'"
                     >
                         {{ isWatered ? 'humidity_high' : 'water_drop' }}
                     </span>
@@ -43,39 +45,108 @@
                     <div class="text-sm text-gray-700 dark:text-gray-600 font-semibold">
                         {{ plant.name }}
                     </div>
-                    <div class="text-xs text-gray-800 dark:text-gray-700">
+                    <div class="text-xs text-gray-400 dark:text-gray-700">
                         {{ lastWateredDaysAgo }}
                     </div>
                 </div>
 
             </div>
-            <div class="flex justify-end">
-                <button
-                    type="button"
-                    class="cursor-pointer px-2 py-2 transition-all duration-600 text-primary-500 hover:text-gray-700 dark:hover:text-gray-400 text-2xl flex items-center dark:disabled:text-gray-900 "
-                    :disabled="isWatered"
-                    :class="[
-                        isWatered ? '' : 'animate-float',
-                        { '': isDraggable }
-                    ]"
-                    @click="handleWatering"
+            <div class="text-end">
+                <div 
+                    class="inline-flex justify-end  rounded-full transition-colors duration-600"
+                    :class="unassignedRoomPlant ? 'bg-gray-100' : 'bg-gray-50 group-hover:bg-gray-100'"
                 >
-                    <!-- <div class="inline-flex flex-col items-end justify-center gap-1">
-                        <span
-                            class="material-symbols-outlined w-full text-center text-sm"
-                            :class="{ 'text-primary-500': isWatered }"
-                        >
-                            {{ isWatered ? 'humidity_high' : 'water_drop' }}
-                        </span>
-                        <span class="text-2xs">
-                            {{ lastWateredDaysAgo }}
-                        </span>
-                    </div> -->
+                    <button
+                        v-tooltip="{
+                            content: 'Water plant',
+                            container: 'body',
+                            disabled: isWatered
+                        }"
+                        type="button"
+                        class="cursor-pointer p-2 transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 text-2xl flex items-center disabled:cursor-not-allowed disabled:text-gray-500/20 dark:disabled:text-gray-800 "
+                        :disabled="isWatered"
+                        :class="[
+                            isWatered ? '' : 'animate-float',
+                            { '': isDraggable }
+                        ]"
+                        @click="handleWatering"
+                    >
+                        <!-- <div class="inline-flex flex-col items-end justify-center gap-1">
+                            <span
+                                class="material-symbols-outlined w-full text-center text-sm"
+                                :class="{ 'text-primary-500': isWatered }"
+                            >
+                                {{ isWatered ? 'humidity_high' : 'water_drop' }}
+                            </span>
+                            <span class="text-2xs">
+                                {{ lastWateredDaysAgo }}
+                            </span>
+                        </div> -->
 
-                    <span class="material-symbols-outlined">
-                        humidity_high
-                    </span>
-                </button>
+                        <span class="material-symbols-outlined">
+                            humidity_high
+                        </span>
+                    </button>
+                    <v-dropdown
+                        trap-focus
+                        @show="onShow"
+                        @hide="onHide"
+                    >
+                        <button
+                            type="button"
+                            class="p-2 text-2xl text-gray-400 hover:text-gray-700 dark:text-gray-700 dark:hover:text-gray-500 cursor-pointer flex transition-all duration-600"
+                            :class="{ 'text-gray-700 dark:text-gray-500': isOpen }"
+                            v-tooltip="{
+                                content: 'Plant actions',
+                                container: 'body'
+                            }"
+                        >
+                            <span class="material-symbols-outlined">
+                                more_vert
+                            </span>
+                        </button>
+                        <template #popper>
+                            <base-popover-content>
+                                <template #desc>
+                                    <ul class="space-y-2">
+                                        <li>
+                                            <button
+                                                type="button"
+                                                class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
+                                                v-close-popper="true"
+                                                @click="handleEditPlant"
+                                            >
+                                                <span class="material-symbols-outlined text-xl">
+                                                    edit
+                                                </span>
+                                                <span>
+                                                    Edit plant
+                                                </span>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                type="button"
+                                                class="flex gap-2 items-center text-base text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex transition-all duration-600 p-2"
+                                                @click="handleDeletePlant"
+                                            >
+                                                <span class="material-symbols-outlined text-xl">
+                                                    delete
+                                                </span>
+                                                <span>
+                                                    Delete plant
+                                                </span>
+                                            </button>
+
+                                        </li>
+                                    </ul>
+                                </template>
+                            </base-popover-content>
+
+                        </template>
+                    </v-dropdown>
+
+                </div>
             </div>
         </div>
         <div
@@ -83,83 +154,12 @@
             class="text-start text-sm"
         >
             <div
-                class="p-2 md:p-4 rounded-xl transition-all duration-600 mt-4 text-gray-600 dark:text-gray-500"
-                :class="isWatered ? 'bg-white/60 dark:bg-white/5' : 'bg-gray-100 dark:bg-gray-900/25'"
+                class="pl-[calc(var(--spacing)*12+30px)] pr-2 rounded-xl transition-all duration-600 mt-4 text-gray-600 dark:text-gray-500"
+                :class="isWatered ? '' : ''"
             >
-                <div class="grid grid-cols-[1fr_auto] gap-4">
+                <div class="">
                     <div>
                         {{ plant.desc }}
-                    </div>
-                    <div>
-                        <ul class="flex items-center gap-4">
-                            <li>
-                                <button
-                                    type="button"
-                                    class="flex text-xl text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 md:opacity-0 group-hover:opacity-100"
-                                    v-tooltip="{
-                                        content: 'Edit',
-                                        container: 'body'
-                                    }"
-                                >
-                                    <span class="material-symbols-outlined mb-1 text-">
-                                        edit
-                                    </span>
-                                </button>
-                            </li>
-                            <li>
-                                <v-dropdown
-                                    trap-focus
-                                    popper-class="md:w-[400px] px-4"
-                                    @show="onShow"
-                                    @hide="onHide"
-                                >
-                                    <button
-                                        type="button"
-                                        class="text-2xl text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex transition-all duration-600 md:opacity-0 group-hover:opacity-100"
-                                        :class="{ 'md:opacity-100 text-red-500 dark:text-red-900': isOpen }"
-                                        v-tooltip="{
-                                            content: 'Delete plant',
-                                            container: 'body'
-                                        }"
-                                    >
-                                        <span class="material-symbols-outlined">
-                                            delete
-                                        </span>
-                                    </button>
-                                    <template #popper>
-                                        <base-popover-content>
-                                            <template #title>
-                                                Delete this plant?
-                                            </template>
-                                            <template #actions>
-                                                <base-button
-                                                    btn-style="notRoundedMd"
-                                                    btn-size="sm"
-                                                    btn-color="neutral"
-                                                    :btn-full-width="false"
-                                                    class="min-w-1/3"
-                                                    v-close-popper="true"
-                                                >
-                                                    Keep This Plant
-                                                </base-button>
-                                                <base-button
-                                                    btn-style="notRoundedMd"
-                                                    btn-size="sm"
-                                                    btn-color="danger"
-                                                    :btn-full-width="false"
-                                                    class="min-w-1/2"
-                                                    v-close-popper="true"
-                                                    @click="deletePlant"
-                                                >
-                                                    Yes, Delete This Plant
-                                                </base-button>
-                                            </template>
-
-                                        </base-popover-content>
-                                    </template>
-                                </v-dropdown>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -179,7 +179,6 @@ import { useStorage } from '../../composables/useStorage';
 import { serverTimestamp } from 'firebase/firestore';
 import { useUpdateData } from '../../composables/useUpdateData';
 
-import BaseButton from './BaseButton.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
 const {
@@ -265,11 +264,11 @@ const handleWatering = async () => {
 
 const isWatered = computed(() => {
     if (getDaysAgo.value === null) return false
-    return props.plant.wateringFrequency > getDaysAgo.value
+    return props.plant.wateringFrequency > (getDaysAgo.value + 1)
 })
 
 
-const deletePlant = async () => {
+const handleDeletePlant = async () => {
     const collectionPath = `users/${authStore.user.uid}/rooms/${props.roomId}/plants/`
     const documentId = props.plant.id
 
@@ -291,11 +290,19 @@ const deletePlant = async () => {
     }
 }
 
+const emit = defineEmits(['edit-plant'])
+
+const handleEditPlant = () => {
+    emit('edit-plant', props.plant.id)
+}
+
 
 const isOpen = ref(false)
 
 const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
+
+const unassignedRoomPlant = computed(() => props.roomId === 'unassigned')
 
 </script>
 

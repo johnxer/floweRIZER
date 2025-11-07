@@ -141,12 +141,38 @@ export const useSendData = () => {
         }
     };
 
+    const updateDataPlants = async (data, roomId, plantId) => {
+        const uid = getUid();
+
+        if (!uid) return false;
+
+        isPending.value = true;
+        error.value = null;
+
+        const plantPath = `users/${uid}/rooms/${roomId}/plants/${plantId}`;
+        const plantReference = doc(db, `${plantPath}`);
+
+        try {
+            await updateDoc(plantReference, {
+                ...data,
+            });
+
+            return true;
+        } catch (err) {
+            error.value = err.message;
+            return false;
+        } finally {
+            isPending.value = false;
+        }
+    };
+
     return {
         isPending,
         error,
         sendDataChats,
         sendDataRooms,
         sendDataPlants,
-        updateDataRooms
+        updateDataRooms,
+        updateDataPlants
     };
 };

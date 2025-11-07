@@ -9,6 +9,9 @@
 }
 
 @import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 .material-symbols-outlined {
     font-family: 'Material Symbols Outlined';
     font-weight: normal;
@@ -66,6 +69,7 @@
     --text-3xs: 0.5rem;
 
     --shadow-menu: 0 -10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-popover: 0 0 15px 7px rgba(0, 0, 0, 0.05);
 }
 
 @layer base {
@@ -180,7 +184,7 @@
     }
 
     .animate-float {
-        animation: float-bounce 2s ease-in-out infinite;
+        animation: float-bounce 3s ease-in-out infinite;
     }
 
     @keyframes plant-watered {
@@ -226,7 +230,7 @@
 }
 
 .v-popper--theme-dropdown .v-popper__inner {
-    @apply border-none rounded-xl shadow-menu bg-white dark:bg-gray-900;
+    @apply border-none rounded-xl shadow-popover bg-white dark:bg-gray-900;
 }
 .v-popper--theme-dropdown .v-popper__arrow-inner,
 .v-popper--theme-dropdown .v-popper__arrow-outer {

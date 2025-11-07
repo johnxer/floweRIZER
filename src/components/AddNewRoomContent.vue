@@ -177,11 +177,6 @@ const props = defineProps({
         required: false,
         default: null
     },
-    prefillContent: {
-        type: Boolean,
-        required: false,
-        default: false
-    }
 })
 
 const authStore = useAuthStore()
@@ -248,12 +243,7 @@ const buttonLabel = computed(() => {
         return props.roomId ? 'Update room' : 'Create room'
 
     }
-
-
 })
-
-
-
 
 const formErrors = ref({})
 

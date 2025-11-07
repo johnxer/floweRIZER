@@ -30,10 +30,11 @@ defineProps({
     },
     isProfile: {
         type: Boolean,
-        required: true,
+        required: false,
+        default: false
     },
     extraClasses: {
-        type: String,
+        type: [String, Object, Array],
         required: false,
         default: ''
     }
