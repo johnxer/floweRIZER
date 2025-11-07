@@ -161,10 +161,10 @@
         </div>
         <div
             v-if="showMoreDetails"
-            class="text-start text-sm"
+            class="text-start text-sm col-span-full"
         >
             <div
-                class="pl-[calc(var(--spacing)*12+30px)] pr-2 rounded-xl transition-all duration-600 mt-4 text-gray-600 dark:text-gray-500"
+                class="pl-[calc(var(--spacing)*12+30px)] pr-2 rounded-xl transition-all duration-600 text-gray-400 dark:text-gray-500"
                 :class="isWatered ? '' : ''"
             >
                 <div class="">
@@ -252,7 +252,7 @@ const lastWateredDaysAgo = computed(() => {
         const days = getDaysAgo.value;
         wateringMessage = days === 0 ?
             'Watered 0 days ago' : days === 1 ?
-                'Watered 1 day ago' : `${days} days ago`
+                'Watered 1 day ago' : `Watered ${days} days ago`
     }
 
     return wateringMessage;

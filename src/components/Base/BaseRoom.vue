@@ -1,7 +1,7 @@
 <template>
     <div v-if="!room.isSystem || room.isSystem && plants?.length">
         <div
-            class="group/card flex flex-col rounded-xl p-2 relative items-center md:items-start"
+            class="group/card flex flex-col rounded-xl md:p-2 relative items-center md:items-start"
             :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50'"
         >
             <div

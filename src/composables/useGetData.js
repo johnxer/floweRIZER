@@ -72,10 +72,6 @@ export const useGetData = (dataType) => {
 export const useGetDataByUserId = (dataType) => {
     const authStore = useAuthStore();
 
-watchEffect(() => {
-  console.log('👤 UID from store:', authStore.user?.uid)
-})
-
     const error = ref(null);
     const isPending = ref(true);
 
@@ -94,13 +90,10 @@ watchEffect(() => {
         }
 
         const q = query(collectionGroup(db, dataType), where('userId', '==', uid), orderBy('createdAt', 'desc'));
-        console.log('📡 test 1')
 
         unsubscribe = onSnapshot(
             q,
             (snapshot) => {
-                console.log('📡 test2')
-                console.log('📡 Snapshot size:', snapshot.size)
 
                 items.value = snapshot.docs.map((doc) => {
                     return {
@@ -110,7 +103,6 @@ watchEffect(() => {
                 });
                 isPending.value = false;
 
-                console.log('Docs count:', snapshot.size)
             },
             (err) => {
                 error.value = err.message;
