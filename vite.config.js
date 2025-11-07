@@ -11,7 +11,7 @@ export default defineConfig({
                     'vendor-vue': ['vue', 'vue-router', 'pinia'],
                     'vendor-firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
                     'vendor-ui': ['@headlessui/vue', 'floating-vue', 'sortablejs', 'vuedraggable'],
-                    'vendor-utils': ['axios', 'date-fns', 'uuid'],
+                    'vendor-utils': ['date-fns', 'uuid'],
                     'vendor-ai': ['@google/genai'],
                 },
             },
