@@ -3,6 +3,7 @@
         <template #modalTitle>
             <span class="noto-color-emoji-regular mr-2">🌱</span>Create new plant
         </template>
+        {{ plantId }}
         <div class="relative">
             <transition
                 name="fade"
@@ -114,7 +115,6 @@
                             <base-input
                                 input-type="number"
                                 input-id="plant-watering"
-                                value="7"
                                 input-placeholder="..."
                                 class="w-[80px]"
                                 v-model.trim="form.watering"
@@ -244,7 +244,7 @@ watch(detailsPlant, (newVal) => {
     if (newVal) {
         form.value.name = newVal.name || '';
         form.value.desc = newVal.desc || '';
-        form.value.watering = newVal.watering || '3';
+        form.value.watering = newVal.watering || 3;
         form.value.wateredNow = newVal.wateredNow || false;
         existingImageSrc.value = newVal.imgSrc
     }
@@ -322,7 +322,7 @@ const submitForm = async () => {
 
     let success = false;
 
-    if (!props.roomId) {
+    if (!props.plantId) {
         success = await sendDataPlants(data.value, props.roomId)
     } else {
         success = await updateDataPlants(data.value, props.roomId, props.plantId)

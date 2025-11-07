@@ -1,46 +1,56 @@
 <template>
     <li
-        class="group p-2 rounded-xl transition-all duration-600 relative"
+        class="group rounded-xl transition-all duration-600 relative grid grid-cols-[60px_1fr] p-2 gap-4"
         :class="[
             isDraggable ? 'cursor-move' : 'bg-white dark:bg-gray-900',
             unassignedRoomPlant && isDraggable ? 'bg-gray-200 dark:bg-gray-900 hover:bg-gray-300/75 dark:hover:bg-gray-900/50' : 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50',
             {
-                
+
                 '': isDraggable && isWatered,
                 '': isWatered
             }
         ]"
     >
-        <div class="grid grid-cols-[auto_1fr] gap-3 items-center w-full">
-            <div class="grid grid-cols-[auto_30px_1fr] gap-3 items-center">
+        <div class="relative">
+            <div 
+                class="w-full h-0 pb-[100%] overflow-hidden rounded-full relative shrink-0 shadow-popover"
+                :class="isWatered ? '' : 'grayscale'"
+            >
+                <img
+                    v-if="plant.imgSrc"
+                    :src="plant.imgSrc"
+                    class="absolute object-cover h-full w-full"
+                />
                 <div
-                    class="rounded-full size-6 flex items-center justify-center relative inset-shadow-xs"
-                    :class="isWatered ? 'bg-primary-300/15 dark:bg-primary-800' : 'bg-gray-300/50 dark:bg-gray-800 '"
+                    v-else
+                    class="absolute p-2 h-full w-full"
                 >
-                    <span
-                        class="material-symbols-outlined w-full text-center text-sm"
-                        :class="isWatered ? 'text-primary-300 dark:text-primary-200' : 'text-gray-400 dark:text-gray-500'"
-                    >
-                        {{ isWatered ? 'humidity_high' : 'water_drop' }}
-                    </span>
-                    <span
-                        v-if="isWateredNow"
-                        class="absolute inline-flex h-full w-full animate-plant-watered rounded-full bg-primary-400 opacity-50"
-                    />
-                </div>
-                <div class="w-full h-0 pb-[100%] overflow-hidden rounded-full relative">
                     <img
-                        v-if="plant.imgSrc"
-                        :src="plant.imgSrc"
-                        class="absolute object-cover h-full w-full"
-                    />
-                    <img
-                        v-else
                         src="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg"
                         alt="🌱"
-                        class="absolute object-cover h-full w-full"
+                        class="absolute object-cover inset-2"
                     />
                 </div>
+            </div>
+            <div
+                class="rounded-full size-6 flex items-center justify-center absolute -top-1 -right-1 shadow-popover"
+                :class="isWatered ? 'bg-gray-100 dark:bg-gray-800' : 'bg-gray-100 dark:bg-gray-800 '"
+            >
+                <span
+                    class="material-symbols-outlined w-full text-center text-sm"
+                    :class="isWatered ? 'text-primary-300 dark:text-primary-200' : 'text-gray-400 dark:text-gray-500'"
+                >
+                    {{ isWatered ? 'humidity_high' : 'water_drop' }}
+                </span>
+                <span
+                    v-if="isWateredNow"
+                    class="absolute inline-flex h-full w-full animate-plant-watered rounded-full bg-primary-400 opacity-50"
+                />
+            </div>
+        </div>
+
+        <div class="grid grid-cols-[auto_1fr] gap-3 items-center w-full">
+            <div class="grid grid-cols-[auto_1fr] gap-3 items-center">
                 <div>
                     <div class="text-sm text-gray-700 dark:text-gray-600 font-semibold">
                         {{ plant.name }}
@@ -52,9 +62,9 @@
 
             </div>
             <div class="text-end">
-                <div 
+                <div
                     class="inline-flex justify-end  rounded-full transition-colors duration-600"
-                    :class="unassignedRoomPlant ? 'bg-gray-100' : 'bg-gray-50 group-hover:bg-gray-100'"
+                    :class="unassignedRoomPlant ? 'bg-gray-100 dark:bg-gray-950' : 'bg-gray-50 group-hover:bg-gray-100 dark:bg-gray-900 dark:group-hover:bg-gray-900'"
                 >
                     <button
                         v-tooltip="{
