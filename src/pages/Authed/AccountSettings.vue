@@ -166,9 +166,9 @@
 
 import BaseButton from '../../components/Base/BaseButton.vue';
 import BaseContainer from '../../components/Base/BaseContainer.vue';
-import BaseFormMessageBox from '../../components/Base/BaseFormMessageBox.vue';
-import BaseInput from '../../components/Base/BaseInput.vue';
-import BaseInputWrapperAuthed from '../../components/Base/BaseInputWrapperAuthed.vue';
+import BaseFormMessageBox from '../../components/Base/BaseForm/BaseFormMessageBox.vue';
+import BaseInput from '../../components/Base/BaseForm/BaseInput.vue';
+import BaseInputWrapperAuthed from '../../components/Base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseLoader from '../../components/Base/BaseLoader.vue';
 import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
 

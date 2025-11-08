@@ -85,8 +85,8 @@
 <script setup>
 
 import BaseButton from '../Base/BaseButton.vue';
-import BaseFormMessageBox from '../Base/BaseFormMessageBox.vue';
-import BaseInputWrapper from '../Base/BaseInputWrapper.vue';
+import BaseFormMessageBox from '../Base/BaseForm/BaseFormMessageBox.vue';
+import BaseInputWrapper from '../Base/BaseForm/BaseInputWrapper.vue';
 import BaseLoader from '../Base/BaseLoader.vue';
 
 import { ref } from 'vue';
