@@ -1,10 +1,10 @@
 <template>
     <div
         class="flex items-center"
-        :class="{ 'flex-col items-start gap-4': !!existingImageSrc || !!previewUrl }"
+        :class="{ 'flex-col items-start gap-4': !!imageToShow }"
     >
         <div
-            v-if="!!existingImageSrc || !!previewUrl"
+            v-if="!!imageToShow"
             class="relative w-full h-[200px] rounded-xl"
         >
             <div
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <img
-                :src="existingImageSrc || previewUrl"
+                :src="imageToShow"
                 class="w-full h-full inset-0 object-cover absolute rounded-xl"
                 :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
                 loading="lazy"
@@ -33,12 +33,12 @@
         </div>
         <div class="flex gap-2 md:gap-4 flex-col md:flex-row w-full md:w-auto">
             <label
-                for="plant-image"
+                :for="inputId"
                 class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-4 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden text-center shrink-0"
             >
                 Select image
                 <input
-                    id="plant-image"
+                    :id="props.inputId"
                     type="file"
                     class="hidden"
                     accept="image/png, image/jpeg, image/jpg, image/gif"
@@ -61,6 +61,63 @@
 </template>
 
 <script setup>
+import { computed, ref, watch } from 'vue';
+
+const props = defineProps({
+    inputId: {
+        type: String,
+        required: true
+    },
+    existingImageSrc: {
+        type: String,
+        required: false,
+        default: null
+    }
+})
+
+const emit = defineEmits(['send-file'])
+
+const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+
+const selectFileName = ref(null)
+
+const previewUrl = ref(null)
+
+const file = ref(null)
+
+const isImageLoaded = ref(false)
+
+const existingImage = ref(props.existingImageSrc)
+
+
+watch(() => props.existingImageSrc, newVal => {
+    if (newVal) {
+        existingImage.value = newVal
+    }
+})
+
+const handleFile = (e) => {
+    file.value = e.target.files[0];
+
+    selectFileName.value = file.value.name
+
+    if (previewUrl.value) {
+        URL.revokeObjectURL(previewUrl.value)
+    }
+    previewUrl.value = URL.createObjectURL(file.value)
+
+    if (!selectFileName.value || !allowedFormats.includes(file.value.type)) return
+
+    emit('send-file', file.value)
+}
+
+const imageToShow = computed(() => existingImage.value || previewUrl.value)
+
+
+
+const onLoad = () => {
+    isImageLoaded.value = true
+}
 
 </script>
 

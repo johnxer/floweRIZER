@@ -189,6 +189,7 @@ import { useStorage } from '../../composables/useStorage';
 import { serverTimestamp } from 'firebase/firestore';
 import { useUpdateData } from '../../composables/useUpdateData';
 
+import { usePlantStore } from '../../stores/usePlantsStore';
 import BasePopoverContent from './BasePopoverContent.vue';
 
 const {
@@ -234,7 +235,9 @@ const {
     deleteImageByUrl
 } = useStorage()
 
-// const isWatered = ref(false)
+const plantStore = usePlantStore()
+
+const isWateredNow = computed(() => plantStore.isWateredNow(props.plant.id) )
 
 const getDaysAgo = computed(() => {
     if (!props.plant?.lastWateredDate) {
@@ -258,8 +261,6 @@ const lastWateredDaysAgo = computed(() => {
     return wateringMessage;
 })
 
-const isWateredNow = ref(false)
-
 const handleWatering = async () => {
     const data = {
         lastWateredDate: serverTimestamp()
@@ -268,7 +269,7 @@ const handleWatering = async () => {
     const success = await updateUserData(`users/${authStore.user?.uid}/rooms/${props.roomId}/plants`, props.plant.id, data)
 
     if (success) {
-        isWateredNow.value = true
+        plantStore.markAsWatered(props.plant.id)
     }
 }
 

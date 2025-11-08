@@ -15,7 +15,6 @@
                 </h1>
             </router-link>
             <slot name="center" />
-
             <!-- <slot name="end"/> -->
             <div>
                 <div class="flex gap-4 items-center">
@@ -52,8 +51,6 @@
                                             <span class="material-symbols-outlined text-xl text-gray-300 dark:text-gray-500 relative -top-[1px]">
                                                 info
                                             </span>
-
-                                            <!-- {{ notifications }} -->
                                             <div
                                                 v-html="notification.action"
                                                 class="text-gray-600 dark:text-gray-500"
@@ -63,6 +60,8 @@
                                             <button
                                                 type="button"
                                                 class="mt-2 cursor-pointer transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 inline-flex align-top items-center gap-1"
+                                                @click="handleWatering(notification.id)"
+                                                v-close-popper="isLastNotification"
                                             >
                                                 <span class="material-symbols-outlined text-lg">
                                                     humidity_high
@@ -71,13 +70,13 @@
                                                     Water plant
                                                 </span>
                                             </button>
-                                            <button
+                                            <!-- <button
                                                 type="button"
                                                 class="mt-2 text-gray-500 hover:text-gray-700 transition-all duration-600 inline-flex align-top cursor-pointer"
                                                 @click="handleDismissNotification(notification.id)"
                                             >
                                                 Dismiss
-                                            </button>
+                                            </button> -->
                                         </div>
                                     </li>
                                 </transition-group>
@@ -143,12 +142,16 @@
 </template>
 
 <script setup>
-import { v4 as uuidv4 } from 'uuid';
 import { computed, onMounted, onUnmounted, ref, useSlots } from 'vue';
 import { useGetDataByUserId } from '../../composables/useGetData';
 
 import { differenceInDays } from 'date-fns';
 
+import { serverTimestamp } from 'firebase/firestore';
+import { useFindRoomIdByPlantId } from '../../composables/useFindRoomIdByPlantId';
+import { useUpdateData } from '../../composables/useUpdateData';
+import { useAuthStore } from '../../stores/useAuthStore';
+import { usePlantStore } from '../../stores/usePlantsStore';
 import AddNewRoomContent from '../AddNewRoomContent.vue';
 import BaseButton from '../Base/BaseButton.vue';
 import BaseModal from '../Base/BaseModal/BaseModal.vue';
@@ -183,8 +186,20 @@ const {
     items: plants
 } = useGetDataByUserId('plants')
 
-const notificationsArrayFromFB = computed(() => {
+const {
+    findRoomIdByPlantId
+} = useFindRoomIdByPlantId()
 
+
+const {
+    updateUserData
+} = useUpdateData()
+
+const plantStore = usePlantStore()
+
+const authStore = useAuthStore()
+
+const notificationsArrayFromFB = computed(() => {
     if (!plants.value?.length) return []
 
     return plants.value
@@ -219,19 +234,20 @@ const notifications = computed(() => {
     return notificationsArrayFromFB.value.map(n => {
         const typeD = typeNotificationsMap.find(m => m.id === n.type)
 
-        return {
-            id: uuidv4(),
+        const objekt = {
             ...n,
             action: typeD ? typeD.action.replace('##plantName##', `<strong>${n.name}</strong>`) : 'Unknown action'
         }
 
+        // console.log('sss', objekt)
 
+        return objekt
     })
 })
 
-const handleDismissNotification = (notificationId) => {
+// const handleDismissNotification = (notificationId) => {
 
-}
+// }
 
 const emit = defineEmits(['toggle-sidebar'])
 
@@ -264,6 +280,25 @@ const handleScroll = () => {
 
 document.documentElement.style.setProperty('--header-h', `${headerHeight}px`)
 
+const handleWatering = async (plantId) => {
+    const foundRoomId = await findRoomIdByPlantId(plantId);
+
+    const data = {
+        lastWateredDate: serverTimestamp()
+    }
+
+    console.log(`users/${authStore.user?.uid}/rooms/${foundRoomId}/plants/${plantId}`);
+
+    const success = await updateUserData(`users/${authStore.user?.uid}/rooms/${foundRoomId}/plants`, plantId, data)
+
+    if (success) {
+        plantStore.markAsWatered(plantId)
+    }
+}
+
+const isLastNotification = computed(() => {
+    return notifications.value.length < 2
+})
 
 onMounted(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -272,6 +307,8 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
 })
+
+
 
 </script>
 

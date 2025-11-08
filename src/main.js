@@ -15,21 +15,36 @@ import { useAuth } from './composables/useAuth';
 
 const app = createApp(App);
 
-app.use(FloatingVue)
-
+app.use(FloatingVue);
 
 // GLOBAL FIX FOR ARIAL HIDDEN BUG IN FLOATING-VUE
-document.addEventListener('click', (e) => {
-    const el = e.target
-    if (el && el.closest('.v-popper__popper')) {
-      requestAnimationFrame(() => {
-        if (document.activeElement instanceof HTMLElement) {
-          document.activeElement.blur()
+document.addEventListener(
+    'click',
+    (e) => {
+        const el = e.target;
+        if (el && el.closest('.v-popper__popper')) {
+            requestAnimationFrame(() => {
+                if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur();
+                }
+            });
         }
-      })
-    }
-  }, true
-)
+    },
+    true
+);
+
+// Debug
+app.config.errorHandler = (err, instance, info) => {
+    console.error('🔥 Vue errorHandler:', err, info);
+};
+window.addEventListener('error', (event) => {
+    console.error('🔥 Global error:', event.error);
+});
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('🔥 Unhandled promise rejection:', event.reason);
+});
+
+// / Debug
 
 const init = async () => {
     const pinia = createPinia();
@@ -38,8 +53,8 @@ const init = async () => {
     // const authStore = useAuthStore();
     // await authStore.initAuth();
 
-    const { initAuth } = useAuth()
-    await initAuth()
+    const { initAuth } = useAuth();
+    await initAuth();
 
     app.use(router);
     app.mount('#app');

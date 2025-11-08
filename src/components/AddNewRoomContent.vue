@@ -57,7 +57,12 @@
                             field-label="Image"
                             field-id="room-image"
                         >
-                            <div
+                        <base-upload-button 
+                                input-id="room-image"
+                                :existing-image-src="existingImageSrc"
+                                @send-file="handleFile"
+                            />
+                            <!-- <div
                                 class="flex items-center"
                                 :class="{ 'flex-col items-start gap-4': !!existingImageSrc || !!previewUrl }"
                             >
@@ -112,7 +117,7 @@
                                         </span>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </base-input-wrapper-authed>
                         <!-- <base-input-wrapper-authed
                             field-label="Room colour"
@@ -167,6 +172,7 @@ import BaseButton from './Base/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';
+import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
@@ -221,6 +227,11 @@ const form = ref({
 
 const existingImageSrc = ref('')
 
+const handleFile = (file) => {
+    existingImageSrc.value = null
+    form.value.file = file;
+}
+
 watch(detailsRoom, (newVal) => {
     if (newVal) {
         form.value.name = newVal.name || '';
@@ -246,27 +257,6 @@ const buttonLabel = computed(() => {
 })
 
 const formErrors = ref({})
-
-const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
-
-const selectFileName = ref(null)
-
-const previewUrl = ref(null)
-
-const handleFile = (e) => {
-    form.value.file = e.target.files[0];
-
-    console.log(form.value.file)
-
-    selectFileName.value = form.value.file.name
-
-    existingImageSrc.value = null
-
-    previewUrl.value = URL.createObjectURL(form.value.file)
-
-    if (!selectFileName.value || !allowedFormats.includes(selectFileName.value.type)) return
-
-}
 
 const validateForm = () => {
     formErrors.value = {}
@@ -331,13 +321,6 @@ const submitForm = async () => {
     }
 }
 
-
-const isImageLoaded = ref(false)
-
-
-const onLoad = () => {
-    isImageLoaded.value = true
-}
 
 </script>
 
