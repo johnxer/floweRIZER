@@ -34,7 +34,7 @@
                             <select
                                 @change="formErrors.icon = null"
                                 id="room-icon"
-                                class="px-4 py-2 rounded-xl border-2 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 cursor-pointer"
+                                class="px-4 py-2 rounded-lg border-2 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 cursor-pointer"
                                 :class="!formErrors.icon ? 'border-gray-300 dark:border-gray-600' : 'border-red-300 dark:border-red-900'"
                                 v-model="form.icon"
                             >
@@ -89,7 +89,7 @@
                                 <div class="flex gap-2 md:gap-4 flex-col md:flex-row w-full md:w-auto">
                                     <label
                                         for="room-image"
-                                        class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-4 py-2 text-base rounded-xl cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden text-center shrink-0"
+                                        class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-4 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden text-center shrink-0"
                                     >
                                         Select image
                                         <input
@@ -141,7 +141,7 @@
                     <base-button
                         class="mt-8"
                         :class="{ 'animate-pulse': isPending }"
-                        btn-style="notRounded"
+                        btn-style="notRoundedMd"
                         btn-size="base"
                         :disabled="isPending"
                     >
@@ -164,11 +164,11 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useRoomStore } from '../stores/useRoomStore';
 
 import BaseButton from './Base/BaseButton.vue';
-import BaseInput from './Base/BaseInput.vue';
-import BaseInputWrapperAuthed from './Base/BaseInputWrapperAuthed.vue';
+import BaseInput from './Base/BaseForm/BaseInput.vue';
+import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
+import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
-import BaseTextarea from './Base/BaseTextarea.vue';
 
 
 const props = defineProps({

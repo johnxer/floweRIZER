@@ -120,6 +120,7 @@
                                         @click="toggleModal()"
                                         class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
                                         :btn-full-width="false"
+                                        btn-style="notRoundedMd"
                                         btn-size="custom"
                                     >
                                         <!-- Add a new plant -->
