@@ -20,24 +20,26 @@
                     />
                 </div>
                 <div v-else>
+                    <!-- TO BE STYLED -->
                     No rooms yet
-
+                    <br />
                     Add a new roomw
-
+                    <br />
                     <base-button
-                        @click="roomStore.openAddModal"
+                        @click="roomsStore.openAddModal"
                         btn-style="notRoundedMd"
                         btn-size="sm"
                         :btn-full-width="false"
                     >
                         Add a new room
                     </base-button>
+                    <!-- // TO BE STYLED -->
                 </div>
             </div>
         </transition>
 
         <the-modals />
-        
+
     </base-container>
 </template>
 
@@ -54,7 +56,9 @@ import BaseRoom from '../../components/Base/BaseRoom.vue';
 import TheModals from '../../components/TheModals.vue';
 
 import { useGetData } from '../../composables/useGetData';
+import { useRoomsStore } from '../../stores/useRoomsStore';
 
+const roomsStore = useRoomsStore()
 
 const {
     error,

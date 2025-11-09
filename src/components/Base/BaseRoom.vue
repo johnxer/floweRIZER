@@ -200,10 +200,10 @@
                                 </span>
                             </base-button>
                             <div
-                                v-if="isFirst"
-                                class="text-xs text-gray-400 dark:text-gray-600"
+                                v-if="plants.length === 0"
+                                class="text-xs text-gray-400 dark:text-gray-600 mt-2"
                             >
-                                or drag one from another room
+                                or <span class="text-gray-500 font-semibold">drag one</span> from another room
                             </div>
                         </div>
                     </div>
@@ -239,10 +239,6 @@ const props = defineProps({
     room: {
         type: Object,
         required: true
-    },
-    isFirst: {
-        type: Boolean,
-        default: false
     },
 })
 
@@ -335,12 +331,6 @@ const deleteRoom = async () => {
 
 const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)
 
-const editPlantId = ref(null)
-
-const editPlant = (plantId) => {
-    editPlantId.value = plantId
-    toggleModal()
-}
 
 </script>
 
