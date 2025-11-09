@@ -10,14 +10,13 @@
                     @submit.prevent="submitForm"
                     novalidate
                 >
-
                     <div class="space-y-4">
                         <base-input-wrapper-authed
                             field-label="Name"
                             field-id="room-name"
                             :errorText="formErrors.name"
                         >
-                            <base-input 
+                            <base-input
                                 input-id="room-name"
                                 input-placeholder="Enter room name..."
                                 :input-error="!!formErrors.name"
@@ -44,7 +43,7 @@
                                     value=""
                                 >Select icon...</option>
                                 <option
-                                    v-for="icon in icons"
+                                    v-for="icon in roomsStore.roomIcons"
                                     :key="icon.icon"
                                     :value="icon.icon"
                                 >
@@ -57,7 +56,7 @@
                             field-label="Image"
                             field-id="room-image"
                         >
-                        <base-upload-button 
+                            <base-upload-button
                                 input-id="room-image"
                                 :existing-image-src="existingImageSrc"
                                 @send-file="handleFile"
@@ -136,11 +135,11 @@
                             field-label="Description"
                             field-id="room-description"
                         >
-                        <base-textarea 
-                            textarea-id="room-description"
-                            textarea-placeholder="Enter room description..."
-                            v-model.trim="form.desc"
-                        />
+                            <base-textarea
+                                textarea-id="room-description"
+                                textarea-placeholder="Enter room description..."
+                                v-model.trim="form.desc"
+                            />
                         </base-input-wrapper-authed>
                     </div>
                     <base-button
@@ -166,7 +165,7 @@ import { useGetDetails } from '../composables/useGetDetail';
 import { useSendData } from '../composables/useSendData';
 import { useStorage } from '../composables/useStorage';
 import { useAuthStore } from '../stores/useAuthStore';
-import { useRoomStore } from '../stores/useRoomStore';
+import { useRoomsStore } from '../stores/useRoomsStore';
 
 import BaseButton from './Base/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
@@ -185,13 +184,16 @@ const props = defineProps({
     },
 })
 
+const localRoomId = ref(props.roomId)
+
 const authStore = useAuthStore()
 
+const roomsStore = useRoomsStore()
 
-const {
-    roomIcons: icons,
-    // roomDefaultColor: color
-} = useRoomStore()
+// const {
+//     roomIcons: icons,
+//     // roomDefaultColor: color
+// } = useRoomsStore()
 
 const {
     error: errorSendData,
@@ -208,11 +210,19 @@ const {
     uploadImage,
 } = useStorage()
 
-const {
-    error: errorRoom,
-    isPending: isPendingRoom,
-    details: detailsRoom,
-} = useGetDetails(`rooms/${props.roomId}`)
+let errorRoom, isPendingRoom, detailsRoom
+
+if (localRoomId.value) {
+    ({
+        error: errorRoom,
+        isPending: isPendingRoom,
+        details: detailsRoom,
+    } = useGetDetails(`rooms/${localRoomId.value}`))
+} else {
+    errorRoom = ref(null)
+    isPendingRoom = ref(false)
+    detailsRoom = ref(null)
+}
 
 // const error = computed(() => errorSendData.value || errorUpload.value)
 const isPending = computed(() => isPendingSendData.value || isPendingUpload.value)
@@ -242,17 +252,13 @@ watch(detailsRoom, (newVal) => {
 }, { immediate: true })
 
 
-const modalTitle = computed(() => {
-    return props.roomId ? 'Edit room' : 'Create room'
-})
-
+const modalTitle = computed(() => `${localRoomId.value ? 'Edit' : 'Add'} room`)
 
 const buttonLabel = computed(() => {
     if (isPending.value) {
-        return props.roomId ? 'Updating room...' : 'Creating room...'
+        return `${localRoomId.value ? 'Updating' : 'Adding'} room...`
     } else {
-        return props.roomId ? 'Update room' : 'Create room'
-
+        return `${localRoomId.value ? 'Update' : 'Add'} room`
     }
 })
 
@@ -308,16 +314,16 @@ const submitForm = async () => {
 
     let success = false;
 
-    if (!props.roomId) {
+    if (!localRoomId.value) {
         success = await sendDataRooms(data.value)
     } else {
-        success = await updateDataRooms(data.value, props.roomId)
+        success = await updateDataRooms(data.value, localRoomId.value)
     }
 
     if (success) {
         clearForm();
 
-        emit('close-modal')
+        roomsStore.closeRoomModal()
     }
 }
 

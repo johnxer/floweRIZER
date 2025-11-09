@@ -84,7 +84,7 @@
                         </template>
                     </v-dropdown>
                     <base-button
-                        @click="toggleModal"
+                        @click="roomStore.openAddModal"
                         btn-style="notRoundedMd"
                         btn-size="sm"
                         :btn-full-width="false"
@@ -132,12 +132,6 @@
                 </div>
             </div>
         </div>
-        <base-modal
-            :modal-toggle="isModalOpen"
-            @close-modal="toggleModal"
-        >
-            <add-new-room-content @close-modal="toggleModal" />
-        </base-modal>
     </header>
 </template>
 
@@ -151,10 +145,9 @@ import { serverTimestamp } from 'firebase/firestore';
 import { useFindRoomIdByPlantId } from '../../composables/useFindRoomIdByPlantId';
 import { useUpdateData } from '../../composables/useUpdateData';
 import { useAuthStore } from '../../stores/useAuthStore';
-import { usePlantStore } from '../../stores/usePlantsStore';
-import AddNewRoomContent from '../AddNewRoomContent.vue';
+import { usePlantsStore } from '../../stores/usePlantsStore';
+import { useRoomsStore } from '../../stores/useRoomsStore';
 import BaseButton from '../Base/BaseButton.vue';
-import BaseModal from '../Base/BaseModal/BaseModal.vue';
 
 const props = defineProps({
     projectTitle: {
@@ -166,6 +159,8 @@ const props = defineProps({
         required: true
     }
 })
+
+const roomStore = useRoomsStore()
 
 const matchString = /[A-Z]/;
 
@@ -195,7 +190,7 @@ const {
     updateUserData
 } = useUpdateData()
 
-const plantStore = usePlantStore()
+const plantStore = usePlantsStore()
 
 const authStore = useAuthStore()
 
@@ -239,8 +234,6 @@ const notifications = computed(() => {
             action: typeD ? typeD.action.replace('##plantName##', `<strong>${n.name}</strong>`) : 'Unknown action'
         }
 
-        // console.log('sss', objekt)
-
         return objekt
     })
 })
@@ -255,16 +248,6 @@ const isSidebarOpen = computed(() => props.isOpen)
 
 const handleSidebarMenu = () => {
     emit('toggle-sidebar')
-}
-
-const isModalOpen = ref(false)
-
-const toggleModal = (state) => {
-    if (typeof state === 'boolean') {
-        isModalOpen.value = state
-    } else {
-        isModalOpen.value = !isModalOpen.value
-    }
 }
 
 const isScrolled = ref(false)
@@ -307,8 +290,6 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
 })
-
-
 
 </script>
 

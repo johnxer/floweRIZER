@@ -124,7 +124,7 @@
                                                 type="button"
                                                 class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
                                                 v-close-popper="true"
-                                                @click="handleEditPlant"
+                                                @click="plantsStore.openEditModal(props.roomId, props.plant.id)"
                                             >
                                                 <span class="material-symbols-outlined text-xl">
                                                     edit
@@ -189,7 +189,7 @@ import { useStorage } from '../../composables/useStorage';
 import { serverTimestamp } from 'firebase/firestore';
 import { useUpdateData } from '../../composables/useUpdateData';
 
-import { usePlantStore } from '../../stores/usePlantsStore';
+import { usePlantsStore } from '../../stores/usePlantsStore';
 import BasePopoverContent from './BasePopoverContent.vue';
 
 const {
@@ -221,6 +221,7 @@ const props = defineProps({
 
 const authStore = useAuthStore()
 
+const plantsStore = usePlantsStore()
 
 const {
     error,
@@ -234,8 +235,6 @@ const {
     isPending: isPendingUpload,
     deleteImageByUrl
 } = useStorage()
-
-const plantStore = usePlantStore()
 
 const isWateredNow = computed(() => plantStore.isWateredNow(props.plant.id) )
 
@@ -300,13 +299,6 @@ const handleDeletePlant = async () => {
         success = await deleteData(collectionPath, documentId)
     }
 }
-
-const emit = defineEmits(['edit-plant'])
-
-const handleEditPlant = () => {
-    emit('edit-plant', props.plant.id)
-}
-
 
 const isOpen = ref(false)
 

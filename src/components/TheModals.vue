@@ -1,0 +1,42 @@
+<template>
+    <div>
+        <base-modal
+            :modal-toggle="roomsStore.isModalOpenRoom"
+            @close-modal="roomsStore.closeRoomModal"
+        >
+            <add-new-room-content
+                :room-id="roomsStore.selectedRoomId"
+                @close-modal="roomsStore.closeRoomModal"
+            >
+            </add-new-room-content>
+        </base-modal>
+
+        <base-modal
+            :modal-toggle="plantsStore.isModalOpenPlant"
+            @close-modal="plantsStore.closePlantModal"
+        >
+            <add-new-plant-content
+                :room-id="plantsStore.selectedRoomId"
+                :plant-id="plantsStore.selectedPlantId"
+                @close-modal="roomsStore.closePlantModal"
+            />
+        </base-modal>
+    </div>
+</template>
+
+<script setup>
+
+import { usePlantsStore } from '../stores/usePlantsStore';
+import { useRoomsStore } from '../stores/useRoomsStore';
+
+import AddNewPlantContent from './AddNewPlantContent.vue';
+import AddNewRoomContent from './AddNewRoomContent.vue';
+
+import BaseModal from './Base/BaseModal/BaseModal.vue';
+
+const roomsStore = useRoomsStore()
+const plantsStore = usePlantsStore()
+
+</script>
+
+<style lang="scss" scoped></style>

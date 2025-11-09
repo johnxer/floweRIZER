@@ -45,7 +45,7 @@
                                                 <button
                                                     type="button"
                                                     class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
-                                                    @click="toggleModalRoom"
+                                                    @click="editRoom"
                                                     v-close-popper
                                                 >
                                                     <span class="material-symbols-outlined text-xl">
@@ -110,9 +110,8 @@
                                         :key="plant.id"
                                         :plant="plant"
                                         :show-more-details="true"
-                                        :room-id="roomId"
-                                        @edit-plant="editPlant"
-                                    />
+                                        :room-id="props.roomId"
+                                        />
                                 </transition-group>
                                 <div class="text-center">
                                     <base-button
@@ -152,18 +151,9 @@
                         @close-modal="toggleModal"
                     />
                 </base-modal>
-                <base-modal
-                    :modal-toggle="isModalOpenRoom"
-                    @close-modal="toggleModalRoom"
-                >
-                    <add-new-room-content
-                        @close-modal="toggleModalRoom"
-                        :prefill-content="true"
-                        :room-id="props.roomId"
-                    />
-                </base-modal>
             </base-container>
         </div>
+        <the-modals />
     </div>
 </template>
 
@@ -178,13 +168,15 @@ import BasePageTitle from '../../components/Base/BasePageTitle.vue';
 import BasePlantListItem from '../../components/Base/BasePlantListItem.vue';
 import BasePopoverContent from '../../components/Base/BasePopoverContent.vue';
 
+import TheModals from "../../components/TheModals.vue";
+
 import AddNewPlantContent from "../../components/AddNewPlantContent.vue";
-import AddNewRoomContent from "../../components/AddNewRoomContent.vue";
 
 import { useGetData } from '../../composables/useGetData';
 
 import { computed, ref } from "vue";
 import { useGetDetails } from '../../composables/useGetDetail';
+import { useRoomsStore } from "../../stores/useRoomsStore";
 
 const props = defineProps({
     roomId: {
@@ -192,6 +184,8 @@ const props = defineProps({
         required: true
     },
 })
+
+const roomsStore = useRoomsStore()
 
 const {
     error: errorRoom,
@@ -230,15 +224,15 @@ const toggleModal = (state) => {
     }
 }
 
-const isModalOpenRoom = ref(false)
+// const isModalOpenRoom = ref(false)
 
-const toggleModalRoom = (state) => {
-    if (typeof state === 'boolean') {
-        isModalOpenRoom.value = state
-    } else {
-        isModalOpenRoom.value = !isModalOpenRoom.value
-    }
-}
+// const toggleModalRoom = (state) => {
+//     if (typeof state === 'boolean') {
+//         isModalOpenRoom.value = state
+//     } else {
+//         isModalOpenRoom.value = !isModalOpenRoom.value
+//     }
+// }
 
 const isOpen = ref(false)
 
@@ -256,6 +250,9 @@ const editPlant = (plantId) => {
     toggleModal()
 }
 
+const editRoom = () => {
+    roomsStore.openEditModal(props.roomId)
+}
 
 </script>
 

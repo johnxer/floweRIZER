@@ -39,7 +39,7 @@
                             content: 'Edit room',
                             container: 'body'
                         }"
-                        @click="toggleModalRoom"
+                        @click="editRoom"
                     >
                         <span class="material-symbols-outlined">
                             edit
@@ -174,7 +174,6 @@
                                     :plant="element"
                                     :room-id="props.room.id"
                                     :data-plant-id="element.id"
-                                    @edit-plant="editPlant"
                                     class="cursor-move w-full"
                                     :is-draggable="true"
                                 />
@@ -191,7 +190,7 @@
                                 :btn-full-width="false"
                                 btn-style="notRoundedMd"
                                 btn-size="custom"
-                                @click="toggleModal"
+                                @click="plantsStore.openAddModal(props.room.id)"
                             >
                                 <span class="material-symbols-outlined text-xl mr-1">
                                     add
@@ -211,26 +210,6 @@
                 </transition>
             </div>
         </div>
-
-        <base-modal
-            :modal-toggle="isModalOpen"
-            @close-modal="toggleModal"
-        >
-            <add-new-plant-content
-                :room-id="room.id"
-                :plant-id="editPlantId"
-                @close-modal="toggleModal"
-            />
-        </base-modal>
-        <base-modal
-            :modal-toggle="isModalOpenRoom"
-            @close-modal="toggleModalRoom"
-        >
-            <add-new-room-content
-                @close-modal="toggleModalRoom"
-                :room-id="room.id"
-            />
-        </base-modal>
     </div>
 </template>
 
@@ -239,12 +218,9 @@ import { computed, nextTick, ref } from 'vue';
 
 import BaseButton from './BaseButton.vue';
 import BaseLoader from './BaseLoader.vue';
-import BaseModal from './BaseModal/BaseModal.vue';
 import BasePlantListItem from './BasePlantListItem.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
-import AddNewPlantContent from '../AddNewPlantContent.vue';
-import AddNewRoomContent from '../AddNewRoomContent.vue';
 
 import { useDeleteData } from '../../composables/useDeleteData';
 import { useGetData } from '../../composables/useGetData';
@@ -252,7 +228,12 @@ import { useAuthStore } from '../../stores/useAuthStore';
 
 import vDraggable from 'vuedraggable';
 import { useDragStore } from '../../stores/useDragStore';
+import { usePlantsStore } from '../../stores/usePlantsStore';
+import { useRoomsStore } from '../../stores/useRoomsStore';
 
+
+const roomsStore = useRoomsStore()
+const plantsStore = usePlantsStore()
 
 const props = defineProps({
     room: {
@@ -333,30 +314,8 @@ const onAdd = async (e) => {
 
 }
 
-const isModalOpen = ref(false)
-
-const toggleModal = (state) => {
-    if (typeof state === 'boolean') {
-        isModalOpen.value = state
-        if (state === false) {
-            editPlantId.value = null
-        }
-    } else {
-        isModalOpen.value = !isModalOpen.value
-        if (!isModalOpen.value) {
-            editPlantId.value = null
-        }
-    }
-}
-
-const isModalOpenRoom = ref(false)
-
-const toggleModalRoom = (state) => {
-    if (typeof state === 'boolean') {
-        isModalOpenRoom.value = state
-    } else {
-        isModalOpenRoom.value = !isModalOpenRoom.value
-    }
+const editRoom = () => {
+    roomsStore.openEditModal(props.room.id)
 }
 
 const isOpen = ref(false)
@@ -381,8 +340,6 @@ const editPlantId = ref(null)
 const editPlant = (plantId) => {
     editPlantId.value = plantId
     toggleModal()
-
-    console.log()
 }
 
 </script>

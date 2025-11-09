@@ -1,9 +1,9 @@
 <template>
     <base-modal-content>
         <template #modalTitle>
-            <span class="noto-color-emoji-regular mr-2">🌱</span>Create new plant
+            <span class="noto-color-emoji-regular mr-2">🌱</span>
+            {{ modalTitle }}
         </template>
-        {{ plantId }}
         <div class="relative">
             <transition
                 name="fade"
@@ -116,7 +116,7 @@
                     btn-size="base"
                     :disabled="isPending"
                 >
-                    Create
+                    {{ buttonLabel }}
                 </base-button>
             </form>
         </div>
@@ -136,13 +136,14 @@ import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';
 import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 
 import { useGetDetails } from '../composables/useGetDetail';
+import { usePlantsStore } from '../stores/usePlantsStore';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
 const props = defineProps({
     roomId: {
-        type: String,
+        type: [String, null],
         required: true,
     },
     plantId: {
@@ -153,6 +154,10 @@ const props = defineProps({
 
 const authStore = useAuthStore()
 
+const plantsStore = usePlantsStore()
+
+const localPlantId = props.plantId
+const localRoomId = props.roomId
 
 const {
     error: errorSendData,
@@ -174,7 +179,7 @@ const {
     error: errorPlant,
     isPending: isPendingPlant,
     details: detailsPlant,
-} = useGetDetails(`rooms/${props.roomId}/plants/${props.plantId}`)
+} = useGetDetails(`rooms/${localRoomId}/plants/${localPlantId}`)
 
 
 // const error = computed(() => errorSendData.value || errorUpload.value)
@@ -207,7 +212,6 @@ watch(detailsPlant, (newVal) => {
 
 const formErrors = ref({})
 
-
 const validateForm = () => {
     formErrors.value = {}
 
@@ -231,7 +235,6 @@ const clearForm = () => {
 const emit = defineEmits(['close-modal'])
 
 const data = ref({});
-
 
 const submitForm = async () => {
     if (!validateForm()) return
@@ -258,18 +261,27 @@ const submitForm = async () => {
 
     let success = false;
 
-    if (!props.plantId) {
-        success = await sendDataPlants(data.value, props.roomId)
+    if (!localPlantId) {
+        success = await sendDataPlants(data.value, localRoomId)
     } else {
-        success = await updateDataPlants(data.value, props.roomId, props.plantId)
+        success = await updateDataPlants(data.value, localRoomId, localPlantId)
     }
 
     if (success) {
         clearForm()
-
-        emit('close-modal')
+        plantsStore.closePlantModal()
     }
 }
+
+const modalTitle = computed(() =>  `${localPlantId ? 'Edit' : 'Add'} plant`)
+
+const buttonLabel = computed(() => {
+    if (isPending.value) {
+        return `${localPlantId ? 'Updating' : 'Adding'} plant...` 
+    } else {
+        return `${localPlantId ? 'Update' : 'Add'} plant`
+    }
+})
 
 </script>
 
