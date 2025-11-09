@@ -36,20 +36,20 @@
                         />
                     </base-input-wrapper-authed>
                     <base-input-wrapper-authed
-                            field-label="Image"
-                            field-id="plant-image"
-                        >
-                            <base-upload-button 
-                                input-id="plant-image"
-                                :existing-image-src="existingImageSrc"
-                                @send-file="handleFile"
-                            />
-                        </base-input-wrapper-authed>
+                        field-label="Image"
+                        field-id="plant-image"
+                    >
+                        <base-upload-button
+                            input-id="plant-image"
+                            :existing-image-src="existingImageSrc"
+                            @send-file="handleFile"
+                        />
+                    </base-input-wrapper-authed>
                     <base-input-wrapper-authed
                         field-label="Description"
                         field-id="plant-description"
                     >
-                        <base-textarea 
+                        <base-textarea
                             textarea-id="plant-description"
                             textarea-placeholder="Enter plant description..."
                             v-model.trim="form.desc"
@@ -135,6 +135,7 @@ import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';
 import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 
+import { serverTimestamp } from 'firebase/firestore';
 import { useGetDetails } from '../composables/useGetDetail';
 import { usePlantsStore } from '../stores/usePlantsStore';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
@@ -243,7 +244,13 @@ const submitForm = async () => {
         name: form.value.name,
         desc: form.value.desc,
         wateringFrequency: form.value.watering,
-        wateredNow: form.value.wateredNow
+    }
+
+    if (form.value.wateredNow) {
+        data.value = {
+            lastWateredDate: serverTimestamp(),
+            ...data.value
+        }
     }
 
 
@@ -273,11 +280,11 @@ const submitForm = async () => {
     }
 }
 
-const modalTitle = computed(() =>  `${localPlantId ? 'Edit' : 'Add'} plant`)
+const modalTitle = computed(() => `${localPlantId ? 'Edit' : 'Add'} plant`)
 
 const buttonLabel = computed(() => {
     if (isPending.value) {
-        return `${localPlantId ? 'Updating' : 'Adding'} plant...` 
+        return `${localPlantId ? 'Updating' : 'Adding'} plant...`
     } else {
         return `${localPlantId ? 'Update' : 'Add'} plant`
     }

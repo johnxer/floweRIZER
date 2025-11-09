@@ -206,7 +206,7 @@ const {
 const {
     error: errorProfileUpdate,
     isPending: isPendingProfileUpdate,
-    updateUserData,
+    updateData,
 } = useUpdateData()
 
 const userAvatarURL = computed(() => {
@@ -257,7 +257,7 @@ const handleFile = async (e) => {
 
         const uid = user.value?.uid || auth.currentUser.uid
 
-        await updateUserData('users', uid, data)
+        await updateData(data)
 
         user.value = {
             ...user.value,
@@ -325,7 +325,7 @@ const submitForm = async () => {
     console.log(user.value.uid)
 
     const successProfile = await updateProfileData(dataProfile)
-    const successUserDb = await updateUserData('users', user.value.uid, data)
+    const successUserDb = await updateData(data)
 
 
     if (successProfile && successUserDb) {

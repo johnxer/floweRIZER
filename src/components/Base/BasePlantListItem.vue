@@ -195,7 +195,7 @@ import BasePopoverContent from './BasePopoverContent.vue';
 const {
     error: errorUpdateData,
     isPending: isPendingUpdateData,
-    updateUserData,
+    updateData,
 } = useUpdateData()
 
 const props = defineProps({
@@ -262,13 +262,21 @@ const lastWateredDaysAgo = computed(() => {
 
 const handleWatering = async () => {
     const data = {
-        lastWateredDate: serverTimestamp()
+        lastWateredDate: serverTimestamp(),
     }
 
-    const success = await updateUserData(`users/${authStore.user?.uid}/rooms/${props.roomId}/plants`, props.plant.id, data)
+    console.log(data)
+
+    const success = await updateData(data, `/rooms/${props.roomId}/plants/${props.plant.id}`)
 
     if (success) {
         plantsStore.markAsWatered(props.plant.id)
+
+        
+
+
+    } else {
+        console.error('Watering failed:', errorUpdateData.value)
     }
 }
 

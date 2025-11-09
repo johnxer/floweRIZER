@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!room.isSystem || room.isSystem && plants?.length">
+    <div v-if="!room.isSystem || (room.isSystem && plants?.length > 0)">
         <div
             class="group/card flex flex-col rounded-xl md:p-2 relative items-center md:items-start"
             :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50'"
@@ -214,7 +214,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
 import BaseButton from './BaseButton.vue';
 import BaseLoader from './BaseLoader.vue';
@@ -331,6 +331,16 @@ const deleteRoom = async () => {
 
 const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)
 
+
+const emit = defineEmits(['visibility-change'])
+
+const isVisible = computed(() =>
+  !props.room.isSystem || (props.room.isSystem && plants.value?.length > 0)
+)
+
+onMounted(() => emit('visibility-change', isVisible.value))
+onUnmounted(() => emit('visibility-change', false))
+watch(isVisible, (val) => emit('visibility-change', val))
 
 </script>
 

@@ -187,7 +187,7 @@ const {
 
 
 const {
-    updateUserData
+    updateData
 } = useUpdateData()
 
 const plantsStore = usePlantsStore()
@@ -272,7 +272,7 @@ const handleWatering = async (plantId) => {
 
     console.log(`users/${authStore.user?.uid}/rooms/${foundRoomId}/plants/${plantId}`);
 
-    const success = await updateUserData(`users/${authStore.user?.uid}/rooms/${foundRoomId}/plants`, plantId, data)
+    const success = await updateData(data, `/rooms/${foundRoomId}/plants/${plantId}`)
 
     if (success) {
         plantsStore.markAsWatered(plantId)
