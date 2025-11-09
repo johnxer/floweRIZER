@@ -1,0 +1,13 @@
+TODO
+
+- footer with github link
+- close action popover on desktop when clicking outside
+- remove the existing image upon editing existing plan/room from store
+- show empty placeholder, when no room with plant exits (including the unassigned one)
+- show placehoder for empty rooms, when plant is dragged
+- style the profile button in the menu on mobile to stand outside
+- add the gemini AI plant identification based on a photo
+- add a log per plant (date/time, action - watering/fertilizing)
+- add a log per room (date/time, action - added, removed plant from room)
+- add fertilization option (frequency + fertilized now) and include it into log + notification 
+- custom color
