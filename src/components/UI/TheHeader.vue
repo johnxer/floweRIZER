@@ -190,7 +190,7 @@ const {
     updateUserData
 } = useUpdateData()
 
-const plantStore = usePlantsStore()
+const plantsStore = usePlantsStore()
 
 const authStore = useAuthStore()
 
@@ -275,7 +275,7 @@ const handleWatering = async (plantId) => {
     const success = await updateUserData(`users/${authStore.user?.uid}/rooms/${foundRoomId}/plants`, plantId, data)
 
     if (success) {
-        plantStore.markAsWatered(plantId)
+        plantsStore.markAsWatered(plantId)
     }
 }
 

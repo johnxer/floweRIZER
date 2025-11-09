@@ -236,7 +236,7 @@ const {
     deleteImageByUrl
 } = useStorage()
 
-const isWateredNow = computed(() => plantStore.isWateredNow(props.plant.id) )
+const isWateredNow = computed(() => plantsStore.isWateredNow(props.plant.id) )
 
 const getDaysAgo = computed(() => {
     if (!props.plant?.lastWateredDate) {
@@ -268,7 +268,7 @@ const handleWatering = async () => {
     const success = await updateUserData(`users/${authStore.user?.uid}/rooms/${props.roomId}/plants`, props.plant.id, data)
 
     if (success) {
-        plantStore.markAsWatered(props.plant.id)
+        plantsStore.markAsWatered(props.plant.id)
     }
 }
 
