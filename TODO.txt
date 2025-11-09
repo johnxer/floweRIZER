@@ -1,5 +1,6 @@
 TODO
 
+- dark/light mode switcher (and maybe automatic too) on the account setting page
 - footer with github link
 - close action popover on desktop when clicking outside
 - remove the existing image upon editing existing plan/room from store
