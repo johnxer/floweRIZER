@@ -270,8 +270,6 @@ const handleWatering = async (plantId) => {
         lastWateredDate: serverTimestamp()
     }
 
-    console.log(`users/${authStore.user?.uid}/rooms/${foundRoomId}/plants/${plantId}`);
-
     const success = await updateData(data, `/rooms/${foundRoomId}/plants/${plantId}`)
 
     if (success) {

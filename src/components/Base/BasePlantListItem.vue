@@ -271,12 +271,6 @@ const handleWatering = async () => {
 
     if (success) {
         plantsStore.markAsWatered(props.plant.id)
-
-        
-
-
-    } else {
-        console.error('Watering failed:', errorUpdateData.value)
     }
 }
 

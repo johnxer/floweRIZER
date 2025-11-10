@@ -1,17 +1,32 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
+import { useAuth } from './useAuth';
 
 export const useDeleteData = () => {
+    const { getUid } = useAuth()
+
+    const uid = getUid();
+
+    if (!uid) return false;
+
     const error = ref(null);
     const isPending = ref(false);
 
-    const deleteData = async (collectionPath, documentId) => {
+    const deleteData = async (documentId, collectionPath) => {
         isPending.value = true;
         error.value = null;
 
+        let pathReference
+
+        if (!collectionPath) {
+            pathReference = `users/${uid}`
+        } else {
+            pathReference = `users/${uid}/${collectionPath}`
+        }
+
         try {
-            await deleteDoc(doc(db, collectionPath, documentId));
+            await deleteDoc(doc(db, pathReference, documentId));
 
             return true;
         } catch (err) {
@@ -25,7 +40,7 @@ export const useDeleteData = () => {
 
     const movedCount = ref(0);
 
-    const movePlants = async (uid, oldRoomId, newRoomId) => {
+    const movePlants = async (oldRoomId, newRoomId) => {
         isPending.value = true;
         error.value = null;
         movedCount.value = 0;
@@ -64,7 +79,7 @@ export const useDeleteData = () => {
         }
     };
 
-    const movePlant = async (uid, oldRoomId, newRoomId, plantId) => {
+    const movePlant = async (oldRoomId, newRoomId, plantId) => {
         isPending.value = true;
         error.value = null;
 

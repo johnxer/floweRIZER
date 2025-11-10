@@ -152,7 +152,6 @@
                                     ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2'
                                     : ''
                             ]"
-                            
                             filter=".js-water-btn, .js-actions-btn"
                             :prevent-on-filter="false"
                             :force-fallback="false"
@@ -224,7 +223,6 @@ import BasePopoverContent from './BasePopoverContent.vue';
 
 import { useDeleteData } from '../../composables/useDeleteData';
 import { useGetData } from '../../composables/useGetData';
-import { useAuthStore } from '../../stores/useAuthStore';
 
 import vDraggable from 'vuedraggable';
 import { useStorage } from '../../composables/useStorage';
@@ -263,8 +261,6 @@ const {
     isPending: isPendingDeleteImage,
     deleteImageByUrl
 } = useStorage()
-
-const authStore = useAuthStore()
 
 const dragStore = useDragStore()
 
@@ -311,7 +307,7 @@ const onAdd = async (e) => {
     if (!plantId || fromRoomId === toRoomId) return
 
 
-    await movePlant(authStore.user?.uid, fromRoomId, toRoomId, plantId)
+    await movePlant(fromRoomId, toRoomId, plantId)
 
     await nextTick()
 
@@ -327,22 +323,15 @@ const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
 const deleteRoom = async () => {
-    const uid = authStore.user?.uid
+    const oldPhotoUrl = props.room?.photoURL || null
 
-    if (!uid) return
+    await movePlants(props.room.id, 'unassigned')
 
-    const data = {
-        photoURL: url.value,
-    }
-
-    await movePlants(uid, props.room.id, 'unassigned')
-
-    await deleteData(`users/${uid}/rooms`, props.room.id)
+    await deleteData(props.room.id, 'rooms')
 
     if (oldPhotoUrl) {
         await deleteImageByUrl(oldPhotoUrl)
     }
-
 }
 
 const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)
@@ -351,11 +340,13 @@ const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Un
 const emit = defineEmits(['visibility-change'])
 
 const isVisible = computed(() =>
-  !props.room.isSystem || (props.room.isSystem && plants.value?.length > 0)
+    !props.room.isSystem || (props.room.isSystem && plants.value?.length > 0)
 )
 
 onMounted(() => emit('visibility-change', isVisible.value))
+
 onUnmounted(() => emit('visibility-change', false))
+
 watch(isVisible, (val) => emit('visibility-change', val))
 
 </script>
