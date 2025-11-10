@@ -1,24 +1,13 @@
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
-import { useAuthStore } from '../stores/useAuthStore';
+import { useAuth } from './useAuth';
 
 export const useSendData = () => {
-    const authStore = useAuthStore();
+    const { getUid } = useAuth()
 
     const isPending = ref(false);
     const error = ref(null);
-
-    const getUid = () => {
-        const uid = authStore.user?.uid;
-
-        if (!uid) {
-            error.value = 'User not authenticated';
-            return null;
-        }
-
-        return uid;
-    };
 
     const sendDataChats = async (chatId, data) => {
         const uid = getUid();

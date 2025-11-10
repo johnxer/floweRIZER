@@ -210,7 +210,7 @@ const {
 } = useUpdateData()
 
 const userAvatarURL = computed(() => {
-    return user.value?.photoURL || 'https://via.placeholder.com/200?text=No+Avatar'
+    return user.value?.photoURL || 'https://placehold.co/600x600?text=No+Avatar'
 })
 
 const emailValue = user.value?.email;
@@ -255,7 +255,7 @@ const handleFile = async (e) => {
             photoURL: url.value,
         })
 
-        const uid = user.value?.uid || auth.currentUser.uid
+        // const uid = user.value?.uid || auth.currentUser.uid
 
         await updateData(data)
 
@@ -323,10 +323,10 @@ const submitForm = async () => {
     console.log(data)
     console.log(dataProfile)
     console.log(user.value.uid)
+    console.log(data)
 
     const successProfile = await updateProfileData(dataProfile)
     const successUserDb = await updateData(data)
-
 
     if (successProfile && successUserDb) {
 

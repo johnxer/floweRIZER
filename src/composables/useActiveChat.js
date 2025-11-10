@@ -5,6 +5,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 
 export const useActiveChat = () => {
     const authStore = useAuthStore();
+    
     const activeChatId = ref(null);
     const isPending = ref(false);
     const error = ref(null);

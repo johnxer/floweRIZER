@@ -227,6 +227,7 @@ import { useGetData } from '../../composables/useGetData';
 import { useAuthStore } from '../../stores/useAuthStore';
 
 import vDraggable from 'vuedraggable';
+import { useStorage } from '../../composables/useStorage';
 import { useDragStore } from '../../stores/useDragStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 import { useRoomsStore } from '../../stores/useRoomsStore';
@@ -256,6 +257,12 @@ const {
     movePlants,
     movePlant
 } = useDeleteData()
+
+const {
+    error: errorDeleteImage,
+    isPending: isPendingDeleteImage,
+    deleteImageByUrl
+} = useStorage()
 
 const authStore = useAuthStore()
 
@@ -324,9 +331,18 @@ const deleteRoom = async () => {
 
     if (!uid) return
 
+    const data = {
+        photoURL: url.value,
+    }
+
     await movePlants(uid, props.room.id, 'unassigned')
 
     await deleteData(`users/${uid}/rooms`, props.room.id)
+
+    if (oldPhotoUrl) {
+        await deleteImageByUrl(oldPhotoUrl)
+    }
+
 }
 
 const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)

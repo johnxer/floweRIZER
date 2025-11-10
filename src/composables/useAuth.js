@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { ref } from 'vue';
-import { auth } from '../firebase/config';
+import { auth, db } from '../firebase/config';
 import { useAuthStore } from '../stores/useAuthStore';
 
 export const useAuthActions = () => {
@@ -27,11 +28,29 @@ export const useAuthActions = () => {
 
     const signUpUser = async (data) => {
         error.value = null;
-
         isPending.value = true;
 
         try {
-            const user = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            const response = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            const user = response.user;
+
+            const userReference = doc(db, 'users', user.uid);
+
+            await setDoc(userReference, {
+                email: user.email,
+                displayName: data.username || '',
+                photoUrl: user.photoURL || '',
+                createdAt: serverTimestamp(),
+                lastLogin: serverTimestamp(),
+            });
+
+            const unassignedRoomReference = doc(db, `users/${user.uid}/rooms/unassigned`);
+
+            await setDoc(unassignedRoomReference, {
+                name: 'Unassigned',
+                createdAt: serverTimestamp(),
+                isSystem: true,
+            });
 
             return user;
         } catch (err) {
@@ -159,9 +178,21 @@ export const useAuth = () => {
         }
     };
 
+    const getUid = () => {
+        const uid = authStore.user?.uid;
+
+        if (!uid) {
+            error.value = 'User not authenticated';
+            return null;
+        }
+
+        return uid;
+    };
+
     return {
         initAuth,
         logOutUser,
         updateProfileData,
+        getUid
     };
 };

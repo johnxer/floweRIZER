@@ -42,24 +42,26 @@ export const useGetData = (dataType) => {
                 isPending.value = false;
             }
         );
+
+        
     };
 
     watchEffect(() => {
         const uid = authStore.user?.uid;
         if (!uid) {
-            if (unsubscribe) unsubscribe();
+            unsubscribe?.();
             unsubscribe = null;
             items.value = [];
             isPending.value = false;
             return;
         }
 
-        if (unsubscribe) unsubscribe();
+        unsubscribe?.();
         startListener(uid);
     });
 
     onUnmounted(() => {
-        if (unsubscribe) unsubscribe();
+        unsubscribe?.();
     });
 
     return {

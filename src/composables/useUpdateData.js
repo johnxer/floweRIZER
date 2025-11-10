@@ -1,21 +1,10 @@
 import { doc, updateDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
-import { useAuthStore } from '../stores/useAuthStore';
+import { useAuth } from './useAuth';
 
 export const useUpdateData = () => {
-    const authStore = useAuthStore()
-
-    const getUid = () => {
-        const uid = authStore.user?.uid;
-
-        if (!uid) {
-            error.value = 'User not authenticated';
-            return null;
-        }
-
-        return uid;
-    };
+    const { getUid } = useAuth()
 
     const error = ref(null);
     const isPending = ref(false);
@@ -27,7 +16,15 @@ export const useUpdateData = () => {
 
         isPending.value = true;
         error.value = null;
-        const pathReference = `users/${uid}${collectionPath}`
+
+        let pathReference;
+
+        if (!collectionPath) {
+            pathReference = `users/${uid}`
+        } else {
+            pathReference = `users/${uid}/${collectionPath}`
+        }
+
 
         const userReference = doc(db, pathReference);
 
