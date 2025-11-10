@@ -141,11 +141,8 @@ import { useGetDataByUserId } from '../../composables/useGetData';
 
 import { differenceInDays } from 'date-fns';
 
-import { serverTimestamp } from 'firebase/firestore';
 import { useFindRoomIdByPlantId } from '../../composables/useFindRoomIdByPlantId';
 import { useUpdateData } from '../../composables/useUpdateData';
-import { useAuthStore } from '../../stores/useAuthStore';
-import { usePlantsStore } from '../../stores/usePlantsStore';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import BaseButton from '../Base/BaseButton.vue';
 
@@ -187,12 +184,10 @@ const {
 
 
 const {
-    updateData
+    error: errorUpdateData,
+    isPending: isPendingUpdateData,
+    waterPlant
 } = useUpdateData()
-
-const plantsStore = usePlantsStore()
-
-const authStore = useAuthStore()
 
 const notificationsArrayFromFB = computed(() => {
     if (!plants.value?.length) return []
@@ -238,10 +233,6 @@ const notifications = computed(() => {
     })
 })
 
-// const handleDismissNotification = (notificationId) => {
-
-// }
-
 const emit = defineEmits(['toggle-sidebar'])
 
 const isSidebarOpen = computed(() => props.isOpen)
@@ -264,17 +255,7 @@ const handleScroll = () => {
 document.documentElement.style.setProperty('--header-h', `${headerHeight}px`)
 
 const handleWatering = async (plantId) => {
-    const foundRoomId = await findRoomIdByPlantId(plantId);
-
-    const data = {
-        lastWateredDate: serverTimestamp()
-    }
-
-    const success = await updateData(data, `/rooms/${foundRoomId}/plants/${plantId}`)
-
-    if (success) {
-        plantsStore.markAsWatered(plantId)
-    }
+    await waterPlant(plantId)
 }
 
 const isLastNotification = computed(() => {

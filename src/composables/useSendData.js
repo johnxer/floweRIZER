@@ -4,7 +4,7 @@ import { db } from '../firebase/config';
 import { useAuth } from './useAuth';
 
 export const useSendData = () => {
-    const { getUid } = useAuth()
+    const { getUid } = useAuth();
 
     const isPending = ref(false);
     const error = ref(null);
@@ -162,6 +162,6 @@ export const useSendData = () => {
         sendDataRooms,
         sendDataPlants,
         updateDataRooms,
-        updateDataPlants
+        updateDataPlants,
     };
 };

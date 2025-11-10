@@ -186,7 +186,6 @@ import { differenceInDays } from "date-fns";
 
 import { useStorage } from '../../composables/useStorage';
 
-import { serverTimestamp } from 'firebase/firestore';
 import { useUpdateData } from '../../composables/useUpdateData';
 
 import { usePlantsStore } from '../../stores/usePlantsStore';
@@ -195,7 +194,7 @@ import BasePopoverContent from './BasePopoverContent.vue';
 const {
     error: errorUpdateData,
     isPending: isPendingUpdateData,
-    updateData,
+    waterPlant
 } = useUpdateData()
 
 const props = defineProps({
@@ -261,17 +260,7 @@ const lastWateredDaysAgo = computed(() => {
 })
 
 const handleWatering = async () => {
-    const data = {
-        lastWateredDate: serverTimestamp(),
-    }
-
-    console.log(data)
-
-    const success = await updateData(data, `/rooms/${props.roomId}/plants/${props.plant.id}`)
-
-    if (success) {
-        plantsStore.markAsWatered(props.plant.id)
-    }
+    await waterPlant(props.plant.id, props.roomId)
 }
 
 const isWatered = computed(() => {

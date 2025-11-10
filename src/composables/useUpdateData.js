@@ -1,13 +1,20 @@
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
+import { usePlantsStore } from '../stores/usePlantsStore';
 import { useAuth } from './useAuth';
+import { useFindRoomIdByPlantId } from './useFindRoomIdByPlantId';
 
 export const useUpdateData = () => {
-    const { getUid } = useAuth()
+    const { getUid } = useAuth();
+    const { findRoomIdByPlantId } = useFindRoomIdByPlantId();
+
+    const plantsStore = usePlantsStore();
 
     const error = ref(null);
     const isPending = ref(false);
+
+    const normalizePath = (path) => path.replace(/^\/+/, '');
 
     const updateData = async (data, collectionPath) => {
         const uid = getUid();
@@ -17,21 +24,49 @@ export const useUpdateData = () => {
         isPending.value = true;
         error.value = null;
 
-        let pathReference;
+        const pathReference = collectionPath ? `users/${uid}/${normalizePath(collectionPath)}` : `users/${uid}`;
 
-        if (!collectionPath) {
-            pathReference = `users/${uid}`
-        } else {
-            pathReference = `users/${uid}/${collectionPath}`
-        }
-
-
-        const userReference = doc(db, pathReference);
+        const docReference = doc(db, pathReference);
 
         try {
-            await updateDoc(userReference, data);
+            await updateDoc(docReference, data);
 
             return true;
+        } catch (err) {
+            error.value = err.message;
+            return false;
+        } finally {
+            isPending.value = false;
+        }
+    };
+
+    const waterPlant = async (plantId, roomId = null) => {
+        const uid = getUid();
+
+        if (!uid) return false;
+
+        isPending.value = true;
+        error.value = null;
+
+        try {
+            const foundRoomId = roomId || (await findRoomIdByPlantId(plantId));
+
+            if (!foundRoomId) {
+                error.value = 'Room not found for this plant';
+                return false;
+            }
+
+            const data = {
+                lastWateredDate: serverTimestamp(),
+            };
+
+            const success = await updateData(data, `rooms/${foundRoomId}/plants/${plantId}`);
+
+            if (success) {
+                plantsStore.markAsWatered(plantId);
+            }
+
+            return success;
         } catch (err) {
             error.value = err.message;
             return false;
@@ -44,5 +79,6 @@ export const useUpdateData = () => {
         error,
         isPending,
         updateData,
+        waterPlant,
     };
 };
