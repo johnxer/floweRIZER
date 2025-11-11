@@ -13,18 +13,16 @@ export const useDeleteData = () => {
     const error = ref(null);
     const isPending = ref(false);
 
+    const normalizePath = (path) => path.replace(/^\/+/, '');
+
     const deleteData = async (documentId, collectionPath) => {
         isPending.value = true;
         error.value = null;
 
-        let pathReference
+        const pathReference = collectionPath ? `users/${uid}/${normalizePath(collectionPath)}` : `users/${uid}`;
 
-        if (!collectionPath) {
-            pathReference = `users/${uid}`
-        } else {
-            pathReference = `users/${uid}/${collectionPath}`
-        }
-
+        console.log(pathReference)
+        
         try {
             await deleteDoc(doc(db, pathReference, documentId));
 

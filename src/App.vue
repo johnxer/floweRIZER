@@ -47,8 +47,9 @@ import SidebarMenu from './components/UI/SidebarMenu.vue';
 import TheHeader from './components/UI/TheHeader.vue';
 import TheLogoCircle from './components/UI/TheLogoCircle.vue';
 
-import { computed, ref, watchEffect } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useAuthStore } from './stores/useAuthStore';
+import { useMobileStore } from './stores/useMobileStore.js';
 
 const authStore = useAuthStore();
 
@@ -83,6 +84,15 @@ const isChatOpen = ref(false)
 const toggleChat = () => {
     isChatOpen.value = !isChatOpen.value
 }
+
+
+const mobileStore = useMobileStore()
+
+// Aktivujeme posluchač při startu aplikace
+onMounted(() => {
+  // Tím se spustí resize listener uvnitř store
+  console.log('📱 Mobile store initialized')
+})
 
 </script>
 

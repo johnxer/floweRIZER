@@ -84,6 +84,7 @@
                         </template>
                     </v-dropdown>
                     <base-button
+                        v-if="isShown"
                         @click="roomStore.openAddModal"
                         btn-style="notRoundedMd"
                         btn-size="sm"
@@ -141,6 +142,7 @@ import { useGetDataByUserId } from '../../composables/useGetData';
 
 import { differenceInDays } from 'date-fns';
 
+import { useRoute } from 'vue-router';
 import { useFindRoomIdByPlantId } from '../../composables/useFindRoomIdByPlantId';
 import { useUpdateData } from '../../composables/useUpdateData';
 import { useRoomsStore } from '../../stores/useRoomsStore';
@@ -269,6 +271,14 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
 })
+
+
+const route = useRoute()
+
+
+const isShown = computed(() => route.name !== 'Account' ) 
+
+
 
 </script>
 

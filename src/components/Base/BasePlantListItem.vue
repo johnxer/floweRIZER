@@ -270,7 +270,7 @@ const isWatered = computed(() => {
 
 
 const handleDeletePlant = async () => {
-    const collectionPath = `users/${authStore.user.uid}/rooms/${props.roomId}/plants/`
+    const collectionPath = `rooms/${props.roomId}/plants/`
     const documentId = props.plant.id
 
     const documentImgSrc = props.plant.imgSrc
@@ -287,7 +287,7 @@ const handleDeletePlant = async () => {
         console.log(collectionPath)
         console.log(documentId)
 
-        success = await deleteData(collectionPath, documentId)
+        success = await deleteData(documentId, collectionPath)
     }
 }
 
