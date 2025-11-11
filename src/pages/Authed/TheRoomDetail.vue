@@ -1,6 +1,6 @@
 <template>
     <div>
-        <base-container v-if="isPending">
+        <base-container v-if="isPending || !detailsRoom">
             <base-loader />
         </base-container>
         <div v-else>
@@ -20,9 +20,11 @@
                         {{ roomName }}
 
                         <v-dropdown
+                            v-if="props.roomId !== 'unassigned'"
                             trap-focus
                             @show="onShow"
                             @hide="onHide"
+                            popper-class="popper-slide-small"
                         >
                             <button
                                 type="button"
@@ -60,7 +62,7 @@
                                                 <button
                                                     type="button"
                                                     class="flex gap-2 items-center text-base text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex transition-all duration-600 p-2"
-                                                    @click="deletePlant"
+                                                    @click="deleteRoom"
                                                 >
                                                     <span class="material-symbols-outlined text-xl">
                                                         delete
@@ -175,7 +177,10 @@ import AddNewPlantContent from "../../components/AddNewPlantContent.vue";
 import { useGetData } from '../../composables/useGetData';
 
 import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useDeleteData } from "../../composables/useDeleteData";
 import { useGetDetails } from '../../composables/useGetDetail';
+import { useStorage } from "../../composables/useStorage";
 import { useRoomsStore } from "../../stores/useRoomsStore";
 
 const props = defineProps({
@@ -198,6 +203,20 @@ const {
     isPending: isPendingPlants,
     items: plants,
 } = useGetData(`rooms/${props.roomId}/plants`)
+
+
+const {
+    error: errorDelete,
+    isPending: isPendingDelete,
+    deleteData,
+    movePlants,
+} = useDeleteData()
+
+const {
+    error: errorDeleteImage,
+    isPending: isPendingDeleteImage,
+    deleteImageByUrl
+} = useStorage()
 
 const isPending = computed(() => {
     return isPendingRoom.value || isPendingPlants.value
@@ -239,19 +258,40 @@ const isOpen = ref(false)
 const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
-const roomName = computed(() => detailsRoom.value.name === 'Unassigned' ? 'Unassigned plants' : detailsRoom.value.name)
+const roomName = computed(() => {
+    const name = detailsRoom.value?.name
+    return name === 'Unassigned' ? 'Unassigned plants' : (name || '')
+})
 
 const existPlants = computed(() => plants.value?.length)
 
 const editPlantId = ref(null)
 
-const editPlant = (plantId) => {
-    editPlantId.value = plantId
-    toggleModal()
-}
+// const editPlant = (plantId) => {
+//     editPlantId.value = plantId
+//     toggleModal()
+// }
+
+
 
 const editRoom = () => {
     roomsStore.openEditModal(props.roomId)
+}
+
+const router = useRouter();
+
+const deleteRoom = async () => {
+    const oldPhotoUrl = detailsRoom.value?.imgSrc || null
+
+    await movePlants(detailsRoom.value?.id, 'unassigned')
+
+    await deleteData(detailsRoom.value?.id, 'rooms')
+
+    if (oldPhotoUrl) {
+        await deleteImageByUrl(oldPhotoUrl)
+    }
+
+    router.push({ name: 'TheDashboard' })
 }
 
 </script>

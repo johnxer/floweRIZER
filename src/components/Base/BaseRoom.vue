@@ -250,7 +250,6 @@ const {
 const {
     error: errorDelete,
     isPending: isPendingDelete,
-    movedCount,
     deleteData,
     movePlants,
     movePlant
@@ -323,7 +322,7 @@ const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
 const deleteRoom = async () => {
-    const oldPhotoUrl = props.room?.photoURL || null
+    const oldPhotoUrl = props.room?.imgSrc || null
 
     await movePlants(props.room.id, 'unassigned')
 

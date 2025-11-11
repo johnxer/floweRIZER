@@ -83,6 +83,73 @@
                             </div>
                         </template>
                     </v-dropdown>
+
+                    <v-dropdown
+                        trap-focus
+                        popper-class="popper-slide"
+                    >
+                        <button
+                            v-tooltip="{
+                                content: themeStore.activeThemeTooltip,
+                                container: 'body'
+                            }"
+                            class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600"
+                        >
+                            <span class="material-symbols-outlined text-2xl">
+                                {{ themeStore.activeThemeIcon }}
+                            </span>
+                        </button>
+                        <template #popper>
+                            <div class="text-base max-w-[300px] font-normal p-6">
+                                <ul class="text-sm space-y-3">
+                                    <li>
+                                        <button
+                                            type="button"
+                                            class="hover:text-primary-500 cursor-pointer transition-colors duration-600 block py-2 flex gap-2 items-center text-base"
+                                            :class="themeStore.activeTheme === 'light' ? 'text-primary-500' : 'text-gray-600'"
+                                            v-close-popper="true"
+                                            @click="themeStore.handleSetTheme('light')"
+                                        >
+                                            <span class="material-symbols-outlined text-3xl">
+                                                light_mode
+                                            </span>
+                                            Light theme
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            type="button"
+                                            class="hover:text-primary-500 cursor-pointer transition-colors duration-600 block py-2 flex gap-2 items-center text-base"
+                                            :class="themeStore.activeTheme === 'dark' ? 'text-primary-500' : 'text-gray-600'"
+                                            v-close-popper="true"
+                                            @click="themeStore.handleSetTheme('dark')"
+                                        >
+                                            <span class="material-symbols-outlined text-3xl">
+                                                dark_mode
+                                            </span>
+                                            Dark theme
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            type="button"
+                                            class="hover:text-primary-500 cursor-pointer transition-colors duration-600 block py-2 flex gap-2 items-center text-base"
+                                            :class="themeStore.activeTheme === 'default' ? 'text-primary-500' : 'text-gray-600'"
+                                            v-close-popper="true"
+                                            @click="themeStore.handleSetTheme('default')"
+                                        >
+                                            <span class="material-symbols-outlined text-3xl">
+                                                brightness_medium
+                                            </span>
+                                            Device default
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
+                    </v-dropdown>
+
+
                     <base-button
                         v-if="isShown"
                         @click="roomStore.openAddModal"
@@ -104,31 +171,51 @@
 
                     </div>
                     <div class="hidden md:flex">
-                        <button
-                            class="cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600 transition-colors duration-600 flex gap-2 items-center p-2"
-                            @click="handleSidebarMenu"
+                        <v-dropdown
+                            trap-focus
+                            popper-class="popper-slide"
                         >
-
-                            <transition
-                                name="icon-fade"
-                                mode="out-in"
-                            >
-                                <span
-                                    v-if="isSidebarOpen"
-                                    key="close"
-                                    class="material-symbols-outlined text-2xl transition-transform duration-500 rotate-180"
+                            <button class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600">
+                                <transition
+                                    name="icon-fade"
+                                    mode="out-in"
                                 >
-                                    close
-                                </span>
-                                <span
-                                    v-else
-                                    key="menu"
-                                    class="material-symbols-outlined text-2xl transition-transform duration-500 rotate-0"
-                                >
-                                    menu
-                                </span>
-                            </transition>
-                        </button>
+                                    <span
+                                        v-if="isSidebarOpen"
+                                        key="close"
+                                        class="material-symbols-outlined text-2xl transition-transform duration-500 rotate-180"
+                                    >
+                                        close
+                                    </span>
+                                    <span
+                                        v-else
+                                        key="menu"
+                                        class="material-symbols-outlined text-2xl transition-transform duration-500 rotate-0"
+                                    >
+                                        menu
+                                    </span>
+                                </transition>
+                            </button>
+                            <template #popper>
+                                <div class="text-base max-w-[300px] font-normal p-6">
+                                    <ul class="space-y-3">
+                                        <menu-content />
+                                        <li>
+                                            <button
+                                                class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center"
+                                                v-close-popper="true"
+                                                @click="handleLogout"
+                                            >
+                                                <span class="material-symbols-outlined text-3xl">
+                                                    logout
+                                                </span>
+                                                Log out
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </template>
+                        </v-dropdown>
                     </div>
                 </div>
             </div>
@@ -146,7 +233,11 @@ import { useRoute } from 'vue-router';
 import { useFindRoomIdByPlantId } from '../../composables/useFindRoomIdByPlantId';
 import { useUpdateData } from '../../composables/useUpdateData';
 import { useRoomsStore } from '../../stores/useRoomsStore';
+import { useThemeStore } from '../../stores/useThemeStore';
+
 import BaseButton from '../Base/BaseButton.vue';
+
+import MenuContent from '../MenuContent.vue';
 
 const props = defineProps({
     projectTitle: {
@@ -276,8 +367,10 @@ onUnmounted(() => {
 const route = useRoute()
 
 
-const isShown = computed(() => route.name !== 'Account' ) 
+const isShown = computed(() => route.name !== 'Account')
 
+
+const themeStore = useThemeStore()
 
 
 </script>

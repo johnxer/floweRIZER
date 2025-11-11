@@ -49,6 +49,8 @@ export const useSendData = () => {
 
         if (!uid) return false;
 
+        
+
         isPending.value = true;
         error.value = null;
 
@@ -56,6 +58,9 @@ export const useSendData = () => {
         const roomReference = collection(db, `${roomPath}`);
 
         try {
+
+            console.log(data)
+
             const response = await addDoc(roomReference, {
                 createdAt: serverTimestamp(),
                 ...data,

@@ -5,9 +5,9 @@
             class="fixed inset-x-0 z-2 bottom-0 top-[var(--header-h)]"
             @click="emit('toggle-sidebar')"
         />
-        <div 
+        <div
             class="md:fixed md:top-0 md:w-full md:flex md:justify-center"
-            :class="{'z-2' : isOpen && !isMobile}"
+            :class="{ 'z-2': isOpen && !isMobile }"
         >
             <div class="md:container md:absolute md:top-0 ">
                 <!-- <transition name="menu-slide"> -->
@@ -17,25 +17,11 @@
                     class="fixed md:absolute w-full left-0 md:left-auto md:right-0 md:w-[200px] md:top-[60px] bottom-0 md:bottom-auto bg-white px-4 py-1 md:p-6 transition-all duration-600 ease-in-out shadow-menu dark:bg-gray-900 z-5 md:rounded-xl md:flex md:justify-center"
                     :class="isOpen ? 'md:shadow-2xl md:translate-y-0 md:opacity-100' : 'md:shadow-none md:-translate-y-75  md:opacity-0'"
                 >
-                    <ul class="md:space-y-3 flex gap-10 md:block w-full">
-                        <base-menu-link
-                            link-destination="TheDashboard"
-                            link-icon="potted_plant"
-                            link-title="Dashboard"
-                            class="w-1/3 md:w-full"
-                            :extra-classes="{ 'reset-is-active': !!isChatActive }"
-                            @click="handleSidebarMenu"
+                    <ul class="flex gap-10 w-full">
+                        <menu-content 
+                            :is-chat-active="isChatActive"
                         />
-                        <base-menu-link
-                            link-destination="Account"
-                            link-icon="face"
-                            link-title="Profile"
-                            :is-profile="true"
-                            class="w-1/3 md:w-full"
-                            :extra-classes="{ 'reset-is-active': !!isChatActive }"
-                            @click="handleSidebarMenu"
-                        />
-                        <li class="flex md:hidden w-1/3 justify-center">
+                        <li class="flex w-1/3 justify-center">
                             <button
                                 class="cursor-pointer transition-colors duration-600 block py-1 flex gap-1 items-center flex-col text-sm"
                                 :class="!!isChatActive ? 'text-primary dark:text-primary-700' : 'text-gray-600 hover:text-primary-500'"
@@ -45,17 +31,6 @@
                                     chat_bubble
                                 </span>
                                 AI Chat
-                            </button>
-                        </li>
-                        <li class="hidden md:block">
-                            <button
-                                class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center flex-col md:flex-row"
-                                @click="handleLogout"
-                            >
-                                <span class="material-symbols-outlined text-3xl">
-                                    logout
-                                </span>
-                                Log out
                             </button>
                         </li>
                     </ul>
@@ -126,7 +101,10 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { useAuth } from '../../composables/useAuth';
 import { useMobileStore } from '../../stores/useMobileStore';
+
 import BaseMenuLink from '../Base/BaseMenuLink.vue';
+
+import MenuContent from '../MenuContent.vue';
 
 const props = defineProps({
     isOpen: {
@@ -140,8 +118,8 @@ const {
     logOutUser,
 } = useAuth();
 
-const { 
-    isMobile 
+const {
+    isMobile
 } = useMobileStore()
 
 const router = useRouter()

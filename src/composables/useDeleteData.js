@@ -1,6 +1,7 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
+import { normalizePath } from '../utils/normalizePath';
 import { useAuth } from './useAuth';
 
 export const useDeleteData = () => {
@@ -12,8 +13,6 @@ export const useDeleteData = () => {
 
     const error = ref(null);
     const isPending = ref(false);
-
-    const normalizePath = (path) => path.replace(/^\/+/, '');
 
     const deleteData = async (documentId, collectionPath) => {
         isPending.value = true;

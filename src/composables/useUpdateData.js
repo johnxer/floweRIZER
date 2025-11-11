@@ -2,6 +2,7 @@ import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
 import { usePlantsStore } from '../stores/usePlantsStore';
+import { normalizePath } from '../utils/normalizePath';
 import { useAuth } from './useAuth';
 import { useFindRoomIdByPlantId } from './useFindRoomIdByPlantId';
 
@@ -13,8 +14,6 @@ export const useUpdateData = () => {
 
     const error = ref(null);
     const isPending = ref(false);
-
-    const normalizePath = (path) => path.replace(/^\/+/, '');
 
     const updateData = async (data, collectionPath) => {
         const uid = getUid();

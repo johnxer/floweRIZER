@@ -101,6 +101,7 @@
                         trap-focus
                         @show="onShow"
                         @hide="onHide"
+                        popper-class="popper-slide-small"
                     >
                         <button
                             type="button"

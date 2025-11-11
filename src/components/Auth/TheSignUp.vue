@@ -171,8 +171,9 @@ const submitForm = async () => {
     const success = await signUpUser(data)
 
     if (success) {
-        router.push({ name: 'TheDashboard' })
         clearForm();
+        
+        router.push({ name: 'TheDashboard' })
     }
 }
 

@@ -232,7 +232,7 @@ const form = ref({
     icon: '',
     file: null,
     // color: color,
-    description: ''
+    desc: ''
 })
 
 const existingImageSrc = ref('')
