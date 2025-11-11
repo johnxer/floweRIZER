@@ -174,14 +174,18 @@
                         <v-dropdown
                             trap-focus
                             popper-class="popper-slide"
+                            @show="onShow"
+                            @hide="onHide"
                         >
                             <button class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600">
                                 <transition
                                     name="icon-fade"
                                     mode="out-in"
                                 >
+                                        
+
                                     <span
-                                        v-if="isSidebarOpen"
+                                        v-if="isOpen"
                                         key="close"
                                         class="material-symbols-outlined text-2xl transition-transform duration-500 rotate-180"
                                     >
@@ -244,10 +248,6 @@ const props = defineProps({
         type: String,
         required: true
     },
-    isOpen: {
-        type: Boolean,
-        required: true
-    }
 })
 
 const roomStore = useRoomsStore()
@@ -281,6 +281,10 @@ const {
     isPending: isPendingUpdateData,
     waterPlant
 } = useUpdateData()
+
+const route = useRoute()
+
+const themeStore = useThemeStore()
 
 const notificationsArrayFromFB = computed(() => {
     if (!plants.value?.length) return []
@@ -328,12 +332,6 @@ const notifications = computed(() => {
 
 const emit = defineEmits(['toggle-sidebar'])
 
-const isSidebarOpen = computed(() => props.isOpen)
-
-const handleSidebarMenu = () => {
-    emit('toggle-sidebar')
-}
-
 const isScrolled = ref(false)
 
 const headerHeight = 60;
@@ -355,6 +353,8 @@ const isLastNotification = computed(() => {
     return notifications.value.length < 2
 })
 
+const isShown = computed(() => route.name !== 'Account')
+
 onMounted(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
 })
@@ -364,14 +364,10 @@ onUnmounted(() => {
 })
 
 
-const route = useRoute()
+const isOpen = ref(false)
 
-
-const isShown = computed(() => route.name !== 'Account')
-
-
-const themeStore = useThemeStore()
-
+const onShow = () => (isOpen.value = true)
+const onHide = () => (isOpen.value = false)
 
 </script>
 

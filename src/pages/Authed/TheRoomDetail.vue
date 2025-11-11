@@ -113,7 +113,7 @@
                                         :plant="plant"
                                         :show-more-details="true"
                                         :room-id="props.roomId"
-                                        />
+                                    />
                                 </transition-group>
                                 <div class="text-center">
                                     <base-button
@@ -243,16 +243,6 @@ const toggleModal = (state) => {
     }
 }
 
-// const isModalOpenRoom = ref(false)
-
-// const toggleModalRoom = (state) => {
-//     if (typeof state === 'boolean') {
-//         isModalOpenRoom.value = state
-//     } else {
-//         isModalOpenRoom.value = !isModalOpenRoom.value
-//     }
-// }
-
 const isOpen = ref(false)
 
 const onShow = () => (isOpen.value = true)
@@ -266,13 +256,6 @@ const roomName = computed(() => {
 const existPlants = computed(() => plants.value?.length)
 
 const editPlantId = ref(null)
-
-// const editPlant = (plantId) => {
-//     editPlantId.value = plantId
-//     toggleModal()
-// }
-
-
 
 const editRoom = () => {
     roomsStore.openEditModal(props.roomId)
