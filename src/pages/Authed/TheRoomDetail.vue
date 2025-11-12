@@ -162,7 +162,7 @@
 <script setup>
 import { format } from "date-fns";
 
-import BaseButton from "../../components/Base/BaseButton.vue";
+import BaseButton from "../../components/Base/BaseButtons/BaseButton.vue";
 import BaseContainer from "../../components/Base/BaseContainer.vue";
 import BaseLoader from '../../components/Base/BaseLoader.vue';
 import BaseModal from "../../components/Base/BaseModal/BaseModal.vue";

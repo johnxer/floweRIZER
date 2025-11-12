@@ -10,6 +10,24 @@
 
 @import 'tailwindcss';
 
+/**
+ * ----------------------------------------------------------------
+ * Animations Module
+ * ----------------------------------------------------------------
+ * Imports all custom @keyframes definitions and animation
+ * utility classes from the dedicated animations module.
+ */
+@import './modules/animations.css';
+
+/**
+ * ----------------------------------------------------------------
+ * Custom Dark Mode Variant
+ * ----------------------------------------------------------------
+ * Defines a custom `dark:` variant for Tailwind CSS, which
+ * activates when an element is inside a parent with the `.dark`
+ * class. This allows for custom dark mode styling like
+ * `dark:bg-black`.
+ */
 @custom-variant dark (&:where(.dark, .dark *));
 
 .material-symbols-outlined {
@@ -34,9 +52,6 @@
 }
 
 @theme {
-    /* --font-display: "Satoshi", "sans-serif";
-  --breakpoint-3xl: 120rem;
-  */
     --color-avocado-100: oklch(0.99 0 0);
     --color-avocado-200: oklch(0.98 0.04 113.22);
     --color-avocado-300: oklch(0.94 0.11 115.03);
@@ -44,7 +59,6 @@
     --color-avocado-500: oklch(0.84 0.18 117.33);
     --color-avocado-600: oklch(0.53 0.12 118.34);
 
-    /* --color-primary: oklch(0.7589 0.1655 124.95); */
     --color-primary: var(--primary-color-user-500);
 
     --color-primary-100: var(--primary-color-user-100);
@@ -68,30 +82,14 @@
     --text-2xs: 0.625rem;
     --text-3xs: 0.5rem;
 
+    --shadow-box: 0 0 10px 10px rgba(0, 0, 0, 0.01);
     --shadow-menu: 0 -10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-popover: 0 0 15px 7px rgba(0, 0, 0, 0.05);
 
-    --animate-pop: pop 0.75s ease-in-out 1;
-
-    @keyframes pop {
-        0%{
-            opacity: 0.5;
-            transform: scale(.5);
-        }
-        40% {
-            transform: scale(1.05);
-        }
-        60% {
-            transform: scale(0.95);
-        }
-        90% {
-            transform: scale(1.05);
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
+    --animate-pop: pop 1s ease-in-out 1;
+    --animate-popOut: popOut 1s ease-in-out 1;
+    --animate-plant-watered: plant-watered 1s cubic-bezier(0, 0, 0.2, 1);
+    --animate-float: float-bounce 3s ease-in-out infinite;
 }
 
 @layer base {
@@ -103,7 +101,6 @@
 
     body {
         @apply bg-gray-100 text-gray-900 font-roboto antialiased dark:bg-gray-950;
-        /* @apply dark:bg-slate-900 dark:text-slate-200; */
     }
 
     input[type='color'] {
@@ -129,15 +126,33 @@
         @apply bg-gray-800/15 fixed inset-0 z-3 backdrop-blur-[5px];
     }
 
+    /* modal backdrop */
+
     .modal-backdrop.fade {
         @apply opacity-0;
     }
+
+    /* / modal backdrop */
 }
 
 @layer utilities {
+    /* fill mode for animations to stop */
+
+    .fill-mode-forwards {
+        animation-fill-mode: forwards;
+    }
+
+    /* / fill mode for animations to stop */
+
+    /* custom grid cols */
+
     .grid-cols-1fr-auto {
         grid-template-columns: 1fr auto;
     }
+
+    /* / custom grid cols */
+
+    /* VUE.JS transitions */
 
     .fade-enter-active,
     .fade-leave-active {
@@ -153,12 +168,12 @@
         @apply transition-transform duration-600;
     }
 
-    .icon-fade-enter-active,
-    .icon-fade-leave-active {
+    .icon-transform-enter-active,
+    .icon-transform-leave-active {
         transition: all 0.3s ease;
     }
-    .icon-fade-enter-from,
-    .icon-fade-leave-to {
+    .icon-transform-enter-from,
+    .icon-transform-leave-to {
         opacity: 0;
         transform: scale(0.8) rotate(-90deg);
     }
@@ -178,21 +193,9 @@
         @apply translate-y-0 opacity-100;
     }
 
-    /* .menu-slide-enter-active,
-    .menu-slide-leave-active {
-        @apply transition-all duration-600;
-    }
+    // / VUE.JS transitions
 
-    .menu-slide-enter-from,
-    .menu-slide-leave-to {
-        @apply md:-translate-y-[calc(100%+var(--header-h))] md:opacity-0;
-        
-    }
-
-    .menu-slide-enter-to,
-    .menu-slide-leave-from {
-        @apply md:translate-y-0 md:opacity-100;
-    } */
+    /* Custom heigth classes */
 
     .header-min-h {
         min-height: var(--headerHeight);
@@ -202,35 +205,9 @@
         min-height: var(--bottomBarHeight);
     }
 
-    @keyframes float-bounce {
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-        25% {
-            transform: translateY(-3px);
-        }
-        75% {
-            transform: translateY(3px);
-        }
-    }
+    /* / Custom heigth classes */
 
-    .animate-float {
-        animation: float-bounce 3s ease-in-out infinite;
-    }
-
-    @keyframes plant-watered {
-        75%,
-        100% {
-            transform: scale(3);
-            opacity: 0;
-        }
-    }
-
-    .animate-plant-watered {
-        animation: plant-watered 1s cubic-bezier(0, 0, 0.2, 1);
-        animation-fill-mode: forwards;
-    }
+    /* Dragging */
 
     .dragging {
         @apply opacity-90 z-9999 scale-105;
@@ -252,9 +229,17 @@
         @apply touch-none;
     }
 
+    /* / Dragging */
+
+    /* vue-router is active */
+
     .is-active:not(.reset-is-active) {
         @apply text-primary dark:text-primary-700;
     }
+
+    /* // vue-router is active */
+
+    /* poper transition */
 
     .popper-slide .v-popper__wrapper,
     .popper-slide-small .v-popper__wrapper {
@@ -278,7 +263,11 @@
     .popper-slide-small.v-popper__popper--shown .v-popper__wrapper {
         @apply opacity-100 scale-100 translate-y-0;
     }
+
+    /* / poper transition */
 }
+
+/* poper custom styles */
 
 .v-popper--theme-tooltip {
     @apply text-sm max-w-[400px];
@@ -295,3 +284,5 @@
 .v-popper--theme-dropdown .v-popper__arrow-outer {
     @apply border-white dark:border-gray-900;
 }
+
+/* / poper custom styles */

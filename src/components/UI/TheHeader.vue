@@ -5,7 +5,7 @@
     >
         <div class="container mx-auto flex items-center justify-between header-min-h">
             <router-link :to="{ name: 'TheDashboard' }">
-                <h1 class="font-roboto text-xl md:text-2xl font-bold text-primary flex gap-3">
+                <h1 class="text-xl md:text-2xl font-bold text-primary flex gap-3">
                     <span class="noto-color-emoji-regular">
                         🌱
                     </span>
@@ -36,7 +36,7 @@
                             </span>
                         </button>
                         <template #popper>
-                            <div class="text-base max-w-[300px] font-normal p-4">
+                            <div class="text-base max-w-[300px] font-normal p-4 max-h-[300px] overflow-y-auto">
                                 <transition-group
                                     name="fade"
                                     tag="ul"
@@ -179,11 +179,9 @@
                         >
                             <button class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600">
                                 <transition
-                                    name="icon-fade"
+                                    name="icon-transform"
                                     mode="out-in"
                                 >
-                                        
-
                                     <span
                                         v-if="isOpen"
                                         key="close"
@@ -239,7 +237,7 @@ import { useUpdateData } from '../../composables/useUpdateData';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useThemeStore } from '../../stores/useThemeStore';
 
-import BaseButton from '../Base/BaseButton.vue';
+import BaseButton from '../Base/BaseButtons/BaseButton.vue';
 
 import { useMobileStore } from '../../stores/useMobileStore';
 import MenuContent from '../MenuContent.vue';

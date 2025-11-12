@@ -45,7 +45,7 @@
                 </span>
                 <span
                     v-if="isWateredNow"
-                    class="absolute inline-flex h-full w-full animate-plant-watered rounded-full bg-primary-400 opacity-50"
+                    class="absolute inline-flex h-full w-full animate-plant-watered fill-mode-forwards rounded-full bg-primary-400 opacity-50"
                 />
             </div>
         </div>
@@ -82,20 +82,8 @@
                         ]"
                         @click="handleWatering"
                     >
-                        <!-- <div class="inline-flex flex-col items-end justify-center gap-1">
-                            <span
-                                class="material-symbols-outlined w-full text-center text-sm"
-                                :class="{ 'text-primary-500': isWatered }"
-                            >
-                                {{ isWatered ? 'humidity_high' : 'water_drop' }}
-                            </span>
-                            <span class="text-2xs">
-                                {{ lastWateredDaysAgo }}
-                            </span>
-                        </div> -->
-
                         <span class="material-symbols-outlined">
-                            humidity_high
+                             {{ isWatered ? 'humidity_high' : 'water_drop' }}
                         </span>
                     </button>
                     <v-dropdown

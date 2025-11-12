@@ -1,15 +1,20 @@
 <template>
     <div>
-        <chat-floating-button
+        <base-floating-button
+            class="bottom-6 text-2xl"
             @click="toggleChat"
-            :class="{ 'hover:scale-110': !showChat, }"
+            :class="{ 'hover:scale-110': !showChat }"
             :tooltip-content="tooltipContentText"
-        />
+        >
+            <span class="material-symbols-outlined">
+                chat_bubble
+            </span>
+        </base-floating-button>
         <transition
             name="chat-slide"
             mode="out-in"
         >
-        <div
+            <div
                 v-if="showChat"
                 class="fixed bottom-[calc(var(--bottomBarHeight)_+_var(--spacing)_*_2)] md:bottom-22 md:right-6 w-[calc(100vw_-_var(--spacing)_*_4)] md:w-84 mx-2 md:mx-auto md:h-120 top-2 md:top-auto bg-white dark:bg-gray-900 shadow-xl rounded-xl z-4 transition-all"
             >
@@ -34,7 +39,9 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue';
-import ChatFloatingButton from './ChatFloatingButton.vue';
+
+import BaseFloatingButton from '../Base/BaseButtons/BaseFloatingButton.vue';
+
 import ChatWindowWrapper from './ChatWindowWrapper.vue';
 
 const props = defineProps({

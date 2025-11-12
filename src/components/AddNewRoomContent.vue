@@ -178,7 +178,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useRoomsStore } from '../stores/useRoomsStore';
 
 import { useScrollStore } from '../stores/useScrollStore';
-import BaseButton from './Base/BaseButton.vue';
+import BaseButton from './Base/BaseButtons/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';

@@ -4,7 +4,7 @@
         v-if="!room.isSystem || (room.isSystem && plants?.length > 0)"
         :data-room-id="room.id"
         class="group/card flex flex-col rounded-xl md:p-2 relative items-center md:items-start"
-        :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50'"
+        :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50 shadow-box'"
     >
         <div
             v-if="!room.isSystem"
@@ -216,7 +216,7 @@
 <script setup>
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
-import BaseButton from './BaseButton.vue';
+import BaseButton from './BaseButtons/BaseButton.vue';
 import BaseLoader from './BaseLoader.vue';
 import BasePlantListItem from './BasePlantListItem.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
@@ -322,8 +322,26 @@ const isOpen = ref(false)
 const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+
 const deleteRoom = async () => {
     const oldPhotoUrl = props.room?.imgSrc || null
+    const el = document.querySelector(`[data-room-id="${props.room.id}"]`)
+    console.log(el)
+
+    
+    // new Promise(resolve => {
+    //     setTimeout(() => {
+    //         el.classList.add('animate-popOut')
+    //         resolve()
+    //     }, 1000)
+        
+    // })
+
+    el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
+    await delay(1000)
+
 
     await movePlants(props.room.id, 'unassigned')
 
@@ -332,6 +350,9 @@ const deleteRoom = async () => {
     if (oldPhotoUrl) {
         await deleteImageByUrl(oldPhotoUrl)
     }
+
+
+
 }
 
 const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)

@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import BaseButton from '../Base/BaseButton.vue';
+import BaseButton from '../Base/BaseButtons/BaseButton.vue';
 import BaseFormMessageBox from '../Base/BaseForm/BaseFormMessageBox.vue';
 import BaseInputWrapper from '../Base/BaseForm/BaseInputWrapper.vue';
 import BaseLoader from '../Base/BaseLoader.vue';

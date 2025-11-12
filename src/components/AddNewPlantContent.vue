@@ -129,7 +129,7 @@ import { useSendData } from '../composables/useSendData';
 import { useStorage } from '../composables/useStorage';
 import { useAuthStore } from '../stores/useAuthStore';
 
-import BaseButton from './Base/BaseButton.vue';
+import BaseButton from './Base/BaseButtons/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';
 import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';

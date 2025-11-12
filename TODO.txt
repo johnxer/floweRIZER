@@ -4,9 +4,9 @@ TODO
 
 - show used library page
 
-- 404 page style
+* 404 page style - In progress
 
-- add animation upon deleting room (reversed existing animate-pop)
+* add a box with stats - rooms, plants, etc...some graphics - In progress
 
 - drag item in dark mode on mobile should be dark not white
 

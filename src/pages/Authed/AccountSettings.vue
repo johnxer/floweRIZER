@@ -34,7 +34,7 @@
                                 class="opacity-0"
                                 @change="handleFile"
                             />
-                            <div class="opacity-0 group-hover:opacity-100 flex items-center justify-center absolute w-full h-full inset-0 bg-primary/50 text-white text-5xl transition-opacity duration-600">
+                            <div class="md:opacity-0 group-hover:opacity-100 flex items-center justify-center absolute w-full h-full inset-0 md:bg-primary/50 text-white text-5xl transition-opacity duration-600">
                                 <span class="material-symbols-outlined">
                                     edit
                                 </span>
@@ -90,7 +90,7 @@
                                 field-id="user-name"
                                 :errorText="formErrors.userName"
                             >
-                                <base-input 
+                                <base-input
                                     input-id="user-name"
                                     input-placeholder="Enter user name..."
                                     :input-error="!!formErrors.userName"
@@ -104,7 +104,7 @@
                                 field-label-extra="Cannot be changed"
                                 field-id="email"
                             >
-                                <base-input 
+                                <base-input
                                     input-type="email"
                                     input-id="email"
                                     input-placeholder="Enter email..."
@@ -164,7 +164,7 @@
 
 <script setup>
 
-import BaseButton from '../../components/Base/BaseButton.vue';
+import BaseButton from '../../components/Base/BaseButtons/BaseButton.vue';
 import BaseContainer from '../../components/Base/BaseContainer.vue';
 import BaseFormMessageBox from '../../components/Base/BaseForm/BaseFormMessageBox.vue';
 import BaseInput from '../../components/Base/BaseForm/BaseInput.vue';
