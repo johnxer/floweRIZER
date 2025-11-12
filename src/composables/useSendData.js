@@ -68,7 +68,7 @@ export const useSendData = () => {
 
             console.log(response.id);
 
-            return true;
+            return response.id;
         } catch (err) {
             error.value = err.message;
             return false;
@@ -120,13 +120,16 @@ export const useSendData = () => {
         }
 
         try {
-            await addDoc(plantCollection, {
+            const response = await addDoc(plantCollection, {
                 ...data,
                 userId: uid,
                 createdAt: serverTimestamp(),
             });
+        
+            // return true;
+            console.log(response.id)
+            return response.id
 
-            return true;
         } catch (err) {
             error.value = err.message;
             return false;

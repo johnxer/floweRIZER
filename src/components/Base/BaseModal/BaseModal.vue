@@ -5,7 +5,7 @@
         >
             <Dialog
                 class="relative z-10"
-                @close="closeModalHandle"
+                @close="() => { if (!props.isModalPending) handlecloseModal() }"
             >
                 <TransitionChild
                     as="template"
@@ -33,8 +33,9 @@
                             <DialogPanel class="w-full max-w-lg sm:my-8 py-8 relative">
                                 <button
                                     type="button"
-                                    class="absolute top-0 text-3xl text-white dark:text-white/50 right-0 cursor-pointer hover:opacity-50 transiton-opacity duration-600"
-                                    @click="closeModalHandle"
+                                    class="absolute top-0 text-3xl text-white dark:text-white/50 right-0 cursor-pointer hover:opacity-50 transiton-opacity duration-600 disabled:opacity-50 disabled:cursor-default"
+                                    @click="() => { if (!props.isModalPending) handlecloseModal() }"
+                                    :disabled="props.isModalPending"
                                     ref="cancelButtonRef"
                                 >
                                     <span class="material-symbols-outlined">
@@ -61,6 +62,10 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    isModalPending: {
+        type: Boolean,
+        required: false
     }
 })
 
@@ -68,7 +73,7 @@ import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessu
 
 const emit = defineEmits(['close-modal'])
 
-const closeModalHandle = () => {
+const handlecloseModal = () => {
     emit('close-modal', false)
 }
 

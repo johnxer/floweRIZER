@@ -1,5 +1,6 @@
 <template>
     <li
+        ref="plantRef"
         class="group rounded-xl transition-all duration-600 relative grid grid-cols-[60px_1fr] p-2 gap-4"
         :class="[
             isDraggable ? 'cursor-move' : 'bg-white dark:bg-gray-900',
@@ -181,7 +182,6 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useDeleteData } from '../../composables/useDeleteData';
-import { useAuthStore } from '../../stores/useAuthStore';
 
 import { differenceInDays } from "date-fns";
 
@@ -219,7 +219,6 @@ const props = defineProps({
     }
 })
 
-const authStore = useAuthStore()
 
 const plantsStore = usePlantsStore()
 
@@ -236,7 +235,7 @@ const {
     deleteImageByUrl
 } = useStorage()
 
-const isWateredNow = computed(() => plantsStore.isWateredNow(props.plant.id) )
+const isWateredNow = computed(() => plantsStore.isWateredNow(props.plant.id))
 
 const getDaysAgo = computed(() => {
     if (!props.plant?.lastWateredDate) {
@@ -301,6 +300,4 @@ const unassignedRoomPlant = computed(() => props.roomId === 'unassigned')
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

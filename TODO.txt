@@ -2,6 +2,18 @@ TODO
 
 - footer with github link - prbbly will be moved and display elsewhere
 
+- show used library page
+
+- 404 page style
+
+- add animation upon deleting room (reversed existing animate-pop)
+
+- drag item in dark mode on mobile should be dark not white
+
+- when clicking to water plant from notifications, should scroll first to the plant then effect
+
+- image loading placeholder for BasePlantListItem, maybe add intersectionobserver on all images
+
 - remove the existing image upon editing existing plant/room from store (when changing the file in the modal)
 
 - show empty placeholder, when no room with plant exits (including the unassigned one)

@@ -70,6 +70,28 @@
 
     --shadow-menu: 0 -10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-popover: 0 0 15px 7px rgba(0, 0, 0, 0.05);
+
+    --animate-pop: pop 0.75s ease-in-out 1;
+
+    @keyframes pop {
+        0%{
+            opacity: 0.5;
+            transform: scale(.5);
+        }
+        40% {
+            transform: scale(1.05);
+        }
+        60% {
+            transform: scale(0.95);
+        }
+        90% {
+            transform: scale(1.05);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 }
 
 @layer base {
@@ -173,7 +195,11 @@
     } */
 
     .header-min-h {
-        min-height: var(--header-h);
+        min-height: var(--headerHeight);
+    }
+
+    .bottomBar-min-h {
+        min-height: var(--bottomBarHeight);
     }
 
     @keyframes float-bounce {
@@ -243,11 +269,10 @@
     .popper-slide.v-popper__popper--hidden .v-popper__wrapper {
         @apply -translate-y-30;
     }
-    
+
     .popper-slide-small.v-popper__popper--hidden .v-popper__wrapper {
         @apply -translate-y-10;
     }
-
 
     .popper-slide.v-popper__popper--shown .v-popper__wrapper,
     .popper-slide-small.v-popper__popper--shown .v-popper__wrapper {

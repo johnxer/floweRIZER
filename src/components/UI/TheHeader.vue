@@ -17,7 +17,7 @@
             <slot name="center" />
             <!-- <slot name="end"/> -->
             <div>
-                <div class="flex gap-4 items-center">
+                <div class="flex md:gap-4 items-center">
                     <v-dropdown trap-focus>
                         <button
                             class="relative transition-colors duration-600 flex p-2"
@@ -161,7 +161,7 @@
                     </base-button>
                     <div class="md:hidden">
                         <button
-                            class="text-gray-400 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-900 cursor-pointer transition-colors duration-600 flex"
+                            class="text-gray-400 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-900 cursor-pointer transition-colors duration-600 flex p-2"
                             @click="handlelogout"
                         >
                             <span class="material-symbols-outlined text-2xl">
@@ -241,6 +241,7 @@ import { useThemeStore } from '../../stores/useThemeStore';
 
 import BaseButton from '../Base/BaseButton.vue';
 
+import { useMobileStore } from '../../stores/useMobileStore';
 import MenuContent from '../MenuContent.vue';
 
 const props = defineProps({
@@ -249,6 +250,8 @@ const props = defineProps({
         required: true
     },
 })
+
+const mobileStore = useMobileStore();
 
 const roomStore = useRoomsStore()
 
@@ -330,8 +333,6 @@ const notifications = computed(() => {
     })
 })
 
-const emit = defineEmits(['toggle-sidebar'])
-
 const isScrolled = ref(false)
 
 const headerHeight = 60;
@@ -343,7 +344,7 @@ const handleScroll = () => {
     }
 }
 
-document.documentElement.style.setProperty('--header-h', `${headerHeight}px`)
+document.documentElement.style.setProperty('--headerHeight', `${headerHeight}px`)
 
 const handleWatering = async (plantId) => {
     await waterPlant(plantId)
@@ -353,7 +354,7 @@ const isLastNotification = computed(() => {
     return notifications.value.length < 2
 })
 
-const isShown = computed(() => route.name !== 'Account')
+const isShown = computed(() => route.name === 'TheDashboard' && !mobileStore.isMobile)
 
 onMounted(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })

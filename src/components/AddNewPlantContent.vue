@@ -5,15 +5,14 @@
             {{ modalTitle }}
         </template>
         <div class="relative">
-            <transition
-                name="fade"
-                mode="out-in"
-            >
+            <transition name="fade">
                 <base-loader
                     v-if="isPending"
                     position-type="absolute"
                     class="bg-white/80 dark:bg-gray-800/80 z-1"
-                />
+                >
+                    {{ loadingTitle }}
+                </base-loader>
             </transition>
             <form
                 @submit.prevent="submitForm"
@@ -125,7 +124,7 @@
 
 <script setup>
 
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { useSendData } from '../composables/useSendData';
 import { useStorage } from '../composables/useStorage';
 import { useAuthStore } from '../stores/useAuthStore';
@@ -233,7 +232,11 @@ const clearForm = () => {
     form.value.desc = ''
 }
 
-const emit = defineEmits(['close-modal'])
+const emit = defineEmits(['close-modal', 'is-pending'])
+
+watchEffect(() => {
+    emit('is-pending', isPending.value)
+})
 
 const data = ref({});
 
@@ -252,7 +255,6 @@ const submitForm = async () => {
             ...data.value
         }
     }
-
 
     if (form.value.file) {
         const uploadSuccess = await uploadImage('plants', authStore.user, form.value.file)
@@ -274,13 +276,16 @@ const submitForm = async () => {
         success = await updateDataPlants(data.value, localRoomId, localPlantId)
     }
 
-    if (success) {
+    if (!!success) {
         clearForm()
         plantsStore.closePlantModal()
+        emit('close-modal', false)
     }
 }
 
 const modalTitle = computed(() => `${localPlantId ? 'Edit' : 'Add'} plant`)
+
+const loadingTitle = computed(() => `${localPlantId ? 'Updating' : 'Creating'} plant...`)
 
 const buttonLabel = computed(() => {
     if (isPending.value) {

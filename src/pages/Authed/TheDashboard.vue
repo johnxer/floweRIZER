@@ -19,6 +19,7 @@
                 />
             </div>
 
+
             <!-- TO BE STYLED and make work -->
             <!-- <div v-else>
                     No rooms yet
@@ -46,7 +47,7 @@
 <script setup>
 
 
-import { computed } from 'vue';
+import { computed, nextTick, watch } from 'vue';
 
 import BaseContainer from '../../components/Base/BaseContainer.vue';
 import BaseLoader from '../../components/Base/BaseLoader.vue';
@@ -55,9 +56,10 @@ import BaseRoom from '../../components/Base/BaseRoom.vue';
 import TheModals from '../../components/TheModals.vue';
 
 import { useGetData } from '../../composables/useGetData';
-import { useRoomsStore } from '../../stores/useRoomsStore';
+import { useScrollStore } from '../../stores/useScrollStore';
 
-const roomsStore = useRoomsStore()
+
+// const mobileStore = useMobileStore()
 
 const {
     error,
@@ -76,7 +78,35 @@ const sortedRooms = computed(() => {
     return systemRoom ? [systemRoom, ...normalRooms] : normalRooms
 })
 
+const scrollStore = useScrollStore()
 
+
+watch(
+    () => scrollStore.scrollTarget,
+    async (newVal) => {
+        if (newVal.type !== 'room' || !newVal.roomId) return
+
+        await nextTick()
+
+        const el = document.querySelector(`[data-room-id="${newVal.roomId}"]`)
+
+        if (el) {
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    el.classList.add('animate-pop')
+                    setTimeout(() => el.classList.remove('animate-pop'), 1000)
+                    observer.disconnect()
+                }
+            }, { threshold: 0.6 })
+
+            observer.observe(el)
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+
+        scrollStore.clearScrollTarget()
+    },
+    { deep: true }
+)
 
 </script>
 

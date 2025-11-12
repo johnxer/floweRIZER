@@ -39,65 +39,55 @@ const props = defineProps({
     }
 })
 
-const sizeMap = [
-    {
-        type: 'lg',
+const sizeMap = {
+    lg: {
         classes: 'px-2 py-2 text-xl'
     },
-    {
-        type: 'base',
+    base: {
         classes: 'px-2 py-2 text-base'
     },
-    {
-        type: 'sm',
+    sm: {
         classes: 'px-2 py-1 text-sm'
     },
-    {
-        type: 'custom',
+    custom: {
         classes: ''
     }
-]
+}
 
-const styleMap = [
-    {
-        type: 'base',
+const styleMap = {
+    base: {
         classes: 'rounded-full'
     },
-    {
-        type: 'notRounded',
+    notRounded: {
         classes: 'rounded-xl'
     },
-    {
-        type: 'notRoundedMd',
+    notRoundedMd: {
         classes: 'rounded-md'
     }
-]
+}
 
-const colorMap = [
-    {
-        type: 'base',
+const colorMap = {
+    base: {
+        
         classes: 'bg-primary text-white dark:bg-primary-900 dark:text-primary-600 border-primary dark:border-primary-900 hover:bg-transparent hover:text-primary disabled:bg-primary/50 disabled:border-primary/0 disabled:hover:text-white'
     },
-    {
-        type: 'danger',
+    danger: {
         classes: 'bg-red-500 text-white dark:bg-red-900 dark:text-white/50 border-red-500 dark:border-red-900 hover:bg-transparent hover:text-red-500 disabled:bg-red-500/50 disabled:border-red-500/0 disabled:hover:text-white'
     },
-    {
-        type: 'neutral',
+    neutral: {
         classes: 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white'
     },
-    {
-        type: 'neutral-alt',
+    neutralAlt: {
         classes: 'text-gray-500 dark:text-gray-200 border-gray-200 dark:border-gray-800 hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white'
     }
-]
+}
 
 
-const buttonSizeClasses = computed(() => sizeMap.find(m => m.type === props.btnSize).classes)
+const buttonSizeClasses = computed(() => sizeMap[props.btnSize].classes)
 
-const buttonStyleClasses = computed(() => styleMap.find(m => m.type === props.btnStyle).classes)
+const buttonStyleClasses = computed(() => styleMap[props.btnStyle].classes)
 
-const buttonColorClasses = computed(() => colorMap.find(m => m.type === props.btnColor).classes)
+const buttonColorClasses = computed(() => colorMap[props.btnColor].classes)
     
 
 

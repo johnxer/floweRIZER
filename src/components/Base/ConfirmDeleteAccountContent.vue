@@ -18,7 +18,7 @@
                         btn-color="neutral"
                         :btn-full-width="false"
                         class="min-w-1/3"
-                        @click="closeModalHandle"
+                        @click="handlecloseModal"
                     >
                         Keep My Account
                     </base-button>
@@ -45,7 +45,7 @@ import BaseModalContent from './BaseModal/BaseModalContent.vue';
 const emit = defineEmits(['close-modal'])
 
 
-const closeModalHandle = () => {
+const handlecloseModal = () => {
     emit('close-modal')
 
 }

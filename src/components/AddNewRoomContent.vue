@@ -3,156 +3,166 @@
         <template #modalTitle>
             <span class="noto-color-emoji-regular mr-2">🏠</span>{{ modalTitle }}
         </template>
-        <base-loader v-if="isPendingRoom" />
-        <div v-else>
-            <div>
-                <form
-                    @submit.prevent="submitForm"
-                    novalidate
+        <div class="relative">
+            <transition name="fade">
+                <base-loader
+                    v-if="isPending"
+                    position-type="absolute"
+                    class="bg-white/80 dark:bg-gray-800/80 z-1"
                 >
-                    <div class="space-y-4">
-                        <base-input-wrapper-authed
-                            field-label="Name"
-                            field-id="room-name"
-                            :errorText="formErrors.name"
-                        >
-                            <base-input
-                                input-id="room-name"
-                                input-placeholder="Enter room name..."
-                                :input-error="!!formErrors.name"
-                                class="w-full"
-                                v-model.trim="form.name"
-                                @input="formErrors.name = null"
-                            />
-                        </base-input-wrapper-authed>
-                        <base-input-wrapper-authed
-                            field-label="Icon"
-                            field-id="room-icon"
-                            :errorText="formErrors.icon"
-                        >
-                            <select
-                                @change="formErrors.icon = null"
-                                id="room-icon"
-                                class="px-4 py-2 rounded-lg border-2 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 cursor-pointer"
-                                :class="!formErrors.icon ? 'border-gray-300 dark:border-gray-600' : 'border-red-300 dark:border-red-900'"
-                                v-model="form.icon"
+                    {{ loadingTitle }}
+                </base-loader>
+            </transition>
+            <div>
+                <div>
+                    <form
+                        @submit.prevent="submitForm"
+                        novalidate
+                    >
+                        <div class="space-y-4">
+                            <base-input-wrapper-authed
+                                field-label="Name"
+                                field-id="room-name"
+                                :errorText="formErrors.name"
                             >
-                                <option
-                                    selected
-                                    disabled
-                                    value=""
-                                >Select icon...</option>
-                                <option
-                                    v-for="icon in roomsStore.roomIcons"
-                                    :key="icon.icon"
-                                    :value="icon.icon"
+                                <base-input
+                                    input-id="room-name"
+                                    input-placeholder="Enter room name..."
+                                    :input-error="!!formErrors.name"
+                                    class="w-full"
+                                    v-model.trim="form.name"
+                                    @input="formErrors.name = null"
+                                />
+                            </base-input-wrapper-authed>
+                            <base-input-wrapper-authed
+                                field-label="Icon"
+                                field-id="room-icon"
+                                :errorText="formErrors.icon"
+                            >
+                                <select
+                                    @change="formErrors.icon = null"
+                                    id="room-icon"
+                                    class="px-4 py-2 rounded-lg border-2 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 cursor-pointer"
+                                    :class="!formErrors.icon ? 'border-gray-300 dark:border-gray-600' : 'border-red-300 dark:border-red-900'"
+                                    v-model="form.icon"
                                 >
-                                    {{ icon.name }}
-                                </option>
-                            </select>
+                                    <option
+                                        selected
+                                        disabled
+                                        value=""
+                                    >Select icon...</option>
+                                    <option
+                                        v-for="icon in roomsStore.roomIcons"
+                                        :key="icon.icon"
+                                        :value="icon.icon"
+                                    >
+                                        {{ icon.name }}
+                                    </option>
+                                </select>
 
-                        </base-input-wrapper-authed>
-                        <base-input-wrapper-authed
-                            field-label="Image"
-                            field-id="room-image"
-                        >
-                            <base-upload-button
-                                input-id="room-image"
-                                :existing-image-src="existingImageSrc"
-                                @send-file="handleFile"
-                            />
-                            <!-- <div
-                                class="flex items-center"
-                                :class="{ 'flex-col items-start gap-4': !!existingImageSrc || !!previewUrl }"
+                            </base-input-wrapper-authed>
+                            <base-input-wrapper-authed
+                                field-label="Image"
+                                field-id="room-image"
                             >
-                                <div
-                                    v-if="!!existingImageSrc || !!previewUrl"
-                                    class="relative w-full h-[200px] rounded-xl"
+                                <base-upload-button
+                                    input-id="room-image"
+                                    :existing-image-src="existingImageSrc"
+                                    @send-file="handleFile"
+                                />
+                                <!-- <div
+                                    class="flex items-center"
+                                    :class="{ 'flex-col items-start gap-4': !!existingImageSrc || !!previewUrl }"
                                 >
                                     <div
-                                        v-if="!isImageLoaded"
-                                        class="bg-gray-200 dark:bg-gray-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
+                                        v-if="!!existingImageSrc || !!previewUrl"
+                                        class="relative w-full h-[200px] rounded-xl"
                                     >
-                                        <div class="size-8 rounded-full bg-gray-300 dark:bg-gray-900 absolute top-[80px] -ml-[70px]" />
-                                        <div class="absolute bottom-0 flex items-end justify-center w-full pl-[90px]">
-                                            <div class="w-0 h-0 border-l-[60px] border-l-transparent border-r-[60px] border-r-transparent border-b-[80px] border-b-gray-300 dark:border-b-gray-900 absolute" />
-                                            <div class="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[40px] border-b-gray-300 dark:border-b-gray-900 absolute -ml-[160px]" />
+                                        <div
+                                            v-if="!isImageLoaded"
+                                            class="bg-gray-200 dark:bg-gray-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
+                                        >
+                                            <div class="size-8 rounded-full bg-gray-300 dark:bg-gray-900 absolute top-[80px] -ml-[70px]" />
+                                            <div class="absolute bottom-0 flex items-end justify-center w-full pl-[90px]">
+                                                <div class="w-0 h-0 border-l-[60px] border-l-transparent border-r-[60px] border-r-transparent border-b-[80px] border-b-gray-300 dark:border-b-gray-900 absolute" />
+                                                <div class="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[40px] border-b-gray-300 dark:border-b-gray-900 absolute -ml-[160px]" />
+                                            </div>
+                                        </div>
+                                        <img
+                                            :src="existingImageSrc || previewUrl"
+                                            class="w-full h-full inset-0 object-cover absolute rounded-xl"
+                                            :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
+                                            loading="lazy"
+                                            @load="onLoad"
+                                        />
+                                        <div v-if="isImageLoaded" class="absolute top-2 right-2 uppercase bg-black/70 text-white dark:text-white/60 text-2xs px-2 py-1 rounded-full">
+                                            Preview
                                         </div>
                                     </div>
-                                    <img
-                                        :src="existingImageSrc || previewUrl"
-                                        class="w-full h-full inset-0 object-cover absolute rounded-xl"
-                                        :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
-                                        loading="lazy"
-                                        @load="onLoad"
-                                    />
-                                    <div v-if="isImageLoaded" class="absolute top-2 right-2 uppercase bg-black/70 text-white dark:text-white/60 text-2xs px-2 py-1 rounded-full">
-                                        Preview
-                                    </div>
-                                </div>
-                                <div class="flex gap-2 md:gap-4 flex-col md:flex-row w-full md:w-auto">
-                                    <label
-                                        for="room-image"
-                                        class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-4 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden text-center shrink-0"
-                                    >
-                                        Select image
-                                        <input
-                                            id="room-image"
-                                            type="file"
-                                            class="hidden"
-                                            accept="image/png, image/jpeg, image/jpg, image/gif"
-                                            @change="handleFile"
+                                    <div class="flex gap-2 md:gap-4 flex-col md:flex-row w-full md:w-auto">
+                                        <label
+                                            for="room-image"
+                                            class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-4 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden text-center shrink-0"
                                         >
-                                    </label>
-                                    <div
-                                        v-if="selectFileName"
-                                        class="text-sm text-gray-500 inline-flex align-top gap-1 items-center"
-                                    >
-                                        <span class="material-symbols-outlined text-2xl">
-                                            image
-                                        </span>
-                                        <span class="text-wrap">
-                                            {{ selectFileName }}
-                                        </span>
+                                            Select image
+                                            <input
+                                                id="room-image"
+                                                type="file"
+                                                class="hidden"
+                                                accept="image/png, image/jpeg, image/jpg, image/gif"
+                                                @change="handleFile"
+                                            >
+                                        </label>
+                                        <div
+                                            v-if="selectFileName"
+                                            class="text-sm text-gray-500 inline-flex align-top gap-1 items-center"
+                                        >
+                                            <span class="material-symbols-outlined text-2xl">
+                                                image
+                                            </span>
+                                            <span class="text-wrap">
+                                                {{ selectFileName }}
+                                            </span>
+                                        </div>
                                     </div>
+                                </div> -->
+                            </base-input-wrapper-authed>
+                            <!-- <base-input-wrapper-authed
+                                field-label="Room colour"
+                                field-id="room-color"
+                            >
+                                <div class="rounded-lg overflow-hidden size-[34px] relative border-2 border-gray-300">
+                                    <input
+                                        type="color"
+                                        id="room-color"
+                                        class="focus:outline-0 border-0 p-0 absolute inset-0 w-full h-full cursor-pointer"
+                                        v-model="form.color"
+                                    >
                                 </div>
-                            </div> -->
-                        </base-input-wrapper-authed>
-                        <!-- <base-input-wrapper-authed
-                            field-label="Room colour"
-                            field-id="room-color"
+                            </base-input-wrapper-authed> -->
+                            <base-input-wrapper-authed
+                                field-label="Description"
+                                field-id="room-description"
+                            >
+                                <base-textarea
+                                    textarea-id="room-description"
+                                    textarea-placeholder="Enter room description..."
+                                    v-model.trim="form.desc"
+                                />
+                            </base-input-wrapper-authed>
+                        </div>
+                        <base-button
+                            class="mt-8"
+                            :class="{ 'animate-pulse': isPending }"
+                            btn-style="notRoundedMd"
+                            btn-size="base"
+                            :disabled="isPending"
                         >
-                            <div class="rounded-lg overflow-hidden size-[34px] relative border-2 border-gray-300">
-                                <input
-                                    type="color"
-                                    id="room-color"
-                                    class="focus:outline-0 border-0 p-0 absolute inset-0 w-full h-full cursor-pointer"
-                                    v-model="form.color"
-                                >
-                            </div>
-                        </base-input-wrapper-authed> -->
-                        <base-input-wrapper-authed
-                            field-label="Description"
-                            field-id="room-description"
-                        >
-                            <base-textarea
-                                textarea-id="room-description"
-                                textarea-placeholder="Enter room description..."
-                                v-model.trim="form.desc"
-                            />
-                        </base-input-wrapper-authed>
-                    </div>
-                    <base-button
-                        class="mt-8"
-                        :class="{ 'animate-pulse': isPending }"
-                        btn-style="notRoundedMd"
-                        btn-size="base"
-                        :disabled="isPending"
-                    >
-                        {{ buttonLabel }}
-                    </base-button>
+                            {{ buttonLabel }}
+                        </base-button>
 
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </base-modal-content>
@@ -160,13 +170,14 @@
 
 <script setup>
 
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { useGetDetails } from '../composables/useGetDetail';
 import { useSendData } from '../composables/useSendData';
 import { useStorage } from '../composables/useStorage';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useRoomsStore } from '../stores/useRoomsStore';
 
+import { useScrollStore } from '../stores/useScrollStore';
 import BaseButton from './Base/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
@@ -225,7 +236,7 @@ if (localRoomId.value) {
 }
 
 // const error = computed(() => errorSendData.value || errorUpload.value)
-const isPending = computed(() => isPendingSendData.value || isPendingUpload.value)
+const isPending = computed(() => isPendingRoom.value || isPendingSendData.value || isPendingUpload.value)
 
 const form = ref({
     name: '',
@@ -251,8 +262,9 @@ watch(detailsRoom, (newVal) => {
     }
 }, { immediate: true })
 
-
 const modalTitle = computed(() => `${localRoomId.value ? 'Edit' : 'Add'} room`)
+
+const loadingTitle = computed(() => `${localRoomId.value ? 'Updating' : 'Creating'} room...`)
 
 const buttonLabel = computed(() => {
     if (isPending.value) {
@@ -286,9 +298,16 @@ const clearForm = () => {
     form.value.desc = ''
 }
 
-const emit = defineEmits(['close-modal'])
+const emit = defineEmits(['close-modal', 'is-pending'])
+
+watchEffect(() => {
+    emit('is-pending', isPending.value)
+    console.log('Pending:', isPending.value)
+})
 
 const data = ref({});
+
+const scrollStore = useScrollStore()
 
 const submitForm = async () => {
     if (!validateForm()) return;
@@ -320,14 +339,21 @@ const submitForm = async () => {
         success = await updateDataRooms(data.value, localRoomId.value)
     }
 
-    if (success) {
+    if (!!success) {
         clearForm();
 
+        if (!localRoomId.value) {
+
+            scrollStore.setScrollTarget({
+                type: 'room',
+                roomId: success
+            })
+        }
+
         roomsStore.closeRoomModal()
+        emit('close-modal', false)
     }
 }
-
-
 </script>
 
 <style lang="scss" scoped>

@@ -42,15 +42,15 @@ const routes = [
             requiresAuth: true,
         },
     },
-    {
-        path: '/plant/:plantId',
-        name: 'ThePlantDetail',
-        component: () => import('../pages/Authed/ThePlantDetail.vue'),
-        props: true,
-        meta: {
-            requiresAuth: true,
-        },
-    },
+    // {
+    //     path: '/plant/:plantId',
+    //     name: 'ThePlantDetail',
+    //     component: () => import('../pages/Authed/ThePlantDetail.vue'),
+    //     props: true,
+    //     meta: {
+    //         requiresAuth: true,
+    //     },
+    // },
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
