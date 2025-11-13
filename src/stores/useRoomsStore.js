@@ -23,6 +23,8 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
 
     const roomDefaultColor = '#99c23b';
 
+    const rooms = ref([])
+
     const isModalOpenRoom = ref(false);
 
     const toggleModal = (state) => {
@@ -53,6 +55,7 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
     return {
         roomIcons,
         roomDefaultColor,
+        rooms,
         isModalOpenRoom,
         selectedRoomId,
         openAddModal,

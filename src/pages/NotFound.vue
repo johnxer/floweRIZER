@@ -7,7 +7,7 @@
             <img
                 alt="404 page"
                 src="/src/img/404.svg"
-                class="w-full sm:w-1/2"
+                class="w-4/5 sm:w-1/2"
             >
         </div>
     </base-container>

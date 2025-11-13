@@ -7,6 +7,7 @@
             <base-loader
                 v-if="isPending"
                 class="flex items-center justify-center absolute top-[60px] md:bottom-[64px] h-[calc(100vh-60px-64px)] inset-x-[0] w-screen"
+                loader-size="lg"
             />
             <div v-else>
                 <stats-box class="mb-10" />
@@ -57,16 +58,26 @@ import StatsBox from '../../components/Stats/StatsBox.vue';
 import TheModals from '../../components/TheModals.vue';
 
 import { useGetData } from '../../composables/useGetData';
+import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
 
 
 // const mobileStore = useMobileStore()
+
+
 
 const {
     error,
     isPending,
     items: rooms
 } = useGetData('rooms')
+
+const roomsStore = useRoomsStore()
+
+
+watch(() => rooms.value, newVal => {
+    roomsStore.rooms = newVal;
+})
 
 const sortedRooms = computed(() => {
     if (!rooms.value) return []

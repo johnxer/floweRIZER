@@ -6,8 +6,6 @@ TODO
 
 * 404 page style - In progress
 
-* add a box with stats - rooms, plants, etc...some graphics - In progress
-
 - drag item in dark mode on mobile should be dark not white
 
 - when clicking to water plant from notifications, should scroll first to the plant then effect
@@ -20,8 +18,6 @@ TODO
 
 - show placehoder for empty rooms, when plant is dragged
 
-- style the profile button in the menu on mobile to stand outside
-
 - add the gemini AI plant identification based on a photo
 
 - add a log per plant (date/time, action - watering/fertilizing)
@@ -31,3 +27,9 @@ TODO
 - add fertilization option (frequency + fertilized now) and include it into log + notification 
 
 - custom color
+
+TBD:
+
+? add a box with stats - rooms, plants, etc...some graphics - DONE, but can in the future add more stats
+
+? style the profile button in the menu on mobile to stand outside

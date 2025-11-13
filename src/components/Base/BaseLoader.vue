@@ -5,7 +5,7 @@
     >
         <div class="">
             <svg
-                class="size-20 animate-spin text-primary mx-auto"
+                class="animate-spin text-primary mx-auto"
                 :class="[
                     sizeClass,
                     loaderClasses,
@@ -47,24 +47,41 @@ const props = defineProps({
         default: 'static'
     },
     loaderSize: {
-        type: Number,
+        type: String,
         required: false,
-        default: 20
+        default: 'base'
     }
 })
 
-const positionMap = [
-    {
+const positionMap = {
+    'absolute' : {
         position: 'absolute',
         classes: 'absolute inset-0 w-full h-full',
         spinnerClasses: ''
     },
-    {
+    'static' : {
         position: 'static',
         classes: '',
         spinnerClasses: 'mx-auto'
     }
-]
+}
+
+
+const sizeMap = {
+    xs: {
+        class: 'size-7'
+    },
+    sm: {
+        class: 'size-10'
+    },
+    base: {
+        class: 'size-20'
+    },
+    lg: {
+        class: 'size-30'
+    },
+    
+}
 
 
 const slots = useSlots()
@@ -73,10 +90,10 @@ const hasText = computed(() => {
     return (slots.default && slots.default().length)
 })
 
-const positionClasses = computed(() => positionMap.find(m => m.position === props.positionType).classes)
-const loaderClasses = computed(() => positionMap.find(m => m.position === props.positionType).spinnerClasses)
+const positionClasses = computed(() => positionMap[props.positionType].classes)
+const loaderClasses = computed(() => positionMap[props.positionType].spinnerClasses)
 
-const sizeClass = computed(() => `size-${props.loaderSize}`)
+const sizeClass = computed(() => sizeMap[props.loaderSize].class)
 
 </script>
 

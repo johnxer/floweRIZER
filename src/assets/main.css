@@ -193,7 +193,7 @@
         @apply translate-y-0 opacity-100;
     }
 
-    // / VUE.JS transitions
+    /* / VUE.JS transitions */
 
     /* Custom heigth classes */
 
@@ -214,7 +214,7 @@
     }
 
     .drag-ghost {
-        @apply opacity-70 scale-105;
+        @apply opacity-70 scale-95;
     }
 
     .drag-chosen {

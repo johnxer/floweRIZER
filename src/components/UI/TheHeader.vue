@@ -152,7 +152,7 @@
 
                     <base-button
                         v-if="isShown"
-                        @click="roomStore.openAddModal"
+                        @click="roomsStore.openAddModal"
                         btn-style="notRoundedMd"
                         btn-size="sm"
                         :btn-full-width="false"
@@ -251,7 +251,7 @@ const props = defineProps({
 
 const mobileStore = useMobileStore();
 
-const roomStore = useRoomsStore()
+const roomsStore = useRoomsStore()
 
 const matchString = /[A-Z]/;
 

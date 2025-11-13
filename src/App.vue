@@ -30,8 +30,9 @@
         <base-floating-button
             v-if="isBtnShown"
             class="bottom-[calc(var(--bottomBarHeight)_+_var(--spacing)_*_2)] text-sm"
+            @click="roomsStore.openAddModal"
         >
-            <span class="material-symbols-outlined text-2xl">
+            <span class="material-symbols-outlined text-3xl">
                 add
             </span>
             Room
@@ -60,7 +61,7 @@ const authStore = useAuthStore();
 
 const mobileStore = useMobileStore()
 
-const roomStore = useRoomsStore()
+const roomsStore = useRoomsStore()
 
 const isAuthed = computed(() => !!authStore.user)
 

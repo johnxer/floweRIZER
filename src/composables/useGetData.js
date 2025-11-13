@@ -42,8 +42,6 @@ export const useGetData = (dataType) => {
                 isPending.value = false;
             }
         );
-
-        
     };
 
     watchEffect(() => {
@@ -96,7 +94,6 @@ export const useGetDataByUserId = (dataType) => {
         unsubscribe = onSnapshot(
             q,
             (snapshot) => {
-
                 items.value = snapshot.docs.map((doc) => {
                     return {
                         id: doc.id,
@@ -104,7 +101,6 @@ export const useGetDataByUserId = (dataType) => {
                     };
                 });
                 isPending.value = false;
-
             },
             (err) => {
                 error.value = err.message;
@@ -145,3 +141,69 @@ export const useGetDataByUserId = (dataType) => {
         reloadData,
     };
 };
+
+export function useGetAllPlants(uid) {
+    const authStore = useAuthStore();
+    const data = ref([]);
+    const error = ref(null);
+    const isPending = ref(true)
+
+    let unsubscribe = null;
+
+    const startListener = (uid) => {
+        error.value = null;
+        isPending.value = true;
+
+        if (!uid) {
+            error.value = 'User not authenticated';
+            isPending.value = false;
+            return;
+        }
+
+        const q = query(collectionGroup(db, 'plants'));
+
+        unsubscribe = onSnapshot(
+            q,
+            (snapshot) => {
+                data.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })).filter((p) => p.userId === uid);
+            },
+            (err) => {
+                isPending.value = false;
+                error.value = err.message;
+            }
+        );
+    };
+
+    watchEffect(() => {
+        const uid = authStore.user?.uid;
+        if (!uid) {
+            unsubscribe?.();
+            unsubscribe = null;
+            items.value = [];
+            isPending.value = false;
+            return;
+        }
+
+        unsubscribe?.();
+        startListener(uid);
+    });
+
+    onUnmounted(() => {
+        unsubscribe?.();
+    });
+
+    const reloadData = () => {
+        const uid = authStore.user?.uid;
+        if (uid) {
+            unsubscribe?.();
+            startListener(uid);
+        }
+    };
+
+    return {
+        data,
+        error,
+        isPending,
+        reloadData
+    };
+}

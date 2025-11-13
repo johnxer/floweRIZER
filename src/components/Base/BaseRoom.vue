@@ -110,11 +110,7 @@
 
         <div
             class="min-h-[120px] lg:min-h-[200px] w-full rounded-xl relative flex flex-col grow"
-            :class="[
-                !plants?.length && !isPending
-                    ? 'items-center justify-center'
-                    : ''
-            ]"
+            :class="{'items-center justify-center' : !plants?.length && !isPending}"
         >
             <!-- to be styled and used later -->
             <!-- <div
@@ -134,7 +130,7 @@
                 <div
                     v-else-if="plants"
                     class="w-full p-0"
-                    :class="dragStore.isDragging ? 'h-full grow flex flex-col' : ''"
+                    :class="{ 'h-full grow flex flex-col' : dragStore.isDragging }"
                 >
                     <v-draggable
                         :list="plants"
@@ -207,6 +203,19 @@
                             or <span class="text-gray-500 font-semibold">drag one</span> from another room
                         </div>
                     </div>
+                    <div v-else-if="dragStore.isDragging">
+                        <div class="absolute flex inset-0 items-center justify-center before:border-2 before:border-dashed before:border-gray-300 before:absolute before:inset-0 before:rounded-xl pointer-events-none">
+                            <div class="text-gray-200 text-center">
+                                <span class="material-symbols-outlined text-[4rem] mb-2">
+                                    potted_plant
+                                </span>
+                                <div class="text-xl">
+                                    Drop your plant here
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </transition>
         </div>
@@ -265,7 +274,6 @@ const {
 const dragStore = useDragStore()
 
 const isDragOver = ref(false)
-const isDragging = ref(false)
 const draggedItemId = ref(null)
 const sourceRoomId = ref(null)
 
@@ -306,11 +314,9 @@ const onAdd = async (e) => {
 
     if (!plantId || fromRoomId === toRoomId) return
 
-
     await movePlant(fromRoomId, toRoomId, plantId)
 
     await nextTick()
-
 }
 
 const editRoom = () => {
@@ -328,20 +334,9 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 const deleteRoom = async () => {
     const oldPhotoUrl = props.room?.imgSrc || null
     const el = document.querySelector(`[data-room-id="${props.room.id}"]`)
-    console.log(el)
-
-    
-    // new Promise(resolve => {
-    //     setTimeout(() => {
-    //         el.classList.add('animate-popOut')
-    //         resolve()
-    //     }, 1000)
-        
-    // })
 
     el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
     await delay(1000)
-
 
     await movePlants(props.room.id, 'unassigned')
 
@@ -376,8 +371,9 @@ watch(isVisible, (val) => emit('visibility-change', val))
 .dragging {
     opacity: 0.9;
     transform: scale(1.02);
-    background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    // background-color: rgba(255, 255, 255, 0.95);
+    // background-color: red;
+    // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 9999;
 }
 
