@@ -205,8 +205,8 @@
                         </div>
                     </div>
                     <div v-else-if="dragStore.isDragging">
-                        <div class="absolute flex inset-0 items-center justify-center before:border-2 before:border-dashed before:border-gray-300 before:absolute before:inset-[3px] md:before:inset-0 before:rounded-xl pointer-events-none">
-                            <div class="text-gray-200 text-center">
+                        <div class="absolute flex inset-0 items-center justify-center before:border-2 before:border-dashed before:border-gray-300 dark:before:border-gray-600 before:absolute before:inset-[3px] md:before:inset-0 before:rounded-xl pointer-events-none before:bg-gray-700/50">
+                            <div class="text-gray-200 dark:text-gray-500 text-center">
                                 <span class="material-symbols-outlined text-[4rem] mb-2">
                                     potted_plant
                                 </span>

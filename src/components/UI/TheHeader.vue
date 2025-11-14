@@ -18,7 +18,10 @@
             <!-- <slot name="end"/> -->
             <div>
                 <div class="flex md:gap-4 items-center">
-                    <v-dropdown trap-focus>
+                    <v-dropdown
+                        trap-focus
+                        popper-class="popper-slide"
+                    >
                         <button
                             class="relative transition-colors duration-600 flex p-2"
                             :class="hasNotifications ? 'cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600' : 'cursor-default text-gray-200 dark:text-gray-800'"

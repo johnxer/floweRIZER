@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed w-full left-0 bottom-0 bg-white px-4 py-1 shadow-menu z-5 flex bottomBar-min-h">
+    <div class="fixed w-full left-0 bottom-0 bg-white dark:bg-gray-900 px-4 py-1 shadow-menu z-5 flex bottomBar-min-h">
         <ul class="flex gap-10 w-full items-center">
             <menu-content :is-chat-active="isChatActive" />
             <li class="flex w-1/3 justify-center">

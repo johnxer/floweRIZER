@@ -15,7 +15,7 @@
     >
         <button 
             v-if="mobileStore.isMobile"
-            type="button" class="size-5 h-full left-0 text-xl text-gray-400 mr-2 flex items-center js-plant-handle">
+            type="button" class="size-5 h-full left-0 text-xl text-gray-400 dark:text-gray-600 mr-2 flex items-center js-plant-handle">
             <span class="material-symbols-outlined">
                 drag_handle
             </span>
