@@ -70,36 +70,28 @@
                                 @input="formErrors.watering = null"
                                 min="1"
                             />
-                            <!-- <input
-                                type="number"
-                                id="plant-watering"
-                                value="7"
-                                placeholder="..."
-                                class="px-4 py-2 rounded-xl border-2 focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 w-[80px]"
-                                :class="!formErrors.watering ? 'border-gray-300 dark:border-gray-500' : 'border-red-300 dark:border-red-900'"
-                                v-model.trim="form.watering"
-                                @input="formErrors.watering = null"
-                                min="1"
-                            > -->
                             days
                         </div>
                     </base-input-wrapper-authed>
                     <base-input-wrapper-authed
+                        v-if="!localPlantId"
                         field-id="plant-wateredNow"
                         :errorText="formErrors.wateredNow"
                     >
                         <div class="flex gap-2 items-center text-gray-500">
                             <!-- tohle bude custom toggle -->
-                            <label class="inline-flex items-center cursor-pointer">
+                            <label 
+                                class="inline-flex items-center cursor-pointer"
+                            >
                                 <input
                                     type="checkbox"
                                     id="plant-wateredNow"
-                                    v-model.trim="form.wateredNow"
+                                    v-model="form.wateredNow"
                                     @input="formErrors.wateredNow = null"
                                     value="true"
                                     class="sr-only peer"
                                 >
-                                <div class="relative w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white dark:after:bg-gray-900 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-800"></div>
+                                <div class="relative w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:absolute after:top-[4px] after:start-[4px] after:bg-white dark:after:bg-gray-900 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-800"></div>
                                 <span class="ms-3">
                                     I've watered the plant today
                                 </span>
@@ -134,7 +126,6 @@ import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';
 import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 
-import { serverTimestamp } from 'firebase/firestore';
 import { useGetDetails } from '../composables/useGetDetail';
 import { usePlantsStore } from '../stores/usePlantsStore';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
@@ -204,7 +195,7 @@ watch(detailsPlant, (newVal) => {
     if (newVal) {
         form.value.name = newVal.name || '';
         form.value.desc = newVal.desc || '';
-        form.value.watering = newVal.watering || 3;
+        form.value.watering = newVal.wateringFrequency || 3;
         form.value.wateredNow = newVal.wateredNow || false;
         existingImageSrc.value = newVal.imgSrc
     }
@@ -238,42 +229,31 @@ watchEffect(() => {
     emit('is-pending', isPending.value)
 })
 
-const data = ref({});
-
 const submitForm = async () => {
     if (!validateForm()) return
+    console.log(form.value.wateredNow)
 
-    data.value = {
+    const data = {
         name: form.value.name,
         desc: form.value.desc,
         wateringFrequency: form.value.watering,
-    }
-
-    if (form.value.wateredNow) {
-        data.value = {
-            lastWateredDate: serverTimestamp(),
-            ...data.value
-        }
+        wateredNow: !!form.value.wateredNow,
     }
 
     if (form.value.file) {
         const uploadSuccess = await uploadImage('plants', authStore.user, form.value.file)
 
         if (uploadSuccess) {
-
-            data.value = {
-                ...data.value,
-                imgSrc: url.value,
-            }
+            data.imgSrc = url.value;
         }
     }
 
     let success = false;
 
     if (!localPlantId) {
-        success = await sendDataPlants(data.value, localRoomId)
+        success = await sendDataPlants(data, localRoomId)
     } else {
-        success = await updateDataPlants(data.value, localRoomId, localPlantId)
+        success = await updateDataPlants(data, localRoomId, localPlantId)
     }
 
     if (!!success) {

@@ -6,8 +6,6 @@ TODO
 
 * 404 page style - In progress
 
-- drag item in dark mode on mobile should be dark not white
-
 - when clicking to water plant from notifications, should scroll first to the plant then effect
 
 - image loading placeholder for BasePlantListItem, maybe add intersectionobserver on all images
@@ -15,8 +13,6 @@ TODO
 - remove the existing image upon editing existing plant/room from store (when changing the file in the modal)
 
 - show empty placeholder, when no room with plant exits (including the unassigned one)
-
-- show placehoder for empty rooms, when plant is dragged
 
 - add the gemini AI plant identification based on a photo
 

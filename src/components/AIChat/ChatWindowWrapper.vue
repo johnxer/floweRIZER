@@ -38,7 +38,7 @@
             class="p-4 overflow-auto space-y-4 grow-1"
             ref="scrollWrapper"
         >
-            <li class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm bg-primary-500/20 rounded-tr-2xl after:content-[''] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-500/20 after:-left-2">
+            <li class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm bg-primary-500/20 rounded-tr-2xl after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-500/20 after:-left-2">
                 <div class="text-xs mb-1 flex items-center gap-1 text-primary-700/50">
                     <span class="material-symbols-outlined text-base">
                         network_intelligence

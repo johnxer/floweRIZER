@@ -60,8 +60,8 @@
 
         <div class="grid grid-cols-[auto_1fr] gap-3 items-center w-full">
             <div class="grid grid-cols-[auto_1fr] gap-3 items-center">
-                <div>
-                    <div class="text-sm text-gray-700 dark:text-gray-600 font-semibold">
+                <div class="min-w-0">
+                    <div class="text-sm text-gray-700 dark:text-gray-600 font-semibold overflow-hidden text-ellipsis">
                         {{ plant.name }}
                     </div>
                     <div class="text-xs text-gray-400 dark:text-gray-700">

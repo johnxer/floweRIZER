@@ -1,7 +1,7 @@
 <template>
     <div
         class="container mx-auto px-4 md:px-6 "
-        :class="isAuthed ? 'pb-[170px] mt-8 md:pb-8' : 'pb-8'"
+        :class="isAuthed ? 'pb-[120px] mt-8 md:pb-8' : 'pb-8'"
     >
         <slot />
     </div>

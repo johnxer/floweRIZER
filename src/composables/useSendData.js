@@ -21,8 +21,6 @@ export const useSendData = () => {
         const chatReference = doc(db, chatPath);
         const messagesReference = collection(db, `${chatPath}/messages`);
 
-        console.log('Data odesílaná do Firestore:', data);
-
         try {
             const response = await addDoc(messagesReference, {
                 createdAt: serverTimestamp(),
@@ -32,8 +30,6 @@ export const useSendData = () => {
             await updateDoc(chatReference, {
                 lastMessageAt: serverTimestamp(),
             });
-
-            console.log(response.id);
 
             return true;
         } catch (err) {
@@ -49,8 +45,6 @@ export const useSendData = () => {
 
         if (!uid) return false;
 
-        
-
         isPending.value = true;
         error.value = null;
 
@@ -58,8 +52,7 @@ export const useSendData = () => {
         const roomReference = collection(db, `${roomPath}`);
 
         try {
-
-            console.log(data)
+            console.log(data);
 
             const response = await addDoc(roomReference, {
                 createdAt: serverTimestamp(),
@@ -113,11 +106,16 @@ export const useSendData = () => {
         const plantCollection = collection(db, `users/${uid}/rooms/${roomId}/plants`);
 
         if (data.wateredNow) {
-            data = {
-                ...data,
-                lastWateredDate: serverTimestamp(),
-            };
+            data.lastWateredDate = serverTimestamp();
+            data.log = [
+                {
+                    actions: 'watered',
+                    date: new Date(),
+                },
+            ];
         }
+
+        delete data.wateredNow;
 
         try {
             const response = await addDoc(plantCollection, {
@@ -125,11 +123,8 @@ export const useSendData = () => {
                 userId: uid,
                 createdAt: serverTimestamp(),
             });
-        
-            // return true;
-            console.log(response.id)
-            return response.id
 
+            return response.id;
         } catch (err) {
             error.value = err.message;
             return false;
@@ -148,6 +143,8 @@ export const useSendData = () => {
 
         const plantPath = `users/${uid}/rooms/${roomId}/plants/${plantId}`;
         const plantReference = doc(db, `${plantPath}`);
+
+        delete data.wateredNow;
 
         try {
             await updateDoc(plantReference, {

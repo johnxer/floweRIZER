@@ -4,7 +4,7 @@
         :project-title="projectName"
     />
     <the-logo-circle
-        v-else
+        v-else-if="!isAuthed && !isNotFound"
         :project-title="projectName"
         class="mt-8"
     />
@@ -90,6 +90,8 @@ const toggleChat = () => {
 }
 
 const isBtnShown = computed(() => route.name === 'TheDashboard' && mobileStore.isMobile && isAuthed.value && !isChatOpen.value)
+
+const isNotFound = computed(() => route.name === 'NotFound')
 
 </script>
 
