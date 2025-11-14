@@ -150,6 +150,7 @@
                                 ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2'
                                 : ''
                         ]"
+                        handle=".js-plant-handle"
                         filter=".js-water-btn, .js-actions-btn"
                         :prevent-on-filter="false"
                         :force-fallback="false"
@@ -204,7 +205,7 @@
                         </div>
                     </div>
                     <div v-else-if="dragStore.isDragging">
-                        <div class="absolute flex inset-0 items-center justify-center before:border-2 before:border-dashed before:border-gray-300 before:absolute before:inset-0 before:rounded-xl pointer-events-none">
+                        <div class="absolute flex inset-0 items-center justify-center before:border-2 before:border-dashed before:border-gray-300 before:absolute before:inset-[3px] md:before:inset-0 before:rounded-xl pointer-events-none">
                             <div class="text-gray-200 text-center">
                                 <span class="material-symbols-outlined text-[4rem] mb-2">
                                     potted_plant

@@ -1,18 +1,26 @@
 <template>
     <li
         ref="plantRef"
-        class="group rounded-xl transition-all duration-600 relative grid grid-cols-[60px_1fr] p-2 gap-4"
+        class="group rounded-xl transition-all duration-600 relative grid grid-cols-[auto_60px_1fr] md:grid-cols-[60px_1fr] p-2 md:gap-4"
         :class="[
             isDraggable ? 'cursor-move' : 'bg-white dark:bg-gray-900',
             unassignedRoomPlant && isDraggable ? 'bg-gray-200 dark:bg-gray-900 hover:bg-gray-300/75 dark:hover:bg-gray-900/50' : 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50',
             {
 
                 '': isDraggable && isWatered,
-                '': isWatered
+                '': isWatered,
+                'js-plant-handle' : !mobileStore.isMobile
             }
         ]"
     >
-        <div class="relative">
+        <button 
+            v-if="mobileStore.isMobile"
+            type="button" class="size-5 h-full left-0 text-xl text-gray-400 mr-2 flex items-center js-plant-handle">
+            <span class="material-symbols-outlined">
+                drag_handle
+            </span>
+        </button>
+        <div class="relative mr-4 md:mr-0">
             <div
                 class="w-full h-0 pb-[100%] overflow-hidden rounded-full relative shrink-0 shadow-popover"
                 :class="isWatered ? '' : 'grayscale'"
@@ -177,6 +185,7 @@ import { useStorage } from '../../composables/useStorage';
 
 import { useUpdateData } from '../../composables/useUpdateData';
 
+import { useMobileStore } from '../../stores/useMobileStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 import BasePopoverContent from './BasePopoverContent.vue';
 
@@ -209,6 +218,8 @@ const props = defineProps({
 
 
 const plantsStore = usePlantsStore()
+
+const mobileStore = useMobileStore()
 
 const {
     error,
