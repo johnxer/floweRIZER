@@ -16,10 +16,8 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
 
     const toggleModal = (state, modalType) => {
         if (typeof state === 'boolean') {
-            // isModalOpenPlant.value = state;
             modalType.value = state;
         } else {
-            // isModalOpenPlant.value = !isModalOpenPlant.value;
             modalType.value = !isModalOpenPlant.value;
         }
     };
@@ -28,21 +26,18 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
     const selectedPlantId = ref(null);
 
     const openAddModal = (roomId) => {
-        console.log('aaaa')
         selectedRoomId.value = roomId;
         selectedPlantId.value = null;
         toggleModal(true, isModalOpenPlant);
     };
 
     const openEditModal = (roomId, plantId) => {
-        console.log('aaaa')
         selectedRoomId.value = roomId;
         selectedPlantId.value = plantId;
         toggleModal(true, isModalOpenPlant);
     };
 
     const openHistoryModal = (roomId, plantId) => {
-        console.log('ssss')
         selectedRoomId.value = roomId;
         selectedPlantId.value = plantId;
         toggleModal(true, isModalOpenHistory);

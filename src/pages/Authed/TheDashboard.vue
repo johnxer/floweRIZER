@@ -42,15 +42,6 @@
 
         <the-modals />
 
-        <!-- <teleport to="body">
-            <base-modal
-                :modal-toggle="plantsStore.isModalOpenHistory"
-                @close-modal="plantsStore.closeHistoryModal"
-            >
-                <plant-history-content @close-modal="plantsStore.closeHistoryModal" />
-            </base-modal>
-        </teleport> -->
-
     </base-container>
 </template>
 
@@ -72,11 +63,6 @@ import { usePlantsStore } from '../../stores/usePlantsStore';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
 
-
-// const mobileStore = useMobileStore()
-
-
-
 const {
     error,
     isPending,
@@ -91,17 +77,10 @@ watch(() => rooms.value, newVal => {
     roomsStore.rooms = newVal;
 })
 
-console.log(plantsStore.isModalOpenHistory)
-
-watch(() => plantsStore.isModalOpenHistory, newVal => {
-    console.log(newVal)
-})
-
 const sortedRooms = computed(() => {
     if (!rooms.value) return []
 
     const systemRoom = rooms.value?.find(r => r.isSystem)
-    console.log(systemRoom)
 
     const normalRooms = rooms.value?.filter(r => !r.isSystem) || []
 

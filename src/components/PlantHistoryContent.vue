@@ -2,15 +2,14 @@
 
     <base-modal-content>
         <template #modalTitle>
-            History log
+            <span class="noto-color-emoji-regular mr-2">🌱</span>Plant's history log
         </template>
         <div class="relative">
             <base-loader
                 v-if="isPendingPlant"
-                position-type="absolute"
-                class="bg-white/80 dark:bg-gray-800/80 z-1"
+                class="static"
             >
-                Loading history...
+                Loading plant's history...
             </base-loader>
 
             <div v-else>
@@ -20,7 +19,7 @@
                             {{ formattedDate }}
 
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 text-lg">
+                        <div class="text-gray-600 dark:text-gray-500">
                             <span class="noto-color-emoji-regular text-base">🪴</span> Plant added
                         </div>
                     </li>
@@ -33,10 +32,10 @@
                             {{ action.formattedDate }}
 
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 capitalize text-lg">
+                        <div class="text-gray-600 dark:text-gray-500">
                             <span class="noto-color-emoji-regular text-base">
                             {{ action.emojiIcon }}
-                            </span> {{ action.action }}
+                            </span> Plant {{ action.action }}
                         </div>
                     </li>
                 </ul>
