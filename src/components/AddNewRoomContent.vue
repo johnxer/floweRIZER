@@ -8,7 +8,7 @@
                 <base-loader
                     v-if="isPending"
                     position-type="absolute"
-                    class="bg-white/80 dark:bg-gray-800/80 z-1"
+                    class="bg-white/80 dark:bg-gray-900/80 z-1"
                 >
                     {{ loadingTitle }}
                 </base-loader>

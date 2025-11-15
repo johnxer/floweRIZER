@@ -1,4 +1,5 @@
-import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { arrayUnion, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
 import { usePlantsStore } from '../stores/usePlantsStore';
@@ -57,6 +58,11 @@ export const useUpdateData = () => {
 
             const data = {
                 lastWateredDate: serverTimestamp(),
+                log: arrayUnion({
+                    id: `${Date.now()}-${uuidv4()}`,
+                    action: 'watered',
+                    date: new Date(),
+                }),
             };
 
             const success = await updateData(data, `rooms/${foundRoomId}/plants/${plantId}`);

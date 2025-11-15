@@ -12,11 +12,15 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
 
     const isModalOpenPlant = ref(false);
 
-    const toggleModal = (state) => {
+    const isModalOpenHistory = ref(false);
+
+    const toggleModal = (state, modalType) => {
         if (typeof state === 'boolean') {
-            isModalOpenPlant.value = state;
+            // isModalOpenPlant.value = state;
+            modalType.value = state;
         } else {
-            isModalOpenPlant.value = !isModalOpenPlant.value;
+            // isModalOpenPlant.value = !isModalOpenPlant.value;
+            modalType.value = !isModalOpenPlant.value;
         }
     };
 
@@ -24,19 +28,34 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
     const selectedPlantId = ref(null);
 
     const openAddModal = (roomId) => {
+        console.log('aaaa')
         selectedRoomId.value = roomId;
         selectedPlantId.value = null;
-        toggleModal(true);
+        toggleModal(true, isModalOpenPlant);
     };
 
     const openEditModal = (roomId, plantId) => {
+        console.log('aaaa')
         selectedRoomId.value = roomId;
         selectedPlantId.value = plantId;
-        toggleModal(true);
+        toggleModal(true, isModalOpenPlant);
+    };
+
+    const openHistoryModal = (roomId, plantId) => {
+        console.log('ssss')
+        selectedRoomId.value = roomId;
+        selectedPlantId.value = plantId;
+        toggleModal(true, isModalOpenHistory);
     };
 
     const closePlantModal = () => {
-        toggleModal(false);
+        toggleModal(false, isModalOpenPlant);
+        selectedRoomId.value = null
+        selectedPlantId.value = null;
+    };
+
+    const closeHistoryModal = () => {
+        toggleModal(false, isModalOpenHistory);
         selectedRoomId.value = null
         selectedPlantId.value = null;
     };
@@ -50,6 +69,9 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
         selectedPlantId,
         openAddModal,
         openEditModal,
-        closePlantModal
+        closePlantModal,
+        isModalOpenHistory,
+        openHistoryModal,
+        closeHistoryModal
     };
 });

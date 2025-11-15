@@ -42,6 +42,15 @@
 
         <the-modals />
 
+        <!-- <teleport to="body">
+            <base-modal
+                :modal-toggle="plantsStore.isModalOpenHistory"
+                @close-modal="plantsStore.closeHistoryModal"
+            >
+                <plant-history-content @close-modal="plantsStore.closeHistoryModal" />
+            </base-modal>
+        </teleport> -->
+
     </base-container>
 </template>
 
@@ -54,10 +63,12 @@ import BaseContainer from '../../components/Base/BaseContainer.vue';
 import BaseLoader from '../../components/Base/BaseLoader.vue';
 import BaseRoom from '../../components/Base/BaseRoom.vue';
 
+
 import StatsBox from '../../components/Stats/StatsBox.vue';
 import TheModals from '../../components/TheModals.vue';
 
 import { useGetData } from '../../composables/useGetData';
+import { usePlantsStore } from '../../stores/usePlantsStore';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
 
@@ -73,10 +84,17 @@ const {
 } = useGetData('rooms')
 
 const roomsStore = useRoomsStore()
+const plantsStore = usePlantsStore()
 
 
 watch(() => rooms.value, newVal => {
     roomsStore.rooms = newVal;
+})
+
+console.log(plantsStore.isModalOpenHistory)
+
+watch(() => plantsStore.isModalOpenHistory, newVal => {
+    console.log(newVal)
 })
 
 const sortedRooms = computed(() => {

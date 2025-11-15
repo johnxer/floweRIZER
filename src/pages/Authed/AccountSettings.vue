@@ -152,13 +152,15 @@
 
             </div>
         </div>
-        <base-modal
-            :modal-toggle="isModalOpen"
-            @close-modal="toggleModal"
-        >
-            <confirm-delete-account-content @close-modal="toggleModal" />
+        <teleport to="body">
+            <base-modal
+                :modal-toggle="isModalOpen"
+                @close-modal="toggleModal"
+            >
+                <confirm-delete-account-content @close-modal="toggleModal" />
 
-        </base-modal>
+            </base-modal>
+        </teleport>
     </base-container>
 </template>
 
@@ -172,7 +174,7 @@ import BaseInputWrapperAuthed from '../../components/Base/BaseForm/BaseInputWrap
 import BaseLoader from '../../components/Base/BaseLoader.vue';
 import BaseModal from '../../components/Base/BaseModal/BaseModal.vue';
 
-import ConfirmDeleteAccountContent from '../../components/Base/ConfirmDeleteAccountContent.vue';
+import ConfirmDeleteAccountContent from '../../components/ConfirmDeleteAccountContent.vue';
 
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';

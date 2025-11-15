@@ -39,15 +39,13 @@
 </template>
 
 <script setup>
-import BaseButton from './BaseButtons/BaseButton.vue';
-import BaseModalContent from './BaseModal/BaseModalContent.vue';
+import BaseButton from './Base/BaseButtons/BaseButton.vue';
+import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
 const emit = defineEmits(['close-modal'])
 
-
 const handlecloseModal = () => {
     emit('close-modal')
-
 }
 
 

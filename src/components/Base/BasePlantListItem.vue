@@ -9,13 +9,15 @@
 
                 '': isDraggable && isWatered,
                 '': isWatered,
-                'js-plant-handle' : !mobileStore.isMobile
+                'js-plant-handle': !mobileStore.isMobile
             }
         ]"
     >
-        <button 
+        <button
             v-if="mobileStore.isMobile"
-            type="button" class="size-5 h-full left-0 text-xl text-gray-400 dark:text-gray-600 mr-2 flex items-center js-plant-handle">
+            type="button"
+            class="size-5 h-full left-0 text-xl text-gray-400 dark:text-gray-600 mr-2 flex items-center js-plant-handle"
+        >
             <span class="material-symbols-outlined">
                 drag_handle
             </span>
@@ -91,7 +93,7 @@
                         @click="handleWatering"
                     >
                         <span class="material-symbols-outlined">
-                             {{ isWatered ? 'humidity_high' : 'water_drop' }}
+                            {{ isWatered ? 'humidity_high' : 'water_drop' }}
                         </span>
                     </button>
                     <v-dropdown
@@ -117,6 +119,21 @@
                             <base-popover-content>
                                 <template #desc>
                                     <ul class="space-y-2">
+                                        <li>
+                                            <button
+                                                type="button"
+                                                class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
+                                                v-close-popper="true"
+                                                @click="plantsStore.openHistoryModal(props.roomId, props.plant.id)"
+                                            >
+                                                <span class="material-symbols-outlined text-xl">
+                                                    history
+                                                </span>
+                                                <span>
+                                                    History
+                                                </span>
+                                            </button>
+                                        </li>
                                         <li>
                                             <button
                                                 type="button"
@@ -153,7 +170,6 @@
 
                         </template>
                     </v-dropdown>
-
                 </div>
             </div>
         </div>
@@ -187,7 +203,9 @@ import { useUpdateData } from '../../composables/useUpdateData';
 
 import { useMobileStore } from '../../stores/useMobileStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
+
 import BasePopoverContent from './BasePopoverContent.vue';
+
 
 const {
     error: errorUpdateData,
@@ -296,6 +314,16 @@ const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
 const unassignedRoomPlant = computed(() => props.roomId === 'unassigned')
+
+const isModalOpen = ref(false)
+
+const toggleModal = (state) => {
+    if (typeof state === 'boolean') {
+        isModalOpen.value = state
+    } else {
+        isModalOpen.value = !isModalOpen.value
+    }
+}
 
 </script>
 
