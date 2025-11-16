@@ -77,7 +77,6 @@ export const useSendData = () => {
         const roomPath = `users/${uid}/rooms/${roomId}`;
         const roomReference = doc(db, `${roomPath}`);
 
-        console.log('data',data)
         
         try {
             await updateDoc(roomReference, {
@@ -104,7 +103,6 @@ export const useSendData = () => {
         const plantCollection = collection(db, `users/${uid}/rooms/${roomId}/plants`);
 
         if (data.wateredNow) {
-            console.log('wateredNow')
             data.lastWateredDate = serverTimestamp();
         }
 

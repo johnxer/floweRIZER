@@ -46,7 +46,7 @@
                                     from <strong>{{ action.originalVal }}</strong> to <strong>{{ action.newVal }}</strong>
                                 </template>
                                 <template v-else-if="action.action === 'icon'">
-                                    from <strong class="material-symbols-outlined text-2xl">{{ action.originalVal }}</strong> to <strong class="material-symbols-outlined text-2xl">{{ action.newVal }}</strong>
+                                    from <strong class="material-symbols-outlined text-2xl mx-1">{{ action.originalVal }}</strong> to <strong class="material-symbols-outlined text-2xl mx-1">{{ action.newVal }}</strong>
                                 </template>
                             </span>
 
@@ -117,8 +117,6 @@ watchEffect(async () => {
     isLoadingActions.value = true
 
     const actionsArray = log.map(r => [r.action, r.originalVal, r.newVal])
-
-    console.log(actionsArray)
 
     formattedActions.value = log.map(a => {
         const date = a.date?.toDate ? a.date.toDate() : new Date(a.date)

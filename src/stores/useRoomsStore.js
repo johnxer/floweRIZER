@@ -55,8 +55,6 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
     const openHistoryModal = (roomId) => {
         selectedRoomId.value = roomId;
         toggleModal(true, isModalOpenHistory);
-        console.log(selectedRoomId.value)
-        console.log('sdddd')
     };
 
     const closeRoomModal = () => {

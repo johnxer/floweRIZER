@@ -47,6 +47,15 @@
                                 <template v-if="action.action === 'moved'">
                                     from <strong>{{ action.originName }}</strong> to <strong>{{ action.targetName }}</strong>
                                 </template>
+                                <template v-else>
+                                    changed
+                                    <template v-if="action.action === 'name'">
+                                        from <strong>{{ action.originalVal }}</strong> to <strong>{{ action.newVal }}</strong>
+                                    </template>
+                                    <template v-else-if="action.action === 'icon'">
+                                        from <strong class="material-symbols-outlined text-2xl mx-1">{{ action.originalVal }}</strong> to <strong class="material-symbols-outlined text-2xl mx-1">{{ action.newVal }}</strong>
+                                    </template>
+                                </template>
                             </span>
 
                         </div>
@@ -94,6 +103,18 @@ const actionEmojiMap = {
     },
     moved: {
         emoji: '🚀'
+    },
+    name: {
+        emoji: '✏️'
+    },
+    icon: {
+        emoji: '✏️'
+    },
+    description: {
+        emoji: '✏️'
+    },
+    image: {
+        emoji: '✏️'
     }
 }
 
@@ -116,8 +137,6 @@ watchEffect(async () => {
             log.flatMap(r => [r.origin, r.target]).filter(Boolean)
         )
     ]
-
-    console.log(roomIds)
 
     const RoomDocument = await Promise.all(
         roomIds.map(id => getDoc(doc(db, `users/${uid}/rooms/${id}`)))

@@ -110,6 +110,7 @@ import { useAuthStore } from '../stores/useAuthStore';
 import { useRoomsStore } from '../stores/useRoomsStore';
 
 import { useScrollStore } from '../stores/useScrollStore';
+import { addLog } from '../utils/addLog';
 import BaseButton from './Base/BaseButtons/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
@@ -127,16 +128,11 @@ const props = defineProps({
     },
 })
 
-const localRoomId = ref(props.roomId)
+const localRoomId = props.roomId
 
 const authStore = useAuthStore()
 
 const roomsStore = useRoomsStore()
-
-// const {
-//     roomIcons: icons,
-//     // roomDefaultColor: color
-// } = useRoomsStore()
 
 const {
     error: errorSendData,
@@ -156,12 +152,12 @@ const {
 
 let errorRoom, isPendingRoom, detailsRoom
 
-if (localRoomId.value) {
+if (localRoomId) {
     ({
         error: errorRoom,
         isPending: isPendingRoom,
         details: detailsRoom,
-    } = useGetDetails(`rooms/${localRoomId.value}`))
+    } = useGetDetails(`rooms/${localRoomId}`))
 } else {
     errorRoom = ref(null)
     isPendingRoom = ref(false)
@@ -199,12 +195,12 @@ watch(detailsRoom, (newVal) => {
         form.value.desc = newVal.desc || '';
         existingImageSrc.value = newVal.imgSrc
 
-        if(!isInitialImageUrlSet) {
+        if (!isInitialImageUrlSet) {
             oldImageUrl = !!newVal.imgSrc ? newVal.imgSrc : null;
             isInitialImageUrlSet = true;
         }
 
-        if(!areOriginalFieldsLoaded) {
+        if (!areOriginalFieldsLoaded) {
             originalData = {
                 name: newVal.name,
                 icon: newVal.icon,
@@ -213,22 +209,18 @@ watch(detailsRoom, (newVal) => {
 
             areOriginalFieldsLoaded = true;
         }
-
-        console.log(originalData);
-        console.log(form.value.name);
-
     }
 }, { immediate: true })
 
-const modalTitle = computed(() => `${localRoomId.value ? 'Edit' : 'Add'} room`)
+const modalTitle = computed(() => `${localRoomId ? 'Edit' : 'Add'} room`)
 
-const loadingTitle = computed(() => `${localRoomId.value ? 'Updating' : 'Creating'} room...`)
+const loadingTitle = computed(() => `${localRoomId ? 'Updating' : 'Creating'} room...`)
 
 const buttonLabel = computed(() => {
     if (isPending.value) {
-        return `${localRoomId.value ? 'Updating' : 'Adding'} room...`
+        return `${localRoomId ? 'Updating' : 'Adding'} room...`
     } else {
-        return `${localRoomId.value ? 'Update' : 'Add'} room`
+        return `${localRoomId ? 'Update' : 'Add'} room`
     }
 })
 
@@ -260,10 +252,7 @@ const emit = defineEmits(['close-modal', 'is-pending'])
 
 watchEffect(() => {
     emit('is-pending', isPending.value)
-    console.log('Pending:', isPending.value)
 })
-
-// const data = ref({});
 
 const scrollStore = useScrollStore()
 
@@ -279,82 +268,43 @@ const submitForm = async () => {
         desc: form.value.desc,
     }
 
+    if (localRoomId) {
+        addLog(log, 'name', originalData.name, data.name)
+        addLog(log, 'icon', originalData.icon, data.icon)
+        addLog(log, 'description', originalData.desc, data.desc)
+        addLog(log, 'image', oldImageUrl, existingImageSrc.value)
+    }
+
     if (form.value.file) {
         const uploadSuccess = await uploadImage('rooms', authStore.user, form.value.file)
 
         if (uploadSuccess) {
-
             data.imgSrc = url.value;
+            
+            if (localRoomId) {
+                addLog(log, 'image', oldImageUrl, url.value)
+            }
         }
     }
-
-    if (originalData.name !== data.name) {
-        log = [
-            ...log,
-            {
-                id: crypto.randomUUID(),
-                date: new Date().toISOString(),
-                action: 'name',
-                originalVal: originalData.name,
-                newVal: data.name
-            }
-        ]
-    }
-
-    if(originalData.icon !== data.icon) {
-        log = [
-            ...log,
-            {
-                id: crypto.randomUUID(),
-                date: new Date().toISOString(),
-                action: 'icon',
-                originalVal: originalData.icon,
-                newVal: data.icon
-            }
-        ]
-    }
-
-    if (originalData.desc !== data.desc) {
-        log = [
-            ...log,
-            {
-                id: crypto.randomUUID(),
-                date: new Date().toISOString(),
-                action: 'description',
-                originalVal: originalData.desc,
-                newVal: data.desc
-            }
-        ]
-    }
-    if (oldImageUrl !== existingImageSrc.value) {
-        log = [
-            ...log,
-            {
-                id: crypto.randomUUID(),
-                date: new Date().toISOString(),
-                action: 'image',
-                originalVal: oldImageUrl,
-                newVal: existingImageSrc.value
-            }
-        ]
-    } 
-
-    if (localRoomId.value) {
+    
+    if (localRoomId) {
         const existingLog = detailsRoom.value?.log || [];
+
         data.log = [
-            ...existingLog, 
+            ...existingLog,
             ...log
         ];
     } else {
         data.log = log;
     }
+    
 
     let success = false;
 
-    if (!localRoomId.value) {
+    if (!localRoomId) {
         success = await sendDataRooms(data)
     } else {
-        success = await updateDataRooms(data, localRoomId.value, true)
+        success = await updateDataRooms(data, localRoomId, true)
     }
 
     if (!!success) {
@@ -364,7 +314,7 @@ const submitForm = async () => {
 
         clearForm();
 
-        if (!localRoomId.value) {
+        if (!localRoomId) {
 
             scrollStore.setScrollTarget({
                 type: 'room',

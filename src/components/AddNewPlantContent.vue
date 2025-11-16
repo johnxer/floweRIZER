@@ -126,6 +126,7 @@ import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 
 import { useGetDetails } from '../composables/useGetDetail';
 import { usePlantsStore } from '../stores/usePlantsStore';
+import { addLog } from '../utils/addLog';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
@@ -188,6 +189,9 @@ const existingImageSrc = ref('')
 let oldImageUrl = null;
 let isInitialImageUrlSet = false;
 
+let areOriginalFieldsLoaded = false
+let originalData = {}
+
 const handleFile = (file) => {
     existingImageSrc.value = null
     form.value.file = file;
@@ -204,6 +208,16 @@ watch(detailsPlant, (newVal) => {
         if (!isInitialImageUrlSet) {
             oldImageUrl = !!newVal.imgSrc ? newVal.imgSrc : null;
             isInitialImageUrlSet = true;
+        }
+
+        if (!areOriginalFieldsLoaded) {
+            originalData = {
+                name: newVal.name,
+                icon: newVal.icon,
+                desc: newVal.desc
+            }
+
+            areOriginalFieldsLoaded = true;
         }
     }
 }, { immediate: true })
@@ -238,8 +252,6 @@ watchEffect(() => {
 
 const submitForm = async () => {
     if (!validateForm()) return
-    console.log(form.value.wateredNow)
-
 
     let log = []
 
@@ -261,23 +273,33 @@ const submitForm = async () => {
     }
 
     if (localPlantId) {
-        const existingLog = detailsPlant.value?.log || [];
-        data.log = [
-            ...existingLog, 
-            ...log
-        ];
-    } else {
-        data.log = log;
+        addLog(log, 'name', originalData.name, data.name)
+        addLog(log, 'icon', originalData.icon, data.icon)
+        addLog(log, 'description', originalData.desc, data.desc)
     }
-
+    
     if (form.value.file) {
         const uploadSuccess = await uploadImage('plants', authStore.user, form.value.file)
 
         if (uploadSuccess) {
             data.imgSrc = url.value;
 
+            if (localPlantId) {
+                addLog(log, 'image', oldImageUrl, url.value)
+            }
         }
     }
+
+    if (localPlantId) {
+        const existingLog = detailsPlant.value?.log || [];
+        data.log = [
+            ...existingLog,
+            ...log
+        ];
+    } else {
+        data.log = log;
+    }
+
 
     let success = false;
 
