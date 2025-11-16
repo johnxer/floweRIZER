@@ -1,18 +1,24 @@
 import { doc, onSnapshot } from 'firebase/firestore';
 import { onUnmounted, ref, watchEffect } from 'vue';
 import { db } from '../firebase/config';
-import { useAuthStore } from '../stores/useAuthStore';
+import { useAuth } from './useAuth';
 
 export const useGetDetails = (dataType) => {
-    const authStore = useAuthStore();
+    const { getUid } = useAuth();
+    const uid = getUid();
+
 
     const error = ref(null);
     const isPending = ref(true);
     const details = ref(null);
 
     let unsubscribe = null;
+    
+    
+    const startListener = () => {
 
-    const startListener = (uid) => {
+        if (!uid) return false;
+
         error.value = null;
         isPending.value = true
 
@@ -47,27 +53,31 @@ export const useGetDetails = (dataType) => {
     };
 
     watchEffect(() => {
-        const uid = authStore.user?.uid;
-
         if (!uid) {
-            if (unsubscribe) unsubscribe();
+            unsubscribe?.();
             unsubscribe = null;
             details.value = null;
             isPending.value = false;
             return;
         }
 
-        if (unsubscribe) unsubscribe();
+        unsubscribe?.();
         startListener(uid);
     });
 
-    onUnmounted(() => {
-        if (unsubscribe) unsubscribe();
-    });
+    onUnmounted(() => unsubscribe?.());
+
+    const reloadData = () => {
+        if (uid) {
+            unsubscribe?.();
+            startListener(uid);
+        }
+    };
 
     return {
         error,
         isPending,
         details,
+        reloadData
     };
 };

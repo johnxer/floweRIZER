@@ -1,5 +1,4 @@
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { v4 as uuidv4 } from 'uuid';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
 import { useAuth } from './useAuth';
@@ -110,9 +109,10 @@ export const useSendData = () => {
             data.lastWateredDate = serverTimestamp();
             data.log = [
                 {
-                    id: `${Date.now()}-${uuidv4()}`,
+                    // id: `${Date.now()}-${uuidv4()}`,
+                    id: crypto.randomUUID(),
                     action: 'watered',
-                    date: new Date(),
+                    date: new Date().toISOString(),
                 },
             ];
         }

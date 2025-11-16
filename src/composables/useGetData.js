@@ -142,7 +142,7 @@ export const useGetDataByUserId = (dataType) => {
     };
 };
 
-export function useGetAllPlants(uid) {
+export function useGetAllPlants() {
     const authStore = useAuthStore();
     const data = ref([]);
     const error = ref(null);

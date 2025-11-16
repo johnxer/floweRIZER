@@ -1,11 +1,11 @@
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
 import { normalizePath } from '../utils/normalizePath';
 import { useAuth } from './useAuth';
 
 export const useDeleteData = () => {
-    const { getUid } = useAuth()
+    const { getUid } = useAuth();
 
     const uid = getUid();
 
@@ -20,8 +20,8 @@ export const useDeleteData = () => {
 
         const pathReference = collectionPath ? `users/${uid}/${normalizePath(collectionPath)}` : `users/${uid}`;
 
-        console.log(pathReference)
-        
+        console.log(pathReference);
+
         try {
             await deleteDoc(doc(db, pathReference, documentId));
 
@@ -95,6 +95,16 @@ export const useDeleteData = () => {
 
             await deleteDoc(oldPlantReference);
 
+            await updateDoc(newPlantReference, {
+                log: arrayUnion({
+                    id: crypto.randomUUID(),
+                    action: 'moved',
+                    date: new Date().toISOString(),
+                    origin: oldRoomId,
+                    target: newRoomId,
+                }),
+            });
+
             return true;
         } catch (err) {
             error.value = err.message;
@@ -111,6 +121,6 @@ export const useDeleteData = () => {
         movedCount,
         deleteData,
         movePlants,
-        movePlant
+        movePlant,
     };
 };

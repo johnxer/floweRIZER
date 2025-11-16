@@ -6,7 +6,7 @@
         </template>
         <div class="relative">
             <base-loader
-                v-if="isPendingPlant"
+                v-if="isPendingPlant || isLoadingActions"
                 class="static"
             >
                 Loading plant's history...
@@ -14,28 +14,41 @@
 
             <div v-else>
                 <ul class="flex flex-col gap-4">
-                    <li class="grid grid-cols-2">
-                        <div class="text-gray-400 dark:text-gray-600">
+                    <li class="grid ">
+                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[50px]">
                             {{ formattedDate }}
 
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500">
-                            <span class="noto-color-emoji-regular text-base">🪴</span> Plant added
+                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[40px_1fr] gap-[10px] items-start">
+                            <span class="noto-color-emoji-regular text-base bg-gray-100 p-2 rounded-full flex items-center justify-center shrink-0">
+                                🪴
+                            </span> 
+                            <span class="self-center text-sm md:text-base">
+                                Plant added
+                            </span>
                         </div>
                     </li>
                     <li
                         v-for="action in formattedActions"
                         :key="action.id"
-                        class="grid grid-cols-2"
+                        class="grid "
                     >
-                        <div class="text-gray-400 dark:text-gray-600">
+                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[50px]">
                             {{ action.formattedDate }}
 
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500">
-                            <span class="noto-color-emoji-regular text-base">
-                            {{ action.emojiIcon }}
-                            </span> Plant {{ action.action }}
+                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[40px_1fr] gap-[10px] items-start">
+                            <span class="noto-color-emoji-regular text-base bg-gray-100 p-2 rounded-full flex items-center justify-center shrink-0">
+                                
+                                {{ action.emojiIcon }}
+                            </span> 
+                            <span class="self-center text-sm md:text-base">
+                                Plant {{ action.action }}
+                                <template v-if="action.action === 'moved'">
+                                    from <strong>{{ action.originName }}</strong> to <strong>{{ action.targetName }}</strong>
+                                </template>
+                            </span>
+
                         </div>
                     </li>
                 </ul>
@@ -50,9 +63,16 @@ import { format } from "date-fns";
 import { useGetDetails } from '../composables/useGetDetail';
 import { usePlantsStore } from '../stores/usePlantsStore';
 
-import { computed } from "vue";
+import { doc, getDoc } from "firebase/firestore";
+import { computed, ref, watchEffect } from "vue";
+import { useAuth } from "../composables/useAuth";
+import { db } from "../firebase/config";
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
+
+const { getUid } = useAuth();
+
+const uid = getUid()
 
 
 const plantsStore = usePlantsStore()
@@ -62,35 +82,88 @@ const formattedDate = computed(() => {
     return createdAt?.toDate ? format(createdAt.toDate(), 'MMM d, yyyy') : '—'
 })
 
-const actionEmojiMap = {
-    watered: {
-        emoji: '💧'
-    }
-}
-
-const formattedActions = computed(() => {
-    const log = detailsPlant.value?.log;
-
-    if (!log?.length) return []
-
-    return log.map(a => {
-        const date = a.date?.toDate ? a.date?.toDate() : new Date(a.date)
-        const emoji = actionEmojiMap[a.action]?.emoji || ''
-
-        return {
-            ...a,
-            emojiIcon: emoji,
-            formattedDate: format(date, 'MMM d, yyyy')
-        }
-    })
-
-})
-
 const {
     error: errorPlant,
     isPending: isPendingPlant,
     details: detailsPlant,
 } = useGetDetails(`rooms/${plantsStore.selectedRoomId}/plants/${plantsStore.selectedPlantId}`)
+
+
+const actionEmojiMap = {
+    watered: {
+        emoji: '💧'
+    },
+    moved: {
+        emoji: '🚀'
+    }
+}
+
+const formattedActions = ref([])
+
+const isLoadingActions = ref(true)
+
+watchEffect(async () => {
+    const log = detailsPlant.value?.log;
+
+    if (!log?.length) {
+        formattedActions.value = []
+        return
+    }
+
+    isLoadingActions.value = true
+
+    const roomIds = [
+        ...new Set(
+            log.flatMap(r => [r.origin, r.target]).filter(Boolean)
+        )
+    ]
+
+    console.log(roomIds)
+
+    const RoomDocument = await Promise.all(
+        roomIds.map(id => getDoc(doc(db, `users/${uid}/rooms/${id}`)))
+    )
+
+    const roomMap = new Map()
+
+    RoomDocument.forEach((snap, index) => {
+        const id = roomIds[index]
+        roomMap.set(id, snap.data()?.name)
+    })
+
+    formattedActions.value = log.map(a => {
+        const date = a.date?.toDate ? a.date.toDate() : new Date(a.date)
+
+        return {
+            ...a,
+            emojiIcon: actionEmojiMap[a.action]?.emoji || '',
+            formattedDate: format(date, 'MMM d, yyyy'),
+            originName: a.origin ? roomMap.get(a.origin) : null,
+            targetName: a.target ? roomMap.get(a.target) : null,
+        }
+    })
+
+    isLoadingActions.value = false
+
+})
+
+
+// const formattedActions = computed(() => {
+//     const log = detailsPlant.value?.log;
+
+//     if (!log?.length) return []
+
+//     return log.map(a => {
+//         const date = a.date?.toDate ? a.date?.toDate() : new Date(a.date)
+//         const emoji = actionEmojiMap[a.action]?.emoji || ''
+
+//         return {
+//             ...a,
+//             emojiIcon: emoji,
+//             formattedDate: format(date, 'MMM d, yyyy')
+//         }
+//     })
+// })
 
 </script>
 
