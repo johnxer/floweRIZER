@@ -20,8 +20,6 @@ export const useDeleteData = () => {
 
         const pathReference = collectionPath ? `users/${uid}/${normalizePath(collectionPath)}` : `users/${uid}`;
 
-        console.log(pathReference);
-
         try {
             await deleteDoc(doc(db, pathReference, documentId));
 
@@ -108,7 +106,9 @@ export const useDeleteData = () => {
             return true;
         } catch (err) {
             error.value = err.message;
+
             console.error('Move plant failed:', err);
+            
             return false;
         } finally {
             isPending.value = false;

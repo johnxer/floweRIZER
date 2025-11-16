@@ -53,7 +53,7 @@
                     image
                 </span>
                 <span class="text-wrap">
-                    {{ selectFileName }}
+                    {{ selectFileName }} 
                 </span>
             </div>
         </div>
@@ -101,17 +101,20 @@ const handleFile = (e) => {
 
     selectFileName.value = file.value.name
 
+    console.log(selectFileName.value)
+
     if (previewUrl.value) {
         URL.revokeObjectURL(previewUrl.value)
     }
     previewUrl.value = URL.createObjectURL(file.value)
+
 
     if (!selectFileName.value || !allowedFormats.includes(file.value.type)) return
 
     emit('send-file', file.value)
 }
 
-const imageToShow = computed(() => existingImage.value || previewUrl.value)
+const imageToShow = computed(() => !!previewUrl.value ? previewUrl.value : existingImage.value)
 
 
 

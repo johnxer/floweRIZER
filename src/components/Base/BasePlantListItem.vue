@@ -295,17 +295,9 @@ const handleDeletePlant = async () => {
     let successDelete = true;
     let success = false;
 
-    if (documentImgSrc) {
-        console.log(documentImgSrc)
-        successDelete = await deleteImageByUrl(props.plant.imgSrc)
-    }
+    if (documentImgSrc) successDelete = await deleteImageByUrl(props.plant.imgSrc)
 
-    if (successDelete) {
-        console.log(collectionPath)
-        console.log(documentId)
-
-        success = await deleteData(documentId, collectionPath)
-    }
+    if (successDelete) success = await deleteData(documentId, collectionPath)
 }
 
 const isOpen = ref(false)

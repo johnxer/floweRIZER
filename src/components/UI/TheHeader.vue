@@ -27,7 +27,11 @@
                         btn-style="notRoundedMd"
                         btn-size="sm"
                         :btn-full-width="false"
+                        class="flex items-center gap-1"
                     >
+                        <span class="material-symbols-outlined text-xl">
+                            add
+                        </span>
                         New room
                     </base-button>
                     <div class="md:hidden">
@@ -106,7 +110,6 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
 })
-
 
 </script>
 

@@ -219,6 +219,7 @@ const {
     filePath,
     isPending: isPendingUpload,
     uploadImage,
+    deleteImageByUrl
 } = useStorage()
 
 let errorRoom, isPendingRoom, detailsRoom
@@ -248,6 +249,9 @@ const form = ref({
 
 const existingImageSrc = ref('')
 
+let oldImageUrl = null;
+let isInitialImageUrlSet = false;
+
 const handleFile = (file) => {
     existingImageSrc.value = null
     form.value.file = file;
@@ -259,6 +263,11 @@ watch(detailsRoom, (newVal) => {
         form.value.icon = newVal.icon || '';
         form.value.desc = newVal.desc || '';
         existingImageSrc.value = newVal.imgSrc
+
+        if(!isInitialImageUrlSet) {
+            oldImageUrl = !!newVal.imgSrc ? newVal.imgSrc : null;
+            isInitialImageUrlSet = true;
+        }
     }
 }, { immediate: true })
 
@@ -340,6 +349,7 @@ const submitForm = async () => {
     }
 
     if (!!success) {
+        await deleteImageByUrl(oldImageUrl)
         clearForm();
 
         if (!localRoomId.value) {

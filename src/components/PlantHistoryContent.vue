@@ -100,7 +100,7 @@ const actionEmojiMap = {
 
 const formattedActions = ref([])
 
-const isLoadingActions = ref(true)
+const isLoadingActions = ref(false)
 
 watchEffect(async () => {
     const log = detailsPlant.value?.log;

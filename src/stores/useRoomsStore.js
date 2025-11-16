@@ -19,6 +19,10 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
             name: 'Bathroom',
             icon: 'shower',
         },
+        {
+            name: 'Garden',
+            icon: 'outdoor_garden'
+        }
     ];
 
     const roomDefaultColor = '#99c23b';

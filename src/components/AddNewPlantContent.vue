@@ -163,6 +163,7 @@ const {
     filePath,
     isPending: isPendingUpload,
     uploadImage,
+    deleteImageByUrl
 } = useStorage()
 
 
@@ -186,6 +187,9 @@ const form = ref({
 
 const existingImageSrc = ref('')
 
+let oldImageUrl = null;
+let isInitialImageUrlSet = false;
+
 const handleFile = (file) => {
     existingImageSrc.value = null
     form.value.file = file;
@@ -198,6 +202,11 @@ watch(detailsPlant, (newVal) => {
         form.value.watering = newVal.wateringFrequency || 3;
         form.value.wateredNow = newVal.wateredNow || false;
         existingImageSrc.value = newVal.imgSrc
+
+        if (!isInitialImageUrlSet) {
+            oldImageUrl = !!newVal.imgSrc ? newVal.imgSrc : null;
+            isInitialImageUrlSet = true;
+        }
     }
 }, { immediate: true })
 
@@ -245,18 +254,20 @@ const submitForm = async () => {
 
         if (uploadSuccess) {
             data.imgSrc = url.value;
+
         }
     }
-
+    
     let success = false;
-
+    
     if (!localPlantId) {
         success = await sendDataPlants(data, localRoomId)
     } else {
         success = await updateDataPlants(data, localRoomId, localPlantId)
     }
-
+    
     if (!!success) {
+        await deleteImageByUrl(oldImageUrl)
         clearForm()
         plantsStore.closePlantModal()
         emit('close-modal', false)

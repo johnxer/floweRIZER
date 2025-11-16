@@ -25,26 +25,12 @@
         v-if="isAuthed && mobileStore.isMobile"
         @toggle-chat="toggleChat"
     />
-
-    <transition name="fade">
-        <base-floating-button
-            v-if="isBtnShown"
-            class="bottom-[calc(var(--bottomBarHeight)_+_var(--spacing)_*_2)] text-sm"
-            @click="roomsStore.openAddModal"
-        >
-            <span class="material-symbols-outlined text-3xl">
-                add
-            </span>
-            Room
-        </base-floating-button>
-    </transition>
 </template>
 
 <script setup>
 
 import { generateOklchShades } from './utils/hex2oklch.js';
 
-import BaseFloatingButton from './components/Base/BaseButtons/BaseFloatingButton.vue';
 
 import TheChat from './components/AIChat/TheChat.vue';
 import SidebarMenu from './components/UI/SidebarMenu.vue';
@@ -55,13 +41,10 @@ import { computed, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from './stores/useAuthStore';
 import { useMobileStore } from './stores/useMobileStore.js';
-import { useRoomsStore } from './stores/useRoomsStore.js';
 
 const authStore = useAuthStore();
 
 const mobileStore = useMobileStore()
-
-const roomsStore = useRoomsStore()
 
 const isAuthed = computed(() => !!authStore.user)
 
@@ -88,8 +71,6 @@ const isChatOpen = ref(false)
 const toggleChat = () => {
     isChatOpen.value = !isChatOpen.value
 }
-
-const isBtnShown = computed(() => route.name === 'TheDashboard' && mobileStore.isMobile && isAuthed.value && !isChatOpen.value)
 
 const isNotFound = computed(() => route.name === 'NotFound')
 

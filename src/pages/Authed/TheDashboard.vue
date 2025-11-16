@@ -18,6 +18,17 @@
                         :room="room"
                     />
                 </div>
+                <transition name="fade">
+                    <button type="button"
+                        class="md:hidden mt-2 flex items-center justify-end py-2 px-2 gap-1 w-full text-primary-500"
+                        @click="roomsStore.openAddModal"
+                    >
+                        <span class="material-symbols-outlined text-2xl">
+                            add
+                        </span>
+                        New room
+                    </button>
+                </transition>
             </div>
 
 
@@ -58,8 +69,8 @@ import BaseRoom from '../../components/Base/BaseRoom.vue';
 import StatsBox from '../../components/Stats/StatsBox.vue';
 import TheModals from '../../components/TheModals.vue';
 
+import { useRoute } from 'vue-router';
 import { useGetData } from '../../composables/useGetData';
-import { usePlantsStore } from '../../stores/usePlantsStore';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
 
@@ -70,8 +81,8 @@ const {
 } = useGetData('rooms')
 
 const roomsStore = useRoomsStore()
-const plantsStore = usePlantsStore()
 
+const route = useRoute();
 
 watch(() => rooms.value, newVal => {
     roomsStore.rooms = newVal;
