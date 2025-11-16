@@ -30,12 +30,13 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
     const rooms = ref([])
 
     const isModalOpenRoom = ref(false);
+    const isModalOpenHistory = ref(false);
 
-    const toggleModal = (state) => {
+    const toggleModal = (state, modalType) => {
         if (typeof state === 'boolean') {
-            isModalOpenRoom.value = state;
+            modalType.value = state;
         } else {
-            isModalOpenRoom.value = !isModalOpenRoom.value;
+            modalType.value = !modalType.value;
         }
     };
 
@@ -43,16 +44,28 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
 
     const openAddModal = () => {
         selectedRoomId.value = null;
-        toggleModal(true);
+        toggleModal(true, isModalOpenRoom);
     };
 
     const openEditModal = (roomId) => {
         selectedRoomId.value = roomId;
-        toggleModal(true);
+        toggleModal(true, isModalOpenRoom);
+    };
+
+    const openHistoryModal = (roomId) => {
+        selectedRoomId.value = roomId;
+        toggleModal(true, isModalOpenHistory);
+        console.log(selectedRoomId.value)
+        console.log('sdddd')
     };
 
     const closeRoomModal = () => {
-        toggleModal(false);
+        toggleModal(false, isModalOpenRoom);
+        selectedRoomId.value = null;
+    };
+
+    const closeHistoryModal = () => {
+        toggleModal(false, isModalOpenHistory);
         selectedRoomId.value = null;
     };
 
@@ -65,5 +78,8 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
         openAddModal,
         openEditModal,
         closeRoomModal,
+        isModalOpenHistory,
+        openHistoryModal,
+        closeHistoryModal
     };
 });

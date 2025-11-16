@@ -1,5 +1,4 @@
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage"
-import { v4 as uuidv4 } from 'uuid'
 import { ref } from "vue"
 import { storage } from "../firebase/config"
 
@@ -20,7 +19,7 @@ export const useStorage = () => {
 
         const timeStamp = Date.now()
 
-        const uniqueFileName = `${timeStamp}_${uuidv4()}_${file.name}`
+        const uniqueFileName = `${timeStamp}_${crypto.randomUUID()}_${file.name}`
 
         const subFolderPath = subFolder ? `${subFolder}/` : ''
 

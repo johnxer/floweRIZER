@@ -52,14 +52,10 @@ export const useSendData = () => {
         const roomReference = collection(db, `${roomPath}`);
 
         try {
-            console.log(data);
-
             const response = await addDoc(roomReference, {
                 createdAt: serverTimestamp(),
                 ...data,
             });
-
-            console.log(response.id);
 
             return response.id;
         } catch (err) {
@@ -81,6 +77,8 @@ export const useSendData = () => {
         const roomPath = `users/${uid}/rooms/${roomId}`;
         const roomReference = doc(db, `${roomPath}`);
 
+        console.log('data',data)
+        
         try {
             await updateDoc(roomReference, {
                 ...data,
@@ -106,15 +104,8 @@ export const useSendData = () => {
         const plantCollection = collection(db, `users/${uid}/rooms/${roomId}/plants`);
 
         if (data.wateredNow) {
+            console.log('wateredNow')
             data.lastWateredDate = serverTimestamp();
-            data.log = [
-                {
-                    // id: `${Date.now()}-${uuidv4()}`,
-                    id: crypto.randomUUID(),
-                    action: 'watered',
-                    date: new Date().toISOString(),
-                },
-            ];
         }
 
         delete data.wateredNow;

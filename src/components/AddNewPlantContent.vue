@@ -80,9 +80,7 @@
                     >
                         <div class="flex gap-2 items-center text-gray-500">
                             <!-- tohle bude custom toggle -->
-                            <label 
-                                class="inline-flex items-center cursor-pointer"
-                            >
+                            <label class="inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
                                     id="plant-wateredNow"
@@ -242,12 +240,38 @@ const submitForm = async () => {
     if (!validateForm()) return
     console.log(form.value.wateredNow)
 
+
+    let log = []
+
+    if (form.value.wateredNow) {
+        log = [
+            {
+                id: crypto.randomUUID(),
+                action: 'watered',
+                date: new Date().toISOString(),
+            },
+        ]
+    }
+
     const data = {
         name: form.value.name,
         desc: form.value.desc,
         wateringFrequency: form.value.watering,
         wateredNow: !!form.value.wateredNow,
     }
+
+    if (localPlantId) {
+        const existingLog = detailsPlant.value?.log || [];
+        data.log = [
+            ...existingLog, 
+            ...log
+        ];
+    } else {
+        data.log = log;
+    }
+
+// console.log(data)
+// return;
 
     if (form.value.file) {
         const uploadSuccess = await uploadImage('plants', authStore.user, form.value.file)
@@ -257,17 +281,19 @@ const submitForm = async () => {
 
         }
     }
-    
+
     let success = false;
-    
+
     if (!localPlantId) {
         success = await sendDataPlants(data, localRoomId)
     } else {
         success = await updateDataPlants(data, localRoomId, localPlantId)
     }
-    
+
     if (!!success) {
-        await deleteImageByUrl(oldImageUrl)
+        if (oldImageUrl !== existingImageSrc.value) {
+            await deleteImageByUrl(oldImageUrl)
+        }
         clearForm()
         plantsStore.closePlantModal()
         emit('close-modal', false)

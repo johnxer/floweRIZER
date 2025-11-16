@@ -31,6 +31,12 @@
             >
                 <plant-history-content @close-modal="plantsStore.closeHistoryModal" />
             </base-modal>
+            <base-modal
+                :modal-toggle="roomsStore.isModalOpenHistory"
+                @close-modal="roomsStore.closeHistoryModal"
+            >
+                <room-history-content @close-modal="roomsStore.closeHistoryModal" />
+            </base-modal>
         </teleport>
     </div>
 </template>
@@ -44,6 +50,7 @@ import { useRoomsStore } from '../stores/useRoomsStore';
 import AddNewPlantContent from './AddNewPlantContent.vue';
 import AddNewRoomContent from './AddNewRoomContent.vue';
 import PlantHistoryContent from './PlantHistoryContent.vue';
+import RoomHistoryContent from './RoomHistoryContent.vue';
 
 import BaseModal from './Base/BaseModal/BaseModal.vue';
 

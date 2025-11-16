@@ -58,7 +58,6 @@ export const useUpdateData = () => {
             const data = {
                 lastWateredDate: serverTimestamp(),
                 log: arrayUnion({
-                    // id: `${Date.now()}-${uuidv4()}`,
                     id: crypto.randomUUID(),
                     action: 'watered',
                     date: new Date().toISOString(),

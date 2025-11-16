@@ -38,6 +38,19 @@
                     type="button"
                     class="md:opacity-0 group-hover/card:opacity-100 text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
                     v-tooltip="{
+                        content: 'History',
+                        container: 'body'
+                    }"
+                    @click="roomsStore.openHistoryModal(room.id)"
+                >
+                    <span class="material-symbols-outlined">
+                        history
+                    </span>
+                </button>
+                <button
+                    type="button"
+                    class="md:opacity-0 group-hover/card:opacity-100 text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
+                    v-tooltip="{
                         content: 'Edit room',
                         container: 'body'
                     }"
