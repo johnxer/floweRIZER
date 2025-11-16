@@ -2,7 +2,7 @@
 
     <base-modal-content>
         <template #modalTitle>
-            <span class="noto-color-emoji-regular mr-2">🌱</span>Plant's history log
+            <span class="noto-color-emoji-regular mr-2">🏠</span>Rooms's history log
         </template>
         <div class="relative">
             <base-loader
@@ -41,7 +41,7 @@
                                 {{ action.emojiIcon }}
                             </span> 
                             <span class="self-center text-sm md:text-base">
-                                Plant {{ action.action }} changed 
+                                Room's {{ action.action }} changed 
                                 <template v-if="action.action === 'name'">
                                     from <strong>{{ action.originalVal }}</strong> to <strong>{{ action.newVal }}</strong>
                                 </template>
@@ -122,7 +122,6 @@ watchEffect(async () => {
 
     formattedActions.value = log.map(a => {
         const date = a.date?.toDate ? a.date.toDate() : new Date(a.date)
-
 
         return {
             ...a,

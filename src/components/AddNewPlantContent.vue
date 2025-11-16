@@ -270,9 +270,6 @@ const submitForm = async () => {
         data.log = log;
     }
 
-// console.log(data)
-// return;
-
     if (form.value.file) {
         const uploadSuccess = await uploadImage('plants', authStore.user, form.value.file)
 

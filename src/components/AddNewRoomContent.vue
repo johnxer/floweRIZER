@@ -272,7 +272,7 @@ const submitForm = async () => {
 
     let log = []
 
-    let data = {
+    const data = {
         name: form.value.name,
         icon: form.value.icon,
         // color: form.value.color,
@@ -284,10 +284,7 @@ const submitForm = async () => {
 
         if (uploadSuccess) {
 
-            data = {
-                ...data,
-                imgSrc: url.value,
-            }
+            data.imgSrc = url.value;
         }
     }
 
