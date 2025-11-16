@@ -16,7 +16,7 @@ TODO
 
 - add the gemini AI plant identification based on a photo
 
-- add a log per room (date/time, action - added, removed plant from room)
+* add a log per room (date/time, action - added, removed plant from room) - In progress. Also add for plant the name/desc, image change log
 
 - add fertilization option (frequency + fertilized now) and include it into log + notification 
 
