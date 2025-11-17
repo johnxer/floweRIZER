@@ -37,7 +37,7 @@
                     <div class="md:hidden">
                         <button
                             class="text-gray-400 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-900 cursor-pointer transition-colors duration-600 flex p-2"
-                            @click="handlelogout"
+                            @click="handleLogout"
                         >
                             <span class="material-symbols-outlined text-2xl">
                                 logout
@@ -57,7 +57,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 
 import BaseButton from '../Base/BaseButtons/BaseButton.vue';
@@ -87,6 +87,7 @@ const firstString = props.projectTitle.substring(0, indexTitle)
 const secondString = props.projectTitle.substring(indexTitle)
 
 const route = useRoute()
+const router = useRouter()
 
 const isScrolled = ref(false)
 
@@ -113,6 +114,7 @@ onUnmounted(() => {
 
 const handleLogout = async () => {
     await logOutUser()
+    router.push({name: 'NotAuthed'})
 }
 
 </script>

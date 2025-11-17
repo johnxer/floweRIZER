@@ -47,7 +47,7 @@ import StatsBoxItem from './StatsBoxItem.vue';
 const roomsStore = useRoomsStore()
 
 const {
-    data: plants,
+    items: plants,
     error: errorPlants,
     isPending: isPendingPlants
 } = useGetAllPlants()

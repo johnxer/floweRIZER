@@ -144,7 +144,7 @@ export const useGetDataByUserId = (dataType) => {
 
 export function useGetAllPlants() {
     const authStore = useAuthStore();
-    const data = ref([]);
+    const items = ref([]);
     const error = ref(null);
     const isPending = ref(true)
 
@@ -160,12 +160,15 @@ export function useGetAllPlants() {
             return;
         }
 
-        const q = query(collectionGroup(db, 'plants'));
+        const q = query(
+            collectionGroup(db, 'plants'),
+            where('userId', '==', uid));
 
         unsubscribe = onSnapshot(
             q,
             (snapshot) => {
-                data.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })).filter((p) => p.userId === uid);
+                items.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+                isPending.value = false
             },
             (err) => {
                 isPending.value = false;
@@ -201,7 +204,7 @@ export function useGetAllPlants() {
     };
 
     return {
-        data,
+        items,
         error,
         isPending,
         reloadData
