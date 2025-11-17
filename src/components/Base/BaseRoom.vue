@@ -41,7 +41,7 @@
                             content: 'History',
                             container: 'body'
                         }"
-                        @click="plantsStore.openHistoryModal(room.id)"
+                        @click="roomsStore.openHistoryModal(room.id)"
                     >
                         <span class="material-symbols-outlined">
                             history

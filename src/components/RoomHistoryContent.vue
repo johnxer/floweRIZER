@@ -82,8 +82,14 @@ const {
     details: detailsRoom,
 } = useGetDetails(`rooms/${roomsStore.selectedRoomId}`)
 
+watchEffect(() => {
+  console.log('createdAt:', detailsRoom.value?.createdAt)
+  console.log('type:', typeof detailsRoom.value?.createdAt)
+})
+
 const formattedDate = computed(() => {
     const createdAt = detailsRoom.value?.createdAt
+    
     return createdAt?.toDate ? format(createdAt.toDate(), 'MMM d, yyyy') : '—'
 })
 

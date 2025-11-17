@@ -297,7 +297,9 @@ const submitForm = async () => {
     } else {
         data.log = log;
     }
-    
+
+
+    console.log()
 
     let success = false;
 
