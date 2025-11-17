@@ -1,7 +1,7 @@
 <template>
 
     <div
-        v-if="!isBeingDeleted && !room.isSystem || (room.isSystem && plants?.length > 0)"
+        v-if="!roomsStore.hiddenRooms.includes(room.id) && (!room.isSystem || (room.isSystem && plants?.length > 0))"
         :data-room-id="room.id"
         class="group/card flex flex-col rounded-xl md:p-2 relative items-center md:items-start"
         :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50 shadow-box'"
@@ -359,22 +359,29 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 const isBeingDeleted = ref(false)
 
 const handleDeleteRoom = async () => {
-    isBeingDeleted.value = true
     const oldPhotoUrl = props.room?.imgSrc || null
     const el = document.querySelector(`[data-room-id="${props.room.id}"]`)
+    
+    roomsStore.hideRoomTemp(props.room.id)
 
     if (el) {
         el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
         await delay(1000)
     }
 
+    roomsStore.hideRoomTemp('unassigned')
     await movePlants(props.room.id, 'unassigned')
+    roomsStore.showRoom('unassigned')
+
 
     await deleteData(props.room.id, 'rooms')
 
     if (oldPhotoUrl) {
         await deleteImageByUrl(oldPhotoUrl)
     }
+
+    roomsStore.showRoom(props.room.id)
+
 }
 
 const roomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)

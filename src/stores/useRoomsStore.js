@@ -21,13 +21,13 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
         },
         {
             name: 'Garden',
-            icon: 'outdoor_garden'
-        }
+            icon: 'outdoor_garden',
+        },
     ];
 
     const roomDefaultColor = '#99c23b';
 
-    const rooms = ref([])
+    const rooms = ref([]);
 
     const isModalOpenRoom = ref(false);
     const isModalOpenHistory = ref(false);
@@ -67,6 +67,18 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
         selectedRoomId.value = null;
     };
 
+    const hiddenRooms = ref([]);
+
+    const hideRoomTemp = (roomId) => {
+        if (!hiddenRooms.value.includes(roomId)) {
+            hiddenRooms.value.push(roomId);
+        }
+    };
+
+    const showRoom = (roomId) => {
+        hiddenRooms.value = hiddenRooms.value.filter((id) => id !== roomId);
+    };
+
     return {
         roomIcons,
         roomDefaultColor,
@@ -78,6 +90,9 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
         closeRoomModal,
         isModalOpenHistory,
         openHistoryModal,
-        closeHistoryModal
+        closeHistoryModal,
+        hiddenRooms, 
+        hideRoomTemp, 
+        showRoom
     };
 });
