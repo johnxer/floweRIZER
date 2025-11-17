@@ -138,6 +138,8 @@ watchEffect(async () => {
         )
     ]
 
+    console.log(roomIds)
+
     const RoomDocument = await Promise.all(
         roomIds.map(id => getDoc(doc(db, `users/${uid}/rooms/${id}`)))
     )
@@ -157,7 +159,7 @@ watchEffect(async () => {
             emojiIcon: actionEmojiMap[a.action]?.emoji || '',
             formattedDate: format(date, 'MMM d, yyyy'),
             originName: roomMap.get(a.origin) ?? null,
-            targetName: roomMap.get(a.target) ?? null,
+            targetName: roomMap.get(a.target) ?? '<room deleted>',
         }
     })
 

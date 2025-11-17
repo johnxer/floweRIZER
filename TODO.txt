@@ -1,9 +1,5 @@
 TODO
 
-- when deleting for the first time a room with plants, need to created Unassinged room - isSystem: true, name: Unassigned, createdAt:...
-
-- when deleting the room, the target room is empty instead of 'Unassigned'
-
 - add to room log the plants movement.
 
 - footer with github link - prbbly will be moved and display elsewhere

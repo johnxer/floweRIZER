@@ -6,7 +6,7 @@
     <the-logo-circle
         v-else-if="!isAuthed && !isNotFound"
         :project-title="projectName"
-        class="mt-8"
+        class="pt-8"
     />
     <router-view v-slot="{ Component }">
         <transition

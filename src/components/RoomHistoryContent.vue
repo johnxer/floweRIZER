@@ -122,8 +122,6 @@ watchEffect(async () => {
 
     isLoadingActions.value = true
 
-    const actionsArray = log.map(r => [r.action, r.originalVal, r.newVal])
-
     formattedActions.value = log.map(a => {
         const date = a.date?.toDate ? a.date.toDate() : new Date(a.date)
 

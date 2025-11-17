@@ -35,7 +35,7 @@ export const useDeleteData = () => {
 
     const movedCount = ref(0);
 
-    const movePlants = async (oldRoomId, newRoomId, newRoomName = 'Unassigned') => {
+    const movePlants = async (oldRoomId, newRoomId) => {
         isPending.value = true;
         error.value = null;
         movedCount.value = 0;
@@ -47,7 +47,7 @@ export const useDeleteData = () => {
             if (!newRoomSnapshot.exists()) {
                 await sendDataRooms({
                     id: newRoomId,
-                    name: newRoomName
+                    name: newRoomId === 'unassigned' ? 'Unassigned' : 'New room',
                 });
             }
 

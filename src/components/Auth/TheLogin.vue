@@ -51,9 +51,14 @@
                         />
                     </base-input-wrapper>
                 </div>
-                <base-button class="mt-8">
+                <base-button
+                    class="mt-8"
+                    btn-style="notRoundedMd"
+                    btn-size="base"
+                >
                     Login
                 </base-button>
+                <login-signup-actions />
             </div>
         </transition>
     </form>
@@ -65,6 +70,7 @@ import BaseFormMessageBox from '../Base/BaseForm/BaseFormMessageBox.vue';
 import BaseInputWrapper from '../Base/BaseForm/BaseInputWrapper.vue';
 import BaseLoader from '../Base/BaseLoader.vue';
 
+import LoginSignupActions from '../LoginSignupActions.vue';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';

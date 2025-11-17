@@ -111,6 +111,10 @@ onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
 })
 
+const handleLogout = async () => {
+    await logOutUser()
+}
+
 </script>
 
 <style lang="scss" scoped></style>

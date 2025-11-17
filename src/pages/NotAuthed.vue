@@ -8,7 +8,7 @@
                 mode="out-in"
             >
                 <pw-reset 
-                    v-if="showPwRecovery" 
+                    v-if="authStore.showPwRecovery" 
                     @pw-reset-done="handleLoginShow"
                 />
                 <div v-else>
@@ -17,13 +17,13 @@
                         name="fade"
                         mode="out-in"
                     >
-                        <the-login v-if="isLogin" />
+                        <the-login v-if="authStore.isLogin" />
                         <the-sign-up
                             v-else
                             class="md-column"
                         />
                     </transition>
-                    <div class="flex mt-2 text-xs">
+                    <!-- <div class="flex mt-2 text-xs">
                         <transition
                             name="fade"
                             mode="out-in"
@@ -44,7 +44,7 @@
                         >
                             {{ switchLabel }}
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </transition>
         </div>
@@ -63,28 +63,14 @@ import TheLogin from '../components/Auth/TheLogin.vue';
 import TheSignUp from '../components/Auth/TheSignUp.vue';
 
 
-import { computed, ref } from 'vue';
+import { useAuthStore } from '../stores/useAuthStore';
 
-
-
-const isLogin = ref(true);
-
-const handleSwitchLogin = () => {
-    isLogin.value = !isLogin.value
-}
-
-const showPwRecovery = ref(false)
-
-const handlePwRecovery = () => {
-    showPwRecovery.value = !showPwRecovery.value
-}
+const authStore = useAuthStore()
 
 const handleLoginShow = () => {
-    showPwRecovery.value = false
-    isLogin.value = true;
+    authStore.showPwRecovery = false
+    authStore.isLogin = true;
 }
-
-const switchLabel = computed(() => isLogin.value ? 'Or sign up' : 'Or log in')
 
 </script>
 

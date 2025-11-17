@@ -1,8 +1,7 @@
 <template>
-    <div class="size-[200px] rounded-full border border-primary-200/50 bg-white dark:bg-gray-900 dark:border-0 mx-auto overflow-hidden relative mb-6 flex items-center justify-center inset-shadow-sm inset-shadow-primary-300/25 dark:inset-shadow-none">
-
-        <h1 class="text-2xl font-bold flex flex-col items-center absolute size-full inset-0 justify-center">
-            <span class="noto-color-emoji-regular text-7xl mb-4">
+    <div class="h-[100px] mx-auto overflow-hidden relative flex items-center justify-center mb-8">
+        <h1 class="text-xl font-bold flex flex-col items-center justify-center">
+            <span class="noto-color-emoji-regular text-5xl mb-2">
                 🌱
             </span>
             <span class="flex">

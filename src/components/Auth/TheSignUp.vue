@@ -74,9 +74,14 @@
                     </base-input-wrapper>
                 </div>
 
-                <base-button class="mt-6">
+                <base-button
+                    class="mt-6"
+                    btn-style="notRoundedMd"
+                    btn-size="base"
+                >
                     Sign up
                 </base-button>
+                <login-signup-actions />
             </div>
         </transition>
     </form>
@@ -88,6 +93,8 @@ import BaseButton from '../Base/BaseButtons/BaseButton.vue';
 import BaseFormMessageBox from '../Base/BaseForm/BaseFormMessageBox.vue';
 import BaseInputWrapper from '../Base/BaseForm/BaseInputWrapper.vue';
 import BaseLoader from '../Base/BaseLoader.vue';
+
+import LoginSignupActions from '../LoginSignupActions.vue';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -172,7 +179,7 @@ const submitForm = async () => {
 
     if (success) {
         clearForm();
-        
+
         router.push({ name: 'TheDashboard' })
     }
 }

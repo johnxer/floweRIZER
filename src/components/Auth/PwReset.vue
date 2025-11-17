@@ -8,7 +8,7 @@
             mode="out-in"
         >
             <base-loader v-if="isPending" />
-                
+
             <base-form-message-box
                 v-else-if="isSuccess"
                 message-type="success"
@@ -41,9 +41,24 @@
                         />
                     </base-input-wrapper>
                 </div>
-                <base-button class="mt-8">
+                <div class="grid grid-cols-[40%_1fr] gap-4 mt-8">
+                <base-button
+                    class=""
+                    type="button"
+                    btn-style="notRoundedMd"
+                    btn-size="base"
+                    btn-color="neutralAlt"
+                    @click="handleBack"
+                >
+                    Cancel
+                </base-button>
+                <base-button
+                    btn-style="notRoundedMd"
+                    btn-size="base"
+                >
                     Reset password
                 </base-button>
+    </div>                
             </div>
         </transition>
     </form>
@@ -105,6 +120,10 @@ const submitForm = async () => {
         }, 3000);
 
     }
+}
+
+const handleBack = () => {
+    emit('pw-reset-done')
 }
 
 </script>
