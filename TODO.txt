@@ -12,12 +12,7 @@ TODO
 
 - image loading placeholder for BasePlantListItem, maybe add intersectionobserver on all images
 
-- remove the existing image upon editing existing plant/room from store (when changing the file in the modal)
-
-- show empty placeholder, when no room with plant exits (including the unassigned one)
-
 - add the gemini AI plant identification based on a photo
-
 
 - add fertilization option (frequency + fertilized now) and include it into log + notification 
 
@@ -29,4 +24,4 @@ TBD:
 
 ? add a box with stats - rooms, plants, etc...some graphics - DONE, but can in the future add more stats
 
-? style the profile button in the menu on mobile to stand outside
+? style the profile button in the menu on mobile to stand outside - Doesnt make sense, it's not important action. Should be the Dashboard instead.
