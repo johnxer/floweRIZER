@@ -14,7 +14,7 @@
                 v-else-if="showPlaceholder"
                 class="max-w-[300px] mx-auto text-center"
             >
-                <h2 class="text-xl mb-4 text-gray-700">
+                <h2 class="text-xl mb-4 text-gray-700 dark:text-gray-500">
                     You have no rooms yet...
                 </h2>
                 <base-button
