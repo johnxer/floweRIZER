@@ -1,4 +1,4 @@
-import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../firebase/config';
 import { normalizePath } from '../utils/normalizePath';
@@ -35,12 +35,22 @@ export const useDeleteData = () => {
 
     const movedCount = ref(0);
 
-    const movePlants = async (oldRoomId, newRoomId) => {
+    const movePlants = async (oldRoomId, newRoomId, newRoomName = 'Unassigned') => {
         isPending.value = true;
         error.value = null;
         movedCount.value = 0;
 
         try {
+            const newRoomReference = doc(db, `users/${uid}/rooms/${newRoomId}`);
+            const newRoomSnapshot = await getDoc(newRoomReference);
+
+            if (!newRoomSnapshot.exists()) {
+                await sendDataRooms({
+                    id: newRoomId,
+                    name: newRoomName
+                });
+            }
+
             const oldPlantsReference = collection(db, `users/${uid}/rooms/${oldRoomId}/plants`);
             const snapshot = await getDocs(oldPlantsReference);
 
@@ -48,21 +58,17 @@ export const useDeleteData = () => {
                 return 0;
             }
 
-            for (const plantDocument of snapshot.docs) {
-                try {
-                    const plantData = plantDocument.data();
+            const batch = writeBatch(db);
 
-                    const newPlantsReference = doc(db, `users/${uid}/rooms/${newRoomId}/plants`, plantDocument.id);
+            snapshot.forEach((docSnap) => {
+                const plantData = docSnap.data();
+                const newPlantRef = doc(db, `users/${uid}/rooms/${newRoomId}/plants/${docSnap.id}`);
+                batch.set(newPlantRef, plantData);
+                batch.delete(docSnap.ref);
+                movedCount.value++;
+            });
 
-                    await setDoc(newPlantsReference, plantData);
-
-                    await deleteDoc(plantDocument.ref);
-
-                    movedCount.value++;
-                } catch (err) {
-                    console.log(err.message);
-                }
-            }
+            await batch.commit();
 
             return movedCount.value;
         } catch (err) {
@@ -108,7 +114,7 @@ export const useDeleteData = () => {
             error.value = err.message;
 
             console.error('Move plant failed:', err);
-            
+
             return false;
         } finally {
             isPending.value = false;

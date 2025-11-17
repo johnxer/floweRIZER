@@ -12,16 +12,17 @@
             <div v-else>
                 <stats-box class="mb-10" />
                 <div class="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-10 lg:gap-8 items-start">
-                    <base-room
-                        v-for="room in sortedRooms"
-                        :key="room.id"
-                        :room="room"
-                    />
+                    <transition-group name="fade">
+                        <base-room
+                            v-for="room in sortedRooms"
+                            :key="room.id"
+                            :room="room"
+                        />
+                    </transition-group>
                 </div>
                 <transition name="fade">
-
-                    
-                    <button type="button"
+                    <button
+                        type="button"
                         class="md:hidden mt-2 flex items-center justify-end py-2 px-2 gap-1 w-full text-primary-500"
                         @click="roomsStore.openAddModal"
                     >

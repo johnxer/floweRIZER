@@ -297,9 +297,7 @@ const submitForm = async () => {
     } else {
         data.log = log;
     }
-
-
-    console.log()
+ 
 
     let success = false;
 
@@ -308,6 +306,8 @@ const submitForm = async () => {
     } else {
         success = await updateDataRooms(data, localRoomId, true)
     }
+
+    
 
     if (!!success) {
         if (oldImageUrl !== existingImageSrc.value) {

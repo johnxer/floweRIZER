@@ -126,6 +126,7 @@ import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 
 import { useGetDetails } from '../composables/useGetDetail';
 import { usePlantsStore } from '../stores/usePlantsStore';
+import { useScrollStore } from '../stores/useScrollStore';
 import { addLog } from '../utils/addLog';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseLoader from './Base/BaseLoader.vue';
@@ -143,8 +144,8 @@ const props = defineProps({
 })
 
 const authStore = useAuthStore()
-
 const plantsStore = usePlantsStore()
+const scrollStore = useScrollStore()
 
 const localPlantId = props.plantId
 const localRoomId = props.roomId
@@ -277,7 +278,7 @@ const submitForm = async () => {
         addLog(log, 'icon', originalData.icon, data.icon)
         addLog(log, 'description', originalData.desc, data.desc)
     }
-    
+
     if (form.value.file) {
         const uploadSuccess = await uploadImage('plants', authStore.user, form.value.file)
 
@@ -309,11 +310,22 @@ const submitForm = async () => {
         success = await updateDataPlants(data, localRoomId, localPlantId)
     }
 
+    console.log(success);
+
     if (!!success) {
         if (oldImageUrl !== existingImageSrc.value) {
             await deleteImageByUrl(oldImageUrl)
         }
+
         clearForm()
+
+        if (!localPlantId) {
+            scrollStore.setScrollTarget({
+                type: 'plant',
+                plantId: success
+            })
+        }
+
         plantsStore.closePlantModal()
         emit('close-modal', false)
     }

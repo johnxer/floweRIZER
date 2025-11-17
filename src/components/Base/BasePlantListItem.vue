@@ -153,6 +153,7 @@
                                             <button
                                                 type="button"
                                                 class="flex gap-2 items-center text-base text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex transition-all duration-600 p-2"
+                                                v-close-popper="true"
                                                 @click="handleDeletePlant"
                                             >
                                                 <span class="material-symbols-outlined text-xl">
@@ -285,6 +286,7 @@ const isWatered = computed(() => {
     return props.plant.wateringFrequency > (getDaysAgo.value)
 })
 
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 const handleDeletePlant = async () => {
     const collectionPath = `rooms/${props.roomId}/plants/`
@@ -294,6 +296,11 @@ const handleDeletePlant = async () => {
 
     let successDelete = true;
     let success = false;
+
+    const el = document.querySelector(`[data-plant-id="${props.plant.id}"]`)
+
+    el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
+    await delay(1000)
 
     if (documentImgSrc) successDelete = await deleteImageByUrl(props.plant.imgSrc)
 

@@ -144,6 +144,10 @@
 
     /* / fill mode for animations to stop */
 
+    .transition-discrete {
+        transition-behavior: allow-discrete;
+    }
+
     /* custom grid cols */
 
     .grid-cols-1fr-auto {

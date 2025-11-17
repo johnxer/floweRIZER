@@ -1,7 +1,7 @@
 <template>
 
     <div
-        v-if="!room.isSystem || (room.isSystem && plants?.length > 0)"
+        v-if="!isBeingDeleted && !room.isSystem || (room.isSystem && plants?.length > 0)"
         :data-room-id="room.id"
         class="group/card flex flex-col rounded-xl md:p-2 relative items-center md:items-start"
         :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50 shadow-box'"
@@ -109,7 +109,7 @@
                                         :btn-full-width="false"
                                         class="min-w-1/2"
                                         v-close-popper="true"
-                                        @click="deleteRoom"
+                                        @click="handleDeleteRoom"
                                     >
                                         Yes, Delete This Room
                                     </base-button>
@@ -254,10 +254,12 @@ import { useStorage } from '../../composables/useStorage';
 import { useDragStore } from '../../stores/useDragStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 import { useRoomsStore } from '../../stores/useRoomsStore';
+import { useScrollStore } from '../../stores/useScrollStore';
 
 
 const roomsStore = useRoomsStore()
 const plantsStore = usePlantsStore()
+const scrollStore = useScrollStore()
 
 const props = defineProps({
     room: {
@@ -306,6 +308,7 @@ const onEnd = () => {
     isDragOver.value = false
     draggedItemId.value = null
     sourceRoomId.value = null
+    console.log('%cEND FIRED', 'color:lime')
 }
 
 const onDragEnterZone = (e) => {
@@ -322,17 +325,24 @@ const onDragLeaveZone = (e) => {
 
 const onAdd = async (e) => {
     isDragOver.value = false
-
+    
     const toRoomId = e.to.dataset.roomId
     const fromRoomId = e.from.dataset.roomId
     const plantId = e.item.dataset.plantId
+    console.log('%cADD EVENT', 'color:yellow', { fromRoomId, toRoomId, plantId })
 
     if (!plantId || fromRoomId === toRoomId) return
 
     await movePlant(fromRoomId, toRoomId, plantId)
+    console.log('after movePlant, isDragging:', dragStore.isDragging)
 
     await nextTick()
 }
+
+watch(() => plants.value?.length, () => {
+  if (!dragStore.isDragging) return
+  dragStore.endDrag()
+})
 
 const editRoom = () => {
     roomsStore.openEditModal(props.room.id)
@@ -346,12 +356,17 @@ const onHide = () => (isOpen.value = false)
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 
-const deleteRoom = async () => {
+const isBeingDeleted = ref(false)
+
+const handleDeleteRoom = async () => {
+    isBeingDeleted.value = true
     const oldPhotoUrl = props.room?.imgSrc || null
     const el = document.querySelector(`[data-room-id="${props.room.id}"]`)
 
-    el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
-    await delay(1000)
+    if (el) {
+        el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
+        await delay(1000)
+    }
 
     await movePlants(props.room.id, 'unassigned')
 
@@ -360,9 +375,6 @@ const deleteRoom = async () => {
     if (oldPhotoUrl) {
         await deleteImageByUrl(oldPhotoUrl)
     }
-
-
-
 }
 
 const roomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)
@@ -379,6 +391,33 @@ onMounted(() => emit('visibility-change', isVisible.value))
 onUnmounted(() => emit('visibility-change', false))
 
 watch(isVisible, (val) => emit('visibility-change', val))
+
+watch(
+    () => scrollStore.scrollTarget,
+    async (newVal) => {
+        if (newVal.type !== 'plant' || !newVal.plantId) return
+
+        await nextTick()
+
+        const el = document.querySelector(`[data-plant-id="${newVal.plantId}"]`)
+
+        if (el) {
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    el.classList.add('animate-pop')
+                    setTimeout(() => el.classList.remove('animate-pop'), 1000)
+                    observer.disconnect()
+                }
+            }, { threshold: 0.6 })
+
+            observer.observe(el)
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+
+        scrollStore.clearScrollTarget()
+    },
+    { deep: true }
+)
 
 </script>
 
