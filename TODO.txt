@@ -8,8 +8,6 @@ TODO
 
 * 404 page style - In progress
 
-- when clicking to water plant from notifications, should scroll first to the plant then effect
-
 - image loading placeholder for BasePlantListItem, maybe add intersectionobserver on all images
 
 - add the gemini AI plant identification based on a photo

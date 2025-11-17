@@ -67,6 +67,7 @@ import { differenceInDays } from 'date-fns';
 import { computed } from 'vue';
 import { useGetDataByUserId } from '../composables/useGetData';
 import { useUpdateData } from '../composables/useUpdateData';
+import { useScrollStore } from '../stores/useScrollStore';
 
 
 const {
@@ -131,8 +132,17 @@ const isLastNotification = computed(() => {
     return notifications.value.length < 2
 })
 
+const scrollStore = useScrollStore()
+
 const handleWatering = async (plantId) => {
+    scrollStore.setScrollTarget({
+        type: 'plant',
+        plantId: plantId
+    })
+
     await waterPlant(plantId)
+
+
 }
 
 </script>
