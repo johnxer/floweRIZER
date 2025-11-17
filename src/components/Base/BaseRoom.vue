@@ -19,111 +19,112 @@
             class="text-base md:text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between md:pt-2 px-2 w-full"
             :class="!!room.isSystem ? 'pt-2' : 'pt-6'"
         >
-
             <router-link
                 :to="{ name: 'TheRoomDetail', params: { roomId: room.id } }"
                 class="hover:text-primary-600 transition-colors duration-600 flex items-start gap-2"
             >
-                {{ unassignedRoomName }}
+                {{ roomName }}
                 <span class="material-symbols-outlined text-2xl md:text-3xl lg:opacity-0 group-hover:opacity-100 group-hover:translate-x-2 text-primary-600/25 transition-all duration-600">
                     arrow_right_alt
                 </span>
             </router-link>
 
-            <div
-                v-if="!room.isSystem"
-                class="flex gap-3 text-xl md:text-2xl"
-            >
-                <button
-                    type="button"
-                    class="md:opacity-0 group-hover/card:opacity-100 text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
-                    v-tooltip="{
-                        content: 'History',
-                        container: 'body'
-                    }"
-                    @click="roomsStore.openHistoryModal(room.id)"
-                >
-                    <span class="material-symbols-outlined">
-                        history
-                    </span>
-                </button>
-                <button
-                    type="button"
-                    class="md:opacity-0 group-hover/card:opacity-100 text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
-                    v-tooltip="{
-                        content: 'Edit room',
-                        container: 'body'
-                    }"
-                    @click="editRoom"
-                >
-                    <span class="material-symbols-outlined">
-                        edit
-                    </span>
-                </button>
-
-                <v-dropdown
-                    trap-focus
-                    popper-class="md:w-[400px] px-4"
-                    @show="onShow"
-                    @hide="onHide"
+            <div class="overflow-hidden">
+                <div
+                    v-if="!room.isSystem"
+                    class="flex gap-3 text-xl md:text-2xl md:translate-x-20 group-hover/card:-translate-x-0 md:opacity-0 group-hover/card:opacity-100 transition-all duration-600"
                 >
                     <button
                         type="button"
-                        class="md:opacity-0 group-hover/card:opacity-100 text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
-                        :class="{ 'md:opacity-100 text-red-500 dark:text-red-900': isOpen }"
+                        class="text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
                         v-tooltip="{
-                            content: 'Delete room',
+                            content: 'History',
                             container: 'body'
                         }"
+                        @click="plantsStore.openHistoryModal(room.id)"
                     >
                         <span class="material-symbols-outlined">
-                            delete
+                            history
+                        </span>
+                    </button>
+                    <button
+                        type="button"
+                        class="text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
+                        v-tooltip="{
+                            content: 'Edit room',
+                            container: 'body'
+                        }"
+                        @click="editRoom"
+                    >
+                        <span class="material-symbols-outlined">
+                            edit
                         </span>
                     </button>
 
-                    <template #popper>
-                        <base-popover-content>
-                            <template #title>
-                                Delete this room?
-                            </template>
+                    <v-dropdown
+                        trap-focus
+                        popper-class="md:w-[400px] px-4"
+                        @show="onShow"
+                        @hide="onHide"
+                    >
+                        <button
+                            type="button"
+                            class="text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
+                            :class="{ 'md:opacity-100 text-red-500 dark:text-red-900': isOpen }"
+                            v-tooltip="{
+                                content: 'Delete room',
+                                container: 'body'
+                            }"
+                        >
+                            <span class="material-symbols-outlined">
+                                delete
+                            </span>
+                        </button>
 
-                            <template #desc>
-                                The plants linked to it will no longer be associated with any room.
-                            </template>
+                        <template #popper>
+                            <base-popover-content>
+                                <template #title>
+                                    Delete this room?
+                                </template>
 
-                            <template #actions>
-                                <base-button
-                                    btn-style="notRoundedMd"
-                                    btn-size="sm"
-                                    btn-color="neutral"
-                                    :btn-full-width="false"
-                                    class="min-w-1/3"
-                                    v-close-popper="true"
-                                >
-                                    Keep This Room
-                                </base-button>
-                                <base-button
-                                    btn-style="notRoundedMd"
-                                    btn-size="sm"
-                                    btn-color="danger"
-                                    :btn-full-width="false"
-                                    class="min-w-1/2"
-                                    v-close-popper="true"
-                                    @click="deleteRoom"
-                                >
-                                    Yes, Delete This Room
-                                </base-button>
-                            </template>
-                        </base-popover-content>
-                    </template>
-                </v-dropdown>
+                                <template #desc>
+                                    The plants linked to it will no longer be associated with any room.
+                                </template>
 
+                                <template #actions>
+                                    <base-button
+                                        btn-style="notRoundedMd"
+                                        btn-size="sm"
+                                        btn-color="neutral"
+                                        :btn-full-width="false"
+                                        class="min-w-1/3"
+                                        v-close-popper="true"
+                                    >
+                                        Keep This Room
+                                    </base-button>
+                                    <base-button
+                                        btn-style="notRoundedMd"
+                                        btn-size="sm"
+                                        btn-color="danger"
+                                        :btn-full-width="false"
+                                        class="min-w-1/2"
+                                        v-close-popper="true"
+                                        @click="deleteRoom"
+                                    >
+                                        Yes, Delete This Room
+                                    </base-button>
+                                </template>
+                            </base-popover-content>
+                        </template>
+                    </v-dropdown>
+
+                </div>
             </div>
         </div>
 
         <div
             class="min-h-[120px] lg:min-h-[200px] w-full rounded-xl relative flex flex-col grow"
-            :class="{'items-center justify-center' : !plants?.length && !isPending}"
+            :class="{ 'items-center justify-center': !plants?.length && !isPending }"
         >
             <!-- to be styled and used later -->
             <!-- <div
@@ -143,7 +144,7 @@
                 <div
                     v-else-if="plants"
                     class="w-full p-0"
-                    :class="{ 'h-full grow flex flex-col' : dragStore.isDragging }"
+                    :class="{ 'h-full grow flex flex-col': dragStore.isDragging }"
                 >
                     <v-draggable
                         :list="plants"
@@ -364,7 +365,7 @@ const deleteRoom = async () => {
 
 }
 
-const unassignedRoomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)
+const roomName = computed(() => props.room.name === 'Unassigned' ? 'Unassigned plants' : props.room.name)
 
 
 const emit = defineEmits(['visibility-change'])
