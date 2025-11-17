@@ -308,7 +308,6 @@ const onEnd = () => {
     isDragOver.value = false
     draggedItemId.value = null
     sourceRoomId.value = null
-    console.log('%cEND FIRED', 'color:lime')
 }
 
 const onDragEnterZone = (e) => {
@@ -329,12 +328,10 @@ const onAdd = async (e) => {
     const toRoomId = e.to.dataset.roomId
     const fromRoomId = e.from.dataset.roomId
     const plantId = e.item.dataset.plantId
-    console.log('%cADD EVENT', 'color:yellow', { fromRoomId, toRoomId, plantId })
 
     if (!plantId || fromRoomId === toRoomId) return
 
     await movePlant(fromRoomId, toRoomId, plantId)
-    console.log('after movePlant, isDragging:', dragStore.isDragging)
 
     await nextTick()
 }
