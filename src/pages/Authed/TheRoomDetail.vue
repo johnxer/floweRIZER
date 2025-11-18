@@ -11,7 +11,7 @@
                     :alt="roomName"
                 >
                 <base-page-title
-                    class="absolute"
+                    class="absolute p-4 md:p-6"
                     :is-default-title="false"
                 >
                     <span class="inline-flex align-top items-center gap-3">
@@ -29,7 +29,7 @@
                         >
                             <button
                                 type="button"
-                                class="p-2 text-2xl dark:text-white/80 cursor-pointer flex transition-all duration-600 rounded-full bg-black/40 hover:bg-black/80 text-white/80 hover:text-white/90"
+                                class="p-2 text-xl md:text-2xl dark:text-white/80 cursor-pointer flex transition-all duration-600 rounded-full bg-black/40 hover:bg-black/80 text-white/80 hover:text-white/90"
                                 :class="{ 'bg-black/80 text-white/90 dark:text-gray-500': isOpen }"
                                 v-tooltip="{
                                     content: 'Room actions',
@@ -90,7 +90,16 @@
                     </div>
                     <div class="mb-8 text-gray-500 dark:text-gray-400 text-sm">
                         <div>
-                            {{ detailsRoom.desc }}
+                            <p>
+                                {{ shortenDesc }}
+                            </p>
+                            <button
+                                v-if="showMoreButton"
+                                class="text-primary-500 underline hover:no-underline mt-1 cursor-pointer"
+                                @click="toggleShowMore"
+                            >
+                                {{ showMoreText }}
+                            </button>
                         </div>
                     </div>
                     <div class="">
@@ -277,6 +286,24 @@ const deleteRoom = async () => {
 
     router.push({ name: 'TheDashboard' })
 }
+
+const showMore = ref(false)
+
+const toggleShowMore = () => {
+    showMore.value = !showMore.value
+}
+
+const shortenDesc = computed(() => {
+    const desc = detailsRoom.value.desc || '';
+
+    if (showMore.value) return desc
+
+    return desc.length > 200 ? desc.substring(0, 200) + '...' : desc
+})
+
+const showMoreButton = computed(() => (detailsRoom.value?.desc?.length || 0) > 200)
+
+const showMoreText = computed(() => `Show ${showMore.value ? 'less' : 'more'}`)
 
 </script>
 

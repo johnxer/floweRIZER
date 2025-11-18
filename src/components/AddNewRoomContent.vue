@@ -111,6 +111,7 @@ import { useRoomsStore } from '../stores/useRoomsStore';
 
 import { useScrollStore } from '../stores/useScrollStore';
 import { addLog } from '../utils/addLog';
+import { resizeImageBitmap } from '../utils/imageResize';
 import BaseButton from './Base/BaseButtons/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
@@ -276,7 +277,9 @@ const submitForm = async () => {
     }
 
     if (form.value.file) {
-        const uploadSuccess = await uploadImage('rooms', authStore.user, form.value.file)
+        const resizedFile = await resizeImageBitmap(form.value.file)
+
+        const uploadSuccess = await uploadImage('rooms', authStore.user, resizedFile)
 
         if (uploadSuccess) {
             data.imgSrc = url.value;

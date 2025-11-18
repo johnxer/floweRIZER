@@ -128,6 +128,7 @@ import { useGetDetails } from '../composables/useGetDetail';
 import { usePlantsStore } from '../stores/usePlantsStore';
 import { useScrollStore } from '../stores/useScrollStore';
 import { addLog } from '../utils/addLog';
+import { resizeImageBitmap } from '../utils/imageResize';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
@@ -280,7 +281,9 @@ const submitForm = async () => {
     }
 
     if (form.value.file) {
-        const uploadSuccess = await uploadImage('plants', authStore.user, form.value.file)
+        const resizedFile = await resizeImageBitmap(form.value.file, 400, 400, 0.8)
+
+        const uploadSuccess = await uploadImage('plants', authStore.user, resizedFile)
 
         if (uploadSuccess) {
             data.imgSrc = url.value;

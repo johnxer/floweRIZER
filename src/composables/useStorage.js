@@ -28,13 +28,13 @@ export const useStorage = () => {
         filePath.value = `${folder}/${user.uid}/${fullPath}`
         
 
-        const fileRef = storageRef(storage, filePath.value)
+        const fileReference = storageRef(storage, filePath.value)
 
         try {
 
-            await uploadBytes(fileRef, file)
+            await uploadBytes(fileReference, file)
 
-            url.value = await getDownloadURL(fileRef)
+            url.value = await getDownloadURL(fileReference)
 
            return true;
 
