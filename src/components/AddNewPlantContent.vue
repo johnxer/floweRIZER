@@ -44,6 +44,24 @@
                             @send-file="handleFile"
                         />
                     </base-input-wrapper-authed>
+                    <!-- <transition name="fade">
+                        <div
+                            v-if="isImageShown"
+                            class="bg-gray-100 rounded-xl p-4"
+                        >
+                            <base-button
+                                btn-style="notRoundedMd"
+                                btn-size="sm"
+                                :btn-full-width="false"
+                                class="inline-flex align-top gap-1 items-center "
+                            >
+                                <span class="material-symbols-outlined text-lg">
+                                    network_intelligence
+                                </span>
+                                Find out details about plant
+                            </base-button>
+                        </div>
+                    </transition> -->
                     <base-input-wrapper-authed
                         field-label="Description"
                         field-id="plant-description"
@@ -194,9 +212,13 @@ let isInitialImageUrlSet = false;
 let areOriginalFieldsLoaded = false
 let originalData = {}
 
+const isImageShown = ref(false)
+
 const handleFile = (file) => {
     existingImageSrc.value = null
     form.value.file = file;
+
+    isImageShown.value = true
 }
 
 watch(detailsPlant, (newVal) => {

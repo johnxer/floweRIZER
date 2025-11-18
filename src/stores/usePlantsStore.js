@@ -2,18 +2,21 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const usePlantsStore = defineStore('usePlantsStore', () => {
-    
     const setPlantVisible = (plantId, visible) => {
         isPlantVisible.value[plantId] = visible;
     };
-    
+
     const isPlantVisible = ref({});
-    
+
     const wateredNow = ref({});
-    
-    const markAsWatered = (plantId) => {
+
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const markAsWatered = async (plantId) => {
         if (isPlantVisible.value[plantId]) {
             wateredNow.value[plantId] = true;
+            await delay(1000);
+            wateredNow.value[plantId] = false;
         }
     };
 
