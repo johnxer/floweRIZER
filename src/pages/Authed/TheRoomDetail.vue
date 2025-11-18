@@ -8,6 +8,7 @@
                 <img
                     :src="detailsRoom.imgSrc || '/src/img/room_default.jpg'"
                     class="w-full object-cover dark:brightness-50"
+                    :alt="roomName"
                 >
                 <base-page-title
                     class="absolute"

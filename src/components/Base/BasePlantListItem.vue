@@ -31,6 +31,7 @@
                     v-if="plant.imgSrc"
                     :src="plant.imgSrc"
                     class="absolute object-cover h-full w-full"
+                    :alt="plant.name"
                 />
                 <div
                     v-else
@@ -40,6 +41,7 @@
                         src="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg"
                         alt="🌱"
                         class="absolute object-cover inset-2"
+                        :alt="plant.name"
                     />
                 </div>
             </div>

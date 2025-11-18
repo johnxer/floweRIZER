@@ -23,6 +23,7 @@
                 :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
                 loading="lazy"
                 @load="onLoad"
+                alt="Preview"
             />
             <div
                 v-if="isImageLoaded"

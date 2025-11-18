@@ -9,7 +9,7 @@
                 Your page went root-bound!
             </h1>
             <img
-                alt="404 page"
+                alt="404 Not Found"
                 src="/src/img/404.svg"
                 class="w-3/5 sm:w-2/5 mb-4"
             >

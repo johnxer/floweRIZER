@@ -25,6 +25,7 @@
                             <img
                                 :src="userAvatarURL"
                                 class="object-cover w-full h-full absolute inset-0"
+                                :alt="form.userName"
                             />
                             <input
                                 type="file"
