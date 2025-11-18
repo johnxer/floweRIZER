@@ -15,14 +15,16 @@
             <div v-else>
                 <ul class="flex flex-col gap-4">
                     <li class="grid ">
-                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[50px]">
+                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
                             {{ formattedDate }}
 
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[40px_1fr] gap-[10px] items-start">
-                            <span class="noto-color-emoji-regular text-base bg-gray-100 dark:bg-gray-800 p-2 rounded-full flex items-center justify-center shrink-0">
-                                🪴
-                            </span> 
+                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 p-2 rounded-full flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined">
+                                    add
+                                </span>
+                            </span>
                             <span class="self-center text-sm md:text-base">
                                 Plant added
                             </span>
@@ -33,21 +35,22 @@
                         :key="action.id"
                         class="grid "
                     >
-                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[50px]">
+                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
                             {{ action.formattedDate }}
 
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[40px_1fr] gap-[10px] items-start">
-                            <span class="noto-color-emoji-regular text-base bg-gray-100 dark:bg-gray-800 p-2 rounded-full flex items-center justify-center shrink-0">
-                                
-                                {{ action.emojiIcon }}
-                            </span> 
+                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined">
+                                    {{ action.icon }}
+                                </span>
+                            </span>
                             <span class="self-center text-sm md:text-base">
                                 Plant {{ action.action }}
                                 <template v-if="action.action === 'moved'">
                                     from <strong>{{ action.originName }}</strong> to <strong>{{ action.targetName }}</strong>
                                 </template>
-                                <template v-else>
+                                <template v-else-if="action.action !== 'watered'">
                                     changed
                                     <template v-if="action.action === 'name'">
                                         from <strong>{{ action.originalVal }}</strong> to <strong>{{ action.newVal }}</strong>
@@ -97,24 +100,24 @@ const formattedDate = computed(() => {
     return createdAt?.toDate ? format(createdAt.toDate(), 'MMM d, yyyy') : '—'
 })
 
-const actionEmojiMap = {
+const actionIconMap = {
     watered: {
-        emoji: '💧'
+        icon: 'humidity_high'
     },
     moved: {
-        emoji: '🚀'
+        icon: 'arrow_forward'
     },
     name: {
-        emoji: '✏️'
+        icon: 'edit'
     },
     icon: {
-        emoji: '✏️'
+        icon: 'edit'
     },
     description: {
-        emoji: '✏️'
+        icon: 'edit'
     },
     image: {
-        emoji: '✏️'
+        icon: 'edit'
     }
 }
 
@@ -156,7 +159,7 @@ watchEffect(async () => {
 
         return {
             ...a,
-            emojiIcon: actionEmojiMap[a.action]?.emoji || '',
+            icon: actionIconMap[a.action]?.icon || '',
             formattedDate: format(date, 'MMM d, yyyy'),
             originName: roomMap.get(a.origin) ?? null,
             targetName: roomMap.get(a.target) ?? '<room deleted>',
