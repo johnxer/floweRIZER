@@ -28,5 +28,5 @@ export const resizeImageBitmap = async (file, maxWidth = 1200, maxHeight = 1200,
 
     const blob = canvas instanceof OffscreenCanvas ? await canvas.convertToBlob({ type: outputType, quality }) : await new Promise((resolve) => canvas.toBlob(resolve, outputType, quality));
 
-    return new File([blob], `${file.name.replace(/\.[^/.]+$/, '')}_${width}x${height}.jpg`, { type: outputType });
+    return new File([blob], `${file.name.replace(/\.[^/.]+$/, '')}_${width}x${height}.webp`, { type: outputType });
 };
