@@ -31,7 +31,7 @@
                     v-if="!isImageLoaded"
                     class="bg-gray-200 dark:bg-gray-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
                 >
-                    <base-loader 
+                    <base-loader
                         class=""
                         loader-size="sm"
                         position-type="absolute"
@@ -41,7 +41,8 @@
 
                 <img
                     v-if="plant.imgSrc"
-                    :src="plant.imgSrc"
+                    ref="imgRef"
+                    :data-src="plant.imgSrc"
                     class="absolute object-cover h-full w-full"
                     :alt="plant.name"
                     :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
@@ -53,8 +54,8 @@
                     class="absolute p-2 h-full w-full"
                 >
                     <img
-                        src="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg"
-                        alt="🌱"
+                        ref="imgRef"
+                        data-src="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg"
                         :alt="plant.name"
                         class="absolute object-cover inset-2"
                         :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
@@ -213,7 +214,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useDeleteData } from '../../composables/useDeleteData';
 
 import { differenceInDays } from "date-fns";
@@ -225,6 +226,7 @@ import { useUpdateData } from '../../composables/useUpdateData';
 import { useMobileStore } from '../../stores/useMobileStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 
+import { useObserveVisibility } from '../../composables/useObserveVisibility';
 import BaseLoader from './BaseLoader.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
@@ -273,6 +275,10 @@ const {
     isPending: isPendingUpload,
     deleteImageByUrl
 } = useStorage()
+
+const {
+    observeVisibility
+} = useObserveVisibility()
 
 const isWateredNow = computed(() => plantsStore.isWateredNow(props.plant.id))
 
@@ -341,6 +347,46 @@ const onLoad = () => {
     isImageLoaded.value = true
 }
 
+const imgRef = ref(null)
+
+
+// const lazyLoadImage = (el) => {
+//     const observer = new IntersectionObserver((entries, obs) => {
+//         const entry = entries[0];
+
+//         if (!entry.isIntersecting) return
+
+//         if (el.dataset.src) {
+//             el.src = el.dataset.src
+//         }
+
+//         obs.disconnect();
+//     }, {
+//         threshold: 0.2,
+//         rootMargin: '150px'
+//     })
+
+//     observer.observe(el);
+// }
+
+
+// onMounted(() => {
+//     if (imgRef.value) lazyLoadImage(imgRef.value)
+// })
+
+onMounted(async () => {
+    const el = imgRef.value
+    if (!el) return
+
+    if (el) {
+        await observeVisibility(el, { threshold: 0.2, rootMargin: '150px' })
+        
+        if (el.dataset.src) {
+            el.src = el.dataset.src
+            el.removeAttribute('data-src')
+        }
+    }
+})
 
 
 

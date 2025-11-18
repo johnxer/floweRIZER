@@ -1,17 +1,19 @@
 export const useObserveVisibility = () => {
-    const observeVisibility = (el, threshold = 0.6) => {
+    const observeVisibility = (el, { threshold = 0.6, rootMargin = '0px' }) => {
         if (!el) return Promise.resolve(null)
-            
+
         return new Promise((resolve) => {
-            const observer = new IntersectionObserver(
-                (entries, obs) => {
+            const observer = new IntersectionObserver((entries, obs) => {
                     const entry = entries[0];
                     if (entry.isIntersecting) {
                         obs.disconnect();
                         resolve(entry);
                     }
                 },
-                { threshold }
+                { 
+                    threshold,
+                    rootMargin 
+                }
             );
 
             observer.observe(el);
