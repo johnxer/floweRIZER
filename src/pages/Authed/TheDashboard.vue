@@ -96,6 +96,7 @@ import TheModals from '../../components/TheModals.vue';
 
 import { ref } from 'vue';
 import { useGetAllPlants, useGetData } from '../../composables/useGetData';
+import { useObserveVisibility } from '../../composables/useObserveVisibility';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
 
@@ -104,6 +105,10 @@ const {
     isPending,
     items: rooms
 } = useGetData('rooms')
+
+const {
+    observeVisibility
+} = useObserveVisibility()
 
 const roomsStore = useRoomsStore()
 
@@ -145,17 +150,10 @@ watch(
 
         el.scrollIntoView({ behavior: 'smooth', block: 'center' })
 
-        const observer = new IntersectionObserver((entries, obs) => {
-            const entry = entries[0]
+        await observeVisibility(el)
 
-            if (entry.isIntersecting) {
-                el.classList.add('animate-pop')
-                setTimeout(() => el.classList.remove('animate-pop'), 1000)
-                observer.disconnect()
-            }
-        }, { threshold: 0.6 })
-
-        observer.observe(el)
+        el.classList.add('animate-pop')
+        setTimeout(() => el.classList.remove('animate-pop'), 1000)
 
         scrollStore.clearScrollTarget()
     },

@@ -250,6 +250,7 @@ import { useDeleteData } from '../../composables/useDeleteData';
 import { useGetData } from '../../composables/useGetData';
 
 import vDraggable from 'vuedraggable';
+import { useObserveVisibility } from '../../composables/useObserveVisibility';
 import { useStorage } from '../../composables/useStorage';
 import { useDragStore } from '../../stores/useDragStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
@@ -287,6 +288,10 @@ const {
     isPending: isPendingDeleteImage,
     deleteImageByUrl
 } = useStorage()
+
+const {
+    observeVisibility   
+} = useObserveVisibility()
 
 const dragStore = useDragStore()
 
@@ -409,19 +414,12 @@ watch(
 
         el.scrollIntoView({ behavior: 'smooth', block: 'center' })
 
-        const observer = new IntersectionObserver((entries, obs) => {
-            const entry = entries[0]
+        await observeVisibility(el)
 
-            if (entry.isIntersecting) {
-                plantsStore.setPlantVisible(newVal.plantId, true)
-
-                obs.disconnect()
-
-                scrollStore.clearScrollTarget()
-            }
-        }, { threshold: 0.6 })
-
-        observer.observe(el)
+        plantsStore.setPlantVisible(newVal.plantId, true)
+        
+        scrollStore.clearScrollTarget()
+        
     },
     { deep: true }
 )
