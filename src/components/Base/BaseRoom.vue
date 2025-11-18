@@ -408,8 +408,8 @@ watch(
         if (el) {
             const observer = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting) {
-                    el.classList.add('animate-pop')
-                    setTimeout(() => el.classList.remove('animate-pop'), 1000)
+                    // el.classList.add('animate-pop')
+                    // setTimeout(() => el.classList.remove('animate-pop'), 1000)
                     observer.disconnect()
                 }
             }, { threshold: 0.6 })

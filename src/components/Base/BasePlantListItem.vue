@@ -27,11 +27,26 @@
                 class="w-full h-0 pb-[100%] overflow-hidden rounded-full relative shrink-0 shadow-popover"
                 :class="isWatered ? '' : 'grayscale'"
             >
+                <div
+                    v-if="!isImageLoaded"
+                    class="bg-gray-200 dark:bg-gray-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
+                >
+                    <base-loader 
+                        class=""
+                        loader-size="sm"
+                        position-type="absolute"
+                    />
+
+                </div>
+
                 <img
                     v-if="plant.imgSrc"
                     :src="plant.imgSrc"
                     class="absolute object-cover h-full w-full"
                     :alt="plant.name"
+                    :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
+                    loading="lazy"
+                    @load="onLoad"
                 />
                 <div
                     v-else
@@ -40,8 +55,11 @@
                     <img
                         src="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg"
                         alt="🌱"
-                        class="absolute object-cover inset-2"
                         :alt="plant.name"
+                        class="absolute object-cover inset-2"
+                        :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
+                        loading="lazy"
+                        @load="onLoad"
                     />
                 </div>
             </div>
@@ -207,6 +225,7 @@ import { useUpdateData } from '../../composables/useUpdateData';
 import { useMobileStore } from '../../stores/useMobileStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 
+import BaseLoader from './BaseLoader.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
 
@@ -316,14 +335,10 @@ const onHide = () => (isOpen.value = false)
 
 const unassignedRoomPlant = computed(() => props.roomId === 'unassigned')
 
-const isModalOpen = ref(false)
+const isImageLoaded = ref(false)
 
-const toggleModal = (state) => {
-    if (typeof state === 'boolean') {
-        isModalOpen.value = state
-    } else {
-        isModalOpen.value = !isModalOpen.value
-    }
+const onLoad = () => {
+    isImageLoaded.value = true
 }
 
 </script>
