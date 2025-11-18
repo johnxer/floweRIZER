@@ -1,4 +1,4 @@
-export const resizeImageBitmap = async (file, maxWidth = 1200, maxHeight = 1200, quality = 0.8, outputType = 'image/jpeg') => {
+export const resizeImageBitmap = async (file, maxWidth = 1200, maxHeight = 1200, quality = 0.8, outputType = 'image/webp') => {
     const bitmap = await createImageBitmap(file);
 
     let { width, height } = bitmap;

@@ -10,8 +10,6 @@ TODO
 
 * 404 page style - In progress
 
-- image loading placeholder for BasePlantListItem, maybe add intersectionobserver on all images
-
 - add the gemini AI plant identification based on a photo
 
 - add fertilization option (frequency + fertilized now) and include it into log + notification 
