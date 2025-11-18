@@ -186,6 +186,7 @@ import { useAuthStore } from '../../stores/useAuthStore';
 import { updateProfile } from 'firebase/auth';
 import { useAuth } from '../../composables/useAuth';
 import { useUpdateData } from '../../composables/useUpdateData';
+import { resizeImageBitmap } from '../../utils/imageResize';
 
 const {
     user,
@@ -242,7 +243,9 @@ const handleFile = async (e) => {
 
     const oldPhotoUrl = user.value?.photoURL || null
 
-    const success = await uploadImage('avatars', user.value, selectedFile)
+    const resizedFile = await resizeImageBitmap(selectedFile, 200, 200)
+
+    const success = await uploadImage('avatars', user.value, resizedFile)
 
     if (!success && auth.currentUser) return
 

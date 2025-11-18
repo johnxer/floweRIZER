@@ -281,7 +281,7 @@ const submitForm = async () => {
     }
 
     if (form.value.file) {
-        const resizedFile = await resizeImageBitmap(form.value.file, 400, 400, 0.8)
+        const resizedFile = await resizeImageBitmap(form.value.file, 400, 400)
 
         const uploadSuccess = await uploadImage('plants', authStore.user, resizedFile)
 
