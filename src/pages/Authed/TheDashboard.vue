@@ -141,18 +141,21 @@ watch(
 
         const el = document.querySelector(`[data-room-id="${newVal.roomId}"]`)
 
-        if (el) {
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    el.classList.add('animate-pop')
-                    setTimeout(() => el.classList.remove('animate-pop'), 1000)
-                    observer.disconnect()
-                }
-            }, { threshold: 0.6 })
+        if (!el) return
 
-            observer.observe(el)
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            const entry = entries[0]
+
+            if (entry.isIntersecting) {
+                el.classList.add('animate-pop')
+                setTimeout(() => el.classList.remove('animate-pop'), 1000)
+                observer.disconnect()
+            }
+        }, { threshold: 0.6 })
+
+        observer.observe(el)
 
         scrollStore.clearScrollTarget()
     },

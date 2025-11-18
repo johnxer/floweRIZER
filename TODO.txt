@@ -6,6 +6,8 @@ TODO
 
 - show used library page
 
+- make the room icons selector nicer
+
 * 404 page style - In progress
 
 - image loading placeholder for BasePlantListItem, maybe add intersectionobserver on all images

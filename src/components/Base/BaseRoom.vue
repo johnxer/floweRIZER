@@ -324,7 +324,7 @@ const onDragLeaveZone = (e) => {
 
 const onAdd = async (e) => {
     isDragOver.value = false
-    
+
     const toRoomId = e.to.dataset.roomId
     const fromRoomId = e.from.dataset.roomId
     const plantId = e.item.dataset.plantId
@@ -337,8 +337,8 @@ const onAdd = async (e) => {
 }
 
 watch(() => plants.value?.length, () => {
-  if (!dragStore.isDragging) return
-  dragStore.endDrag()
+    if (!dragStore.isDragging) return
+    dragStore.endDrag()
 })
 
 const editRoom = () => {
@@ -358,7 +358,7 @@ const isBeingDeleted = ref(false)
 const handleDeleteRoom = async () => {
     const oldPhotoUrl = props.room?.imgSrc || null
     const el = document.querySelector(`[data-room-id="${props.room.id}"]`)
-    
+
     roomsStore.hideRoomTemp(props.room.id)
 
     if (el) {
@@ -405,20 +405,23 @@ watch(
 
         const el = document.querySelector(`[data-plant-id="${newVal.plantId}"]`)
 
-        if (el) {
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    // el.classList.add('animate-pop')
-                    // setTimeout(() => el.classList.remove('animate-pop'), 1000)
-                    observer.disconnect()
-                }
-            }, { threshold: 0.6 })
+        if (!el) return
 
-            observer.observe(el)
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
 
-        scrollStore.clearScrollTarget()
+        const observer = new IntersectionObserver((entries, obs) => {
+            const entry = entries[0]
+
+            if (entry.isIntersecting) {
+                plantsStore.setPlantVisible(newVal.plantId, true)
+
+                obs.disconnect()
+
+                scrollStore.clearScrollTarget()
+            }
+        }, { threshold: 0.6 })
+
+        observer.observe(el)
     },
     { deep: true }
 )

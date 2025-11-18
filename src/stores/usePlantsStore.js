@@ -2,10 +2,19 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const usePlantsStore = defineStore('usePlantsStore', () => {
+    
+    const setPlantVisible = (plantId, visible) => {
+        isPlantVisible.value[plantId] = visible;
+    };
+    
+    const isPlantVisible = ref({});
+    
     const wateredNow = ref({});
-
+    
     const markAsWatered = (plantId) => {
-        wateredNow.value[plantId] = true;
+        if (isPlantVisible.value[plantId]) {
+            wateredNow.value[plantId] = true;
+        }
     };
 
     const isWateredNow = (plantId) => wateredNow.value[plantId] || false;
@@ -45,17 +54,19 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
 
     const closePlantModal = () => {
         toggleModal(false, isModalOpenPlant);
-        selectedRoomId.value = null
+        selectedRoomId.value = null;
         selectedPlantId.value = null;
     };
 
     const closeHistoryModal = () => {
         toggleModal(false, isModalOpenHistory);
-        selectedRoomId.value = null
+        selectedRoomId.value = null;
         selectedPlantId.value = null;
     };
 
     return {
+        isPlantVisible,
+        setPlantVisible,
         wateredNow,
         markAsWatered,
         isWateredNow,
@@ -67,6 +78,6 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
         closePlantModal,
         isModalOpenHistory,
         openHistoryModal,
-        closeHistoryModal
+        closeHistoryModal,
     };
 });
