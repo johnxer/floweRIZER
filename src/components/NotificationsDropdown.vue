@@ -141,8 +141,6 @@ const handleWatering = async (plantId) => {
     })
 
     await waterPlant(plantId)
-
-
 }
 
 </script>

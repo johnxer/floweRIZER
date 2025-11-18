@@ -305,7 +305,9 @@ const lastWateredDaysAgo = computed(() => {
 })
 
 const handleWatering = async () => {
-    await waterPlant(props.plant.id, props.roomId)
+    plantsStore.setPlantVisible(props.plant.id, true)
+
+    await waterPlant(props.plant.id)
 }
 
 const isWatered = computed(() => {

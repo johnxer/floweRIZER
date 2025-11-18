@@ -1,5 +1,5 @@
 export const useObserveVisibility = () => {
-    const observeVisibility = (el, { threshold = 0.6, rootMargin = '0px' }) => {
+    const observeVisibility = (el, { threshold = 0.6, rootMargin = '0px' } = {} ) => {
         if (!el) return Promise.resolve(null)
 
         return new Promise((resolve) => {
