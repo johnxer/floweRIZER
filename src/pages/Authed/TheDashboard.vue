@@ -95,7 +95,7 @@ import StatsBox from '../../components/Stats/StatsBox.vue';
 import TheModals from '../../components/TheModals.vue';
 
 import { ref } from 'vue';
-import { useGetAllPlants, useGetData } from '../../composables/useGetData';
+import { useGetAllPlants, useGetData } from '../../composables';
 import { useObserveVisibility } from '../../composables/useObserveVisibility';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
@@ -103,7 +103,7 @@ import { useScrollStore } from '../../stores/useScrollStore';
 const {
     error,
     isPending,
-    items: rooms
+    data: rooms
 } = useGetData('rooms')
 
 const {
@@ -161,7 +161,7 @@ watch(
 )
 
 const {
-    items: plants,
+    data: plants,
     error: errorPlants,
     isPending: isPendingPlants
 } = useGetAllPlants()

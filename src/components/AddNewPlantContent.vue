@@ -133,23 +133,21 @@
 <script setup>
 
 import { computed, ref, watch, watchEffect } from 'vue';
-import { useSendData } from '../composables/useSendData';
-import { useStorage } from '../composables/useStorage';
-import { useAuthStore } from '../stores/useAuthStore';
 
 import BaseButton from './Base/BaseButtons/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
+import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';
 import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
+import BaseLoader from './Base/BaseLoader.vue';
+import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
-import { useGetDetails } from '../composables/useGetDetail';
+import { useGetDetails, useSendData, useStorage } from '../composables';
+import { useAuthStore } from '../stores/useAuthStore';
 import { usePlantsStore } from '../stores/usePlantsStore';
 import { useScrollStore } from '../stores/useScrollStore';
 import { addLog } from '../utils/addLog';
 import { resizeImageBitmap } from '../utils/imageResize';
-import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
-import BaseLoader from './Base/BaseLoader.vue';
-import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
 const props = defineProps({
     roomId: {
@@ -189,7 +187,7 @@ const {
 const {
     error: errorPlant,
     isPending: isPendingPlant,
-    details: detailsPlant,
+    data: detailsPlant,
 } = useGetDetails(`rooms/${localRoomId}/plants/${localPlantId}`)
 
 

@@ -179,13 +179,11 @@ import ConfirmDeleteAccountContent from '../../components/ConfirmDeleteAccountCo
 
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-import { useStorage } from '../../composables/useStorage';
 import { auth } from '../../firebase/config';
 import { useAuthStore } from '../../stores/useAuthStore';
 
 import { updateProfile } from 'firebase/auth';
-import { useAuth } from '../../composables/useAuth';
-import { useUpdateData } from '../../composables/useUpdateData';
+import { useAuth, useStorage, useUpdateData } from '../../composables';
 import { resizeImageBitmap } from '../../utils/imageResize';
 
 const {

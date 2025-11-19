@@ -65,15 +65,14 @@
 <script setup>
 import { differenceInDays } from 'date-fns';
 import { computed } from 'vue';
-import { useGetDataByUserId } from '../composables/useGetData';
-import { useUpdateData } from '../composables/useUpdateData';
+import { useGetDataByUserId, useUpdateData } from '../composables';
 import { useScrollStore } from '../stores/useScrollStore';
 
 
 const {
     error,
     isPending,
-    items: plants
+    data: plants
 } = useGetDataByUserId('plants')
 
 const {

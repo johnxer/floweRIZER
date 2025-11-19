@@ -1,10 +1,10 @@
 import { arrayUnion, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { ref } from 'vue';
-import { db } from '../firebase/config';
-import { usePlantsStore } from '../stores/usePlantsStore';
-import { normalizePath } from '../utils/normalizePath';
-import { useAuth } from './useAuth';
-import { useFindRoomIdByPlantId } from './useFindRoomIdByPlantId';
+import { db } from '../../firebase/config';
+import { usePlantsStore } from '../../stores/usePlantsStore';
+import { normalizePath } from '../../utils/normalizePath';
+import { useAuth } from '../auth';
+import { useFindRoomIdByPlantId } from '../useFindRoomIdByPlantId';
 
 export const useUpdateData = () => {
     const { getUid } = useAuth();

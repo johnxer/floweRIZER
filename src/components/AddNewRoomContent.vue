@@ -103,15 +103,7 @@
 <script setup>
 
 import { computed, ref, watch, watchEffect } from 'vue';
-import { useGetDetails } from '../composables/useGetDetail';
-import { useSendData } from '../composables/useSendData';
-import { useStorage } from '../composables/useStorage';
-import { useAuthStore } from '../stores/useAuthStore';
-import { useRoomsStore } from '../stores/useRoomsStore';
 
-import { useScrollStore } from '../stores/useScrollStore';
-import { addLog } from '../utils/addLog';
-import { resizeImageBitmap } from '../utils/imageResize';
 import BaseButton from './Base/BaseButtons/BaseButton.vue';
 import BaseInput from './Base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
@@ -120,6 +112,12 @@ import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
+import { useGetDetails, useSendData, useStorage } from '../composables';
+import { useAuthStore } from '../stores/useAuthStore';
+import { useRoomsStore } from '../stores/useRoomsStore';
+import { useScrollStore } from '../stores/useScrollStore';
+import { addLog } from '../utils/addLog';
+import { resizeImageBitmap } from '../utils/imageResize';
 
 const props = defineProps({
     roomId: {
@@ -157,7 +155,7 @@ if (localRoomId) {
     ({
         error: errorRoom,
         isPending: isPendingRoom,
-        details: detailsRoom,
+        data: detailsRoom,
     } = useGetDetails(`rooms/${localRoomId}`))
 } else {
     errorRoom = ref(null)

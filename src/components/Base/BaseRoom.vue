@@ -246,12 +246,11 @@ import BasePlantListItem from './BasePlantListItem.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
 
-import { useDeleteData } from '../../composables/useDeleteData';
-import { useGetData } from '../../composables/useGetData';
+import { useDeleteData, useGetData } from '../../composables';
 
 import vDraggable from 'vuedraggable';
+import { useStorage } from '../../composables';
 import { useObserveVisibility } from '../../composables/useObserveVisibility';
-import { useStorage } from '../../composables/useStorage';
 import { useDragStore } from '../../stores/useDragStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 import { useRoomsStore } from '../../stores/useRoomsStore';
@@ -272,7 +271,7 @@ const props = defineProps({
 const {
     error,
     isPending,
-    items: plants
+    data: plants
 } = useGetData(`rooms/${props.room.id}/plants`)
 
 const {

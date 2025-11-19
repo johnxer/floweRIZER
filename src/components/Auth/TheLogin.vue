@@ -74,7 +74,7 @@ import LoginSignupActions from '../LoginSignupActions.vue';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthActions } from '../../composables/useAuth';
+import { useAuthActions } from '../../composables';
 
 const router = useRouter()
 

@@ -184,13 +184,9 @@ import TheModals from "../../components/TheModals.vue";
 
 import AddNewPlantContent from "../../components/AddNewPlantContent.vue";
 
-import { useGetData } from '../../composables/useGetData';
-
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useDeleteData } from "../../composables/useDeleteData";
-import { useGetDetails } from '../../composables/useGetDetail';
-import { useStorage } from "../../composables/useStorage";
+import { useDeleteData, useGetData, useGetDetails, useStorage } from '../../composables';
 import { useRoomsStore } from "../../stores/useRoomsStore";
 
 const props = defineProps({
@@ -205,13 +201,13 @@ const roomsStore = useRoomsStore()
 const {
     error: errorRoom,
     isPending: isPendingRoom,
-    details: detailsRoom,
+    data: detailsRoom,
 } = useGetDetails(`rooms/${props.roomId}`)
 
 const {
     error: errorPlants,
     isPending: isPendingPlants,
-    items: plants,
+    data: plants,
 } = useGetData(`rooms/${props.roomId}/plants`)
 
 

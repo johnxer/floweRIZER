@@ -65,10 +65,10 @@
 <script setup>
 import { format } from "date-fns";
 
-import { useGetDetails } from '../composables/useGetDetail';
+import { useGetDetails } from '../composables';
 
 import { computed, ref, watchEffect } from "vue";
-import { useAuth } from "../composables/useAuth";
+import { useAuth } from "../composables";
 import { useRoomsStore } from "../stores/useRoomsStore";
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
@@ -83,7 +83,7 @@ const roomsStore = useRoomsStore()
 const {
     error: errorRoom,
     isPending: isPendingRoom,
-    details: detailsRoom,
+    data: detailsRoom,
 } = useGetDetails(`rooms/${roomsStore.selectedRoomId}`)
 
 watchEffect(() => {

@@ -215,13 +215,12 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useDeleteData } from '../../composables/useDeleteData';
+import { useDeleteData, useUpdateData } from '../../composables';
 
 import { differenceInDays } from "date-fns";
 
-import { useStorage } from '../../composables/useStorage';
+import { useStorage } from '../../composables';
 
-import { useUpdateData } from '../../composables/useUpdateData';
 
 import { useMobileStore } from '../../stores/useMobileStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';

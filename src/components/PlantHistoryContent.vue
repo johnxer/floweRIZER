@@ -72,12 +72,12 @@
 <script setup>
 import { format } from "date-fns";
 
-import { useGetDetails } from '../composables/useGetDetail';
+import { useGetDetails } from '../composables';
 import { usePlantsStore } from '../stores/usePlantsStore';
 
 import { doc, getDoc } from "firebase/firestore";
 import { computed, ref, watchEffect } from "vue";
-import { useAuth } from "../composables/useAuth";
+import { useAuth } from "../composables";
 import { db } from "../firebase/config";
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
@@ -92,7 +92,7 @@ const plantsStore = usePlantsStore()
 const {
     error: errorPlant,
     isPending: isPendingPlant,
-    details: detailsPlant,
+    data: detailsPlant,
 } = useGetDetails(`rooms/${plantsStore.selectedRoomId}/plants/${plantsStore.selectedPlantId}`)
 
 const formattedDate = computed(() => {

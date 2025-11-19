@@ -125,10 +125,10 @@ import { formatDistanceToNow } from 'date-fns';
 
 import BaseLoader from '../Base/BaseLoader.vue';
 
+import { useSendData } from '../../composables';
 import { useActiveChat } from '../../composables/useActiveChat';
 import { useFlowerChat } from '../../composables/useFlowerChat';
 import { useGetChatData } from '../../composables/useGetChatData';
-import { useSendData } from '../../composables/useSendData';
 import { useAuthStore } from '../../stores/useAuthStore';
 
 

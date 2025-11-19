@@ -1,6 +1,6 @@
 import { deleteObject, getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage"
 import { ref } from "vue"
-import { storage } from "../firebase/config"
+import { storage } from "../../firebase/config"
 
 
 

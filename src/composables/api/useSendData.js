@@ -1,7 +1,7 @@
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { ref } from 'vue';
-import { db } from '../firebase/config';
-import { useAuth } from './useAuth';
+import { db } from '../../firebase/config';
+import { useAuth } from '../auth';
 
 export const useSendData = () => {
     const { getUid } = useAuth();

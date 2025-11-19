@@ -52,7 +52,7 @@
 
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuth } from '../composables/useAuth'
+import { useAuth } from '../composables'
 import MenuContent from './MenuContent.vue'
 
 const isOpen = ref(false)
