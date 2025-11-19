@@ -250,11 +250,11 @@ import { useDeleteData, useGetData } from '../../composables';
 
 import vDraggable from 'vuedraggable';
 import { useStorage } from '../../composables';
-import { useObserveVisibility } from '../../composables/useObserveVisibility';
 import { useDragStore } from '../../stores/useDragStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
+import { observeVisibility } from '../../utils/observeVisibility';
 
 
 const roomsStore = useRoomsStore()
@@ -287,10 +287,6 @@ const {
     isPending: isPendingDeleteImage,
     deleteImageByUrl
 } = useStorage()
-
-const {
-    observeVisibility   
-} = useObserveVisibility()
 
 const dragStore = useDragStore()
 

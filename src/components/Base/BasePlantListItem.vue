@@ -225,7 +225,7 @@ import { useStorage } from '../../composables';
 import { useMobileStore } from '../../stores/useMobileStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 
-import { useObserveVisibility } from '../../composables/useObserveVisibility';
+import { observeVisibility } from '../../utils/observeVisibility';
 import BaseLoader from './BaseLoader.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
@@ -274,10 +274,6 @@ const {
     isPending: isPendingUpload,
     deleteImageByUrl
 } = useStorage()
-
-const {
-    observeVisibility
-} = useObserveVisibility()
 
 const isWateredNow = computed(() => plantsStore.isWateredNow(props.plant.id))
 

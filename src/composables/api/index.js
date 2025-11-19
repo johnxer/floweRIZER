@@ -1,5 +1,6 @@
 
 export { useDeleteData } from './useDeleteData';
+export { useFindRoomIdByPlantId } from './useFindRoomIdByPlantId';
 export { useGetAllPlants } from './useGetAllPlants';
 export { useGetData } from './useGetData';
 export { useGetDataByUserId } from './useGetDataByUserId';

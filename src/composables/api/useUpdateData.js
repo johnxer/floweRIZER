@@ -1,13 +1,13 @@
 import { arrayUnion, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { ref } from 'vue';
 import { db } from '../../firebase/config';
+import { useAuthStore } from '../../stores/useAuthStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 import { normalizePath } from '../../utils/normalizePath';
-import { useAuth } from '../auth';
-import { useFindRoomIdByPlantId } from '../useFindRoomIdByPlantId';
+import { useFindRoomIdByPlantId } from './useFindRoomIdByPlantId';
 
 export const useUpdateData = () => {
-    const { getUid } = useAuth();
+    const authStore = useAuthStore()
     const { findRoomIdByPlantId } = useFindRoomIdByPlantId();
 
     const plantsStore = usePlantsStore();
@@ -16,7 +16,7 @@ export const useUpdateData = () => {
     const isPending = ref(false);
 
     const updateData = async (data, collectionPath) => {
-        const uid = getUid();
+        const uid = authStore.user?.uid;
 
         if (!uid) return false;
 
@@ -40,7 +40,7 @@ export const useUpdateData = () => {
     };
 
     const waterPlant = async (plantId, roomId = null) => {
-        const uid = getUid();
+        const uid = authStore.user?.uid;
 
         if (!uid) return false;
 

@@ -125,10 +125,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 import BaseLoader from '../Base/BaseLoader.vue';
 
-import { useSendData } from '../../composables';
-import { useActiveChat } from '../../composables/useActiveChat';
-import { useFlowerChat } from '../../composables/useFlowerChat';
-import { useGetChatData } from '../../composables/useGetChatData';
+import { useActiveChat, useFlowerChat, useGetChatData, useSendData } from '../../composables';
 import { useAuthStore } from '../../stores/useAuthStore';
 
 
@@ -156,7 +153,7 @@ const authStore = useAuthStore()
 
 
 const {
-    error: errorChat,
+    error: errorGet,
     isPending: isPendingGet,
     data: messages,
 } = useGetChatData(activeChatId)

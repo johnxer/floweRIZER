@@ -96,19 +96,15 @@ import TheModals from '../../components/TheModals.vue';
 
 import { ref } from 'vue';
 import { useGetAllPlants, useGetData } from '../../composables';
-import { useObserveVisibility } from '../../composables/useObserveVisibility';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
+import { observeVisibility } from '../../utils/observeVisibility';
 
 const {
     error,
     isPending,
     data: rooms
 } = useGetData('rooms')
-
-const {
-    observeVisibility
-} = useObserveVisibility()
 
 const roomsStore = useRoomsStore()
 

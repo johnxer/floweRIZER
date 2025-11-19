@@ -1,7 +1,7 @@
 import { collection, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase/config";
-import { useAuthStore } from "../stores/useAuthStore";
-import { useFirestoreSubscribeMulti } from "./api/useFirestoreSubscribeMulti";
+import { db } from "../../firebase/config";
+import { useAuthStore } from "../../stores/useAuthStore";
+import { useFirestoreSubscribeMulti } from "../api/useFirestoreSubscribeMulti";
 
 export const useGetChatData = (chatIdRef) => {
     const authStore = useAuthStore();

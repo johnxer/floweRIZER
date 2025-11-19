@@ -1,7 +1,7 @@
 import { addDoc, collection, doc, getDocs, query, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import { ref } from 'vue';
-import { db } from '../firebase/config';
-import { useAuthStore } from '../stores/useAuthStore';
+import { db } from '../../firebase/config';
+import { useAuthStore } from '../../stores/useAuthStore';
 
 export const useActiveChat = () => {
     const authStore = useAuthStore();
