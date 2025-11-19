@@ -1,6 +1,8 @@
-import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { addDelay } from '../utils';
+
+import { defineStore } from 'pinia';
+
+import { addDelay } from '@/utils';
 
 export const usePlantsStore = defineStore('usePlantsStore', () => {
     const setPlantVisible = (plantId, visible) => {

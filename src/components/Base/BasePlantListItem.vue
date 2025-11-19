@@ -214,18 +214,19 @@
 </template>
 
 <script setup>
-import { differenceInDays } from "date-fns";
 import { computed, onMounted, ref } from 'vue';
+
+import { differenceInDays } from "date-fns";
 
 import BaseLoader from './BaseLoader.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
-import { useMobileStore } from '../../stores/useMobileStore';
-import { usePlantsStore } from '../../stores/usePlantsStore';
+import { useMobileStore } from '@/stores/useMobileStore';
+import { usePlantsStore } from '@/stores/usePlantsStore';
 
-import { useDeleteData, useStorage, useUpdateData } from '../../composables';
+import { useDeleteData, useStorage, useUpdateData } from '@/composables';
 
-import { addDelay, observeVisibility } from '../../utils';
+import { addDelay, observeVisibility } from '@/utils';
 
 const {
     error: errorUpdateData,

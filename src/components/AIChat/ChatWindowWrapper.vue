@@ -123,10 +123,11 @@ import { computed, nextTick, onMounted, onUpdated, ref } from 'vue';
 
 import { formatDistanceToNow } from 'date-fns';
 
-import BaseLoader from '../Base/BaseLoader.vue';
+import BaseLoader from '@/components/Base/BaseLoader.vue';
 
-import { useActiveChat, useFlowerChat, useGetChatData, useSendData } from '../../composables';
-import { useAuthStore } from '../../stores/useAuthStore';
+import { useAuthStore } from '@/stores/useAuthStore';
+
+import { useActiveChat, useFlowerChat, useGetChatData, useSendData } from '@/composables';
 
 
 const {

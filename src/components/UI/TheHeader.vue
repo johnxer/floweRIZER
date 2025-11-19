@@ -58,15 +58,15 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import { useRoute, useRouter } from 'vue-router';
-import { useRoomsStore } from '../../stores/useRoomsStore';
 
-import BaseButton from '../Base/BaseButtons/BaseButton.vue';
+import BaseButton from '@/components/Base/BaseButtons/BaseButton.vue';
 
-import MenuDropdown from '../MenuDropdown.vue';
-import NotificationsDropdown from '../NotificationsDropdown.vue';
-import ThemeDropdown from '../ThemeDropdown.vue';
+import MenuDropdown from '@/components/MenuDropdown.vue';
+import NotificationsDropdown from '@/components/NotificationsDropdown.vue';
+import ThemeDropdown from '@/components/ThemeDropdown.vue';
 
-import { useMobileStore } from '../../stores/useMobileStore';
+import { useMobileStore } from '@/stores/useMobileStore';
+import { useRoomsStore } from '@/stores/useRoomsStore';
 
 const props = defineProps({
     projectTitle: {

@@ -1,16 +1,16 @@
+import { auth } from '@/firebase/config';
 import { createRouter, createWebHistory } from 'vue-router';
-import { auth } from '../firebase/config';
 
 const routes = [
     // {
     //     path: '/',
     //     name: 'Home',
-    //     component: () => import('../pages/TheHome.vue')
+    //     component: () => import('@/pages/TheHome.vue')
     // },
     {
         path: '/',
         name: 'NotAuthed',
-        component: () => import('../pages/NotAuthed.vue'),
+        component: () => import('@/pages/NotAuthed.vue'),
         meta: {
             title: 'Login or Sign up',
         },
@@ -18,7 +18,7 @@ const routes = [
     {
         path: '/dashboard',
         name: 'TheDashboard',
-        component: () => import('../pages/Authed/TheDashboard.vue'),
+        component: () => import('@/pages/Authed/TheDashboard.vue'),
         meta: {
             title: 'Dashboard',
             requiresAuth: true,
@@ -27,7 +27,7 @@ const routes = [
     {
         path: '/account',
         name: 'Account',
-        component: () => import('../pages/Authed/AccountSettings.vue'),
+        component: () => import('@/pages/Authed/AccountSettings.vue'),
         meta: {
             title: 'Account',
             requiresAuth: true,
@@ -36,7 +36,7 @@ const routes = [
     {
         path: '/room/:roomId',
         name: 'TheRoomDetail',
-        component: () => import('../pages/Authed/TheRoomDetail.vue'),
+        component: () => import('@/pages/Authed/TheRoomDetail.vue'),
         props: true,
         meta: {
             requiresAuth: true,
@@ -45,7 +45,7 @@ const routes = [
     // {
     //     path: '/plant/:plantId',
     //     name: 'ThePlantDetail',
-    //     component: () => import('../pages/Authed/ThePlantDetail.vue'),
+    //     component: () => import('@/pages/Authed/ThePlantDetail.vue'),
     //     props: true,
     //     meta: {
     //         requiresAuth: true,
@@ -54,7 +54,7 @@ const routes = [
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
-        component: () => import('../pages/NotFound.vue'),
+        component: () => import('@/pages/NotFound.vue'),
         meta: {
             title: '404',
         },

@@ -28,8 +28,10 @@
 
 <script setup>
 import { computed } from 'vue';
-import BaseContainer from '../components/Base/BaseContainer.vue';
-import { useAuthStore } from '../stores/useAuthStore';
+
+import BaseContainer from '@/components/Base/BaseContainer.vue';
+
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const authStore = useAuthStore();
 

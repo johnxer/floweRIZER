@@ -83,22 +83,22 @@
 
 <script setup>
 
+import { computed, nextTick, ref, watch } from 'vue';
 
-import { computed, nextTick, watch } from 'vue';
+import BaseButton from '@/components/Base/BaseButtons/BaseButton.vue';
+import BaseContainer from '@/components/Base/BaseContainer.vue';
+import BaseLoader from '@/components/Base/BaseLoader.vue';
+import BaseRoom from '@/components/Base/BaseRoom.vue';
 
-import BaseButton from '../../components/Base/BaseButtons/BaseButton.vue';
-import BaseContainer from '../../components/Base/BaseContainer.vue';
-import BaseLoader from '../../components/Base/BaseLoader.vue';
-import BaseRoom from '../../components/Base/BaseRoom.vue';
+import StatsBox from '@/components/Stats/StatsBox.vue';
+import TheModals from '@/components/TheModals.vue';
 
-import StatsBox from '../../components/Stats/StatsBox.vue';
-import TheModals from '../../components/TheModals.vue';
+import { useRoomsStore } from '@/stores/useRoomsStore';
+import { useScrollStore } from '@/stores/useScrollStore';
 
-import { ref } from 'vue';
-import { useGetAllPlants, useGetData } from '../../composables';
-import { useRoomsStore } from '../../stores/useRoomsStore';
-import { useScrollStore } from '../../stores/useScrollStore';
-import { observeVisibility } from '../../utils';
+import { useGetAllPlants, useGetData } from '@/composables';
+
+import { observeVisibility } from '@/utils';
 
 const {
     error,

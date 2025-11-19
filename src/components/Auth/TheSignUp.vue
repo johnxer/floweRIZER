@@ -88,17 +88,18 @@
 </template>
 
 <script setup>
-
-import BaseButton from '../Base/BaseButtons/BaseButton.vue';
-import BaseFormMessageBox from '../Base/BaseForm/BaseFormMessageBox.vue';
-import BaseInputWrapper from '../Base/BaseForm/BaseInputWrapper.vue';
-import BaseLoader from '../Base/BaseLoader.vue';
-
-import LoginSignupActions from '../LoginSignupActions.vue';
-
 import { ref } from 'vue';
+
 import { useRouter } from 'vue-router';
-import { useAuthActions } from '../../composables';
+
+import BaseButton from '@/Base/BaseButtons/BaseButton.vue';
+import BaseFormMessageBox from '@/Base/BaseForm/BaseFormMessageBox.vue';
+import BaseInputWrapper from '@/Base/BaseForm/BaseInputWrapper.vue';
+import BaseLoader from '@/Base/BaseLoader.vue';
+
+import LoginSignupActions from '@/LoginSignupActions.vue';
+
+import { useAuthActions } from '@/composables';
 
 const {
     error,

@@ -101,7 +101,6 @@
 </template>
 
 <script setup>
-
 import { computed, ref, watch, watchEffect } from 'vue';
 
 import BaseButton from './Base/BaseButtons/BaseButton.vue';
@@ -112,13 +111,13 @@ import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
-import { useAuthStore } from '../stores/useAuthStore';
-import { useRoomsStore } from '../stores/useRoomsStore';
-import { useScrollStore } from '../stores/useScrollStore';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useRoomsStore } from '@/stores/useRoomsStore';
+import { useScrollStore } from '@/stores/useScrollStore';
 
-import { useGetDetails, useSendData, useStorage } from '../composables';
+import { useGetDetails, useSendData, useStorage } from '@/composables';
 
-import { addLog, resizeImageBitmap } from '../utils';
+import { addLog, resizeImageBitmap } from '@/utils';
 
 const props = defineProps({
     roomId: {

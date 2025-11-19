@@ -247,13 +247,13 @@ import BaseLoader from './BaseLoader.vue';
 import BasePlantListItem from './BasePlantListItem.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
-import { useDragStore } from '../../stores/useDragStore';
-import { usePlantsStore } from '../../stores/usePlantsStore';
-import { useRoomsStore } from '../../stores/useRoomsStore';
-import { useScrollStore } from '../../stores/useScrollStore';
+import { useDragStore } from '@/stores/useDragStore';
+import { usePlantsStore } from '@/stores/usePlantsStore';
+import { useRoomsStore } from '@/stores/useRoomsStore';
+import { useScrollStore } from '@/stores/useScrollStore';
 
-import { useDeleteData, useGetData, useStorage } from '../../composables';
-import { addDelay, observeVisibility } from '../../utils';
+import { useDeleteData, useGetData, useStorage } from '@/composables';
+import { addDelay, observeVisibility } from '@/utils';
 
 const roomsStore = useRoomsStore()
 const plantsStore = usePlantsStore()

@@ -1,7 +1,8 @@
+import { ref } from 'vue';
+
+import { auth, db } from '@/firebase/config';
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
-import { ref } from 'vue';
-import { auth, db } from '../../firebase/config';
 
 export const useAuthActions = () => {
     const error = ref(null);

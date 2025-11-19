@@ -63,10 +63,13 @@
 </template>
 
 <script setup>
-import { differenceInDays } from 'date-fns';
 import { computed } from 'vue';
-import { useGetDataByUserId, useUpdateData } from '../composables';
-import { useScrollStore } from '../stores/useScrollStore';
+
+import { differenceInDays } from 'date-fns';
+
+import { useGetDataByUserId, useUpdateData } from '@/composables';
+
+import { useScrollStore } from '@/stores/useScrollStore';
 
 
 const {

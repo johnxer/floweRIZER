@@ -67,11 +67,13 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthActions } from '../../composables';
-import BaseButton from '../Base/BaseButtons/BaseButton.vue';
-import BaseFormMessageBox from '../Base/BaseForm/BaseFormMessageBox.vue';
-import BaseInputWrapper from '../Base/BaseForm/BaseInputWrapper.vue';
-import BaseLoader from '../Base/BaseLoader.vue';
+
+import BaseButton from '@/Base/BaseButtons/BaseButton.vue';
+import BaseFormMessageBox from '@/Base/BaseForm/BaseFormMessageBox.vue';
+import BaseInputWrapper from '@/Base/BaseForm/BaseInputWrapper.vue';
+import BaseLoader from '@/Base/BaseLoader.vue';
+
+import { useAuthActions } from '@/composables';
 
 const router = useRouter()
 

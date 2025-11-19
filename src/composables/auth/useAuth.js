@@ -1,7 +1,8 @@
+import { auth, db } from '@/firebase/config';
 import { onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
-import { auth, db } from '../../firebase/config';
-import { useAuthStore } from '../../stores/useAuthStore';
+
+import { useAuthStore } from '@/stores/useAuthStore';
 
 export const useAuth = () => {
     const authStore = useAuthStore();

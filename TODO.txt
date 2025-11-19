@@ -4,6 +4,8 @@ TODO
 
 - add close button for chat window + chat ended icon + button to close chat
 
+- add lazy load to the room details page main image
+
 - add to room log the plants movement.
 
 - footer with github link - prbbly will be moved and display elsewhere

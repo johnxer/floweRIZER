@@ -20,9 +20,9 @@
 </template>
 
 <script setup>
-
-import { useMobileStore } from '../stores/useMobileStore';
 import BaseMenuLink from './Base/BaseMenuLink.vue';
+
+import { useMobileStore } from '@/stores/useMobileStore';
 
 defineProps({
     isChatActive: {

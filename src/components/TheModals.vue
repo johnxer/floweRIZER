@@ -42,17 +42,17 @@
 </template>
 
 <script setup>
-
 import { ref } from 'vue';
-import { usePlantsStore } from '../stores/usePlantsStore';
-import { useRoomsStore } from '../stores/useRoomsStore';
+
+import BaseModal from './Base/BaseModal/BaseModal.vue';
 
 import AddNewPlantContent from './AddNewPlantContent.vue';
 import AddNewRoomContent from './AddNewRoomContent.vue';
 import PlantHistoryContent from './PlantHistoryContent.vue';
 import RoomHistoryContent from './RoomHistoryContent.vue';
 
-import BaseModal from './Base/BaseModal/BaseModal.vue';
+import { usePlantsStore } from '@/stores/usePlantsStore';
+import { useRoomsStore } from '@/stores/useRoomsStore';
 
 const roomsStore = useRoomsStore()
 const plantsStore = usePlantsStore()

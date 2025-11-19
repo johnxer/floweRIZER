@@ -70,17 +70,18 @@
 </template>
 
 <script setup>
-import { format } from "date-fns";
-
-import { useGetDetails } from '../composables';
-import { usePlantsStore } from '../stores/usePlantsStore';
-
-import { doc, getDoc } from "firebase/firestore";
 import { computed, ref, watchEffect } from "vue";
-import { useAuth } from "../composables";
+
+import { format } from "date-fns";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
+
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
+
+import { usePlantsStore } from '@/stores/usePlantsStore';
+
+import { useAuth, useGetDetails } from '@/composables';
 
 const { getUid } = useAuth();
 

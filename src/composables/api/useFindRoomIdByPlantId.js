@@ -1,6 +1,6 @@
+import { db } from '@/firebase/config'
+import { useAuthStore } from '@/stores/useAuthStore'
 import { collectionGroup, getDocs, query, where } from 'firebase/firestore'
-import { db } from '../../firebase/config'
-import { useAuthStore } from '../../stores/useAuthStore'
 
 export const useFindRoomIdByPlantId = () => {
     const authStore = useAuthStore()

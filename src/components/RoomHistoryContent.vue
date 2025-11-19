@@ -63,15 +63,16 @@
 </template>
 
 <script setup>
+import { computed, ref, watchEffect } from "vue";
+
 import { format } from "date-fns";
 
-import { useGetDetails } from '../composables';
-
-import { computed, ref, watchEffect } from "vue";
-import { useAuth } from "../composables";
-import { useRoomsStore } from "../stores/useRoomsStore";
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
+
+import { useRoomsStore } from "@/stores/useRoomsStore";
+
+import { useAuth, useGetDetails } from '@/composables';
 
 const { getUid } = useAuth();
 

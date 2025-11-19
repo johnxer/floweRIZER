@@ -1,8 +1,8 @@
+import { useAuth } from '@/composables/auth';
+import { db } from '@/firebase/config';
+import { normalizePath } from '@/utils';
 import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { ref } from 'vue';
-import { db } from '../../firebase/config';
-import { normalizePath } from '../../utils';
-import { useAuth } from '../auth';
 
 export const useDeleteData = () => {
     const { getUid } = useAuth();

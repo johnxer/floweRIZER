@@ -1,7 +1,7 @@
+import { db } from '@/firebase/config';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useFirestoreSubscribeMulti } from '@/composables/api/useFirestoreSubscribeMulti';
 import { collection, orderBy, query } from 'firebase/firestore';
-import { db } from '../../firebase/config';
-import { useAuthStore } from '../../stores/useAuthStore';
-import { useFirestoreSubscribeMulti } from './useFirestoreSubscribeMulti';
 
 export const useGetData = (dataType) => {
     const authStore = useAuthStore();

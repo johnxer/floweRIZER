@@ -66,8 +66,7 @@
 </template>
 
 <script setup>
-import { useThemeStore } from '../stores/useThemeStore';
-
+import { useThemeStore } from '@/stores/useThemeStore';
 
 const themeStore = useThemeStore()
 
