@@ -92,12 +92,12 @@ import { ref } from 'vue';
 
 import { useRouter } from 'vue-router';
 
-import BaseButton from '@/Base/BaseButtons/BaseButton.vue';
-import BaseFormMessageBox from '@/Base/BaseForm/BaseFormMessageBox.vue';
-import BaseInputWrapper from '@/Base/BaseForm/BaseInputWrapper.vue';
-import BaseLoader from '@/Base/BaseLoader.vue';
+import BaseButton from '@/components/Base/BaseButtons/BaseButton.vue';
+import BaseFormMessageBox from '@/components/Base/BaseForm/BaseFormMessageBox.vue';
+import BaseInputWrapper from '@/components/Base/BaseForm/BaseInputWrapper.vue';
+import BaseLoader from '@/components/Base/BaseLoader.vue';
 
-import LoginSignupActions from '@/LoginSignupActions.vue';
+import LoginSignupActions from '@/components/LoginSignupActions.vue';
 
 import { useAuthActions } from '@/composables';
 
