@@ -182,7 +182,7 @@
                         @end="onEnd"
                     >
                         <template #item="{ element }">
-                            <BasePlantListItem
+                            <PlantListItem
                                 :plant="element"
                                 :room-id="props.room.id"
                                 :data-plant-id="element.id"
@@ -242,10 +242,10 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
 import vDraggable from 'vuedraggable';
 
-import BaseButton from './BaseButtons/BaseButton.vue';
-import BaseLoader from './BaseLoader.vue';
-import BasePlantListItem from './BasePlantListItem.vue';
-import BasePopoverContent from './BasePopoverContent.vue';
+import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
+import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
+import PlantListItem from '@/components/features/plants/PlantListItem.vue';
 
 import { useDragStore } from '@/stores/useDragStore';
 import { usePlantsStore } from '@/stores/usePlantsStore';
@@ -407,9 +407,9 @@ watch(
         await observeVisibility(el)
 
         plantsStore.setPlantVisible(newVal.plantId, true)
-        
+
         scrollStore.clearScrollTarget()
-        
+
     },
     { deep: true }
 )

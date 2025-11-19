@@ -39,8 +39,8 @@
 </template>
 
 <script setup>
-import BaseButton from './Base/BaseButtons/BaseButton.vue';
-import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
+import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 const emit = defineEmits(['close-modal'])
 

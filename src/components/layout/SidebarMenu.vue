@@ -21,7 +21,7 @@
 <script setup>
 import { ref } from 'vue';
 
-import MenuContent from '@/components/MenuContent.vue';
+import MenuContent from './MenuContent.vue';
 
 const emit = defineEmits(['toggle-chat'])
 

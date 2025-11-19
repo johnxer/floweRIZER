@@ -2,11 +2,11 @@
 
     <base-modal-content>
         <template #modalTitle>
-            <span class="noto-color-emoji-regular mr-2">🏠</span>Rooms's history log
+            <span class="noto-color-emoji-regular mr-2">🌱</span>Plant's history log
         </template>
         <div class="relative">
             <base-loader
-                v-if="isPendingRoom"
+                v-if="isPendingPlant || isLoadingActions"
                 class="static"
             >
                 Loading plant's history...
@@ -14,18 +14,19 @@
 
             <div v-else>
                 <ul class="flex flex-col gap-4">
-                    <li class="grid">
+                    <li class="grid ">
                         <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
                             {{ formattedDate }}
+
                         </div>
                         <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
-                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 p-2 rounded-full flex items-center justify-center shrink-0">
                                 <span class="material-symbols-outlined">
                                     add
                                 </span>
                             </span>
                             <span class="self-center text-sm md:text-base">
-                                Room added
+                                Plant added
                             </span>
                         </div>
                     </li>
@@ -45,12 +46,18 @@
                                 </span>
                             </span>
                             <span class="self-center text-sm md:text-base">
-                                Room's {{ action.action }} changed
-                                <template v-if="action.action === 'name'">
-                                    from <strong>{{ action.originalVal }}</strong> to <strong>{{ action.newVal }}</strong>
+                                Plant {{ action.action }}
+                                <template v-if="action.action === 'moved'">
+                                    from <strong>{{ action.originName }}</strong> to <strong>{{ action.targetName }}</strong>
                                 </template>
-                                <template v-else-if="action.action === 'icon'">
-                                    from <strong class="material-symbols-outlined text-2xl mx-1">{{ action.originalVal }}</strong> to <strong class="material-symbols-outlined text-2xl mx-1">{{ action.newVal }}</strong>
+                                <template v-else-if="action.action !== 'watered'">
+                                    changed
+                                    <template v-if="action.action === 'name'">
+                                        from <strong>{{ action.originalVal }}</strong> to <strong>{{ action.newVal }}</strong>
+                                    </template>
+                                    <template v-else-if="action.action === 'icon'">
+                                        from <strong class="material-symbols-outlined text-2xl mx-1">{{ action.originalVal }}</strong> to <strong class="material-symbols-outlined text-2xl mx-1">{{ action.newVal }}</strong>
+                                    </template>
                                 </template>
                             </span>
 
@@ -66,11 +73,13 @@
 import { computed, ref, watchEffect } from "vue";
 
 import { format } from "date-fns";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
 
-import BaseLoader from './Base/BaseLoader.vue';
-import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
+import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
-import { useRoomsStore } from "@/stores/useRoomsStore";
+import { usePlantsStore } from '@/stores/usePlantsStore';
 
 import { useAuth, useGetDetails } from '@/composables';
 
@@ -79,26 +88,26 @@ const { getUid } = useAuth();
 const uid = getUid()
 
 
-const roomsStore = useRoomsStore()
+const plantsStore = usePlantsStore()
 
 const {
-    error: errorRoom,
-    isPending: isPendingRoom,
-    data: detailsRoom,
-} = useGetDetails(`rooms/${roomsStore.selectedRoomId}`)
-
-watchEffect(() => {
-    console.log('createdAt:', detailsRoom.value?.createdAt)
-    console.log('type:', typeof detailsRoom.value?.createdAt)
-})
+    error: errorPlant,
+    isPending: isPendingPlant,
+    data: detailsPlant,
+} = useGetDetails(`rooms/${plantsStore.selectedRoomId}/plants/${plantsStore.selectedPlantId}`)
 
 const formattedDate = computed(() => {
-    const createdAt = detailsRoom.value?.createdAt
-
+    const createdAt = detailsPlant.value?.createdAt
     return createdAt?.toDate ? format(createdAt.toDate(), 'MMM d, yyyy') : '—'
 })
 
 const actionIconMap = {
+    watered: {
+        icon: 'humidity_high'
+    },
+    moved: {
+        icon: 'arrow_forward'
+    },
     name: {
         icon: 'edit'
     },
@@ -118,7 +127,7 @@ const formattedActions = ref([])
 const isLoadingActions = ref(false)
 
 watchEffect(async () => {
-    const log = detailsRoom.value?.log;
+    const log = detailsPlant.value?.log;
 
     if (!log?.length) {
         formattedActions.value = []
@@ -127,6 +136,25 @@ watchEffect(async () => {
 
     isLoadingActions.value = true
 
+    const roomIds = [
+        ...new Set(
+            log.flatMap(r => [r.origin, r.target]).filter(Boolean)
+        )
+    ]
+
+    console.log(roomIds)
+
+    const RoomDocument = await Promise.all(
+        roomIds.map(id => getDoc(doc(db, `users/${uid}/rooms/${id}`)))
+    )
+
+    const roomMap = new Map()
+
+    RoomDocument.forEach((snap, index) => {
+        const id = roomIds[index]
+        roomMap.set(id, snap.data()?.name)
+    })
+
     formattedActions.value = log.map(a => {
         const date = a.date?.toDate ? a.date.toDate() : new Date(a.date)
 
@@ -134,6 +162,8 @@ watchEffect(async () => {
             ...a,
             icon: actionIconMap[a.action]?.icon || '',
             formattedDate: format(date, 'MMM d, yyyy'),
+            originName: roomMap.get(a.origin) ?? null,
+            targetName: roomMap.get(a.target) ?? '<room deleted>',
         }
     })
 

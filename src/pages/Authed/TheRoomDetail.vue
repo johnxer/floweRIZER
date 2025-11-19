@@ -5,10 +5,16 @@
         </base-container>
         <div v-else>
             <div class="relative w-full h-[200px] md:h-[300px] overflow-hidden flex items-center justify-center shadow-xl before:absolute before:inset-0 before:bg-black/30">
+                <base-loader
+                    v-if="!isImageLoaded"
+                    class="absolute"
+                />
                 <img
-                    :src="detailsRoom.imgSrc || '/src/img/room_default.jpg'"
+                    :src="detailsRoom.imgSrc || '/src/assets/images/room_default.jpg'"
                     class="w-full object-cover dark:brightness-50"
                     :alt="roomName"
+                    loading="lazy"
+                    @load="onLoad"
                 >
                 <base-page-title
                     class="absolute p-4 md:p-6"
@@ -85,7 +91,7 @@
             </div>
             <base-container>
                 <div class="lg:max-w-[500px] md:max-w-[400px] max-w-full mx-auto">
-                    <div class="text-gray-400 text-sm mb-1">
+                    <div class="text-gray-400 dark:text-gray-500 text-sm mb-1">
                         Created on {{ formattedDate }}
                     </div>
                     <div class="mb-8 text-gray-500 dark:text-gray-400 text-sm">
@@ -175,15 +181,15 @@ import { computed, ref } from "vue";
 import { format } from "date-fns";
 import { useRouter } from "vue-router";
 
-import BaseButton from "@/components/Base/BaseButtons/BaseButton.vue";
-import BaseContainer from "@/components/Base/BaseContainer.vue";
-import BaseLoader from '@/components/Base/BaseLoader.vue';
-import BaseModal from "@/components/Base/BaseModal/BaseModal.vue";
-import BasePageTitle from '@/components/Base/BasePageTitle.vue';
-import BasePlantListItem from '@/components/Base/BasePlantListItem.vue';
-import BasePopoverContent from '@/components/Base/BasePopoverContent.vue';
+import BaseButton from "@/components/base/BaseButtons/BaseButton.vue";
+import BaseContainer from "@/components/base/BaseContainer.vue";
+import BaseLoader from '@/components/base/BaseLoader.vue';
+import BaseModal from "@/components/base/BaseModal/BaseModal.vue";
+import BasePageTitle from '@/components/base/BasePageTitle.vue';
+import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
+import BasePlantListItem from '@/components/features/plants/PlantListItem.vue';
 
-import AddNewPlantContent from "@/components/AddNewPlantContent.vue";
+import AddNewPlantContent from "@/components/features/plants/AddNewPlantContent.vue";
 import TheModals from "@/components/TheModals.vue";
 
 import { useRoomsStore } from "@/stores/useRoomsStore";
@@ -301,6 +307,13 @@ const shortenDesc = computed(() => {
 const showMoreButton = computed(() => (detailsRoom.value?.desc?.length || 0) > 200)
 
 const showMoreText = computed(() => `Show ${showMore.value ? 'less' : 'more'}`)
+
+const isImageLoaded = ref(false)
+
+const onLoad = () => {
+    isImageLoaded.value = true
+}
+
 
 </script>
 

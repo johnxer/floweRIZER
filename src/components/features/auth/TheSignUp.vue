@@ -11,7 +11,6 @@
                 v-if="isPending"
                 class="static"
             />
-
             <div v-else>
                 <transition
                     name="fade"
@@ -23,9 +22,20 @@
                     >
                         {{ error }}
                     </base-form-message-box>
-
                 </transition>
                 <div class="space-y-4">
+                    <base-input-wrapper
+                        icon-name="key"
+                        :error-text="formErrors.code"
+                    >
+                        <input
+                            type="text"
+                            placeholder="Enter code..."
+                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold dark:text-white/80 text-gray-500/80 peer"
+                            v-model.trim="form.code"
+                            @input="formErrors.code = null"
+                        />
+                    </base-input-wrapper>
                     <base-input-wrapper
                         icon-name="email"
                         :error-text="formErrors.email"
@@ -38,6 +48,7 @@
                             @input="formErrors.email = null"
                         />
                     </base-input-wrapper>
+
                     <base-input-wrapper
                         icon-name="lock"
                         :error-text="formErrors.password"
@@ -47,16 +58,28 @@
                             placeholder="Enter password..."
                             class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold dark:text-white/80 text-gray-500/80 peer"
                             v-model.trim="form.password"
-                            @input="formErrors.password = null"
+                        />
+                    </base-input-wrapper>
+
+                    <base-input-wrapper
+                        icon-name="lock"
+                        :error-text="formErrors.passwordRepeat"
+                    >
+                        <input
+                            type="password"
+                            placeholder="Repeat password..."
+                            class="w-100 py-2 dark:placeholder:text-white/60 placeholder:text-gray-400 placeholder:italic placeholder:font-normal focus:outline-0 font-semibold dark:text-white/80 text-gray-500/80 peer"
+                            v-model.trim="form.passwordRepeat"
                         />
                     </base-input-wrapper>
                 </div>
+
                 <base-button
-                    class="mt-8"
+                    class="mt-6"
                     btn-style="notRoundedMd"
                     btn-size="base"
                 >
-                    Login
+                    Sign up
                 </base-button>
                 <login-signup-actions />
             </div>
@@ -69,34 +92,45 @@ import { ref } from 'vue';
 
 import { useRouter } from 'vue-router';
 
-import BaseButton from '@/components/Base/BaseButtons/BaseButton.vue';
-import BaseFormMessageBox from '@/components/Base/BaseForm/BaseFormMessageBox.vue';
-import BaseInputWrapper from '@/components/Base/BaseForm/BaseInputWrapper.vue';
-import BaseLoader from '@/components/Base/BaseLoader.vue';
+import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BaseFormMessageBox from '@/components/base/BaseForm/BaseFormMessageBox.vue';
+import BaseInputWrapper from '@/components/base/BaseForm/BaseInputWrapper.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
 
-import LoginSignupActions from '@/components/LoginSignupActions.vue';
+import LoginSignupActions from './LoginSignupActions.vue';
 
 import { useAuthActions } from '@/composables';
-
-const router = useRouter()
 
 const {
     error,
     isPending,
-    logInUser
+    signUpUser,
 } = useAuthActions()
 
+
 const form = ref({
+    code: '',
     email: '',
-    password: ''
+    password: '',
+    passwordRepeat: ''
 })
+
+const router = useRouter()
 
 const formErrors = ref({})
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+const signUpCode = import.meta.env.VITE_SIGNUP_CODE
+
 const validateForm = () => {
     formErrors.value = {}
+
+    if (!form.value.code) {
+        formErrors.value.code = 'Code cannot be empty'
+    } else if (form.value.code !== signUpCode) {
+        formErrors.value.code = 'Wrong signup code'
+    }
 
     if (!form.value.email) {
         formErrors.value.email = 'Email cannot be empty'
@@ -104,33 +138,54 @@ const validateForm = () => {
         formErrors.value.email = 'Wrong email format'
     }
 
+    // tady bude validace pres frequency counter
+
     if (!form.value.password) {
         formErrors.value.password = 'Password cannot be empty'
     } else if (form.value.password < 8) {
         formErrors.value.password = 'Password cannot be shorter than 8 chars'
     }
 
-    return Object.keys(formErrors.value).length === 0
+
+    if (!form.value.passwordRepeat) {
+        formErrors.value.passwordRepeat = 'Cannot be empty'
+    }
+    else if (form.value.passwordRepeat !== form.value.password) {
+        formErrors.value.passwordRepeat = 'Doesnt match the password'
+    }
+
+
+
+    return Object.keys(formErrors.value).length === 0;
 }
 
 const clearForm = () => {
+    form.value.code = '';
     form.value.email = '';
     form.value.password = '';
+    form.value.passwordRepeat = ''
 }
+
+
 
 const submitForm = async () => {
     if (!validateForm()) return
 
     const data = {
         email: form.value.email,
-        password: form.value.password
+        password: form.value.password,
     }
 
-    const success = await logInUser(data)
+    const success = await signUpUser(data)
 
     if (success) {
-        router.push({ name: 'TheDashboard' })
         clearForm();
+
+        router.push({ name: 'TheDashboard' })
     }
 }
+
+
+
+
 </script>

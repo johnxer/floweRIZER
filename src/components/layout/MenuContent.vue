@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import BaseMenuLink from './Base/BaseMenuLink.vue';
+import BaseMenuLink from '@/components/base/BaseMenuLink.vue';
 
 import { useMobileStore } from '@/stores/useMobileStore';
 

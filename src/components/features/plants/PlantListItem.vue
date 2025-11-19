@@ -205,7 +205,16 @@
             >
                 <div class="">
                     <div>
-                        {{ plant.desc }}
+                        <p>
+                            {{ shortenDesc }}
+                        </p>
+                        <button
+                            v-if="showMoreButton"
+                            class="text-primary-500 underline hover:no-underline mt-1 cursor-pointer"
+                            @click="toggleShowMore"
+                        >
+                            {{ showMoreText }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -218,8 +227,8 @@ import { computed, onMounted, ref } from 'vue';
 
 import { differenceInDays } from "date-fns";
 
-import BaseLoader from './BaseLoader.vue';
-import BasePopoverContent from './BasePopoverContent.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
+import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
 
 import { useMobileStore } from '@/stores/useMobileStore';
 import { usePlantsStore } from '@/stores/usePlantsStore';
@@ -342,44 +351,37 @@ const onLoad = () => {
 
 const imgRef = ref(null)
 
-
-// const lazyLoadImage = (el) => {
-//     const observer = new IntersectionObserver((entries, obs) => {
-//         const entry = entries[0];
-
-//         if (!entry.isIntersecting) return
-
-//         if (el.dataset.src) {
-//             el.src = el.dataset.src
-//         }
-
-//         obs.disconnect();
-//     }, {
-//         threshold: 0.2,
-//         rootMargin: '150px'
-//     })
-
-//     observer.observe(el);
-// }
-
-
-// onMounted(() => {
-//     if (imgRef.value) lazyLoadImage(imgRef.value)
-// })
-
 onMounted(async () => {
     const el = imgRef.value
     if (!el) return
 
     if (el) {
         await observeVisibility(el, { threshold: 0.2, rootMargin: '150px' })
-        
+
         if (el.dataset.src) {
             el.src = el.dataset.src
             el.removeAttribute('data-src')
         }
     }
 })
+
+const showMore = ref(false)
+
+const toggleShowMore = () => {
+    showMore.value = !showMore.value
+}
+
+const shortenDesc = computed(() => {
+    const desc = props.plant.desc || '';
+
+    if (showMore.value) return desc
+
+    return desc.length > 200 ? desc.substring(0, 200) + '...' : desc
+})
+
+const showMoreButton = computed(() => (props.plant.desc?.length || 0) > 200)
+
+const showMoreText = computed(() => `Show ${showMore.value ? 'less' : 'more'}`)
 
 
 

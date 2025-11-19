@@ -1,6 +1,6 @@
 TODO
 
-- optimize some code - e.g. delay method - move to the standalone file
+- add codition for the bg of the plant in the room for dark mode to stand out
 
 - add close button for chat window + chat ended icon + button to close chat
 

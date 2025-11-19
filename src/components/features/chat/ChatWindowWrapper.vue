@@ -123,7 +123,7 @@ import { computed, nextTick, onMounted, onUpdated, ref } from 'vue';
 
 import { formatDistanceToNow } from 'date-fns';
 
-import BaseLoader from '@/components/Base/BaseLoader.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
 
 import { useAuthStore } from '@/stores/useAuthStore';
 

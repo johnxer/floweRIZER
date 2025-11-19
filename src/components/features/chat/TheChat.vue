@@ -40,7 +40,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 
-import BaseFloatingButton from '@/components/Base/BaseButtons/BaseFloatingButton.vue';
+import BaseFloatingButton from '@/components/base/BaseButtons/BaseFloatingButton.vue';
 
 import ChatWindowWrapper from './ChatWindowWrapper.vue';
 

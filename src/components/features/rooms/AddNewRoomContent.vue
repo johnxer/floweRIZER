@@ -103,13 +103,13 @@
 <script setup>
 import { computed, ref, watch, watchEffect } from 'vue';
 
-import BaseButton from './Base/BaseButtons/BaseButton.vue';
-import BaseInput from './Base/BaseForm/BaseInput.vue';
-import BaseInputWrapperAuthed from './Base/BaseForm/BaseInputWrapperAuthed.vue';
-import BaseTextarea from './Base/BaseForm/BaseTextarea.vue';
-import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
-import BaseLoader from './Base/BaseLoader.vue';
-import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
+import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
+import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
+import BaseTextarea from '@/components/base/BaseForm/BaseTextarea.vue';
+import BaseUploadButton from '@/components/base/BaseForm/BaseUploadButton.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
+import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';

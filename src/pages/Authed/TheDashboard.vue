@@ -85,12 +85,12 @@
 
 import { computed, nextTick, ref, watch } from 'vue';
 
-import BaseButton from '@/components/Base/BaseButtons/BaseButton.vue';
-import BaseContainer from '@/components/Base/BaseContainer.vue';
-import BaseLoader from '@/components/Base/BaseLoader.vue';
-import BaseRoom from '@/components/Base/BaseRoom.vue';
+import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BaseContainer from '@/components/base/BaseContainer.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
+import BaseRoom from '@/components/features/rooms/RoomCard.vue';
 
-import StatsBox from '@/components/Stats/StatsBox.vue';
+import StatsBox from '@/components/stats/StatsBox.vue';
 import TheModals from '@/components/TheModals.vue';
 
 import { useRoomsStore } from '@/stores/useRoomsStore';
