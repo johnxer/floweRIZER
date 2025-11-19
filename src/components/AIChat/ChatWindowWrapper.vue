@@ -156,8 +156,9 @@ const authStore = useAuthStore()
 
 
 const {
-    messages,
-    isPending: isPendingGet
+    error: errorChat,
+    isPending: isPendingGet,
+    data: messages,
 } = useGetChatData(activeChatId)
 
 

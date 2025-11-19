@@ -1,10 +1,13 @@
 import { doc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
-import { useFirestoreSubscribe } from './useFirestoreSubscribe';
+import { useAuthStore } from '../../stores/useAuthStore';
+import { useFirestoreSubscribeMulti } from './useFirestoreSubscribeMulti';
 
 export const useGetDetails = (dataType) => {
+    const authStore = useAuthStore();
 
-    return useFirestoreSubscribe(
+    return useFirestoreSubscribeMulti(
+        [() => authStore.user?.uid],
         uid => doc(db, `users/${uid}/${dataType}`),
         true
     )
