@@ -98,7 +98,7 @@ import { ref } from 'vue';
 import { useGetAllPlants, useGetData } from '../../composables';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import { useScrollStore } from '../../stores/useScrollStore';
-import { observeVisibility } from '../../utils/observeVisibility';
+import { observeVisibility } from '../../utils';
 
 const {
     error,

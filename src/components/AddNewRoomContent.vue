@@ -112,12 +112,13 @@ import BaseUploadButton from './Base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
 
-import { useGetDetails, useSendData, useStorage } from '../composables';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useRoomsStore } from '../stores/useRoomsStore';
 import { useScrollStore } from '../stores/useScrollStore';
-import { addLog } from '../utils/addLog';
-import { resizeImageBitmap } from '../utils/imageResize';
+
+import { useGetDetails, useSendData, useStorage } from '../composables';
+
+import { addLog, resizeImageBitmap } from '../utils';
 
 const props = defineProps({
     roomId: {

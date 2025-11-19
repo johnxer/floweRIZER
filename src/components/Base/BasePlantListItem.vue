@@ -214,21 +214,18 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { useDeleteData, useUpdateData } from '../../composables';
-
 import { differenceInDays } from "date-fns";
+import { computed, onMounted, ref } from 'vue';
 
-import { useStorage } from '../../composables';
-
+import BaseLoader from './BaseLoader.vue';
+import BasePopoverContent from './BasePopoverContent.vue';
 
 import { useMobileStore } from '../../stores/useMobileStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
 
-import { observeVisibility } from '../../utils/observeVisibility';
-import BaseLoader from './BaseLoader.vue';
-import BasePopoverContent from './BasePopoverContent.vue';
+import { useDeleteData, useStorage, useUpdateData } from '../../composables';
 
+import { addDelay, observeVisibility } from '../../utils';
 
 const {
     error: errorUpdateData,
@@ -310,8 +307,6 @@ const isWatered = computed(() => {
     return props.plant.wateringFrequency > (getDaysAgo.value)
 })
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
-
 const handleDeletePlant = async () => {
     const collectionPath = `rooms/${props.roomId}/plants/`
     const documentId = props.plant.id
@@ -324,7 +319,7 @@ const handleDeletePlant = async () => {
     const el = document.querySelector(`[data-plant-id="${props.plant.id}"]`)
 
     el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
-    await delay(1000)
+    await addDelay(1000)
 
     if (documentImgSrc) successDelete = await deleteImageByUrl(props.plant.imgSrc)
 

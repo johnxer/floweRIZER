@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { db } from '../../firebase/config';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { usePlantsStore } from '../../stores/usePlantsStore';
-import { normalizePath } from '../../utils/normalizePath';
+import { normalizePath } from '../../utils';
 import { useFindRoomIdByPlantId } from './useFindRoomIdByPlantId';
 
 export const useUpdateData = () => {

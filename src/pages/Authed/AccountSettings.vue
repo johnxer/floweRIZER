@@ -184,7 +184,7 @@ import { useAuthStore } from '../../stores/useAuthStore';
 
 import { updateProfile } from 'firebase/auth';
 import { useAuth, useStorage, useUpdateData } from '../../composables';
-import { resizeImageBitmap } from '../../utils/imageResize';
+import { resizeImageBitmap } from '../../utils';
 
 const {
     user,

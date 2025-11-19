@@ -146,8 +146,7 @@ import { useGetDetails, useSendData, useStorage } from '../composables';
 import { useAuthStore } from '../stores/useAuthStore';
 import { usePlantsStore } from '../stores/usePlantsStore';
 import { useScrollStore } from '../stores/useScrollStore';
-import { addLog } from '../utils/addLog';
-import { resizeImageBitmap } from '../utils/imageResize';
+import { addLog, resizeImageBitmap } from '../utils';
 
 const props = defineProps({
     roomId: {

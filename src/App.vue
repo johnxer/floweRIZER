@@ -29,7 +29,6 @@
 
 <script setup>
 
-import { generateOklchShades } from './utils/hex2oklch.js';
 
 
 import TheChat from './components/AIChat/TheChat.vue';
@@ -38,9 +37,13 @@ import TheHeader from './components/UI/TheHeader.vue';
 import TheLogoCircle from './components/UI/TheLogoCircle.vue';
 
 import { computed, ref, watchEffect } from 'vue';
+
 import { useRoute } from 'vue-router';
+
 import { useAuthStore } from './stores/useAuthStore';
 import { useMobileStore } from './stores/useMobileStore.js';
+
+import { generateOklchShades } from './utils';
 
 const authStore = useAuthStore();
 
