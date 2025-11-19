@@ -5,10 +5,16 @@
         </base-container>
         <div v-else>
             <div class="relative w-full h-[200px] md:h-[300px] overflow-hidden flex items-center justify-center shadow-xl before:absolute before:inset-0 before:bg-black/30">
+                <base-loader
+                    v-if="!isImageLoaded"
+                    class="absolute"
+                />
                 <img
                     :src="detailsRoom.imgSrc || '/src/assets/images/room_default.jpg'"
                     class="w-full object-cover dark:brightness-50"
                     :alt="roomName"
+                    loading="lazy"
+                    @load="onLoad"
                 >
                 <base-page-title
                     class="absolute p-4 md:p-6"
@@ -85,7 +91,7 @@
             </div>
             <base-container>
                 <div class="lg:max-w-[500px] md:max-w-[400px] max-w-full mx-auto">
-                    <div class="text-gray-400 text-sm mb-1">
+                    <div class="text-gray-400 dark:text-gray-500 text-sm mb-1">
                         Created on {{ formattedDate }}
                     </div>
                     <div class="mb-8 text-gray-500 dark:text-gray-400 text-sm">
@@ -301,6 +307,13 @@ const shortenDesc = computed(() => {
 const showMoreButton = computed(() => (detailsRoom.value?.desc?.length || 0) > 200)
 
 const showMoreText = computed(() => `Show ${showMore.value ? 'less' : 'more'}`)
+
+const isImageLoaded = ref(false)
+
+const onLoad = () => {
+    isImageLoaded.value = true
+}
+
 
 </script>
 
