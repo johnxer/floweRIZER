@@ -5,7 +5,7 @@
     >
         <div class="">
             <svg
-                class="animate-spin text-primary mx-auto"
+                class="animate-spin text-primary dark:text-primary-800 mx-auto"
                 :class="[
                     sizeClass,
                     loaderClasses,
@@ -29,7 +29,10 @@
                     d="M3.8,19.3l1.5-1.3c-1.4-1.6-2.3-3.7-2.3-5.9C3,7,7,3,12,3V1C5.9,1,1,5.9,1,12s1,5.3,2.8,7.3Z"
                 ></path>
             </svg>
-            <div v-if="hasText" class="text-gray-500 text-lg">
+            <div
+                v-if="hasText"
+                class="text-gray-500 dark:text-gray-600 text-lg"
+            >
                 <slot />
             </div>
         </div>
@@ -54,12 +57,12 @@ const props = defineProps({
 })
 
 const positionMap = {
-    'absolute' : {
+    'absolute': {
         position: 'absolute',
         classes: 'absolute inset-0 w-full h-full',
         spinnerClasses: ''
     },
-    'static' : {
+    'static': {
         position: 'static',
         classes: '',
         spinnerClasses: 'mx-auto'
@@ -80,7 +83,7 @@ const sizeMap = {
     lg: {
         class: 'size-30'
     },
-    
+
 }
 
 

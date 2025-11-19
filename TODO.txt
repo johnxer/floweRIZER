@@ -4,7 +4,7 @@ TODO
 
 - add close button for chat window + chat ended icon + button to close chat
 
-- add lazy load to the room details page main image
+- account delete functionality
 
 - add to room log the plants movement.
 

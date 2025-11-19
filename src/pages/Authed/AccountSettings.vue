@@ -17,31 +17,38 @@
                         >
                             <base-loader position-type="absolute" />
                         </div>
-                        <label
-                            v-else
-                            for="user-image"
-                            class="cursor-pointer group"
-                        >
-                            <img
-                                :src="userAvatarURL"
-                                class="object-cover w-full h-full absolute inset-0"
-                                :alt="form.userName"
-                            />
-                            <input
-                                type="file"
-                                id="user-image"
-                                name="user-image"
-                                accept="image/png, image/jpeg, image/jpg, image/gif"
-                                class="opacity-0"
-                                @change="handleFile"
-                            />
-                            <div class="md:opacity-0 group-hover:opacity-100 flex items-center justify-center absolute w-full h-full inset-0 md:bg-primary/50 text-white text-5xl transition-opacity duration-600">
-                                <span class="material-symbols-outlined">
-                                    edit
-                                </span>
-                            </div>
+                        <div v-else>
+                            <label
+                                for="user-image"
+                                class="cursor-pointer group"
+                            >
+                                <base-loader
+                                    v-if="!isImageLoaded"
+                                    class="absolute inset-0"
+                                />
+                                <img
+                                    :src="userAvatarURL"
+                                    class="object-cover w-full h-full absolute inset-0"
+                                    :alt="form.userName"
+                                    loading="lazy"
+                                    @load="onLoad"
+                                />
+                                <input
+                                    type="file"
+                                    id="user-image"
+                                    name="user-image"
+                                    accept="image/png, image/jpeg, image/jpg, image/gif"
+                                    class="opacity-0"
+                                    @change="handleFile"
+                                />
+                                <div class="md:opacity-0 group-hover:opacity-100 flex items-center justify-center absolute w-full h-full inset-0 md:bg-primary/50 text-white text-5xl transition-opacity duration-600">
+                                    <span class="material-symbols-outlined">
+                                        edit
+                                    </span>
+                                </div>
 
-                        </label>
+                            </label>
+                        </div>
                     </transition>
                 </div>
                 <transition
@@ -308,10 +315,6 @@ const validateForm = () => {
     return Object.keys(formErrors.value).length === 0
 }
 
-// const clearForm = () => {
-
-// }
-
 const submitForm = async () => {
     if (!validateForm()) return
 
@@ -336,10 +339,15 @@ const submitForm = async () => {
     if (successProfile && successUserDb) {
 
         console.log('success')
-        // clearForm()
+
     }
 }
 
+const isImageLoaded = ref(false)
+
+const onLoad = () => {
+    isImageLoaded.value = true
+}
 
 </script>
 
