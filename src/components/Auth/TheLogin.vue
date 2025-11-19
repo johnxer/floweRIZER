@@ -65,27 +65,26 @@
 </template>
 
 <script setup>
-import BaseButton from '../Base/BaseButtons/BaseButton.vue';
-import BaseFormMessageBox from '../Base/BaseForm/BaseFormMessageBox.vue';
-import BaseInputWrapper from '../Base/BaseForm/BaseInputWrapper.vue';
-import BaseLoader from '../Base/BaseLoader.vue';
-
-import LoginSignupActions from '../LoginSignupActions.vue';
-
 import { ref } from 'vue';
+
 import { useRouter } from 'vue-router';
-import { useAuthActions } from '../../composables/useAuth';
+
+import BaseButton from '@/Base/BaseButtons/BaseButton.vue';
+import BaseFormMessageBox from '@/Base/BaseForm/BaseFormMessageBox.vue';
+import BaseInputWrapper from '@/Base/BaseForm/BaseInputWrapper.vue';
+import BaseLoader from '@/Base/BaseLoader.vue';
+
+import LoginSignupActions from '@/LoginSignupActions.vue';
+
+import { useAuthActions } from '@/composables';
 
 const router = useRouter()
-
 
 const {
     error,
     isPending,
     logInUser
 } = useAuthActions()
-
-
 
 const form = ref({
     email: '',
@@ -114,7 +113,6 @@ const validateForm = () => {
     return Object.keys(formErrors.value).length === 0
 }
 
-
 const clearForm = () => {
     form.value.email = '';
     form.value.password = '';
@@ -134,6 +132,5 @@ const submitForm = async () => {
         router.push({ name: 'TheDashboard' })
         clearForm();
     }
-
 }
 </script>

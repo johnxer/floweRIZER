@@ -215,21 +215,18 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useDeleteData } from '../../composables/useDeleteData';
 
 import { differenceInDays } from "date-fns";
 
-import { useStorage } from '../../composables/useStorage';
-
-import { useUpdateData } from '../../composables/useUpdateData';
-
-import { useMobileStore } from '../../stores/useMobileStore';
-import { usePlantsStore } from '../../stores/usePlantsStore';
-
-import { useObserveVisibility } from '../../composables/useObserveVisibility';
 import BaseLoader from './BaseLoader.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
+import { useMobileStore } from '@/stores/useMobileStore';
+import { usePlantsStore } from '@/stores/usePlantsStore';
+
+import { useDeleteData, useStorage, useUpdateData } from '@/composables';
+
+import { addDelay, observeVisibility } from '@/utils';
 
 const {
     error: errorUpdateData,
@@ -276,10 +273,6 @@ const {
     deleteImageByUrl
 } = useStorage()
 
-const {
-    observeVisibility
-} = useObserveVisibility()
-
 const isWateredNow = computed(() => plantsStore.isWateredNow(props.plant.id))
 
 const getDaysAgo = computed(() => {
@@ -315,8 +308,6 @@ const isWatered = computed(() => {
     return props.plant.wateringFrequency > (getDaysAgo.value)
 })
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
-
 const handleDeletePlant = async () => {
     const collectionPath = `rooms/${props.roomId}/plants/`
     const documentId = props.plant.id
@@ -329,7 +320,7 @@ const handleDeletePlant = async () => {
     const el = document.querySelector(`[data-plant-id="${props.plant.id}"]`)
 
     el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
-    await delay(1000)
+    await addDelay(1000)
 
     if (documentImgSrc) successDelete = await deleteImageByUrl(props.plant.imgSrc)
 

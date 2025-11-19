@@ -123,13 +123,11 @@ import { computed, nextTick, onMounted, onUpdated, ref } from 'vue';
 
 import { formatDistanceToNow } from 'date-fns';
 
-import BaseLoader from '../Base/BaseLoader.vue';
+import BaseLoader from '@/components/Base/BaseLoader.vue';
 
-import { useActiveChat } from '../../composables/useActiveChat';
-import { useFlowerChat } from '../../composables/useFlowerChat';
-import { useGetChatData } from '../../composables/useGetChatData';
-import { useSendData } from '../../composables/useSendData';
-import { useAuthStore } from '../../stores/useAuthStore';
+import { useAuthStore } from '@/stores/useAuthStore';
+
+import { useActiveChat, useFlowerChat, useGetChatData, useSendData } from '@/composables';
 
 
 const {
@@ -156,8 +154,9 @@ const authStore = useAuthStore()
 
 
 const {
-    messages,
-    isPending: isPendingGet
+    error: errorGet,
+    isPending: isPendingGet,
+    data: messages,
 } = useGetChatData(activeChatId)
 
 

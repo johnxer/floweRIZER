@@ -34,13 +34,10 @@
 
 
 <script setup>
-import TheLogin from '../components/Auth/TheLogin.vue';
-import TheSignUp from '../components/Auth/TheSignUp.vue';
-
-
 import { computed, ref } from 'vue';
 
-
+import TheLogin from '@/components/Auth/TheLogin.vue';
+import TheSignUp from '@/components/Auth/TheSignUp.vue';
 
 const isLogin = ref(true);
 

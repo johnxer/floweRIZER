@@ -39,7 +39,7 @@
 <script setup>
 
 import { computed } from 'vue';
-import { useGetAllPlants } from '../../composables/useGetData';
+import { useGetAllPlants } from '../../composables';
 import { useRoomsStore } from '../../stores/useRoomsStore';
 import StatsBoxItem from './StatsBoxItem.vue';
 
@@ -47,9 +47,9 @@ import StatsBoxItem from './StatsBoxItem.vue';
 const roomsStore = useRoomsStore()
 
 const {
-    items: plants,
     error: errorPlants,
-    isPending: isPendingPlants
+    isPending: isPendingPlants,
+    data: plants,
 } = useGetAllPlants()
 
 const roomsTotal = computed(() => roomsStore.rooms.filter(r => r.id !== 'unassigned').length)

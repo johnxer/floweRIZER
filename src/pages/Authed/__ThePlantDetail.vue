@@ -11,7 +11,7 @@
 
 <script setup>
 
-import BasePageTitle from '../../components/Base/BasePageTitle.vue';
+import BasePageTitle from '@/components/Base/BasePageTitle.vue';
 
 defineProps({
     plantId: {

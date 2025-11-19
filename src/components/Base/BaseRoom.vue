@@ -240,23 +240,20 @@
 <script setup>
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
+import vDraggable from 'vuedraggable';
+
 import BaseButton from './BaseButtons/BaseButton.vue';
 import BaseLoader from './BaseLoader.vue';
 import BasePlantListItem from './BasePlantListItem.vue';
 import BasePopoverContent from './BasePopoverContent.vue';
 
+import { useDragStore } from '@/stores/useDragStore';
+import { usePlantsStore } from '@/stores/usePlantsStore';
+import { useRoomsStore } from '@/stores/useRoomsStore';
+import { useScrollStore } from '@/stores/useScrollStore';
 
-import { useDeleteData } from '../../composables/useDeleteData';
-import { useGetData } from '../../composables/useGetData';
-
-import vDraggable from 'vuedraggable';
-import { useObserveVisibility } from '../../composables/useObserveVisibility';
-import { useStorage } from '../../composables/useStorage';
-import { useDragStore } from '../../stores/useDragStore';
-import { usePlantsStore } from '../../stores/usePlantsStore';
-import { useRoomsStore } from '../../stores/useRoomsStore';
-import { useScrollStore } from '../../stores/useScrollStore';
-
+import { useDeleteData, useGetData, useStorage } from '@/composables';
+import { addDelay, observeVisibility } from '@/utils';
 
 const roomsStore = useRoomsStore()
 const plantsStore = usePlantsStore()
@@ -272,7 +269,7 @@ const props = defineProps({
 const {
     error,
     isPending,
-    items: plants
+    data: plants
 } = useGetData(`rooms/${props.room.id}/plants`)
 
 const {
@@ -288,10 +285,6 @@ const {
     isPending: isPendingDeleteImage,
     deleteImageByUrl
 } = useStorage()
-
-const {
-    observeVisibility   
-} = useObserveVisibility()
 
 const dragStore = useDragStore()
 
@@ -355,9 +348,6 @@ const isOpen = ref(false)
 const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
-
-
 const isBeingDeleted = ref(false)
 
 const handleDeleteRoom = async () => {
@@ -368,7 +358,7 @@ const handleDeleteRoom = async () => {
 
     if (el) {
         el.classList.add('animate-popOut', 'transition-discrete', 'fill-mode-forwards')
-        await delay(1000)
+        await addDelay(1000)
     }
 
     roomsStore.hideRoomTemp('unassigned')

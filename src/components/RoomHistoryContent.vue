@@ -63,15 +63,16 @@
 </template>
 
 <script setup>
+import { computed, ref, watchEffect } from "vue";
+
 import { format } from "date-fns";
 
-import { useGetDetails } from '../composables/useGetDetail';
-
-import { computed, ref, watchEffect } from "vue";
-import { useAuth } from "../composables/useAuth";
-import { useRoomsStore } from "../stores/useRoomsStore";
 import BaseLoader from './Base/BaseLoader.vue';
 import BaseModalContent from './Base/BaseModal/BaseModalContent.vue';
+
+import { useRoomsStore } from "@/stores/useRoomsStore";
+
+import { useAuth, useGetDetails } from '@/composables';
 
 const { getUid } = useAuth();
 
@@ -83,7 +84,7 @@ const roomsStore = useRoomsStore()
 const {
     error: errorRoom,
     isPending: isPendingRoom,
-    details: detailsRoom,
+    data: detailsRoom,
 } = useGetDetails(`rooms/${roomsStore.selectedRoomId}`)
 
 watchEffect(() => {

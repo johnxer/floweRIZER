@@ -17,7 +17,7 @@
 
 <script setup>
 
-import BaseLoader from '../Base/BaseLoader.vue';
+import BaseLoader from '@/components/Base/BaseLoader.vue';
 
 const props = defineProps({
     icon: {

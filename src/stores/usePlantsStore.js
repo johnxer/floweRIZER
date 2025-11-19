@@ -1,5 +1,8 @@
-import { defineStore } from 'pinia';
 import { ref } from 'vue';
+
+import { defineStore } from 'pinia';
+
+import { addDelay } from '@/utils';
 
 export const usePlantsStore = defineStore('usePlantsStore', () => {
     const setPlantVisible = (plantId, visible) => {
@@ -10,12 +13,10 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
 
     const wateredNow = ref({});
 
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
     const markAsWatered = async (plantId) => {
         if (isPlantVisible.value[plantId]) {
             wateredNow.value[plantId] = true;
-            await delay(1000);
+            await addDelay(1000);
             wateredNow.value[plantId] = false;
         }
     };

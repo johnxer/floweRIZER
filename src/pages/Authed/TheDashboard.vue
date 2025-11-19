@@ -83,32 +83,28 @@
 
 <script setup>
 
+import { computed, nextTick, ref, watch } from 'vue';
 
-import { computed, nextTick, watch } from 'vue';
+import BaseButton from '@/components/Base/BaseButtons/BaseButton.vue';
+import BaseContainer from '@/components/Base/BaseContainer.vue';
+import BaseLoader from '@/components/Base/BaseLoader.vue';
+import BaseRoom from '@/components/Base/BaseRoom.vue';
 
-import BaseButton from '../../components/Base/BaseButtons/BaseButton.vue';
-import BaseContainer from '../../components/Base/BaseContainer.vue';
-import BaseLoader from '../../components/Base/BaseLoader.vue';
-import BaseRoom from '../../components/Base/BaseRoom.vue';
+import StatsBox from '@/components/Stats/StatsBox.vue';
+import TheModals from '@/components/TheModals.vue';
 
-import StatsBox from '../../components/Stats/StatsBox.vue';
-import TheModals from '../../components/TheModals.vue';
+import { useRoomsStore } from '@/stores/useRoomsStore';
+import { useScrollStore } from '@/stores/useScrollStore';
 
-import { ref } from 'vue';
-import { useGetAllPlants, useGetData } from '../../composables/useGetData';
-import { useObserveVisibility } from '../../composables/useObserveVisibility';
-import { useRoomsStore } from '../../stores/useRoomsStore';
-import { useScrollStore } from '../../stores/useScrollStore';
+import { useGetAllPlants, useGetData } from '@/composables';
+
+import { observeVisibility } from '@/utils';
 
 const {
     error,
     isPending,
-    items: rooms
+    data: rooms
 } = useGetData('rooms')
-
-const {
-    observeVisibility
-} = useObserveVisibility()
 
 const roomsStore = useRoomsStore()
 
@@ -161,7 +157,7 @@ watch(
 )
 
 const {
-    items: plants,
+    data: plants,
     error: errorPlants,
     isPending: isPendingPlants
 } = useGetAllPlants()

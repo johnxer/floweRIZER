@@ -11,7 +11,7 @@ import FloatingVue from 'floating-vue';
 import 'floating-vue/dist/style.css';
 
 import './assets/main.css';
-import { useAuth } from './composables/useAuth';
+import { useAuth } from './composables';
 
 const app = createApp(App);
 

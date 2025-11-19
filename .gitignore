@@ -11,3 +11,4 @@
 # editor / OS stuff
 .vscode
 .DS_Store
+jsconfig.json

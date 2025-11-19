@@ -55,15 +55,14 @@
 
 <script setup>
 
-import BaseContainer from '../components/Base/BaseContainer.vue';
+import BaseContainer from '@/components/Base/BaseContainer.vue';
+
+import PwReset from '@/components/Auth/PwReset.vue';
+import TheLogin from '@/components/Auth/TheLogin.vue';
+import TheSignUp from '@/components/Auth/TheSignUp.vue';
 
 
-import PwReset from '../components/Auth/PwReset.vue';
-import TheLogin from '../components/Auth/TheLogin.vue';
-import TheSignUp from '../components/Auth/TheSignUp.vue';
-
-
-import { useAuthStore } from '../stores/useAuthStore';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const authStore = useAuthStore()
 

@@ -170,28 +170,25 @@
 </template>
 
 <script setup>
-import { format } from "date-fns";
-
-import BaseButton from "../../components/Base/BaseButtons/BaseButton.vue";
-import BaseContainer from "../../components/Base/BaseContainer.vue";
-import BaseLoader from '../../components/Base/BaseLoader.vue';
-import BaseModal from "../../components/Base/BaseModal/BaseModal.vue";
-import BasePageTitle from '../../components/Base/BasePageTitle.vue';
-import BasePlantListItem from '../../components/Base/BasePlantListItem.vue';
-import BasePopoverContent from '../../components/Base/BasePopoverContent.vue';
-
-import TheModals from "../../components/TheModals.vue";
-
-import AddNewPlantContent from "../../components/AddNewPlantContent.vue";
-
-import { useGetData } from '../../composables/useGetData';
-
 import { computed, ref } from "vue";
+
+import { format } from "date-fns";
 import { useRouter } from "vue-router";
-import { useDeleteData } from "../../composables/useDeleteData";
-import { useGetDetails } from '../../composables/useGetDetail';
-import { useStorage } from "../../composables/useStorage";
-import { useRoomsStore } from "../../stores/useRoomsStore";
+
+import BaseButton from "@/components/Base/BaseButtons/BaseButton.vue";
+import BaseContainer from "@/components/Base/BaseContainer.vue";
+import BaseLoader from '@/components/Base/BaseLoader.vue';
+import BaseModal from "@/components/Base/BaseModal/BaseModal.vue";
+import BasePageTitle from '@/components/Base/BasePageTitle.vue';
+import BasePlantListItem from '@/components/Base/BasePlantListItem.vue';
+import BasePopoverContent from '@/components/Base/BasePopoverContent.vue';
+
+import AddNewPlantContent from "@/components/AddNewPlantContent.vue";
+import TheModals from "@/components/TheModals.vue";
+
+import { useRoomsStore } from "@/stores/useRoomsStore";
+
+import { useDeleteData, useGetData, useGetDetails, useStorage } from '@/composables';
 
 const props = defineProps({
     roomId: {
@@ -205,13 +202,13 @@ const roomsStore = useRoomsStore()
 const {
     error: errorRoom,
     isPending: isPendingRoom,
-    details: detailsRoom,
+    data: detailsRoom,
 } = useGetDetails(`rooms/${props.roomId}`)
 
 const {
     error: errorPlants,
     isPending: isPendingPlants,
-    items: plants,
+    data: plants,
 } = useGetData(`rooms/${props.roomId}/plants`)
 
 
