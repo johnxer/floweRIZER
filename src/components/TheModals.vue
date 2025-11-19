@@ -44,12 +44,12 @@
 <script setup>
 import { ref } from 'vue';
 
-import BaseModal from './Base/BaseModal/BaseModal.vue';
+import BaseModal from '@/components/base/BaseModal/BaseModal.vue';
 
-import AddNewPlantContent from './AddNewPlantContent.vue';
-import AddNewRoomContent from './AddNewRoomContent.vue';
-import PlantHistoryContent from './PlantHistoryContent.vue';
-import RoomHistoryContent from './RoomHistoryContent.vue';
+import AddNewPlantContent from '@/components/features/plants/AddNewPlantContent.vue';
+import PlantHistoryContent from '@/components/features/plants/PlantHistoryContent.vue';
+import AddNewRoomContent from '@/components/features/rooms/AddNewRoomContent.vue';
+import RoomHistoryContent from '@/components/features/rooms/RoomHistoryContent.vue';
 
 import { usePlantsStore } from '@/stores/usePlantsStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';

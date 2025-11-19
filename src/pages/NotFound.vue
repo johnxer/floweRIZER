@@ -10,7 +10,7 @@
             </h1>
             <img
                 alt="404 Not Found"
-                src="/src/img/404.svg"
+                src="/src/assets/images/404.svg"
                 class="w-3/5 sm:w-2/5 mb-4"
             >
             <router-link
@@ -29,7 +29,7 @@
 <script setup>
 import { computed } from 'vue';
 
-import BaseContainer from '@/components/Base/BaseContainer.vue';
+import BaseContainer from '@/components/base/BaseContainer.vue';
 
 import { useAuthStore } from '@/stores/useAuthStore';
 

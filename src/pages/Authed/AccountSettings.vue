@@ -172,15 +172,15 @@ import { auth } from '@/firebase/config';
 import { updateProfile } from 'firebase/auth';
 import { storeToRefs } from 'pinia';
 
-import BaseButton from '@/components/Base/BaseButtons/BaseButton.vue';
-import BaseContainer from '@/components/Base/BaseContainer.vue';
-import BaseFormMessageBox from '@/components/Base/BaseForm/BaseFormMessageBox.vue';
-import BaseInput from '@/components/Base/BaseForm/BaseInput.vue';
-import BaseInputWrapperAuthed from '@/components/Base/BaseForm/BaseInputWrapperAuthed.vue';
-import BaseLoader from '@/components/Base/BaseLoader.vue';
-import BaseModal from '@/components/Base/BaseModal/BaseModal.vue';
+import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BaseContainer from '@/components/base/BaseContainer.vue';
+import BaseFormMessageBox from '@/components/base/BaseForm/BaseFormMessageBox.vue';
+import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
+import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
+import BaseModal from '@/components/base/BaseModal/BaseModal.vue';
 
-import ConfirmDeleteAccountContent from '@/components/ConfirmDeleteAccountContent.vue';
+import ConfirmDeleteAccountContent from '@/components/features/auth/ConfirmDeleteAccountContent.vue';
 
 import { useAuthStore } from '@/stores/useAuthStore';
 

@@ -31,10 +31,10 @@
 
 
 
-import TheChat from './components/AIChat/TheChat.vue';
-import SidebarMenu from './components/UI/SidebarMenu.vue';
-import TheHeader from './components/UI/TheHeader.vue';
-import TheLogoCircle from './components/UI/TheLogoCircle.vue';
+import TheChat from './components/features/chat/TheChat.vue';
+import SidebarMenu from './components/layout/SidebarMenu.vue';
+import TheHeader from './components/layout/TheHeader.vue';
+import TheLogoCircle from './components/layout/TheLogoCircle.vue';
 
 import { computed, ref, watchEffect } from 'vue';
 
