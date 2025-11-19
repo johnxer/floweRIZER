@@ -1,5 +1,7 @@
 TODO
 
+- optimize some code - e.g. delay method - move to the standalone file
+
 - add to room log the plants movement.
 
 - footer with github link - prbbly will be moved and display elsewhere
