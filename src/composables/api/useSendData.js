@@ -1,93 +1,75 @@
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-import { db } from '@/firebase/config';
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 
 import { useAuthStore } from '@/stores/useAuthStore';
+import { db } from '../../firebase/config';
 
 export const useSendData = () => {
     const authStore = useAuthStore();
 
-    const uid = authStore.user?.uid;
+    const uid = computed(() => authStore.user?.uid);
+
+    const collectionsMap = {
+        chats: (id) => ({
+            path: ['users', uid.value, 'chats', id, 'messages'],
+            parent: ['users', uid.value, 'chats', id],
+        }),
+        rooms: () => ({
+            path: ['users', uid.value, 'rooms'],
+            parent: null,
+        }),
+        plants: (id) => ({
+            path: ['users', uid.value, 'rooms', id, 'plants'],
+            parent: null,
+        }),
+    };
 
     const isPending = ref(false);
     const error = ref(null);
 
-    const sendDataChats = async (chatId, data) => {
-        if (!uid) return false;
-
-        isPending.value = true;
-        error.value = null;
-
-        const chatPath = `users/${uid}/chats/${chatId}`;
-        const chatReference = doc(db, chatPath);
-        const messagesReference = collection(db, `${chatPath}/messages`);
-
-        try {
-            const response = await addDoc(messagesReference, {
-                createdAt: serverTimestamp(),
-                ...data,
-            });
-
-            await updateDoc(chatReference, {
-                lastMessageAt: serverTimestamp(),
-            });
-
-            return true;
-        } catch (err) {
-            error.value = err.message;
+    const sendData = async (type, data, id) => {
+        if (!uid.value) {
+            error.value = 'User not authenticated';
             return false;
-        } finally {
-            isPending.value = false;
         }
-    };
 
-    const sendDataRooms = async (data) => {
-        if (!uid) return false;
+        const buildPaths = collectionsMap[type];
 
-        isPending.value = true;
-        error.value = null;
-
-        const roomPath = `users/${uid}/rooms`;
-        const roomReference = collection(db, `${roomPath}`);
-
-        try {
-            const response = await addDoc(roomReference, {
-                createdAt: serverTimestamp(),
-                ...data,
-            });
-
-            return response.id;
-        } catch (err) {
-            error.value = err.message;
+        if (!buildPaths) {
+            error.value = `Invalid data type: ${type}`;
             return false;
-        } finally {
-            isPending.value = false;
         }
-    };
 
-    const sendDataPlants = async (data, roomId) => {
-        if (!uid) return false;
+        const { path, parent } = buildPaths(id);
+
+        const collectionReference = collection(db, ...path);
+        const parentReference = parent ? doc(db, ...parent) : null;
 
         isPending.value = true;
         error.value = null;
 
-        const plantCollection = collection(db, `users/${uid}/rooms/${roomId}/plants`);
-
-        const payload = { ...data };
-
-        if (payload.wateredNow) {
-            payload.lastWateredDate = serverTimestamp();
-        }
-
-        delete payload.wateredNow;
-
         try {
-            const response = await addDoc(plantCollection, {
+            const payload = { ...data };
+
+            if (type === 'plants') {
+                if (payload.wateredNow) {
+                    payload.lastWateredDate = serverTimestamp();
+                }
+
+                delete payload.wateredNow;
+            }
+
+            const response = await addDoc(collectionReference, {
+                createdAt: serverTimestamp(),
                 ...payload,
-                userId: uid,
-                createdAt: serverTimestamp(),
             });
+
+            if (type === 'chats') {
+                await updateDoc(parentReference, {
+                    lastMessageAt: serverTimestamp(),
+                });
+            }
 
             return response.id;
         } catch (err) {
@@ -101,8 +83,6 @@ export const useSendData = () => {
     return {
         isPending,
         error,
-        sendDataChats,
-        sendDataRooms,
-        sendDataPlants,
+        sendData,
     };
 };

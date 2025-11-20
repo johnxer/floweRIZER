@@ -136,7 +136,7 @@ const roomsStore = useRoomsStore()
 const {
     error: errorSendData,
     isPending: isPendingSendData,
-    sendDataRooms,
+    sendData
 } = useSendData()
 
 const {
@@ -308,7 +308,7 @@ const submitForm = async () => {
     let success = false;
 
     if (!localRoomId) {
-        success = await sendDataRooms(data)
+        success = await sendData('rooms', data)
     } else {
         success = await updateData(data, `rooms/${localRoomId}`)
     }

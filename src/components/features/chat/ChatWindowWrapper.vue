@@ -187,7 +187,7 @@ const {
 const {
     isPending: isPendingSend,
     error: errorSend,
-    sendDataChats
+    sendData
 } = useSendData()
 
 const authStore = useAuthStore()
@@ -235,7 +235,7 @@ const submitQuestion = async () => {
         message: question.value,
     }
 
-    await sendDataChats(activeChatId.value, userData)
+    await sendData('chats', userData, activeChatId.value)
 
     const success = await askFlowerBot(question.value);
 
@@ -248,7 +248,7 @@ const submitQuestion = async () => {
             message: answer.value,
         }
 
-        await sendDataChats(activeChatId.value, aiData)
+        await sendData('chats', aiData, activeChatId.value)
 
         question.value = ''
     }

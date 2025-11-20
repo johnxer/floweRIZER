@@ -169,7 +169,7 @@ const localRoomId = props.roomId
 const {
     error: errorSendData,
     isPending: isPendingSendData,
-    sendDataPlants,
+    sendData,
 } = useSendData()
 
 const {
@@ -202,7 +202,7 @@ const form = ref({
     desc: '',
     file: null,
     watering: 3,
-    wateredNow: false
+    ...(!localPlantId && { wateredNow: false })
 })
 
 const existingImageSrc = ref('')
@@ -294,7 +294,7 @@ const submitForm = async () => {
         name: form.value.name,
         desc: form.value.desc,
         wateringFrequency: form.value.watering,
-        wateredNow: !!form.value.wateredNow,
+        ...(!localPlantId && { wateredNow: !!form.value.wateredNow })
     }
 
     if (localPlantId) {
@@ -331,7 +331,7 @@ const submitForm = async () => {
     let success = false;
 
     if (!localPlantId) {
-        success = await sendDataPlants(data, localRoomId)
+        success = await sendData('plants', data, localRoomId)
     } else {
         success = await updateData(data, `rooms/${localRoomId}/plants/${localPlantId}`)
     }
