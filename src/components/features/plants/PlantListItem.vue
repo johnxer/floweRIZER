@@ -1,20 +1,17 @@
 <template>
     <li
         ref="plantRef"
-        class="group rounded-xl transition-all duration-600 relative grid grid-cols-[auto_60px_1fr] md:grid-cols-[60px_1fr] p-2 md:gap-4"
+        class="group rounded-xl transition-all duration-600 relative grid md:grid-cols-[60px_1fr] p-2 md:gap-4"
         :class="[
-            isDraggable ? 'cursor-move' : 'bg-white dark:bg-gray-900',
-            unassignedRoomPlant && isDraggable ? 'bg-gray-200 dark:bg-gray-900 hover:bg-gray-300/75 dark:hover:bg-gray-900/50' : 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50',
-            {
-
-                '': isDraggable && isWatered,
-                '': isWatered,
-                'js-plant-handle': !mobileStore.isMobile
-            }
+            mobileStore.isMobile && isDraggable ? 'grid-cols-[auto_60px_1fr]' : 'grid-cols-[60px_1fr]',
+            isDraggable && unassignedRoomPlant && 'bg-gray-200 dark:bg-gray-900 hover:bg-gray-300/75 dark:hover:bg-gray-900/50',
+            isDraggable && !unassignedRoomPlant && 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50',
+            !mobileStore.isMobile && 'js-plant-handle',
+            isDraggable ? 'cursor-move' : 'bg-gray-50 dark:bg-gray-900'
         ]"
     >
         <button
-            v-if="mobileStore.isMobile"
+            v-if="mobileStore.isMobile && isDraggable"
             type="button"
             class="size-5 h-full left-0 text-xl text-gray-400 dark:text-gray-600 mr-2 flex items-center js-plant-handle"
         >
@@ -36,9 +33,7 @@
                         loader-size="sm"
                         position-type="absolute"
                     />
-
                 </div>
-
                 <img
                     v-if="plant.imgSrc"
                     ref="imgRef"
@@ -184,12 +179,10 @@
                                                     Delete plant
                                                 </span>
                                             </button>
-
                                         </li>
                                     </ul>
                                 </template>
                             </base-popover-content>
-
                         </template>
                     </v-dropdown>
                 </div>
@@ -199,10 +192,7 @@
             v-if="showMoreDetails"
             class="text-start text-sm col-span-full"
         >
-            <div
-                class="pl-[calc(var(--spacing)*12+30px)] pr-2 rounded-xl transition-all duration-600 text-gray-400 dark:text-gray-500"
-                :class="isWatered ? '' : ''"
-            >
+            <div class="pl-[calc(var(--spacing)*12+30px)] pr-2 rounded-xl transition-all duration-600 text-gray-400 dark:text-gray-500">
                 <div class="">
                     <div>
                         <p>
@@ -264,7 +254,6 @@ const props = defineProps({
     }
 })
 
-
 const plantsStore = usePlantsStore()
 
 const mobileStore = useMobileStore()
@@ -274,7 +263,6 @@ const {
     isPending,
     deleteData
 } = useDeleteData()
-
 
 const {
     error: errorUploadImage,

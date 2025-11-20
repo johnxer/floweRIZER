@@ -18,7 +18,7 @@
                 v-if="showChat"
                 class="fixed bottom-[calc(var(--bottomBarHeight)_+_var(--spacing)_*_2)] md:bottom-22 md:right-6 w-[calc(100vw_-_var(--spacing)_*_4)] md:w-84 mx-2 md:mx-auto md:h-120 top-2 md:top-auto bg-white dark:bg-gray-900 shadow-xl rounded-xl z-4 transition-all"
             >
-                <chat-window-wrapper />
+                <chat-window-wrapper @minimize-chat="toggleChat" />
             </div>
 
         </transition>
@@ -51,7 +51,6 @@ const props = defineProps({
     }
 })
 
-
 const isChatShown = ref(false)
 
 const showChat = computed(() => props.isChatOpen || isChatShown.value)
@@ -72,8 +71,6 @@ watch(showChat, newVal => {
 
     }
 })
-
-
 
 
 </script>

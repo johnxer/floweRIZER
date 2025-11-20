@@ -1,9 +1,5 @@
 TODO
 
-- add codition for the bg of the plant in the room for dark mode to stand out
-
-- add close button for chat window + chat ended icon + button to close chat
-
 - account delete functionality
 
 - add to room log the plants movement.

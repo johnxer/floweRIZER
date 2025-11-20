@@ -4,22 +4,35 @@
             <div class="text-lg md:text-xl">
                 <span class="text-primary font-bold">Flower</span><span class="text-primary-700">Chat</span>
             </div>
-            <button
-                v-if="activeChatId"
-                class="text-red-300 hover:text-red-900 cursor-pointer transition-colors duration-600 text-2xl flex dark:text-red-500/50"
-                @click="handleEndChat"
-                v-close-popper="true"
-            >
-                <span
-                    class="material-symbols-outlined"
+            <div class="flex gap-1 items-center">
+                <button
+                    v-if="activeChatId"
                     v-tooltip="{
                         content: 'End chat',
                     }"
+                    class="text-red-300 hover:text-red-900 cursor-pointer transition-colors duration-600 text-2xl flex dark:text-red-700"
+                    @click="handleEndChat"
+                    v-close-popper="true"
                 >
-                    call_end
-                </span>
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
 
-            </button>
+                </button>
+                <button
+                    v-tooltip="{
+                        content: 'Minimize chat',
+                    }"
+                    class="text-gray-500 hover:text-primary cursor-pointer transition-colors duration-600 text-3xl flex dark:text-gray-400"
+                    v-close-popper="true"
+                    @click="handleMinimizeChat"
+                >
+                    <span class="material-symbols-outlined">
+                        stat_minus_1
+                    </span>
+
+                </button>
+            </div>
         </div>
         <base-loader
             v-if="isPendingGet"
@@ -29,9 +42,25 @@
         </base-loader>
         <div
             v-else-if="!activeChatId"
-            class="p-4 text-center text-gray-400 grow-1 flex items-center justify-center"
+            class="p-4 text-center grow-1 flex flex-col items-center justify-center"
         >
-            Chat ended
+            <span class="material-symbols-outlined text-8xl mb-2 text-gray-200 dark:text-gray-700">
+                chat_dashed
+            </span>
+            <span class="text-lg text-gray-400 dark:text-gray-400">
+                Chat has ended
+            </span>
+            <base-button
+                class="mt-4"
+                type="button"
+                :btn-full-width="false"
+                btn-style="notRoundedMd"
+                btn-size="sm"
+                btn-color="baseAlt"
+                @click="handleStartChat"
+            >
+                Start a new chat
+            </base-button>
         </div>
         <ul
             v-else
@@ -39,13 +68,13 @@
             ref="scrollWrapper"
         >
             <li class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm bg-primary-500/20 rounded-tr-2xl after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-500/20 after:-left-2">
-                <div class="text-xs mb-1 flex items-center gap-1 text-primary-700/50">
+                <div class="text-xs mb-1 flex items-center gap-1 text-primary-700/50 dark:text-primary-400/50">
                     <span class="material-symbols-outlined text-base">
                         network_intelligence
                     </span>
                     AI adviser
                 </div>
-                <p class="text-sm text-primary-700">
+                <p class="text-sm text-primary-700 dark:text-primary-400">
                     Hey plant lover! I’m floweRIZER 🌼<br />
                     I know (almost) everything about green life — watering, soil, light, you name it! 🌞🌿
                 </p>
@@ -64,7 +93,7 @@
                     <div
                         class="text-xs mb-1 flex items-center gap-1"
                         :class="message.role === 'ai' ?
-                            'text-primary-700/50' :
+                            'text-primary-700/50 dark:text-primary-400/50' :
                             'text-white/75'"
                     >
                         <span class="material-symbols-outlined text-base">
@@ -79,7 +108,7 @@
                     <p
                         class="text-sm"
                         :class="message.role === 'ai' ?
-                            'text-primary-700' :
+                            'text-primary-700 dark:text-primary-400' :
                             'text-white'"
                     >
                         {{ message.message }}
@@ -87,7 +116,7 @@
                     <div
                         class="text-[10px] text-end italic"
                         :class="message.role === 'ai' ?
-                            'text-primary-700/50' :
+                            'text-primary-700/50 dark:text-primary-400/50' :
                             'text-white/75'"
                     >
 
@@ -123,6 +152,7 @@ import { computed, nextTick, onMounted, onUpdated, ref } from 'vue';
 
 import { formatDistanceToNow } from 'date-fns';
 
+import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -163,7 +193,12 @@ const {
 const handleEndChat = async () => {
     await endChat()
     messages.value = []
-    // await getOrCreateChat() // to restart a new chat, will need to move it to a separate method
+}
+
+const emit = defineEmits(['minimize-chat'])
+
+const handleMinimizeChat = () => {
+    emit('minimize-chat')
 }
 
 
@@ -190,8 +225,6 @@ const submitQuestion = async () => {
         message: question.value,
     }
 
-
-
     await sendDataChats(activeChatId.value, userData)
 
     const success = await askFlowerBot(question.value);
@@ -211,11 +244,13 @@ const submitQuestion = async () => {
     }
 }
 
-
-
 onMounted(async () => {
     await getOrCreateChat()
 })
+
+const handleStartChat = async () => {
+    await getOrCreateChat()
+}
 
 const scrollWrapper = ref(null)
 

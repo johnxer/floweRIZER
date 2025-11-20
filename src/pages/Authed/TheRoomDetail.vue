@@ -313,6 +313,7 @@ const isImageLoaded = ref(false)
 const onLoad = () => {
     isImageLoaded.value = true
 }
+
 </script>
 
 <style lang="scss" scoped></style>

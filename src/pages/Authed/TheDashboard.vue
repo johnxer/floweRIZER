@@ -54,30 +54,8 @@
                     </button>
                 </transition>
             </div>
-
-
-
-            <!-- TO BE STYLED and make work -->
-            <!-- <div v-else>
-                    No rooms yet
-                    <br />
-                    Add a new roomw
-                    <br />
-                    <base-button
-                        @click="roomsStore.openAddModal"
-                        btn-style="notRoundedMd"
-                        btn-size="sm"
-                        :btn-full-width="false"
-                    >
-                        Add a new room
-                    </base-button>
-                    
-                </div> -->
-
         </transition>
-
         <the-modals />
-
     </base-container>
 </template>
 

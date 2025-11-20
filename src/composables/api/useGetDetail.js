@@ -6,9 +6,9 @@ import { doc } from 'firebase/firestore';
 export const useGetDetails = (dataType) => {
     const authStore = useAuthStore();
 
-    return useFirestoreSubscribeMulti(
-        [() => authStore.user?.uid],
-        uid => doc(db, `users/${uid}/${dataType}`),
-        true
-    )
-}
+    const buildPath = (uid) => {
+        return dataType ? `users/${uid}/${dataType}` : `users/${uid}`;
+    };
+
+    return useFirestoreSubscribeMulti([() => authStore.user?.uid], (uid) => doc(db, buildPath(uid)), true);
+};

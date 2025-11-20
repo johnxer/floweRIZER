@@ -1,8 +1,22 @@
 import { defineStore } from 'pinia';
-import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
+import { useGetDetails, useUpdateData } from '../composables';
 
 export const useThemeStore = defineStore('useThemeStore', () => {
-    const activeTheme = ref(localStorage.getItem('theme') || 'default');
+    const { data: userData } = useGetDetails();
+    const { updateData } = useUpdateData();
+
+    const activeTheme = ref('default');
+
+    watch(
+        userData,
+        (newVal) => {
+            if (newVal?.theme) {
+                activeTheme.value = newVal?.theme;
+            }
+        },
+        { immediate: true }
+    );
 
     const activeThemeIcon = ref(null);
     const activeThemeTooltip = ref(null);
@@ -14,21 +28,10 @@ export const useThemeStore = defineStore('useThemeStore', () => {
         document.body.classList.toggle('dark', isDark);
     };
 
-    const handleSetTheme = (theme) => {
+    const handleSetTheme = async (theme) => {
         activeTheme.value = theme;
+        await updateData({ theme });
     };
-
-    // const themeIcons = {
-    //     light: 'light_mode',
-    //     dark: 'dark_mode',
-    //     default: 'brightness_medium',
-    // };
-
-    // const themeTooltip = {
-    //     light: 'Light mode',
-    //     dark: 'Dark mode',
-    //     default: 'Device default',
-    // };
 
     const themeMap = {
         light: {
@@ -38,15 +41,14 @@ export const useThemeStore = defineStore('useThemeStore', () => {
         dark: {
             tooltip: 'Dark mode',
             icon: 'dark_mode',
-        },        
+        },
         default: {
             tooltip: 'Device default',
             icon: 'brightness_medium',
-        },        
+        },
     };
 
     watch(activeTheme, (newVal) => {
-        localStorage.setItem('theme', newVal);
         applyTheme(newVal);
         activeThemeIcon.value = themeMap[newVal].icon || themeMap.default.icon;
         activeThemeTooltip.value = themeMap[newVal].tooltip || themeMap.default.tooltip;
@@ -54,19 +56,10 @@ export const useThemeStore = defineStore('useThemeStore', () => {
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-    const handleDeviceChange = () => {
-        if (activeTheme.value === 'default') applyTheme('default');
-    };
-
-    onMounted(() => {
-        applyTheme(activeTheme.value);
-        activeThemeIcon.value = themeMap[activeTheme.value].icon;
-        activeThemeTooltip.value = themeMap[activeTheme.value].tooltip;
-        mediaQuery.addEventListener('change', handleDeviceChange);
-    });
-
-    onUnmounted(() => {
-        mediaQuery.removeEventListener('change', handleDeviceChange);
+    mediaQuery.addEventListener('change', () => {
+        if (activeTheme.value === 'default') {
+            applyTheme('default');
+        }
     });
 
     return {
