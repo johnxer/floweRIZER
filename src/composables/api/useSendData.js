@@ -60,8 +60,11 @@ export const useSendData = () => {
                 delete payload.wateredNow;
             }
 
+            const plantUserId = type === 'plants' ? { userId: uid.value } : {};
+
             const response = await addDoc(collectionReference, {
                 createdAt: serverTimestamp(),
+                ...plantUserId,
                 ...payload,
             });
 
