@@ -72,22 +72,19 @@
 <script setup>
 import { computed, ref, watchEffect } from "vue";
 
+import { db } from "@/firebase/config";
 import { format } from "date-fns";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/firebase/config";
 
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 import { usePlantsStore } from '@/stores/usePlantsStore';
 
-import { useAuth, useGetDetails } from '@/composables';
+import { useGetDetails } from '@/composables';
+import { useAuthStore } from "../../../stores/useAuthStore";
 
-const { getUid } = useAuth();
-
-const uid = getUid()
-
-
+const authStore = useAuthStore()
 const plantsStore = usePlantsStore()
 
 const {
@@ -145,7 +142,7 @@ watchEffect(async () => {
     console.log(roomIds)
 
     const RoomDocument = await Promise.all(
-        roomIds.map(id => getDoc(doc(db, `users/${uid}/rooms/${id}`)))
+        roomIds.map(id => getDoc(doc(db, `users/${authStore.user?.uid}/rooms/${id}`)))
     )
 
     const roomMap = new Map()

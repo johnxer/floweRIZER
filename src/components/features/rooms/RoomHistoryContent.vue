@@ -72,11 +72,7 @@ import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 import { useRoomsStore } from "@/stores/useRoomsStore";
 
-import { useAuth, useGetDetails } from '@/composables';
-
-const { getUid } = useAuth();
-
-const uid = getUid()
+import { useGetDetails } from '@/composables';
 
 
 const roomsStore = useRoomsStore()

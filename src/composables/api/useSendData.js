@@ -3,17 +3,19 @@ import { ref } from 'vue';
 import { db } from '@/firebase/config';
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 
-import { useAuth } from '@/composables/auth';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 export const useSendData = () => {
-    const { getUid } = useAuth();
+    const authStore = useAuthStore();
+
+    const uid = authStore.user?.uid;
+
+    if (!uid) return false;
 
     const isPending = ref(false);
     const error = ref(null);
 
     const sendDataChats = async (chatId, data) => {
-        const uid = getUid();
-
         if (!uid) return false;
 
         isPending.value = true;
@@ -43,8 +45,6 @@ export const useSendData = () => {
     };
 
     const sendDataRooms = async (data) => {
-        const uid = getUid();
-
         if (!uid) return false;
 
         isPending.value = true;
@@ -69,8 +69,6 @@ export const useSendData = () => {
     };
 
     const updateDataRooms = async (data, roomId) => {
-        const uid = getUid();
-
         if (!uid) return false;
 
         isPending.value = true;
@@ -79,7 +77,6 @@ export const useSendData = () => {
         const roomPath = `users/${uid}/rooms/${roomId}`;
         const roomReference = doc(db, `${roomPath}`);
 
-        
         try {
             await updateDoc(roomReference, {
                 ...data,
@@ -95,8 +92,6 @@ export const useSendData = () => {
     };
 
     const sendDataPlants = async (data, roomId) => {
-        const uid = getUid();
-
         if (!uid) return false;
 
         isPending.value = true;
@@ -127,8 +122,6 @@ export const useSendData = () => {
     };
 
     const updateDataPlants = async (data, roomId, plantId) => {
-        const uid = getUid();
-
         if (!uid) return false;
 
         isPending.value = true;

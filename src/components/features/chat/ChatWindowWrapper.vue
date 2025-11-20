@@ -62,78 +62,88 @@
                 Start a new chat
             </base-button>
         </div>
-        <ul
+        <div
             v-else
-            class="p-4 overflow-auto space-y-4 grow-1"
+            class="p-4 overflow-auto grow-1"
             ref="scrollWrapper"
         >
-            <li class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm bg-primary-500/20 rounded-tr-2xl after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-500/20 after:-left-2">
-                <div class="text-xs mb-1 flex items-center gap-1 text-primary-700/50 dark:text-primary-400/50">
-                    <span class="material-symbols-outlined text-base">
-                        network_intelligence
-                    </span>
-                    AI adviser
-                </div>
-                <p class="text-sm text-primary-700 dark:text-primary-400">
-                    Hey plant lover! I’m floweRIZER 🌼<br />
-                    I know (almost) everything about green life — watering, soil, light, you name it! 🌞🌿
-                </p>
-            </li>
-
-            <li
-                v-for="message in messages"
-                :key="message.id"
+            <transition-group
+                tag="ul"
+                name="fade"
+                class="space-y-4"
             >
-                <div
-                    class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm"
-                    :class="message.role === 'ai' ?
-                        'bg-primary-500/20 rounded-tr-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-500/20 after:-left-2' :
-                        'bg-primary-500 rounded-tl-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-l-[0.5rem] after:border-transparent after:border-l-primary-500 after:-right-2'"
+                <li
+                    :key="'default'"
+                    class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm bg-primary-500/20 rounded-tr-2xl after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-500/20 after:-left-2"
+                >
+                    <div class="text-xs mb-1 flex items-center gap-1 text-primary-700/50 dark:text-primary-400/50">
+                        <span class="material-symbols-outlined text-base">
+                            network_intelligence
+                        </span>
+                        AI adviser
+                    </div>
+                    <p class="text-sm text-primary-700 dark:text-primary-400">
+                        Hey plant lover! I’m floweRIZER 🌼<br />
+                        I know (almost) everything about green life — watering, soil, light, you name it! 🌞🌿
+                    </p>
+                </li>
+
+                <li
+                    v-for="message in messages"
+                    :key="message.id"
                 >
                     <div
-                        class="text-xs mb-1 flex items-center gap-1"
+                        class="relative p-3 rounded-bl-2xl rounded-br-2xl text-sm"
                         :class="message.role === 'ai' ?
-                            'text-primary-700/50 dark:text-primary-400/50' :
-                            'text-white/75'"
+                            'bg-primary-500/20 rounded-tr-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-r-[0.5rem] after:border-transparent after:border-r-primary-500/20 after:-left-2' :
+                            'bg-primary-500 rounded-tl-2xl after:content-[\'\'] after:absolute after:top-0 after:border-t-[0] after:border-b-[12px] after:border-l-[0.5rem] after:border-transparent after:border-l-primary-500 after:-right-2'"
                     >
-                        <span class="material-symbols-outlined text-base">
+                        <div
+                            class="text-xs mb-1 flex items-center gap-1"
+                            :class="message.role === 'ai' ?
+                                'text-primary-700/50 dark:text-primary-400/50' :
+                                'text-white/75'"
+                        >
+                            <span class="material-symbols-outlined text-base">
 
-                            {{
-                                message.role === 'ai' ? 'network_intelligence' : 'face'
-                            }}
+                                {{
+                                    message.role === 'ai' ? 'network_intelligence' : 'face'
+                                }}
 
-                        </span>
-                        {{ message.user }}
+                            </span>
+                            {{ message.user }}
+                        </div>
+                        <p
+                            class="text-sm"
+                            :class="message.role === 'ai' ?
+                                'text-primary-700 dark:text-primary-400' :
+                                'text-white'"
+                        >
+                            {{ message.message }}
+                        </p>
+                        <div
+                            class="text-[10px] text-end italic"
+                            :class="message.role === 'ai' ?
+                                'text-primary-700/50 dark:text-primary-400/50' :
+                                'text-white/75'"
+                        >
+
+                            {{ formatTimestamp(message.createdAt) }}
+                        </div>
                     </div>
-                    <p
-                        class="text-sm"
-                        :class="message.role === 'ai' ?
-                            'text-primary-700 dark:text-primary-400' :
-                            'text-white'"
-                    >
-                        {{ message.message }}
-                    </p>
-                    <div
-                        class="text-[10px] text-end italic"
-                        :class="message.role === 'ai' ?
-                            'text-primary-700/50 dark:text-primary-400/50' :
-                            'text-white/75'"
-                    >
-
-                        {{ formatTimestamp(message.createdAt) }}
-                    </div>
-                </div>
-            </li>
-            <li
-                v-if="isPendingAI"
-                class="animate-pulse flex items-center gap-2 text-gray-500 text-sm justify-end"
-            >
-                <span class="material-symbols-outlined text-2xl">
-                    network_intelligence
-                </span>
-                AI is thinking...
-            </li>
-        </ul>
+                </li>
+                <li
+                    v-if="isPendingAI"
+                    :key="'waiting'"
+                    class="animate-pulse flex items-center gap-2 text-gray-500 text-sm justify-end"
+                >
+                    <span class="material-symbols-outlined text-2xl">
+                        network_intelligence
+                    </span>
+                    AI is thinking...
+                </li>
+            </transition-group>
+        </div>
         <div class="border-t border-gray-200 dark:border-gray-800">
             <input
                 type="text"
@@ -148,7 +158,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, onUpdated, ref } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 import { formatDistanceToNow } from 'date-fns';
 
@@ -254,17 +264,18 @@ const handleStartChat = async () => {
 
 const scrollWrapper = ref(null)
 
-onUpdated(async () => {
+watch([messages, isPendingAI], async () => {
     await nextTick()
-    if (scrollWrapper.value) {
-        scrollWrapper.value.scrollTo(
-            {
+    setTimeout(() => {
+        if (scrollWrapper.value) {
+            scrollWrapper.value.scrollTo({
                 top: scrollWrapper.value.scrollHeight,
                 behavior: 'smooth'
-            }
-        )
-    }
+            })
+        }
+    }, 0)
 })
+
 
 </script>
 

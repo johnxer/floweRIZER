@@ -90,21 +90,9 @@ export const useAuth = () => {
         }
     };
 
-    const getUid = () => {
-        const uid = authStore.user?.uid;
-
-        if (!uid) {
-            error.value = 'User not authenticated';
-            return null;
-        }
-
-        return uid;
-    };
-
     return {
         initAuth,
         logOutUser,
         updateProfileData,
-        getUid
     };
 };
