@@ -54,7 +54,7 @@
                     image
                 </span>
                 <span class="text-wrap">
-                    {{ selectFileName }} 
+                    {{ selectFileName }}
                 </span>
             </div>
         </div>

@@ -213,7 +213,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 import { differenceInDays } from "date-fns";
 
@@ -350,6 +350,17 @@ onMounted(async () => {
             el.src = el.dataset.src
             el.removeAttribute('data-src')
         }
+    }
+})
+
+watch(() => props.plant.imgSrc, (newVal) => {
+    const el = imgRef.value
+    if (!el) return
+
+    el.src = newVal
+
+    if (el.dataset.src) {
+        el.removeAttribute('data-src')
     }
 })
 

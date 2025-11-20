@@ -142,7 +142,7 @@ import BaseUploadButton from '@/components/base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
-import { useGetDetails, useSendData, useStorage } from '@/composables';
+import { useGetDetails, useSendData, useStorage, useUpdateData } from '@/composables';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { usePlantsStore } from '@/stores/usePlantsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
@@ -170,7 +170,6 @@ const {
     error: errorSendData,
     isPending: isPendingSendData,
     sendDataPlants,
-    updateDataPlants
 } = useSendData()
 
 const {
@@ -182,6 +181,11 @@ const {
     deleteImageByUrl
 } = useStorage()
 
+const {
+    error: errorUpdate,
+    isPending: isPendingUpdate,
+    updateData,
+} = useUpdateData()
 
 const {
     error: errorPlant,
@@ -191,7 +195,7 @@ const {
 
 
 // const error = computed(() => errorSendData.value || errorUpload.value)
-const isPending = computed(() => isPendingSendData.value || isPendingUpload.value)
+const isPending = computed(() => isPendingSendData.value || isPendingUpload.value || isPendingUpdate.value)
 
 const form = ref({
     name: '',
@@ -329,10 +333,8 @@ const submitForm = async () => {
     if (!localPlantId) {
         success = await sendDataPlants(data, localRoomId)
     } else {
-        success = await updateDataPlants(data, localRoomId, localPlantId)
+        success = await updateData(data, `rooms/${localRoomId}/plants/${localPlantId}`)
     }
-
-    console.log(success);
 
     if (!!success) {
         if (oldImageUrl !== existingImageSrc.value) {

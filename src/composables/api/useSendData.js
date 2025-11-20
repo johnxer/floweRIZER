@@ -10,8 +10,6 @@ export const useSendData = () => {
 
     const uid = authStore.user?.uid;
 
-    if (!uid) return false;
-
     const isPending = ref(false);
     const error = ref(null);
 
@@ -68,29 +66,6 @@ export const useSendData = () => {
         }
     };
 
-    const updateDataRooms = async (data, roomId) => {
-        if (!uid) return false;
-
-        isPending.value = true;
-        error.value = null;
-
-        const roomPath = `users/${uid}/rooms/${roomId}`;
-        const roomReference = doc(db, `${roomPath}`);
-
-        try {
-            await updateDoc(roomReference, {
-                ...data,
-            });
-
-            return true;
-        } catch (err) {
-            error.value = err.message;
-            return false;
-        } finally {
-            isPending.value = false;
-        }
-    };
-
     const sendDataPlants = async (data, roomId) => {
         if (!uid) return false;
 
@@ -99,45 +74,22 @@ export const useSendData = () => {
 
         const plantCollection = collection(db, `users/${uid}/rooms/${roomId}/plants`);
 
-        if (data.wateredNow) {
-            data.lastWateredDate = serverTimestamp();
+        const payload = { ...data };
+
+        if (payload.wateredNow) {
+            payload.lastWateredDate = serverTimestamp();
         }
 
-        delete data.wateredNow;
+        delete payload.wateredNow;
 
         try {
             const response = await addDoc(plantCollection, {
-                ...data,
+                ...payload,
                 userId: uid,
                 createdAt: serverTimestamp(),
             });
 
             return response.id;
-        } catch (err) {
-            error.value = err.message;
-            return false;
-        } finally {
-            isPending.value = false;
-        }
-    };
-
-    const updateDataPlants = async (data, roomId, plantId) => {
-        if (!uid) return false;
-
-        isPending.value = true;
-        error.value = null;
-
-        const plantPath = `users/${uid}/rooms/${roomId}/plants/${plantId}`;
-        const plantReference = doc(db, `${plantPath}`);
-
-        delete data.wateredNow;
-
-        try {
-            await updateDoc(plantReference, {
-                ...data,
-            });
-
-            return true;
         } catch (err) {
             error.value = err.message;
             return false;
@@ -152,7 +104,5 @@ export const useSendData = () => {
         sendDataChats,
         sendDataRooms,
         sendDataPlants,
-        updateDataRooms,
-        updateDataPlants,
     };
 };

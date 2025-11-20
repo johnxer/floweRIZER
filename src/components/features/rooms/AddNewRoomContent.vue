@@ -115,7 +115,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 
-import { useGetDetails, useSendData, useStorage } from '@/composables';
+import { useGetDetails, useSendData, useStorage, useUpdateData } from '@/composables';
 
 import { addLog, resizeImageBitmap } from '@/utils';
 
@@ -137,7 +137,6 @@ const {
     error: errorSendData,
     isPending: isPendingSendData,
     sendDataRooms,
-    updateDataRooms
 } = useSendData()
 
 const {
@@ -148,6 +147,12 @@ const {
     uploadImage,
     deleteImageByUrl
 } = useStorage()
+
+const {
+    error: errorUpdate,
+    isPending: isPendingUpdate,
+    updateData,
+} = useUpdateData()
 
 let errorRoom, isPendingRoom, detailsRoom
 
@@ -164,7 +169,7 @@ if (localRoomId) {
 }
 
 // const error = computed(() => errorSendData.value || errorUpload.value)
-const isPending = computed(() => isPendingRoom.value || isPendingSendData.value || isPendingUpload.value)
+const isPending = computed(() => isPendingRoom.value || isPendingSendData.value || isPendingUpload.value || isPendingUpdate.value)
 
 const form = ref({
     name: '',
@@ -281,13 +286,13 @@ const submitForm = async () => {
 
         if (uploadSuccess) {
             data.imgSrc = url.value;
-            
+
             if (localRoomId) {
                 addLog(log, 'image', oldImageUrl, url.value)
             }
         }
     }
-    
+
     if (localRoomId) {
         const existingLog = detailsRoom.value?.log || [];
 
@@ -298,17 +303,17 @@ const submitForm = async () => {
     } else {
         data.log = log;
     }
- 
+
 
     let success = false;
 
     if (!localRoomId) {
         success = await sendDataRooms(data)
     } else {
-        success = await updateDataRooms(data, localRoomId, true)
+        success = await updateData(data, `rooms/${localRoomId}`)
     }
 
-    
+
 
     if (!!success) {
         if (oldImageUrl !== existingImageSrc.value) {

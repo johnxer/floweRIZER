@@ -128,20 +128,19 @@
                                         :key="plant.id"
                                         :plant="plant"
                                         :show-more-details="true"
+                                        :data-plant-id="plant.id"
                                         :room-id="props.roomId"
                                     />
                                 </transition-group>
                                 <div class="text-center">
                                     <base-button
                                         type="button"
-                                        @click="toggleModal()"
+                                        @click="plantsStore.openAddModal(props.roomId)"
                                         class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
                                         :btn-full-width="false"
                                         btn-style="notRoundedMd"
                                         btn-size="custom"
                                     >
-                                        <!-- Add a new plant -->
-
                                         <span class="material-symbols-outlined text-xl mr-1">
                                             add
                                         </span>
@@ -151,24 +150,12 @@
                                         >
                                             Plant
                                         </span>
-
                                     </base-button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <base-modal
-                    :modal-toggle="isModalOpen"
-                    @close-modal="toggleModal"
-                >
-
-                    <add-new-plant-content
-                        :room-id="props.roomId"
-                        :plant-id="editPlantId"
-                        @close-modal="toggleModal"
-                    />
-                </base-modal>
             </base-container>
         </div>
         <the-modals />
@@ -184,17 +171,16 @@ import { useRouter } from "vue-router";
 import BaseButton from "@/components/base/BaseButtons/BaseButton.vue";
 import BaseContainer from "@/components/base/BaseContainer.vue";
 import BaseLoader from '@/components/base/BaseLoader.vue';
-import BaseModal from "@/components/base/BaseModal/BaseModal.vue";
 import BasePageTitle from '@/components/base/BasePageTitle.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
 import BasePlantListItem from '@/components/features/plants/PlantListItem.vue';
 
-import AddNewPlantContent from "@/components/features/plants/AddNewPlantContent.vue";
 import TheModals from "@/components/TheModals.vue";
 
 import { useRoomsStore } from "@/stores/useRoomsStore";
 
 import { useDeleteData, useGetData, useGetDetails, useStorage } from '@/composables';
+import { usePlantsStore } from "../../stores/usePlantsStore";
 
 const props = defineProps({
     roomId: {
@@ -204,11 +190,13 @@ const props = defineProps({
 })
 
 const roomsStore = useRoomsStore()
+const plantsStore = usePlantsStore()
 
 const {
     error: errorRoom,
     isPending: isPendingRoom,
     data: detailsRoom,
+    reload,
 } = useGetDetails(`rooms/${props.roomId}`)
 
 const {
