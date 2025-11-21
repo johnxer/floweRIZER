@@ -39,9 +39,10 @@ export const useAuthActions = () => {
             await setDoc(userReference, {
                 email: user.email,
                 displayName: data.username || '',
-                photoUrl: user.photoURL || '',
+                photoURL: user.photoURL || '',
                 createdAt: serverTimestamp(),
                 lastLogin: serverTimestamp(),
+                theme: 'default',
             });
 
             const unassignedRoomReference = doc(db, `users/${user.uid}/rooms/unassigned`);
@@ -85,10 +86,25 @@ export const useAuthActions = () => {
 
     const userReauthenticate = async (email, password) => {
         const credential = EmailAuthProvider.credential(email, password);
-        await reauthenticateWithCredential(auth.currentUser, credential);
+
+        error.value = null;
+
+        try {
+            await reauthenticateWithCredential(auth.currentUser, credential);
+
+            return true;
+        } catch (err) {
+            if (err.code === 'auth/invalid-credential') {
+                error.value = "You've entered wrong password";
+            } else {
+                error.value = err.message;
+            }
+
+            return false;
+        }
     };
 
-    const userDelete = async (password) => {
+    const userDelete = async () => {
         error.value = null;
         isPending.value = true;
 
@@ -101,22 +117,50 @@ export const useAuthActions = () => {
         }
 
         try {
-            await userReauthenticate(user.email, password);
             await deleteUser(user);
             return true;
         } catch (err) {
             if (err.code === 'auth/requires-recent-login') {
                 error.value = 'Please log in again to delete your account.';
-            } else if (err.code === 'auth/invalid-credential') {
-                error.value = "You've entered wrong password";
             } else {
                 error.value = err.message;
             }
+
             return false;
         } finally {
             isPending.value = false;
         }
     };
+
+    // const userChangePassword = async () => {
+    //     error.value = null;
+    //     isPending.value = true;
+
+    //     const user = auth.currentUser;
+
+    //     if (!user) {
+    //         error.value = 'User not logged in.';
+    //         isPending.value = false;
+    //         return false;
+    //     }
+
+    //     try {
+    //         // updatePassword(user, newPassword);
+    //         updatePassword(user, '123123123123');
+    //         return true;
+    //     } catch (err) {
+    //         if (err.code === 'auth/requires-recent-login') {
+    //             error.value = 'Please log in again to delete your account.';
+    //         } else {
+    //             error.value = err.message;
+    //         }
+
+    //         console.log(error.value);
+    //         return false;
+    //     } finally {
+    //         isPending.value = false;
+    //     }
+    // };
 
     return {
         error,
@@ -126,5 +170,6 @@ export const useAuthActions = () => {
         resetEmail,
         userReauthenticate,
         userDelete,
+        // userChangePassword,
     };
 };

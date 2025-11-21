@@ -254,6 +254,7 @@ import { useScrollStore } from '@/stores/useScrollStore';
 
 import { useDeleteData, useGetData, useStorage } from '@/composables';
 import { addDelay, observeVisibility } from '@/utils';
+import { useMoveData } from '../../../composables/api/useMoveData';
 
 const roomsStore = useRoomsStore()
 const plantsStore = usePlantsStore()
@@ -276,9 +277,14 @@ const {
     error: errorDelete,
     isPending: isPendingDelete,
     deleteData,
+} = useDeleteData()
+
+const {
+    error: errorMove,
+    isPending: isPendingMove,
     movePlants,
     movePlant
-} = useDeleteData()
+} = useMoveData()
 
 const {
     error: errorDeleteImage,

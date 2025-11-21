@@ -56,7 +56,7 @@ const plantsTotal = computed(() => plants.value?.length - plantsInUnassigned.val
 
 const isPending = computed(() => isPendingPlants.value)
 
-const avgPlantsPerRoom = computed(() => Math.round((plantsTotal.value / roomsTotal.value + Number.EPSILON) * 100) / 100)
+const avgPlantsPerRoom = computed(() => roomsTotal.value !== 0 ? Math.round((plantsTotal.value / roomsTotal.value + Number.EPSILON) * 100) / 100 : 0)
 
 </script>
 

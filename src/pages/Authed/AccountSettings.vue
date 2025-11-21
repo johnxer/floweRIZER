@@ -145,6 +145,17 @@
                             Save
                         </base-button>
 
+                        <!-- <base-button
+                            class="mt-8"
+                            btn-style="notRoundedMd"
+                            :disabled="isPendingProfileUpdate"
+                            btn-size="base"
+                            @click="handlePwChange"
+                            type="button"
+                        >
+                            ChangePw
+                        </base-button> -->
+
                     </form>
                 </div>
 
@@ -192,7 +203,7 @@ import ConfirmDeleteAccountContent from '@/components/features/auth/ConfirmDelet
 
 import { useAuthStore } from '@/stores/useAuthStore';
 
-import { useAuth, useStorage, useUpdateData } from '@/composables';
+import { useAuth, useAuthActions, useStorage, useUpdateData } from '@/composables';
 import { resizeImageBitmap } from '@/utils';
 
 const {
@@ -219,6 +230,8 @@ const {
     isPending: isPendingProfileUpdate,
     updateData,
 } = useUpdateData()
+
+const { userChangePassword } = useAuthActions()
 
 const userAvatarURL = computed(() => {
     return user.value?.photoURL || 'https://placehold.co/600x600?text=No+Avatar'
@@ -248,7 +261,7 @@ const handleFile = async (e) => {
 
     if (!selectedFile || !allowedFormats.includes(selectedFile.type)) return
 
-    const oldPhotoUrl = user.value?.photoURL || null
+    const oldPhotoURL = user.value?.photoURL || null
 
     const resizedFile = await resizeImageBitmap(selectedFile, 200, 200)
 
@@ -277,8 +290,8 @@ const handleFile = async (e) => {
             photoURL: url.value,
         }
 
-        if (oldPhotoUrl) {
-            await deleteImageByUrl(oldPhotoUrl)
+        if (oldPhotoURL) {
+            await deleteImageByUrl(oldPhotoURL)
         }
 
     } catch (err) {
@@ -348,6 +361,10 @@ const isImageLoaded = ref(false)
 
 const onLoad = () => {
     isImageLoaded.value = true
+}
+
+const handlePwChange = async () => {
+    await userChangePassword()
 }
 
 </script>

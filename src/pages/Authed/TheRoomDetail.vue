@@ -180,6 +180,7 @@ import TheModals from "@/components/TheModals.vue";
 import { useRoomsStore } from "@/stores/useRoomsStore";
 
 import { useDeleteData, useGetData, useGetDetails, useStorage } from '@/composables';
+import { useMoveData } from "../../composables/api/useMoveData";
 import { usePlantsStore } from "../../stores/usePlantsStore";
 
 const props = defineProps({
@@ -210,8 +211,13 @@ const {
     error: errorDelete,
     isPending: isPendingDelete,
     deleteData,
-    movePlants,
 } = useDeleteData()
+
+const {
+    error: errorMove,
+    isPending: isPendingMove,
+    movePlants,
+} = useMoveData()
 
 const {
     error: errorDeleteImage,

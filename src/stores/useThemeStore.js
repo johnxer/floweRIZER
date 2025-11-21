@@ -8,31 +8,6 @@ export const useThemeStore = defineStore('useThemeStore', () => {
 
     const activeTheme = ref('default');
 
-    watch(
-        userData,
-        (newVal) => {
-            if (newVal?.theme) {
-                activeTheme.value = newVal?.theme;
-            }
-        },
-        { immediate: true }
-    );
-
-    const activeThemeIcon = ref(null);
-    const activeThemeTooltip = ref(null);
-
-    const applyTheme = (theme) => {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const isDark = theme === 'dark' || (theme === 'default' && prefersDark);
-
-        document.body.classList.toggle('dark', isDark);
-    };
-
-    const handleSetTheme = async (theme) => {
-        activeTheme.value = theme;
-        await updateData({ theme });
-    };
-
     const themeMap = {
         light: {
             tooltip: 'Light mode',
@@ -46,6 +21,31 @@ export const useThemeStore = defineStore('useThemeStore', () => {
             tooltip: 'Device default',
             icon: 'brightness_medium',
         },
+    };
+
+    const activeThemeIcon = ref(themeMap.default.icon);
+    const activeThemeTooltip = ref(themeMap.default.tooltip);
+
+    watch(
+        userData,
+        (newVal) => {
+            if (newVal?.theme) {
+                activeTheme.value = newVal?.theme;
+            }
+        },
+        { immediate: true }
+    );
+
+    const applyTheme = (theme) => {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = theme === 'dark' || (theme === 'default' && prefersDark);
+
+        document.body.classList.toggle('dark', isDark);
+    };
+
+    const handleSetTheme = async (theme) => {
+        activeTheme.value = theme;
+        await updateData({ theme });
     };
 
     watch(activeTheme, (newVal) => {
