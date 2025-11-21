@@ -4,18 +4,21 @@ import { ref } from 'vue';
 import { useAuthStore } from '../../stores/useAuthStore';
 
 export const useMoveData = () => {
-    const movedCount = ref(0);
-
     const authStore = useAuthStore();
 
-    const uid = authStore.user?.uid;
-
-    if (!uid) return false;
+    const movedCount = ref(0);
 
     const error = ref(null);
     const isPending = ref(false);
 
     const movePlants = async (oldRoomId, newRoomId) => {
+        const uid = authStore.uid;
+
+        if (!uid) {
+            error.value = 'User not authenticated';
+            return false;
+        }
+
         isPending.value = true;
         error.value = null;
         movedCount.value = 0;
@@ -65,6 +68,13 @@ export const useMoveData = () => {
     };
 
     const movePlant = async (oldRoomId, newRoomId, plantId) => {
+        const uid = authStore.uid;
+
+        if (!uid) {
+            error.value = 'User not authenticated';
+            return false;
+        }
+
         isPending.value = true;
         error.value = null;
 

@@ -7,15 +7,11 @@ import { useAuthStore } from '../../stores/useAuthStore';
 export const useDeleteData = () => {
     const authStore = useAuthStore();
 
-    const getUid = () => {
-        return authStore.user?.uid || null;
-    };
-
     const error = ref(null);
     const isPending = ref(false);
 
     const deleteData = async (documentId, collectionPath) => {
-        const uid = getUid();
+        const uid = authStore.uid;
 
         if (!uid) {
             error.value = 'User not authenticated';

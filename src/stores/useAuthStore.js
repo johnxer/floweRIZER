@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 
-
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useAuthStore = defineStore('useAuthStore', () => {
     const user = ref(null);
@@ -11,11 +10,15 @@ export const useAuthStore = defineStore('useAuthStore', () => {
     const isLogin = ref(true);
     const showPwRecovery = ref(false);
 
+    const uid = computed(() => user.value?.uid || null);
+
     return {
         user,
         error,
         isPending,
         isLogin,
-        showPwRecovery
+        isLogin,
+        showPwRecovery,
+        uid,
     };
 });
