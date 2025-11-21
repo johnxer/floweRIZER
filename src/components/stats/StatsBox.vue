@@ -1,6 +1,6 @@
 <template>
     <div class="rounded-xl p-2 md:p-4 bg-white dark:bg-gray-900 shadow-box">
-        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-start">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-x-6 mad:gap-y-0 items-start">
             <stats-box-item
                 icon="home"
                 :value="roomsTotal"
@@ -13,10 +13,15 @@
                 :is-pending="isPending"
             />
             <stats-box-item
-                class="hidden md:flex"
                 icon="home_and_garden"
                 :value="avgPlantsPerRoom"
                 label="Avg. plants per room"
+                :is-pending="isPending"
+            />
+            <stats-box-item
+                icon="yard"
+                :value="plantsInUnassigned"
+                label="Total unassigned plants"
                 :is-pending="isPending"
             />
         </div>
@@ -25,7 +30,7 @@
 
 <script setup>
 
-import { useGetAllPlants } from '@/composables';
+import { useGetAllPlants, useGetData } from '@/composables';
 import { useRoomsStore } from '@/stores/useRoomsStore';
 import { computed } from 'vue';
 import StatsBoxItem from './StatsBoxItem.vue';
@@ -39,9 +44,15 @@ const {
     data: plants,
 } = useGetAllPlants()
 
-const roomsTotal = computed(() => roomsStore.rooms.filter(r => r.id !== 'unassigned').length)
+const {
+    data
+} = useGetData(`rooms/unassigned/plants`)
 
-const plantsTotal = computed(() => plants.value?.length || 0)
+
+const roomsTotal = computed(() => roomsStore.rooms.filter(r => r.id !== 'unassigned').length)
+const plantsInUnassigned = computed(() => data.value?.length || 0)
+
+const plantsTotal = computed(() => plants.value?.length - plantsInUnassigned.value || 0)
 
 const isPending = computed(() => isPendingPlants.value)
 

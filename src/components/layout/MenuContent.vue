@@ -14,7 +14,7 @@
         link-title="Profile"
         v-close-popper="true"
         :is-profile="true"
-        class="w-1/3 md:w-full"
+        class="w-1/3 md:w-full order-3 md:order-2"
         :extra-classes="{ 'reset-is-active': !!isChatActive && isMobile }"
     />
 </template>

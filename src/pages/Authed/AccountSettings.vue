@@ -138,7 +138,8 @@
 
                         <base-button
                             class="mt-8"
-                            btn-style="notRounded"
+                            btn-style="notRoundedMd"
+                            :disabled="isPendingProfileUpdate"
                             btn-size="base"
                         >
                             Save
@@ -149,7 +150,7 @@
 
                 <hr class="border-gray-200 dark:border-gray-800 my-6" />
                 <base-button
-                    btn-style="notRounded"
+                    btn-style="notRoundedMd"
                     btn-size="base"
                     btn-color="danger"
                     :disabled="isPendingProfileUpdate"

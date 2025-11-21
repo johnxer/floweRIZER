@@ -2,9 +2,10 @@
     <div class="flex flex-col">
         <div>
             <label
+                v-if="fieldLabel"
                 :for="fieldId"
                 class="block text-gray-400 dark:text-gray-500 text-sm mb-1"
-                :class="{'flex justify-between' : fieldLabelExtra}"
+                :class="{ 'flex justify-between': fieldLabelExtra }"
             >
                 {{ fieldLabel }}
 
@@ -46,7 +47,7 @@ defineProps({
         type: String,
         required: false,
     }
-   
+
 })
 
 </script>

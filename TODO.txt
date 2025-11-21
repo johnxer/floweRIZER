@@ -1,9 +1,6 @@
 TODO
 
-
-- When updating the plant, the plant image is not refreshed before refreshing the page
-
-- account delete functionality
+- account password change functionality
 
 - add to room log the plants movement.
 

@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 
 import { auth, db } from '@/firebase/config';
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 export const useAuthActions = () => {
@@ -83,11 +83,48 @@ export const useAuthActions = () => {
         }
     };
 
+    const userReauthenticate = async (email, password) => {
+        const credential = EmailAuthProvider.credential(email, password);
+        await reauthenticateWithCredential(auth.currentUser, credential);
+    };
+
+    const userDelete = async (password) => {
+        error.value = null;
+        isPending.value = true;
+
+        const user = auth.currentUser;
+
+        if (!user) {
+            error.value = 'User not logged in.';
+            isPending.value = false;
+            return false;
+        }
+
+        try {
+            await userReauthenticate(user.email, password);
+            await deleteUser(user);
+            return true;
+        } catch (err) {
+            if (err.code === 'auth/requires-recent-login') {
+                error.value = 'Please log in again to delete your account.';
+            } else if (err.code === 'auth/invalid-credential') {
+                error.value = "You've entered wrong password";
+            } else {
+                error.value = err.message;
+            }
+            return false;
+        } finally {
+            isPending.value = false;
+        }
+    };
+
     return {
         error,
         isPending,
         logInUser,
         signUpUser,
         resetEmail,
+        userReauthenticate,
+        userDelete,
     };
 };
