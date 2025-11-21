@@ -1,20 +1,27 @@
 import { db } from '@/firebase/config';
 import { normalizePath } from '@/utils';
-import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { ref } from 'vue';
 import { useAuthStore } from '../../stores/useAuthStore';
 
 export const useDeleteData = () => {
     const authStore = useAuthStore();
 
-    const uid = authStore.user?.uid;
-
-    if (!uid) return false;
+    const getUid = () => {
+        return authStore.user?.uid || null;
+    };
 
     const error = ref(null);
     const isPending = ref(false);
 
     const deleteData = async (documentId, collectionPath) => {
+        const uid = getUid();
+
+        if (!uid) {
+            error.value = 'User not authenticated';
+            return false;
+        }
+
         isPending.value = true;
         error.value = null;
 
@@ -33,89 +40,53 @@ export const useDeleteData = () => {
         }
     };
 
-    const movedCount = ref(0);
-
-    const movePlants = async (oldRoomId, newRoomId) => {
-        isPending.value = true;
-        error.value = null;
-        movedCount.value = 0;
+    // helper
+    const deleteCollectionRecursive = async (path) => {
+        console.log(`[deleteCollectionRecursive] Starting for path: ${path}`);
+        const colRef = collection(db, path);
 
         try {
-            const newRoomReference = doc(db, `users/${uid}/rooms/${newRoomId}`);
-            const newRoomSnapshot = await getDoc(newRoomReference);
+            const snapshot = await getDocs(colRef);
 
-            if (!newRoomSnapshot.exists()) {
-                await sendDataRooms({
-                    id: newRoomId,
-                    name: newRoomId === 'unassigned' ? 'Unassigned' : 'New room',
-                });
+            for (const docSnap of snapshot.docs) {
+                await deleteDoc(docSnap.ref);
             }
 
-            const oldPlantsReference = collection(db, `users/${uid}/rooms/${oldRoomId}/plants`);
-            const snapshot = await getDocs(oldPlantsReference);
-
-            if (snapshot.empty) {
-                return 0;
-            }
-
-            const batch = writeBatch(db);
-
-            snapshot.forEach((docSnap) => {
-                const plantData = docSnap.data();
-                const newPlantRef = doc(db, `users/${uid}/rooms/${newRoomId}/plants/${docSnap.id}`);
-                batch.set(newPlantRef, plantData);
-                batch.delete(docSnap.ref);
-                movedCount.value++;
-            });
-
-            await batch.commit();
-
-            return movedCount.value;
+            return true;
         } catch (err) {
-            error.value = err.message;
-
-            return 0;
-        } finally {
-            isPending.value = false;
+            throw err;
         }
     };
 
-    const movePlant = async (oldRoomId, newRoomId, plantId) => {
+    const deleteUserFirestore = async (uid) => {
+        console.log('Auth UID:', authStore.user?.uid);
+        console.log('Store UID:', uid);
+
         isPending.value = true;
         error.value = null;
 
         try {
-            const oldPlantReference = doc(db, `users/${uid}/rooms/${oldRoomId}/plants`, plantId);
-            const oldSnap = await getDoc(oldPlantReference);
+            // delete rooms data
+            await deleteCollectionRecursive(`users/${uid}/rooms`);
 
-            if (!oldSnap.exists()) {
-                throw new Error('Plant not found');
+            // delete plants data
+            await deleteCollectionRecursive(`users/${uid}/plants`);
+
+            // delete chat messeages data
+            const chats = await getDocs(collection(db, `users/${uid}/chats`));
+            for (const chat of chats.docs) {
+                await deleteCollectionRecursive(`users/${uid}/chats/${chat.id}/messages`);
             }
 
-            const plantData = oldSnap.data();
+            // delete chats data
+            await deleteCollectionRecursive(`users/${uid}/chats`);
 
-            const newPlantReference = doc(db, `users/${uid}/rooms/${newRoomId}/plants`, plantId);
-            await setDoc(newPlantReference, plantData);
-
-            await deleteDoc(oldPlantReference);
-
-            await updateDoc(newPlantReference, {
-                log: arrayUnion({
-                    id: crypto.randomUUID(),
-                    action: 'moved',
-                    date: new Date().toISOString(),
-                    origin: oldRoomId,
-                    target: newRoomId,
-                }),
-            });
+            // delete user data
+            await deleteDoc(doc(db, `users/${uid}`));
 
             return true;
         } catch (err) {
             error.value = err.message;
-
-            console.error('Move plant failed:', err);
-
-            return false;
         } finally {
             isPending.value = false;
         }
@@ -124,9 +95,7 @@ export const useDeleteData = () => {
     return {
         error,
         isPending,
-        movedCount,
         deleteData,
-        movePlants,
-        movePlant,
+        deleteUserFirestore,
     };
 };

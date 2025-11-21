@@ -306,7 +306,7 @@ const isWatered = computed(() => {
 })
 
 const handleDeletePlant = async () => {
-    const collectionPath = `rooms/${props.roomId}/plants/`
+    const collectionPath = `rooms/${props.roomId}/plants`
     const documentId = props.plant.id
 
     const documentImgSrc = props.plant.imgSrc

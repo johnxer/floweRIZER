@@ -10,7 +10,7 @@
                     mode="out-in"
                 >
                     <base-loader
-                        v-if="isPending"
+                        v-if="isPending || isPendingDelete"
                         position-type="static"
                     >
 
@@ -24,7 +24,7 @@
                             v-if="error"
                             message-type="error"
                         >
-                            {{ error }}
+                            {{ error || errorDelete }}
                         </base-form-message-box>
 
                         <p class="mb-2">
@@ -110,22 +110,44 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+import { useRouter } from 'vue-router';
+
 import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BaseFormMessageBox from '@/components/base/BaseForm/BaseFormMessageBox.vue';
+import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
+import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
-import BaseInput from '../../base/BaseForm/BaseInput.vue';
-import BaseInputWrapperAuthed from '../../base/BaseForm/BaseInputWrapperAuthed.vue';
 
-import { useAuthActions } from '@/composables';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/useAuthStore';
+
+import { useAuthActions, useDeleteData, useStorage } from '@/composables';
+import { auth } from '../../../firebase/config';
 
 const {
     error,
     isPending,
-    userDelete
+    userDelete,
+    userReauthenticate
 } = useAuthActions()
+
+
+const {
+    error: errorDelete,
+    isPending: isPendingDelete,
+    deleteUserFirestore
+} = useDeleteData()
+
+const {
+    error: errorStorage,
+    isPending: isPendingStorage,
+    deleteDirectory
+} = useStorage()
+
+const authStore = useAuthStore()
+
 
 const emit = defineEmits(['close-modal'])
 
@@ -143,7 +165,7 @@ const validateForm = () => {
 
     if (!form.value.password) {
         formErrors.value.password = 'Password cannot be empty'
-    } else if (form.value.password < 8) {
+    } else if (form.value.password.length < 8) {
         formErrors.value.password = 'Password cannot be shorter than 8 chars'
     }
 
@@ -152,7 +174,7 @@ const validateForm = () => {
 
 const clearForm = () => {
     form.value.password = '';
-    showPwForm.value = false
+
 }
 
 const handleCloseModal = () => {
@@ -168,16 +190,38 @@ const handleDeleteUser = async () => {
 const submitForm = async () => {
     if (!validateForm()) return
 
-    const success = await userDelete(form.value.password)
+    const reAuthed = await userReauthenticate(authStore.user?.email, form.value.password)
 
+    authStore.user = auth.currentUser
 
-
-    if (success) {
+    if (!reAuthed) {
         clearForm()
-        handleCloseModal()
-
-        router.push({ name: 'NotAuthed' })
+        return
     }
+
+    const [delAvatars, delPlants, delRooms] = await Promise.all([
+        deleteDirectory(`avatars/${authStore.user?.uid}`),
+        deleteDirectory(`plants/${authStore.user?.uid}`),
+        deleteDirectory(`rooms/${authStore.user?.uid}`)
+    ]);
+
+    if (!delAvatars || !delPlants || !delRooms) return;
+
+    const docDeleted = await deleteUserFirestore(authStore.user?.uid)
+
+    if (!docDeleted) return
+
+    const authDeleted = await userDelete()
+
+    if (!authDeleted) return
+
+    clearForm()
+
+    showPwForm.value = false
+
+    handleCloseModal()
+
+    router.push({ name: 'NotAuthed' })
 }
 
 

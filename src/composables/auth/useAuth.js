@@ -11,13 +11,7 @@ export const useAuth = () => {
         return await new Promise((resolve) => {
             onAuthStateChanged(auth, async (_user) => {
                 if (_user) {
-                    authStore.user = {
-                        uid: _user.uid,
-                        email: _user.email,
-                        displayName: _user.displayName,
-                        photoURL: _user.photoURL || '',
-                        metadata: _user.metadata,
-                    };
+                    authStore.user = _user;
 
                     try {
                         const userReference = doc(db, 'users', _user.uid);
@@ -31,9 +25,10 @@ export const useAuth = () => {
                             await setDoc(userReference, {
                                 email: _user.email,
                                 displayName: _user.displayName || '',
-                                photoUrl: _user.photoURL || '',
+                                photoURL: _user.photoURL || '',
                                 createdAt: serverTimestamp(),
                                 lastLogin: serverTimestamp(),
+                                theme: _user.theme || 'default',
                             });
 
                             await setDoc(unassignedRoomReference, {
