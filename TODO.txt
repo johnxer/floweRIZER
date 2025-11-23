@@ -2,6 +2,10 @@ TODO
 
 - account password change functionality
 
+- add voice recognition support - to move and to water plants
+
+- add support for photo capture from camera
+
 - add to room log the plants movement.
 
 - footer with github link - prbbly will be moved and display elsewhere

@@ -48,11 +48,15 @@ export const useThemeStore = defineStore('useThemeStore', () => {
         await updateData({ theme });
     };
 
-    watch(activeTheme, (newVal) => {
-        applyTheme(newVal);
-        activeThemeIcon.value = themeMap[newVal].icon || themeMap.default.icon;
-        activeThemeTooltip.value = themeMap[newVal].tooltip || themeMap.default.tooltip;
-    });
+    watch(
+        activeTheme,
+        (newVal) => {
+            applyTheme(newVal);
+            activeThemeIcon.value = themeMap[newVal].icon || themeMap.default.icon;
+            activeThemeTooltip.value = themeMap[newVal].tooltip || themeMap.default.tooltip;
+        },
+        { immediate: true }
+    );
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
