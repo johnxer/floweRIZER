@@ -69,6 +69,7 @@
                                     input-id="room-image"
                                     :existing-image-src="existingImageSrc"
                                     @send-file="handleFile"
+                                    @remove-file="handleRemoveFile"
                                 />
 
                             </base-input-wrapper-authed>
@@ -192,6 +193,21 @@ const handleFile = (file) => {
     form.value.file = file;
 }
 
+const handleRemoveFile = ({ toDefault }) => {
+    form.value.file = null;
+
+    console.log('toDefault', toDefault)
+
+    if (!toDefault) {
+
+        if (oldImageUrl) {
+            existingImageSrc.value = oldImageUrl;
+        }
+    } else {
+        existingImageSrc.value = null;
+    }
+}
+
 watch(detailsRoom, (newVal) => {
     if (newVal) {
         form.value.name = newVal.name || '';
@@ -270,6 +286,12 @@ const submitForm = async () => {
         icon: form.value.icon,
         // color: form.value.color,
         desc: form.value.desc,
+    }
+
+    if (localRoomId && !form.value.file && !existingImageSrc.value && oldImageUrl) {
+        data.imgSrc = null;
+
+        addLog(log, 'image', oldImageUrl, null)
     }
 
     if (localRoomId) {

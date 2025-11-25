@@ -112,6 +112,7 @@
                             input-id="plant-image"
                             :existing-image-src="existingImageSrc"
                             @send-file="handleFile"
+                            @remove-file="handleRemoveFile"
                         />
                     </base-input-wrapper-authed>
                     <!-- <transition name="fade">
@@ -294,6 +295,20 @@ const handleFile = (file) => {
     isImageShown.value = true
 }
 
+const handleRemoveFile = ({ toDefault }) => {
+    form.value.file = null;
+    isImageShown.value = false
+
+    if (!toDefault) {
+
+        if (oldImageUrl) {
+            existingImageSrc.value = oldImageUrl;
+        }
+    } else {
+        existingImageSrc.value = null;
+    }
+}
+
 watch(detailsPlant, (newVal) => {
     if (newVal) {
         form.value.name = newVal.name || '';
@@ -310,7 +325,7 @@ watch(detailsPlant, (newVal) => {
         if (!areOriginalFieldsLoaded) {
             originalData = {
                 name: newVal.name,
-                icon: newVal.icon,
+                imageSrc: newVal.imgSrc,
                 desc: newVal.desc
             }
 
@@ -369,9 +384,15 @@ const submitForm = async () => {
         ...(!localPlantId && { wateredNow: !!form.value.wateredNow })
     }
 
+    if (localPlantId && !form.value.file && !existingImageSrc.value && oldImageUrl) {
+        data.imgSrc = null;
+
+        addLog(log, 'image', oldImageUrl, null)
+    }
+
     if (localPlantId) {
         addLog(log, 'name', originalData.name, data.name)
-        addLog(log, 'icon', originalData.icon, data.icon)
+        addLog(log, 'image', originalData.imgSrc, data.imgSrc)
         addLog(log, 'description', originalData.desc, data.desc)
     }
 

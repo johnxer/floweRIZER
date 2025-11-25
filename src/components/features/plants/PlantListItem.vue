@@ -34,26 +34,17 @@
                         position-type="absolute"
                     />
                 </div>
-                <img
-                    v-if="plant.imgSrc"
-                    ref="imgRef"
-                    :data-src="plant.imgSrc"
-                    class="absolute object-cover h-full w-full"
-                    :alt="plant.name"
-                    :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
-                    loading="lazy"
-                    @load="onLoad"
-                />
-                <div
-                    v-else
-                    class="absolute p-2 h-full w-full"
-                >
+                <div :class="{ 'absolute p-2 h-full w-full': !plant.imgSrc }">
                     <img
                         ref="imgRef"
-                        data-src="https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg"
+                        :key="plant.imgSrc"
+                        :data-src="plant.imgSrc || PLANT_PLACEHOLDER"
+                        class=""
                         :alt="plant.name"
-                        class="absolute object-cover inset-2"
-                        :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
+                        :class="[
+                            isImageLoaded ? 'opacity-100' : 'opacity-0',
+                            plant.imgSrc ? 'h-full w-full' : 'absolute object-cover inset-2'
+                        ]"
                         loading="lazy"
                         @load="onLoad"
                     />
@@ -254,6 +245,8 @@ const props = defineProps({
     }
 })
 
+const PLANT_PLACEHOLDER = 'https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg'
+
 const plantsStore = usePlantsStore()
 
 const mobileStore = useMobileStore()
@@ -357,11 +350,17 @@ watch(() => props.plant.imgSrc, (newVal) => {
     const el = imgRef.value
     if (!el) return
 
-    el.src = newVal
+    if (newVal === null) {
+        el.dataset.src = PLANT_PLACEHOLDER
+        el.src = PLANT_PLACEHOLDER
+    } else {
+        el.src = newVal
+        el.dataset.src = newVal
 
-    if (el.dataset.src) {
-        el.removeAttribute('data-src')
     }
+
+}, {
+    flush: 'post'
 })
 
 const showMore = ref(false)
@@ -381,8 +380,6 @@ const shortenDesc = computed(() => {
 const showMoreButton = computed(() => (props.plant.desc?.length || 0) > 200)
 
 const showMoreText = computed(() => `Show ${showMore.value ? 'less' : 'more'}`)
-
-
 
 
 </script>

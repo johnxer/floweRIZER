@@ -55,9 +55,6 @@
                                     <template v-if="action.action === 'name'">
                                         from <strong>{{ action.originalVal }}</strong> to <strong>{{ action.newVal }}</strong>
                                     </template>
-                                    <template v-else-if="action.action === 'icon'">
-                                        from <strong class="material-symbols-outlined text-2xl mx-1">{{ action.originalVal }}</strong> to <strong class="material-symbols-outlined text-2xl mx-1">{{ action.newVal }}</strong>
-                                    </template>
                                 </template>
                             </span>
 

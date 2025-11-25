@@ -95,12 +95,12 @@
                                     <base-button
                                         btn-style="notRoundedMd"
                                         btn-size="sm"
-                                        btn-color="neutral"
+                                        btn-color="neutralAlt"
                                         :btn-full-width="false"
                                         class="min-w-1/3"
                                         v-close-popper="true"
                                     >
-                                        Keep This Room
+                                        Cancel
                                     </base-button>
                                     <base-button
                                         btn-style="notRoundedMd"
@@ -111,7 +111,7 @@
                                         v-close-popper="true"
                                         @click="handleDeleteRoom"
                                     >
-                                        Yes, Delete This Room
+                                        Yes, delete it
                                     </base-button>
                                 </template>
                             </base-popover-content>

@@ -3,6 +3,8 @@
         class="flex items-center"
         :class="{ 'flex-col items-start gap-4': !!imageToShow }"
     >
+
+
         <div
             v-if="!!imageToShow"
             class="relative w-full h-[200px] rounded-xl"
@@ -31,13 +33,66 @@
             >
                 Preview
             </div>
+
+
+            <v-dropdown
+                v-if="isResetImageShown"
+                trap-focus
+                popper-class="popper-slide-small min-w-[200px]"
+                class="absolute bottom-2 right-2"
+            >
+                <button
+                    type="button"
+                    class=" uppercase bg-black/70 text-white dark:text-white/60 text-2xl px-2 py-1 rounded-full cursor-pointer"
+                    v-tooltip="{
+                        content: 'Reset image',
+                        container: 'body',
+                    }"
+                >
+                    <span class="material-symbols-outlined">
+                        reset_image
+                    </span>
+                </button>
+                <template #popper>
+                    <base-popover-content>
+                        <template #title>
+                            Reset this image?
+                        </template>
+
+                        <template #actions>
+                            <base-button
+                                btn-style="notRoundedMd"
+                                btn-size="sm"
+                                btn-color="neutralAlt"
+                                :btn-full-width="false"
+                                class="min-w-1/3"
+                                v-close-popper="true"
+                            >
+                                Cancel
+                            </base-button>
+                            <base-button
+                                btn-style="notRoundedMd"
+                                btn-size="sm"
+                                btn-color="danger"
+                                :btn-full-width="false"
+                                class="min-w-1/2"
+                                v-close-popper="true"
+                                @click="handleResetImage"
+                            >
+                                Yes, reset it
+                            </base-button>
+                        </template>
+                    </base-popover-content>
+                </template>
+            </v-dropdown>
+
         </div>
         <div class="flex gap-2 md:gap-4 flex-col md:flex-row w-full md:w-auto">
             <div :class="{ 'grid grid-cols-[1fr_auto_1fr] gap-2 items-center': mobileStore.isMobile }">
 
                 <label
                     :for="inputId"
-                    class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-1 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-flex overflow-hidden text-center shrink-0 gap-2 items-center"
+                    class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-1 md:px-2 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-flex overflow-hidden text-center shrink-0 gap-2 items-center"
                 >
                     <span class="material-symbols-outlined text-2xl">
                         photo
@@ -48,6 +103,7 @@
                         type="file"
                         class="hidden"
                         accept="image/png, image/jpeg, image/jpg, image/gif"
+                        ref="fileInput"
                         @change="handleFile"
                     >
                 </label>
@@ -100,9 +156,10 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 
-import BaseButton from '../BaseButtons/BaseButton.vue';
+import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
 
-import { useMobileStore } from '../../../stores/useMobileStore';
+import { useMobileStore } from '@/stores/useMobileStore';
 
 const props = defineProps({
     inputId: {
@@ -119,9 +176,11 @@ const props = defineProps({
 const mobileStore = useMobileStore()
 
 
-const emit = defineEmits(['send-file'])
+const emit = defineEmits(['send-file', 'remove-file'])
 
 const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+
+const fileInput = ref(null)
 
 const selectFileName = ref(null)
 
@@ -131,12 +190,12 @@ const file = ref(null)
 
 const isImageLoaded = ref(false)
 
-const existingImage = ref(props.existingImageSrc)
+const existingImageURL = ref(props.existingImageSrc)
 
 
 watch(() => props.existingImageSrc, newVal => {
     if (newVal) {
-        existingImage.value = newVal
+        existingImageURL.value = newVal
     }
 })
 
@@ -158,7 +217,7 @@ const handleFile = (e) => {
     emit('send-file', file.value)
 }
 
-const imageToShow = computed(() => !!previewUrl.value ? previewUrl.value : existingImage.value)
+const imageToShow = computed(() => !!previewUrl.value ? previewUrl.value : existingImageURL.value)
 
 
 
@@ -170,6 +229,36 @@ const mobileCameraInput = ref(null)
 
 const handleMobilePhotoCapture = () => {
     mobileCameraInput.value.click()
+}
+
+const isResetImageShown = computed(() => (existingImageURL.value || previewUrl.value))
+
+const handleResetImage = () => {
+    if (isResetImageShown.value) {
+
+        if (previewUrl.value && previewUrl.value.startsWith('blob:')) {
+            URL.revokeObjectURL(previewUrl.value)
+            emit('remove-file', { toDefault: false })
+        } else {
+            existingImageURL.value = null
+            emit('remove-file', { toDefault: true })
+        }
+
+        selectFileName.value = null
+        file.value = null
+
+        previewUrl.value = existingImageURL.value || null
+
+
+
+        isImageLoaded.value = false
+
+
+        if (fileInput.value) {
+            fileInput.value.value = ''
+        }
+
+    }
 }
 
 </script>
