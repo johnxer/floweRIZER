@@ -2,9 +2,9 @@ TODO
 
 - account password change functionality
 
-- allow to take picture from webcam or frontcam on phone on account settings page
-
 - add plant details modal, with 2 tabs -> details (name, photo, plant frequency, etc...), log (watering, etc...)
+
+- allow to take picture from webcam or frontcam on phone on account settings page
 
 - add voice recognition support - to move and to water plants
 

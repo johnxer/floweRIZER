@@ -34,7 +34,6 @@
                 Preview
             </div>
 
-
             <v-dropdown
                 v-if="isResetImageShown"
                 trap-focus
