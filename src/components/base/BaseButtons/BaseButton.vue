@@ -80,7 +80,7 @@ const colorMap = {
         classes: 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white'
     },
     neutralAlt: {
-        classes: 'text-gray-500 dark:text-gray-200 border-gray-200 dark:border-gray-800 hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white'
+        classes: 'text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white'
     }
 }
 

@@ -29,7 +29,7 @@
             />
             <div
                 v-if="isImageLoaded"
-                class="absolute top-2 right-2 uppercase bg-black/70 text-white dark:text-white/60 text-2xs px-2 py-1 rounded-full"
+                class="absolute top-2 right-2 uppercase bg-black/80 text-white dark:text-white/60 text-2xs px-2 py-1 rounded-full"
             >
                 Preview
             </div>
@@ -43,7 +43,7 @@
             >
                 <button
                     type="button"
-                    class=" uppercase bg-black/70 text-white dark:text-white/60 text-2xl px-2 py-1 rounded-full cursor-pointer"
+                    class=" uppercase bg-black/80 text-white dark:text-white/80 text-2xl px-2 py-1 rounded-full cursor-pointer"
                     v-tooltip="{
                         content: 'Reset image',
                         container: 'body',
@@ -92,7 +92,7 @@
 
                 <label
                     :for="inputId"
-                    class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-1 md:px-2 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-flex overflow-hidden text-center shrink-0 gap-2 items-center"
+                    class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-1 md:px-2 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-flex overflow-hidden text-center shrink-0 gap-2 items-center justify-center"
                 >
                     <span class="material-symbols-outlined text-2xl">
                         photo
@@ -128,7 +128,7 @@
                         btn-style="notRoundedMd"
                         btn-size="base"
                         btn-color="neutralAlt"
-                        class="flex gap-2 items-center"
+                        class="flex gap-2 items-center justify-center"
                         @click="handleMobilePhotoCapture"
                     >
                         <span class="material-symbols-outlined text-2xl">
