@@ -1,6 +1,6 @@
+import { useGetDetails, useUpdateData } from '@/composables';
 import { defineStore } from 'pinia';
 import { ref, watch } from 'vue';
-import { useGetDetails, useUpdateData } from '../composables';
 
 export const useThemeStore = defineStore('useThemeStore', () => {
     const { data: userData } = useGetDetails();

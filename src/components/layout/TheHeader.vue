@@ -67,7 +67,7 @@ import ThemeDropdown from './ThemeDropdown.vue';
 
 import { useMobileStore } from '@/stores/useMobileStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';
-import { useUIStore } from '../../stores/useUIStore';
+import { useUIStore } from '@/stores/useUIStore';
 
 const props = defineProps({
     projectTitle: {

@@ -1,8 +1,8 @@
 import { db } from '@/firebase/config';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { normalizePath } from '@/utils';
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { ref } from 'vue';
-import { useAuthStore } from '../../stores/useAuthStore';
 
 export const useDeleteData = () => {
     const authStore = useAuthStore();

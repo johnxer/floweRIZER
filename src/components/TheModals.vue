@@ -65,7 +65,7 @@ import PlantHistoryContent from '@/components/features/plants/PlantHistoryConten
 import AddNewRoomContent from '@/components/features/rooms/AddNewRoomContent.vue';
 import RoomHistoryContent from '@/components/features/rooms/RoomHistoryContent.vue';
 
-import { useUIStore } from '../stores/useUIStore';
+import { useUIStore } from '@/stores/useUIStore';
 
 const uiStore = useUIStore()
 

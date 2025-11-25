@@ -2,8 +2,8 @@ import { computed, ref } from 'vue';
 
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 
+import { db } from '@/firebase/config';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { db } from '../../firebase/config';
 
 export const useSendData = () => {
     const authStore = useAuthStore();

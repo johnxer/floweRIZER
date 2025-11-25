@@ -179,8 +179,7 @@ import TheModals from "@/components/TheModals.vue";
 
 import { useUIStore } from "@/stores/useUIStore";
 
-import { useDeleteData, useGetData, useGetDetails, useStorage } from '@/composables';
-import { useMoveData } from "../../composables/api/useMoveData";
+import { useDeleteData, useGetData, useGetDetails, useMoveData, useStorage } from '@/composables';
 
 const props = defineProps({
     roomId: {

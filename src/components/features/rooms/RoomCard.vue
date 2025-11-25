@@ -253,9 +253,8 @@ import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 import { useUIStore } from '@/stores/useUIStore';
 
-import { useDeleteData, useGetData, useStorage } from '@/composables';
+import { useDeleteData, useGetData, useMoveData, useStorage } from '@/composables';
 import { addDelay, observeVisibility } from '@/utils';
-import { useMoveData } from '../../../composables/api/useMoveData';
 
 const roomsStore = useRoomsStore()
 const plantsStore = usePlantsStore()

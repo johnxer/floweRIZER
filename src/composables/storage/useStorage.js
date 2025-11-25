@@ -1,6 +1,6 @@
+import { storage } from '@/firebase/config';
 import { deleteObject, getDownloadURL, listAll, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { ref } from 'vue';
-import { storage } from '../../firebase/config';
 
 export const useStorage = () => {
     const error = ref(null);

@@ -216,8 +216,8 @@ import { usePlantsStore } from '@/stores/usePlantsStore';
 
 import { useDeleteData, useStorage, useUpdateData } from '@/composables';
 
+import { useUIStore } from '@/stores/useUIStore';
 import { addDelay, observeVisibility } from '@/utils';
-import { useUIStore } from '../../../stores/useUIStore';
 
 const {
     error: errorUpdateData,

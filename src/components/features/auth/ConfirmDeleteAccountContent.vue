@@ -124,7 +124,7 @@ import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 import { useAuthStore } from '@/stores/useAuthStore';
 
 import { useAuthActions, useDeleteData, useStorage } from '@/composables';
-import { auth } from '../../../firebase/config';
+import { auth } from '@/firebase/config';
 
 const {
     error,

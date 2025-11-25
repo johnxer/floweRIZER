@@ -216,8 +216,8 @@ import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 import { useGetDetails, useSendData, useStorage, useUpdateData } from '@/composables';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useScrollStore } from '@/stores/useScrollStore';
+import { useUIStore } from '@/stores/useUIStore';
 import { addLog, resizeImageBitmap } from '@/utils';
-import { useUIStore } from '../../../stores/useUIStore';
 
 const props = defineProps({
     roomId: {
