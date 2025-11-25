@@ -1,10 +1,14 @@
 TODO
 
+- reset photo functionality
+
 - account password change functionality
 
-- add voice recognition support - to move and to water plants
+- allow to take picture from webcam or frontcam on phone on account settings page
 
-- add support for photo capture from camera
+- add plant details modal, with 2 tabs -> details (name, photo, plant frequency, etc...), log (watering, etc...)
+
+- add voice recognition support - to move and to water plants
 
 - add to room log the plants movement.
 
