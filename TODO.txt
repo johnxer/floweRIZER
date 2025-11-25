@@ -1,7 +1,5 @@
 TODO
 
-- reset photo functionality
-
 - account password change functionality
 
 - allow to take picture from webcam or frontcam on phone on account settings page
