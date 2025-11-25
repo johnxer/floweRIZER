@@ -218,7 +218,7 @@
                     btn-size="base"
                     btn-color="danger"
                     :disabled="isPendingProfileUpdate"
-                    @click="toggleModal"
+                    @click="uiStore.openModal('confirmDeleteAccount')"
                 >
                     Delete account
                 </base-button>
@@ -227,10 +227,10 @@
         </div>
         <teleport to="body">
             <base-modal
-                :modal-toggle="isModalOpen"
-                @close-modal="toggleModal"
+                :modal-toggle="uiStore.activeModal === 'confirmDeleteAccount'"
+                @close-modal="uiStore.closeModal"
             >
-                <confirm-delete-account-content @close-modal="toggleModal" />
+                <confirm-delete-account-content @close-modal="uiStore.closeModal" />
 
             </base-modal>
         </teleport>
@@ -255,9 +255,14 @@ import BaseModal from '@/components/base/BaseModal/BaseModal.vue';
 import ConfirmDeleteAccountContent from '@/components/features/auth/ConfirmDeleteAccountContent.vue';
 
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useUIStore } from '@/stores/useUIStore';
 
-import { useAuth, useAuthActions, useStorage, useUpdateData } from '@/composables';
+import { useAuth, useStorage, useUpdateData } from '@/composables';
+
 import { resizeImageBitmap } from '@/utils';
+
+const uiStore = useUIStore()
+
 
 const {
     user,
@@ -284,7 +289,9 @@ const {
     updateData,
 } = useUpdateData()
 
-const { userChangePassword } = useAuthActions()
+
+
+// const { userChangePassword } = useAuthActions()
 
 const userAvatarURL = computed(() => {
     return user.value?.photoURL || 'https://placehold.co/600x600?text=No+Avatar'
@@ -359,15 +366,15 @@ const handleFile = async (e) => {
     }
 }
 
-const isModalOpen = ref(false)
+// const isModalOpen = ref(false)
 
-const toggleModal = (state) => {
-    if (typeof state === 'boolean') {
-        isModalOpen.value = state
-    } else {
-        isModalOpen.value = !isModalOpen.value
-    }
-}
+// const toggleModal = (state) => {
+//     if (typeof state === 'boolean') {
+//         isModalOpen.value = state
+//     } else {
+//         isModalOpen.value = !isModalOpen.value
+//     }
+// }
 
 
 const formErrors = ref({})
