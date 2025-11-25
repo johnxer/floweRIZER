@@ -49,6 +49,59 @@
 
                             </label>
                         </div>
+
+                        <!-- 
+                        //*******  Prepared code for password change ******//
+                        <base-button
+                        v-show="!isCamAllowed"
+                        type="button"
+                        ref="allowButton"
+                        btn-style="notRoundedMd"
+                        btn-size="sm"
+                        btn-color="neutralAlt"
+                        :btn-full-width="false"
+                        @click="handleStartCamera"
+                    >
+                        Allow camera
+                    </base-button>
+
+                    <div v-show="isCamAllowed">
+                        <div
+                            v-show="!isCaptured"
+                            class="camera"
+                        >
+                            <video
+                                ref="video"
+                                @canplay="handleCanPlay"
+                                class="transform -scale-x-100"
+                            >Video stream not available.</video>
+                            <base-button
+                                type="button"
+                                btn-style="notRoundedMd"
+                                btn-size="sm"
+                                btn-color="neutralAlt"
+                                :btn-full-width="false"
+                                ref="startButton"
+                                @click.prevent="handleCapturePhoto"
+                            >
+                                Capture photo
+                            </base-button>
+                        </div>
+                        <canvas
+                            ref="canvas"
+                            class="hidden"
+                        />
+                        <div
+                            v-show="isCaptured"
+                            class="output"
+                        >
+                            <img
+                                ref="photo"
+                                src=""
+                                alt="The screen capture will appear in this box."
+                            />
+                        </div>
+                    </div> -->
                     </transition>
                 </div>
                 <transition
@@ -363,9 +416,121 @@ const onLoad = () => {
     isImageLoaded.value = true
 }
 
-const handlePwChange = async () => {
-    await userChangePassword()
-}
+
+//*******  Prepared code for password change ******//
+// const handlePwChange = async () => {
+//     await userChangePassword()
+// }
+
+
+//*******  Prepared code for webcam capture on desktop ******//
+// const width = 680;
+// let height = 0;
+
+// let streaming = false;
+
+// const video = ref(null);
+// const canvas = ref(null);
+// const photo = ref(null);
+// const startButton = ref(null);
+// const allowButton = ref(null);
+// const isStreaming = ref(false);
+
+
+// const handleStartCamera = async () => {
+//     if (mobileStore.isMobile) return
+//     try {
+//         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+//         video.value.srcObject = stream;
+//         video.value.play();
+//         isStreaming.value = true;
+//         permissionResult.value.state = 'granted'
+//     } catch (err) {
+//         console.error("Camera denied or error:", err);
+//     }
+// };
+
+// const handleCanPlay = () => {
+//     if (!streaming) {
+//         height = video.value.videoHeight / (video.value.videoWidth / width);
+
+//         video.value.setAttribute("width", width);
+//         video.value.setAttribute("height", height);
+//         canvas.value.setAttribute("width", width);
+//         canvas.value.setAttribute("height", height);
+//         streaming = true;
+//     }
+// };
+
+// const handleCapturePhoto = () => {
+//     takePicture();
+// }
+
+// const permissionResult = ref(null);
+
+
+// const isCamAllowed = computed(() => {
+//     return permissionResult.value?.state === 'granted'
+// })
+
+// const isCaptured = ref(false)
+
+// onMounted(async () => {
+//     clearPhoto();
+
+//     if (navigator.permissions && navigator.permissions.query) {
+//         try {
+//             permissionResult.value = await navigator.permissions.query({ name: 'camera' });
+
+//             console.log(permissionResult.value)
+
+//             if (permissionResult.value.state === 'granted') {
+//                 handleStartCamera();
+//             }
+
+//         } catch (error) {
+//             console.log("Permissions API not fully supported on this browser.");
+//         }
+//     }
+// })
+
+// const clearPhoto = () => {
+//     if (!canvas.value || !photo.value) return;
+//     const context = canvas.value.getContext("2d");
+//     context.fillStyle = "#aaaaaa";
+//     context.fillRect(0, 0, canvas.value.width, canvas.value.height);
+
+//     const data = canvas.value.toDataURL("image/png");
+//     photo.value.setAttribute("src", data);
+// }
+
+// const takePicture = async () => {
+//     if (!canvas.value || !video.value) return;
+
+//     const context = canvas.value.getContext("2d");
+//     if (width && height) {
+//         canvas.value.width = width;
+//         canvas.value.height = height;
+
+//         context.drawImage(video.value, 0, 0, width, height);
+
+//         const dataURL = canvas.value.toDataURL("image/png");
+
+//         console.log(dataURL)
+
+//         if (photo.value) photo.value.setAttribute("src", dataURL);
+
+//         const blob = await (await fetch(dataURL)).blob()
+//         const file = new File([blob], `capture-${Date.now()}.png`, { type: "image/png" });
+
+//         handleFile(file)
+
+//         isCaptured.value = true;
+//     } else {
+//         clearPhoto();
+//     }
+// }
+
 
 </script>
 

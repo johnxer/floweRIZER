@@ -18,7 +18,77 @@
                 @submit.prevent="submitForm"
                 novalidate
             >
+                <!-- <div v-if="mobileStore.isMobile">
 
+                    <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        @change="handleFile"
+                        class="hidden"
+                        ref="mobileCameraInput"
+                    />
+
+                    <base-button
+                        @click="handleMobilePhotoCapture"
+                        type="button"
+                    >
+                        Take Photo (Native)
+                    </base-button>
+
+                </div> -->
+                <!-- <div v-else>
+                    <base-button
+                        v-show="!isCamAllowed"
+                        type="button"
+                        ref="allowButton"
+                        btn-style="notRoundedMd"
+                        btn-size="sm"
+                        btn-color="neutralAlt"
+                        :btn-full-width="false"
+                        @click="handleStartCamera"
+                    >
+                        Allow camera
+                    </base-button>
+
+                    <div v-show="isCamAllowed">
+                        <div
+                            v-show="!isCaptured"
+                            class="camera"
+                        >
+                            <video
+                                ref="video"
+                                @canplay="handleCanPlay"
+                                class="transform -scale-x-100"
+                            >Video stream not available.</video>
+                            <base-button
+                                type="button"
+                                btn-style="notRoundedMd"
+                                btn-size="sm"
+                                btn-color="neutralAlt"
+                                :btn-full-width="false"
+                                ref="startButton"
+                                @click.prevent="handleCapturePhoto"
+                            >
+                                Capture photo
+                            </base-button>
+                        </div>
+                        <canvas
+                            ref="canvas"
+                            class="hidden"
+                        />
+                        <div
+                            v-show="isCaptured"
+                            class="output"
+                        >
+                            <img
+                                ref="photo"
+                                src=""
+                                alt="The screen capture will appear in this box."
+                            />
+                        </div>
+                    </div>
+                </div> -->
                 <div class="space-y-4">
                     <base-input-wrapper-authed
                         field-label="Name"
@@ -147,6 +217,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { usePlantsStore } from '@/stores/usePlantsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 import { addLog, resizeImageBitmap } from '@/utils';
+import { useMobileStore } from '../../../stores/useMobileStore';
 
 const props = defineProps({
     roomId: {
@@ -162,6 +233,7 @@ const props = defineProps({
 const authStore = useAuthStore()
 const plantsStore = usePlantsStore()
 const scrollStore = useScrollStore()
+const mobileStore = useMobileStore()
 
 const localPlantId = props.plantId
 const localRoomId = props.roomId
@@ -366,6 +438,8 @@ const buttonLabel = computed(() => {
         return `${localPlantId ? 'Update' : 'Add'} plant`
     }
 })
+
+
 
 </script>
 

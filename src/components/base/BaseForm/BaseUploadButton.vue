@@ -33,19 +33,55 @@
             </div>
         </div>
         <div class="flex gap-2 md:gap-4 flex-col md:flex-row w-full md:w-auto">
-            <label
-                :for="inputId"
-                class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-4 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-block overflow-hidden text-center shrink-0"
-            >
-                Select image
-                <input
-                    :id="props.inputId"
-                    type="file"
-                    class="hidden"
-                    accept="image/png, image/jpeg, image/jpg, image/gif"
-                    @change="handleFile"
+            <div :class="{ 'grid grid-cols-[1fr_auto_1fr] gap-2 items-center': mobileStore.isMobile }">
+
+                <label
+                    :for="inputId"
+                    class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-1 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-flex overflow-hidden text-center shrink-0 gap-2 items-center"
                 >
-            </label>
+                    <span class="material-symbols-outlined text-2xl">
+                        photo
+                    </span>
+                    Select photo
+                    <input
+                        :id="props.inputId"
+                        type="file"
+                        class="hidden"
+                        accept="image/png, image/jpeg, image/jpg, image/gif"
+                        @change="handleFile"
+                    >
+                </label>
+                <div
+                    v-if="mobileStore.isMobile"
+                    class="text-center text-gray-500"
+                >
+                    or
+                </div>
+                <div v-if="mobileStore.isMobile">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        @change="handleFile"
+                        class="hidden"
+                        ref="mobileCameraInput"
+                    />
+
+                    <base-button
+                        type="button"
+                        btn-style="notRoundedMd"
+                        btn-size="base"
+                        btn-color="neutralAlt"
+                        class="flex gap-2 items-center"
+                        @click="handleMobilePhotoCapture"
+                    >
+                        <span class="material-symbols-outlined text-2xl">
+                            photo_camera
+                        </span>
+                        Take photo
+                    </base-button>
+                </div>
+            </div>
             <div
                 v-if="selectFileName"
                 class="text-sm text-gray-500 inline-flex align-top gap-1 items-center"
@@ -64,6 +100,10 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 
+import BaseButton from '../BaseButtons/BaseButton.vue';
+
+import { useMobileStore } from '../../../stores/useMobileStore';
+
 const props = defineProps({
     inputId: {
         type: String,
@@ -75,6 +115,9 @@ const props = defineProps({
         default: null
     }
 })
+
+const mobileStore = useMobileStore()
+
 
 const emit = defineEmits(['send-file'])
 
@@ -121,6 +164,12 @@ const imageToShow = computed(() => !!previewUrl.value ? previewUrl.value : exist
 
 const onLoad = () => {
     isImageLoaded.value = true
+}
+
+const mobileCameraInput = ref(null)
+
+const handleMobilePhotoCapture = () => {
+    mobileCameraInput.value.click()
 }
 
 </script>
