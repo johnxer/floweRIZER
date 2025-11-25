@@ -215,10 +215,9 @@ import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 import { useGetDetails, useSendData, useStorage, useUpdateData } from '@/composables';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { usePlantsStore } from '@/stores/usePlantsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 import { addLog, resizeImageBitmap } from '@/utils';
-import { useMobileStore } from '../../../stores/useMobileStore';
+import { useUIStore } from '../../../stores/useUIStore';
 
 const props = defineProps({
     roomId: {
@@ -232,9 +231,8 @@ const props = defineProps({
 })
 
 const authStore = useAuthStore()
-const plantsStore = usePlantsStore()
+const uiStore = useUIStore()
 const scrollStore = useScrollStore()
-const mobileStore = useMobileStore()
 
 const localPlantId = props.plantId
 const localRoomId = props.roomId
@@ -443,7 +441,7 @@ const submitForm = async () => {
             })
         }
 
-        plantsStore.closePlantModal()
+        uiStore.closeModal()
         emit('close-modal', false)
     }
 }

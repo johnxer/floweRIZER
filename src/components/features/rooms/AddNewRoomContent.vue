@@ -115,6 +115,7 @@ import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
+import { useUIStore } from '@/stores/useUIStore';
 
 import { useGetDetails, useSendData, useStorage, useUpdateData } from '@/composables';
 
@@ -131,8 +132,8 @@ const props = defineProps({
 const localRoomId = props.roomId
 
 const authStore = useAuthStore()
-
 const roomsStore = useRoomsStore()
+const uiStore = useUIStore()
 
 const {
     error: errorSendData,
@@ -352,7 +353,7 @@ const submitForm = async () => {
             })
         }
 
-        roomsStore.closeRoomModal()
+        uiStore.closeModal()
         emit('close-modal', false)
     }
 }

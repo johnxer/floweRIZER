@@ -2,41 +2,55 @@
     <div>
         <teleport to="body">
             <base-modal
-                :modal-toggle="roomsStore.isModalOpenRoom"
+                :modal-toggle="uiStore.activeModal === 'room'"
                 :is-modal-pending="isModalPending"
-                @close-modal="roomsStore.closeRoomModal"
+                @close-modal="uiStore.closeModal"
             >
                 <add-new-room-content
-                    :room-id="roomsStore.selectedRoomId"
-                    @close-modal="roomsStore.closeRoomModal"
+                    v-if="uiStore.activeModal === 'room'"
+                    :room-id="uiStore.selectedModalData.roomId"
+                    @close-modal="uiStore.closeModal"
                     @is-pending="handleIsPending"
                 >
                 </add-new-room-content>
             </base-modal>
 
             <base-modal
-                :modal-toggle="plantsStore.isModalOpenPlant"
+                :modal-toggle="uiStore.activeModal === 'plant'"
                 :is-modal-pending="isModalPending"
-                @close-modal="plantsStore.closePlantModal"
+                @close-modal="uiStore.closeModal"
             >
                 <add-new-plant-content
-                    :room-id="plantsStore.selectedRoomId"
-                    :plant-id="plantsStore.selectedPlantId"
+                    v-if="uiStore.activeModal === 'plant'"
+                    :room-id="uiStore.selectedModalData.roomId"
+                    :plant-id="uiStore.selectedModalData.plantId"
                     @is-pending="handleIsPending"
                 />
             </base-modal>
+
             <base-modal
-                :modal-toggle="plantsStore.isModalOpenHistory"
-                @close-modal="plantsStore.closeHistoryModal"
+                :modal-toggle="uiStore.activeModal === 'plantHistory'"
+                @close-modal="uiStore.closeModal"
             >
-                <plant-history-content @close-modal="plantsStore.closeHistoryModal" />
+                <plant-history-content
+                    v-if="uiStore.activeModal === 'plantHistory'"
+                    :room-id="uiStore.selectedModalData.roomId"
+                    :plant-id="uiStore.selectedModalData.plantId"
+                    @close-modal="uiStore.closeModal"
+                />
             </base-modal>
+
             <base-modal
-                :modal-toggle="roomsStore.isModalOpenHistory"
-                @close-modal="roomsStore.closeHistoryModal"
+                :modal-toggle="uiStore.activeModal === 'roomHistory'"
+                @close-modal="uiStore.closeModal"
             >
-                <room-history-content @close-modal="roomsStore.closeHistoryModal" />
+                <room-history-content
+                    v-if="uiStore.activeModal === 'roomHistory'"
+                    :room-id="uiStore.selectedModalData.roomId"
+                    @close-modal="uiStore.closeModal"
+                />
             </base-modal>
+
         </teleport>
     </div>
 </template>
@@ -51,12 +65,9 @@ import PlantHistoryContent from '@/components/features/plants/PlantHistoryConten
 import AddNewRoomContent from '@/components/features/rooms/AddNewRoomContent.vue';
 import RoomHistoryContent from '@/components/features/rooms/RoomHistoryContent.vue';
 
-import { usePlantsStore } from '@/stores/usePlantsStore';
-import { useRoomsStore } from '@/stores/useRoomsStore';
+import { useUIStore } from '../stores/useUIStore';
 
-const roomsStore = useRoomsStore()
-const plantsStore = usePlantsStore()
-
+const uiStore = useUIStore()
 
 const isModalPending = ref(false)
 

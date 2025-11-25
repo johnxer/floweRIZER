@@ -23,7 +23,7 @@
                     <theme-dropdown />
                     <base-button
                         v-if="isShown"
-                        @click="roomsStore.openAddModal"
+                        @click="uiStore.openModal('room')"
                         btn-style="notRoundedMd"
                         btn-size="sm"
                         :btn-full-width="false"
@@ -67,6 +67,7 @@ import ThemeDropdown from './ThemeDropdown.vue';
 
 import { useMobileStore } from '@/stores/useMobileStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';
+import { useUIStore } from '../../stores/useUIStore';
 
 const props = defineProps({
     projectTitle: {
@@ -78,6 +79,7 @@ const props = defineProps({
 const mobileStore = useMobileStore();
 
 const roomsStore = useRoomsStore()
+const uiStore = useUIStore()
 
 const matchString = /[A-Z]/;
 

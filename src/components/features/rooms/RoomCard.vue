@@ -41,7 +41,7 @@
                             content: 'History',
                             container: 'body'
                         }"
-                        @click="roomsStore.openHistoryModal(room.id)"
+                        @click="uiStore.openModal('roomHistory', { roomId: room.id })"
                     >
                         <span class="material-symbols-outlined">
                             history
@@ -202,7 +202,7 @@
                             :btn-full-width="false"
                             btn-style="notRoundedMd"
                             btn-size="custom"
-                            @click="plantsStore.openAddModal(props.room.id)"
+                            @click="uiStore.openModal('plant', { roomId: props.room.id })"
                         >
                             <span class="material-symbols-outlined text-xl mr-1">
                                 add
@@ -251,6 +251,7 @@ import { useDragStore } from '@/stores/useDragStore';
 import { usePlantsStore } from '@/stores/usePlantsStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
+import { useUIStore } from '@/stores/useUIStore';
 
 import { useDeleteData, useGetData, useStorage } from '@/composables';
 import { addDelay, observeVisibility } from '@/utils';
@@ -259,6 +260,7 @@ import { useMoveData } from '../../../composables/api/useMoveData';
 const roomsStore = useRoomsStore()
 const plantsStore = usePlantsStore()
 const scrollStore = useScrollStore()
+const uiStore = useUIStore()
 
 const props = defineProps({
     room: {
@@ -346,7 +348,7 @@ watch(() => plants.value?.length, () => {
 })
 
 const editRoom = () => {
-    roomsStore.openEditModal(props.room.id)
+    uiStore.openModal('room', { roomId: props.room.id })
 }
 
 const isOpen = ref(false)

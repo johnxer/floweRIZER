@@ -131,7 +131,7 @@
                                                 type="button"
                                                 class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
                                                 v-close-popper="true"
-                                                @click="plantsStore.openHistoryModal(props.roomId, props.plant.id)"
+                                                @click="uiStore.openModal('plantHistory', { roomId: props.roomId, plantId: props.plant.id })"
                                             >
                                                 <span class="material-symbols-outlined text-xl">
                                                     history
@@ -146,7 +146,7 @@
                                                 type="button"
                                                 class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
                                                 v-close-popper="true"
-                                                @click="plantsStore.openEditModal(props.roomId, props.plant.id)"
+                                                @click="uiStore.openModal('plant', { roomId: props.roomId, plantId: props.plant.id })"
                                             >
                                                 <span class="material-symbols-outlined text-xl">
                                                     edit
@@ -217,6 +217,7 @@ import { usePlantsStore } from '@/stores/usePlantsStore';
 import { useDeleteData, useStorage, useUpdateData } from '@/composables';
 
 import { addDelay, observeVisibility } from '@/utils';
+import { useUIStore } from '../../../stores/useUIStore';
 
 const {
     error: errorUpdateData,
@@ -248,7 +249,7 @@ const props = defineProps({
 const PLANT_PLACEHOLDER = 'https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg'
 
 const plantsStore = usePlantsStore()
-
+const uiStore = useUIStore()
 const mobileStore = useMobileStore()
 
 const {

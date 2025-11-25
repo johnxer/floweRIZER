@@ -18,7 +18,7 @@
                     You have no rooms yet...
                 </h2>
                 <base-button
-                    @click="roomsStore.openAddModal"
+                    @click="uiStore.openModal('room')"
                     btn-style="notRoundedMd"
                     btn-size="base"
                     :btn-full-width="false"
@@ -45,7 +45,7 @@
                     <button
                         type="button"
                         class="md:hidden mt-2 flex items-center justify-end py-2 px-2 gap-1 w-full text-primary-500"
-                        @click="roomsStore.openAddModal"
+                        @click="uiStore.openModal('room')"
                     >
                         <span class="material-symbols-outlined text-2xl">
                             add
@@ -73,6 +73,7 @@ import TheModals from '@/components/TheModals.vue';
 
 import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
+import { useUIStore } from '@/stores/useUIStore';
 
 import { useGetAllPlants, useGetData } from '@/composables';
 
@@ -85,6 +86,7 @@ const {
 } = useGetData('rooms')
 
 const roomsStore = useRoomsStore()
+const uiStore = useUIStore()
 
 const hasRooms = ref(false);
 

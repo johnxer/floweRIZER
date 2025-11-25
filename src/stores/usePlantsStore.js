@@ -23,47 +23,18 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
 
     const isWateredNow = (plantId) => wateredNow.value[plantId] || false;
 
-    const isModalOpenPlant = ref(false);
-
-    const isModalOpenHistory = ref(false);
-
-    const toggleModal = (state, modalType) => {
-        if (typeof state === 'boolean') {
-            modalType.value = state;
-        } else {
-            modalType.value = !isModalOpenPlant.value;
-        }
-    };
-
+    const activeModal = ref(null);
     const selectedRoomId = ref(null);
     const selectedPlantId = ref(null);
 
-    const openAddModal = (roomId) => {
+    const openModal = (name, roomId = null, plantId = null) => {
         selectedRoomId.value = roomId;
-        selectedPlantId.value = null;
-        toggleModal(true, isModalOpenPlant);
-    };
-
-    const openEditModal = (roomId, plantId) => {
-        selectedRoomId.value = roomId;
+        activeModal.value = name;
         selectedPlantId.value = plantId;
-        toggleModal(true, isModalOpenPlant);
     };
 
-    const openHistoryModal = (roomId, plantId) => {
-        selectedRoomId.value = roomId;
-        selectedPlantId.value = plantId;
-        toggleModal(true, isModalOpenHistory);
-    };
-
-    const closePlantModal = () => {
-        toggleModal(false, isModalOpenPlant);
-        selectedRoomId.value = null;
-        selectedPlantId.value = null;
-    };
-
-    const closeHistoryModal = () => {
-        toggleModal(false, isModalOpenHistory);
+    const closeModal = () => {
+        activeModal.value = null;
         selectedRoomId.value = null;
         selectedPlantId.value = null;
     };
@@ -74,14 +45,10 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
         wateredNow,
         markAsWatered,
         isWateredNow,
-        isModalOpenPlant,
+        activeModal,
         selectedRoomId,
         selectedPlantId,
-        openAddModal,
-        openEditModal,
-        closePlantModal,
-        isModalOpenHistory,
-        openHistoryModal,
-        closeHistoryModal,
+        openModal,
+        closeModal,
     };
 });

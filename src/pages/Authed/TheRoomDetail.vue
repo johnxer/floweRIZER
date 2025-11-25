@@ -135,7 +135,7 @@
                                 <div class="text-center">
                                     <base-button
                                         type="button"
-                                        @click="plantsStore.openAddModal(props.roomId)"
+                                        @click="uiStore.openModal('plant', { roomId: props.roomId })"
                                         class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
                                         :btn-full-width="false"
                                         btn-style="notRoundedMd"
@@ -177,11 +177,10 @@ import BasePlantListItem from '@/components/features/plants/PlantListItem.vue';
 
 import TheModals from "@/components/TheModals.vue";
 
-import { useRoomsStore } from "@/stores/useRoomsStore";
+import { useUIStore } from "@/stores/useUIStore";
 
 import { useDeleteData, useGetData, useGetDetails, useStorage } from '@/composables';
 import { useMoveData } from "../../composables/api/useMoveData";
-import { usePlantsStore } from "../../stores/usePlantsStore";
 
 const props = defineProps({
     roomId: {
@@ -190,8 +189,7 @@ const props = defineProps({
     },
 })
 
-const roomsStore = useRoomsStore()
-const plantsStore = usePlantsStore()
+const uiStore = useUIStore()
 
 const {
     error: errorRoom,
@@ -265,7 +263,7 @@ const existPlants = computed(() => plants.value?.length)
 const editPlantId = ref(null)
 
 const editRoom = () => {
-    roomsStore.openEditModal(props.roomId)
+    uiStore.openModal('room', { roomId: props.roomId })
 }
 
 const router = useRouter();

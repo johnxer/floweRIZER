@@ -76,19 +76,28 @@ import { doc, getDoc } from "firebase/firestore";
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
-import { usePlantsStore } from '@/stores/usePlantsStore';
 
 import { useGetDetails } from '@/composables';
 import { useAuthStore } from "../../../stores/useAuthStore";
 
 const authStore = useAuthStore()
-const plantsStore = usePlantsStore()
+
+const props = defineProps({
+    roomId: {
+        type: String,
+        required: true
+    },
+    plantId: {
+        type: String,
+        required: true
+    }
+})
 
 const {
     error: errorPlant,
     isPending: isPendingPlant,
     data: detailsPlant,
-} = useGetDetails(`rooms/${plantsStore.selectedRoomId}/plants/${plantsStore.selectedPlantId}`)
+} = useGetDetails(`rooms/${props.roomId}/plants/${props.plantId}`)
 
 const formattedDate = computed(() => {
     const createdAt = detailsPlant.value?.createdAt

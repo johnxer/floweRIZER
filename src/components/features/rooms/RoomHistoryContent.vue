@@ -1,5 +1,4 @@
 <template>
-
     <base-modal-content>
         <template #modalTitle>
             <span class="noto-color-emoji-regular mr-2">🏠</span>Rooms's history log
@@ -70,18 +69,21 @@ import { format } from "date-fns";
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
-import { useRoomsStore } from "@/stores/useRoomsStore";
 
 import { useGetDetails } from '@/composables';
 
-
-const roomsStore = useRoomsStore()
+const props = defineProps({
+    roomId: {
+        type: String,
+        required: true
+    }
+})
 
 const {
     error: errorRoom,
     isPending: isPendingRoom,
     data: detailsRoom,
-} = useGetDetails(`rooms/${roomsStore.selectedRoomId}`)
+} = useGetDetails(`rooms/${props.roomId}`)
 
 watchEffect(() => {
     console.log('createdAt:', detailsRoom.value?.createdAt)
