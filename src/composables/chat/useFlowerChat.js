@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import { GoogleGenAI } from '@google/genai';
 
 import { ref } from 'vue';
@@ -10,10 +9,10 @@ export const useFlowerChat = () => {
 
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const MODEL_NAME = import.meta.env.VITE_GEMINI_MODEL_NAME;
-    const MODEL_INSTRUCTIONS = import.meta.env.VITE_GEMINI_SYSTEM_INSTRUCTIONS;
+    const MODEL_INSTRUCTIONS = import.meta.env.VITE_GEMINI_CHAT_INSTRUCTIONS;
 
-    const ai = API_KEY ? new GoogleGenAI({apiKey: API_KEY}) : null;
-   
+    const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
+
     const askFlowerBot = async (question) => {
         if (!question || !ai) {
             if (!ai) error.value = 'Gemini API Key not loaded';
@@ -24,14 +23,15 @@ export const useFlowerChat = () => {
         isPending.value = true;
 
         try {
-           
             const response = await ai.models.generateContent({
                 model: MODEL_NAME,
 
-                contents: [{ 
-                    role: 'user', 
-                    parts: [{ text: question }] 
-                }],
+                contents: [
+                    {
+                        role: 'user',
+                        parts: [{ text: question }],
+                    },
+                ],
 
                 config: {
                     systemInstruction: MODEL_INSTRUCTIONS,
@@ -48,7 +48,6 @@ export const useFlowerChat = () => {
         }
     };
 
-    
     return {
         answer,
         error,

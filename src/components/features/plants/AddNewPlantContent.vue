@@ -11,85 +11,79 @@
                     position-type="absolute"
                     class="bg-white/80 dark:bg-gray-900/80 z-1"
                 >
-                    {{ loadingTitle }}
+                    {{ !isPendingRecognizePlant ? loadingTitle : 'Recognizing plant...' }}
                 </base-loader>
+                <base-form-message-box
+                    v-else-if="error"
+                    :message-type="'error'"
+                >
+                    {{ error }}
+                </base-form-message-box>
             </transition>
             <form
                 @submit.prevent="submitForm"
                 novalidate
             >
-                <!-- <div v-if="mobileStore.isMobile">
-
-                    <input
-                        type="file"
-                        accept="image/*"
-                        capture="environment"
-                        @change="handleFile"
-                        class="hidden"
-                        ref="mobileCameraInput"
-                    />
-
-                    <base-button
-                        @click="handleMobilePhotoCapture"
-                        type="button"
-                    >
-                        Take Photo (Native)
-                    </base-button>
-
-                </div> -->
-                <!-- <div v-else>
-                    <base-button
-                        v-show="!isCamAllowed"
-                        type="button"
-                        ref="allowButton"
-                        btn-style="notRoundedMd"
-                        btn-size="sm"
-                        btn-color="neutralAlt"
-                        :btn-full-width="false"
-                        @click="handleStartCamera"
-                    >
-                        Allow camera
-                    </base-button>
-
-                    <div v-show="isCamAllowed">
-                        <div
-                            v-show="!isCaptured"
-                            class="camera"
-                        >
-                            <video
-                                ref="video"
-                                @canplay="handleCanPlay"
-                                class="transform -scale-x-100"
-                            >Video stream not available.</video>
-                            <base-button
-                                type="button"
-                                btn-style="notRoundedMd"
-                                btn-size="sm"
-                                btn-color="neutralAlt"
-                                :btn-full-width="false"
-                                ref="startButton"
-                                @click.prevent="handleCapturePhoto"
-                            >
-                                Capture photo
-                            </base-button>
-                        </div>
-                        <canvas
-                            ref="canvas"
-                            class="hidden"
-                        />
-                        <div
-                            v-show="isCaptured"
-                            class="output"
-                        >
-                            <img
-                                ref="photo"
-                                src=""
-                                alt="The screen capture will appear in this box."
-                            />
-                        </div>
-                    </div>
-                </div> -->
                 <div class="space-y-4">
+                    <base-input-wrapper-authed
+                        field-label="Image"
+                        field-id="plant-image"
+                    >
+                        <base-upload-button
+                            input-id="plant-image"
+                            :existing-image-src="existingImageSrc"
+                            @send-file="handleFile"
+                            @remove-file="handleRemoveFile"
+                        />
+                    </base-input-wrapper-authed>
+                    <transition name="fade">
+                        <div
+                            v-if="isAISuggestionBoxShown"
+                            class="border-2 border-primary-500 rounded-xl p-4 md:flex md:gap-4 md:items-center md:justify-between"
+                        >
+                            <div class="flex gap-2 items-center mb-4 md:mb-0">
+                                <span class="material-symbols-outlined text-3xl text-gray-500">
+                                    smart_toy
+                                </span>
+                                <p class="text-gray-500 leading-4">
+                                    Use AI to fill the fields for you?<br />
+                                    <small class="text-gray-400">(Existing data will be replaced)</small>
+                                </p>
+                            </div>
+                            <div class="flex gap-2 justify-center md:justify-end">
+                                <base-button
+                                    v-tooltip="{
+                                        content: 'The information may not be accurate. Use at your own risk.',
+                                        container: 'body',
+                                    }"
+                                    type="button"
+                                    btn-style="notRoundedMd"
+                                    btn-size="sm"
+                                    :btn-full-width="false"
+                                    class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
+                                    @click="handleRecognizePlant"
+                                >
+                                    <span class="material-symbols-outlined text-lg">
+                                        done
+                                    </span>
+                                    Yes
+                                </base-button>
+                                <base-button
+                                    type="button"
+                                    btn-style="notRoundedMd"
+                                    btn-size="sm"
+                                    btn-color="neutralAlt"
+                                    :btn-full-width="false"
+                                    class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
+                                >
+                                    <span class="material-symbols-outlined text-lg">
+                                        close
+                                    </span>
+                                    No
+                                </base-button>
+                            </div>
+                        </div>
+                    </transition>
                     <base-input-wrapper-authed
                         field-label="Name"
                         field-id="plant-name"
@@ -104,35 +98,6 @@
                             @input="formErrors.name = null"
                         />
                     </base-input-wrapper-authed>
-                    <base-input-wrapper-authed
-                        field-label="Image"
-                        field-id="plant-image"
-                    >
-                        <base-upload-button
-                            input-id="plant-image"
-                            :existing-image-src="existingImageSrc"
-                            @send-file="handleFile"
-                            @remove-file="handleRemoveFile"
-                        />
-                    </base-input-wrapper-authed>
-                    <!-- <transition name="fade">
-                        <div
-                            v-if="isImageShown"
-                            class="bg-gray-100 rounded-xl p-4"
-                        >
-                            <base-button
-                                btn-style="notRoundedMd"
-                                btn-size="sm"
-                                :btn-full-width="false"
-                                class="inline-flex align-top gap-1 items-center "
-                            >
-                                <span class="material-symbols-outlined text-lg">
-                                    network_intelligence
-                                </span>
-                                Find out details about plant
-                            </base-button>
-                        </div>
-                    </transition> -->
                     <base-input-wrapper-authed
                         field-label="Description"
                         field-id="plant-description"
@@ -168,7 +133,6 @@
                         :errorText="formErrors.wateredNow"
                     >
                         <div class="flex gap-2 items-center text-gray-500">
-                            <!-- tohle bude custom toggle -->
                             <label class="inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
@@ -206,6 +170,7 @@
 import { computed, ref, watch, watchEffect } from 'vue';
 
 import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BaseFormMessageBox from '@/components/base/BaseForm/BaseFormMessageBox.vue';
 import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseTextarea from '@/components/base/BaseForm/BaseTextarea.vue';
@@ -213,11 +178,13 @@ import BaseUploadButton from '@/components/base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
-import { useGetDetails, useSendData, useStorage, useUpdateData } from '@/composables';
+import { useGetDetails, useRecognizePlant, useSendData, useStorage, useUpdateData } from '@/composables';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 import { useUIStore } from '@/stores/useUIStore';
 import { addLog, resizeImageBitmap } from '@/utils';
+import { getBlob, getStorage, ref as storageRef } from "firebase/storage";
+
 
 const props = defineProps({
     roomId: {
@@ -265,8 +232,14 @@ const {
 } = useGetDetails(`rooms/${localRoomId}/plants/${localPlantId}`)
 
 
-// const error = computed(() => errorSendData.value || errorUpload.value)
-const isPending = computed(() => isPendingSendData.value || isPendingUpload.value || isPendingUpdate.value)
+const {
+    error: errorRecognizePlant,
+    isPending: isPendingRecognizePlant,
+    identifyPlantWithGemini,
+} = useRecognizePlant()
+
+const error = computed(() => errorSendData.value || errorUpload.value || errorPlant.value || errorRecognizePlant.value)
+const isPending = computed(() => isPendingSendData.value || isPendingUpload.value || isPendingUpdate.value || isPendingRecognizePlant.value)
 
 const form = ref({
     name: '',
@@ -284,26 +257,28 @@ let isInitialImageUrlSet = false;
 let areOriginalFieldsLoaded = false
 let originalData = {}
 
-const isImageShown = ref(false)
+const isAISuggestionBoxShown = ref(false)
 
 const handleFile = (file) => {
     existingImageSrc.value = null
     form.value.file = file;
-
-    isImageShown.value = true
+    isAISuggestionBoxShown.value = true
 }
 
 const handleRemoveFile = ({ toDefault }) => {
     form.value.file = null;
-    isImageShown.value = false
+
 
     if (!toDefault) {
+        isAISuggestionBoxShown.value = false
 
         if (oldImageUrl) {
             existingImageSrc.value = oldImageUrl;
+            isAISuggestionBoxShown.value = true
         }
     } else {
         existingImageSrc.value = null;
+        isAISuggestionBoxShown.value = false
     }
 }
 
@@ -314,6 +289,10 @@ watch(detailsPlant, (newVal) => {
         form.value.watering = newVal.wateringFrequency || 3;
         form.value.wateredNow = newVal.wateredNow || false;
         existingImageSrc.value = newVal.imgSrc
+
+        if (newVal.imgSrc) {
+            isAISuggestionBoxShown.value = true
+        }
 
         if (!isInitialImageUrlSet) {
             oldImageUrl = !!newVal.imgSrc ? newVal.imgSrc : null;
@@ -458,7 +437,40 @@ const buttonLabel = computed(() => {
     }
 })
 
+const extractStoragePath = (downloadUrl) => {
+    const url = new URL(downloadUrl);
+    return decodeURIComponent(url.pathname.split("/o/")[1]);
+};
 
+const handleRecognizePlant = async () => {
+    let fileToProcess = form.value.file;
+
+    if (!fileToProcess && existingImageSrc.value) {
+        try {
+            const storage = getStorage();
+            const path = extractStoragePath(existingImageSrc.value);
+            if (!path) throw new Error("Invalid Firebase URL");
+
+            const imageRef = storageRef(storage, path);
+            const blob = await getBlob(imageRef);
+
+            fileToProcess = new File([blob], "plant.jpg", { type: blob.type });
+        } catch (e) {
+            console.error('Failed to fetch existing image:', e);
+            return;
+        }
+    }
+
+    if (!fileToProcess) return;
+
+    const data = await identifyPlantWithGemini(fileToProcess, 'image/jpeg');
+    if (!data) return;
+
+    form.value.name = data.name;
+    form.value.desc = data.desc;
+    form.value.watering = data.wateringFrequency;
+    isAISuggestionBoxShown.value = false;
+};
 
 </script>
 

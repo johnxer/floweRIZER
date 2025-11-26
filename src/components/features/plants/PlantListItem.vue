@@ -39,11 +39,11 @@
                         ref="imgRef"
                         :key="plant.imgSrc"
                         :data-src="plant.imgSrc || PLANT_PLACEHOLDER"
-                        class=""
                         :alt="plant.name"
+                        class="absolute object-cover"
                         :class="[
                             isImageLoaded ? 'opacity-100' : 'opacity-0',
-                            plant.imgSrc ? 'h-full w-full' : 'absolute object-cover inset-2'
+                            plant.imgSrc ? 'h-full w-full' : 'inset-2'
                         ]"
                         loading="lazy"
                         @load="onLoad"

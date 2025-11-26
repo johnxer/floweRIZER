@@ -2,7 +2,7 @@ TODO
 
 - account password change functionality
 
-- add the gemini AI plant identification based on a photo
+* add the gemini AI plant identification based on a photo - In progress, should add new fields - toxicity, loght requirements
 
 - allow to take picture from webcam or frontcam on phone on account settings page
 
