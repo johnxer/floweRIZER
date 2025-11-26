@@ -7,12 +7,28 @@ const routes = [
     //     name: 'Home',
     //     component: () => import('@/pages/TheHome.vue')
     // },
+    // {
+    //     path: '/',
+    //     name: 'NotAuthed',
+    //     component: () => import('@/pages/NotAuthed.vue'),
+    //     meta: {
+    //         title: 'Login or Sign up',
+    //     },
+    // },
     {
         path: '/',
-        name: 'NotAuthed',
-        component: () => import('@/pages/NotAuthed.vue'),
+        name: 'TheLogin',
+        component: () => import('@/pages/NotAuthed/TheLogin.vue'),
         meta: {
-            title: 'Login or Sign up',
+            title: 'Login',
+        },
+    },
+    {
+        path: '/signup',
+        name: 'TheSignup',
+        component: () => import('@/pages/NotAuthed/TheSignup.vue'),
+        meta: {
+            title: 'Sign up',
         },
     },
     {
@@ -86,7 +102,7 @@ router.beforeEach((to, from, next) => {
 
     if (to.meta.requiresAuth && !isAuthenticated) {
         next({ name: 'NotAuthed', query: { redirect: to.fullPath } });
-    } else if ((to.name === 'NotAuthed' && isAuthenticated)) {
+    } else if (to.name === 'NotAuthed' && isAuthenticated) {
         if (from.name) {
             next(from.fullPath);
         } else {
@@ -96,6 +112,5 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
 
 export default router;

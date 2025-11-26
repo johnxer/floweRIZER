@@ -1,14 +1,13 @@
 <template>
-    <base-container
-        :is-authed="false"
-    >
-        <div class="max-w-[300px] mx-auto">
+    <base-container :is-authed="false">
+        <!-- <div class="max-w-[300px] mx-auto"> -->
+        <div class="">
             <transition
                 name="fade"
                 mode="out-in"
             >
-                <pw-reset 
-                    v-if="authStore.showPwRecovery" 
+                <pw-reset
+                    v-if="authStore.showPwRecovery"
                     @pw-reset-done="handleLoginShow"
                 />
                 <div v-else>

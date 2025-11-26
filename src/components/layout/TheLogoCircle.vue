@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[100px] mx-auto overflow-hidden relative flex items-center justify-center mb-8">
+    <div class="h-[120px] mx-auto overflow-hidden relative flex items-center justify-center mb-4">
         <h1 class="text-xl font-bold flex flex-col items-center justify-center">
             <span class="noto-color-emoji-regular text-5xl mb-2">
                 🌱

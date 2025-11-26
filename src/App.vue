@@ -7,6 +7,7 @@
         v-else-if="!isAuthed && !isNotFound"
         :project-title="projectName"
         class="pt-8"
+        style="display: none;"
     />
     <router-view v-slot="{ Component }">
         <transition

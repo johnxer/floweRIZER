@@ -1,6 +1,5 @@
 <template>
     <base-container>
-
         <transition
             name="fade"
             mode="out-in"
@@ -78,6 +77,7 @@ import { useUIStore } from '@/stores/useUIStore';
 import { useGetAllPlants, useGetData } from '@/composables';
 
 import { observeVisibility } from '@/utils';
+
 
 const {
     error,
