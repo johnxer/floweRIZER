@@ -437,7 +437,7 @@ const performScroll = async (plantId) => {
     const maxAttempts = 20
 
     while (!el && attempts < maxAttempts) {
-        await new Promise(r => setTimeout(r, 50))
+        await addDelay(50)
 
         el = document.querySelector(`[data-plant-id="${plantId}"]`)
 
@@ -459,11 +459,12 @@ watch(() => scrollStore.scrollTarget, checkAndScroll,
     { deep: true, immediate: true }
 )
 
-watch(() => plants.value, async (val) => {
-    if (val?.length) {
+watch(() => plants.value, async (newVal) => {
+    if (newVal?.length) {
         await checkAndScroll()
     }
 }, { deep: true })
+
 </script>
 
 <style lang="scss">
