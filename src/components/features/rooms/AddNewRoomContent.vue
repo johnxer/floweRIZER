@@ -34,33 +34,36 @@
                                     @input="formErrors.name = null"
                                 />
                             </base-input-wrapper-authed>
+
                             <base-input-wrapper-authed
                                 field-label="Icon"
                                 field-id="room-icon"
                                 :errorText="formErrors.icon"
                             >
-                                <select
-                                    @change="formErrors.icon = null"
-                                    id="room-icon"
-                                    class="px-4 py-2 rounded-lg border-2 w-full focus:outline-0 focus:border-primary transition-colors duration-600 text-gray-500 dark:text-white/75 cursor-pointer"
-                                    :class="!formErrors.icon ? 'border-gray-300 dark:border-gray-600' : 'border-red-300 dark:border-red-900'"
-                                    v-model="form.icon"
-                                >
-                                    <option
-                                        selected
-                                        disabled
-                                        value=""
-                                    >Select icon...</option>
-                                    <option
+                                <div class="grid grid-cols-4 gap-2">
+                                    <button
                                         v-for="icon in roomsStore.roomIcons"
                                         :key="icon.icon"
-                                        :value="icon.icon"
+                                        type="button"
+                                        @click="form.icon = icon.icon; formErrors.icon = null"
+                                        class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+                                        :class="[
+                                            form.icon === icon.icon
+                                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
+                                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
+                                        ]"
                                     >
-                                        {{ icon.name }}
-                                    </option>
-                                </select>
+                                        <span class="material-symbols-outlined text-2xl mb-1">
+                                            {{ icon.icon }}
+                                        </span>
+                                        <span class="text-xs text-center truncate w-full">
+                                            {{ icon.name }}
+                                        </span>
+                                    </button>
+                                </div>
 
                             </base-input-wrapper-authed>
+
                             <base-input-wrapper-authed
                                 field-label="Image"
                                 field-id="room-image"
@@ -73,6 +76,7 @@
                                 />
 
                             </base-input-wrapper-authed>
+
                             <base-input-wrapper-authed
                                 field-label="Description"
                                 field-id="room-description"
@@ -84,6 +88,7 @@
                                 />
                             </base-input-wrapper-authed>
                         </div>
+
                         <base-button
                             class="mt-8"
                             :class="{ 'animate-pulse': isPending }"

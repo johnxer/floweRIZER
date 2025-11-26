@@ -23,6 +23,18 @@ export const useRoomsStore = defineStore('useRoomsStore', () => {
             name: 'Garden',
             icon: 'outdoor_garden',
         },
+        {
+            name: 'Hallway',
+            icon: 'hallway',
+        },
+        {
+            name: 'Bedroom',
+            icon: 'king_bed',
+        },
+        {
+            name: 'Child bedroom',
+            icon: 'crib',
+        },
     ];
 
     const roomDefaultColor = '#99c23b';

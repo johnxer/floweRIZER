@@ -4,8 +4,6 @@ TODO
 
 - add the gemini AI plant identification based on a photo
 
-- make the room icons selector nicer + allow custom google icon cia code input
-
 - allow to take picture from webcam or frontcam on phone on account settings page
 
 - add voice recognition support - to move and to water plants
@@ -29,3 +27,5 @@ TBD:
 ? add a box with stats - rooms, plants, etc...some graphics - DONE, but can in the future add more stats
 
 ? style the profile button in the menu on mobile to stand outside - Doesnt make sense, it's not important action. Should be the Dashboard instead.
+
+? allow custom google icon via code input
