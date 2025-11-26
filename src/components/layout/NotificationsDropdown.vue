@@ -45,13 +45,13 @@
                                 type="button"
                                 class="mt-2 cursor-pointer transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 inline-flex align-top items-center gap-1"
                                 @click="handleWatering(notification.id)"
-                                v-close-popper="isLastNotification"
+                                v-close-popper="isLastNotification || !isDashboard"
                             >
                                 <span class="material-symbols-outlined text-lg">
                                     humidity_high
                                 </span>
                                 <span>
-                                    Water plant
+                                    Water plant {{ !isDashboard }}
                                 </span>
                             </button>
                         </div>
@@ -67,22 +67,21 @@ import { computed } from 'vue';
 
 import { differenceInDays } from 'date-fns';
 
-import { useGetDataByUserId, useUpdateData } from '@/composables';
+import { useGetDataByUserId } from '@/composables';
 
 import { useScrollStore } from '@/stores/useScrollStore';
 
+import { useRoute, useRouter } from 'vue-router';
+import { addDelay } from '../../utils';
+
+const route = useRoute()
+const router = useRouter()
 
 const {
     error,
     isPending,
     data: plants
 } = useGetDataByUserId('plants')
-
-const {
-    error: errorUpdateData,
-    isPending: isPendingUpdateData,
-    waterPlant
-} = useUpdateData()
 
 const notificationsArrayFromFB = computed(() => {
     if (!plants.value?.length) return []
@@ -109,10 +108,10 @@ const typeNotificationsMap = [
         id: 1,
         action: 'Water plant ##plantName## within 24 hours'
     },
-    {
-        id: 2,
-        action: 'Fertilize ##plantName## this week'
-    }
+    // {
+    //     id: 2,
+    //     action: 'Fertilize ##plantName## this week'
+    // }
 ]
 
 const notifications = computed(() => {
@@ -136,13 +135,20 @@ const isLastNotification = computed(() => {
 
 const scrollStore = useScrollStore()
 
+const isDashboard = computed(() => route.name === 'TheDashboard')
+
 const handleWatering = async (plantId) => {
     scrollStore.setScrollTarget({
         type: 'plant',
-        plantId: plantId
+        plantId: plantId,
+        action: 'water'
     })
 
-    await waterPlant(plantId)
+    if (!isDashboard.value) {
+        await addDelay(150)
+        await router.push({ name: 'TheDashboard' })
+        return
+    }
 }
 
 </script>

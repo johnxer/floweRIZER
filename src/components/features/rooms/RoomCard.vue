@@ -253,7 +253,7 @@ import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 import { useUIStore } from '@/stores/useUIStore';
 
-import { useDeleteData, useGetData, useMoveData, useStorage } from '@/composables';
+import { useDeleteData, useGetData, useMoveData, useStorage, useUpdateData } from '@/composables';
 import { addDelay, observeVisibility } from '@/utils';
 
 const roomsStore = useRoomsStore()
@@ -273,6 +273,12 @@ const {
     isPending,
     data: plants
 } = useGetData(`rooms/${props.room.id}/plants`)
+
+const {
+    error: errorUpdateData,
+    isPending: isPendingUpdateData,
+    waterPlant
+} = useUpdateData()
 
 const {
     error: errorDelete,
@@ -398,29 +404,66 @@ onUnmounted(() => emit('visibility-change', false))
 
 watch(isVisible, (val) => emit('visibility-change', val))
 
-watch(
-    () => scrollStore.scrollTarget,
-    async (newVal) => {
-        if (newVal.type !== 'plant' || !newVal.plantId) return
+const checkAndScroll = async () => {
+    const target = scrollStore.scrollTarget
+    if (target.type !== 'plant' || !target.plantId) return
 
-        await nextTick()
+    const plantExistsInRoom = plants.value?.find(p => p.id === target.plantId)
+    if (!plantExistsInRoom) return
 
-        const el = document.querySelector(`[data-plant-id="${newVal.plantId}"]`)
+    if (isPending.value) {
+        const unwatch = watch(isPending, async (newVal) => {
+            if (!newVal) {
+                unwatch()
+                await performScroll(target.plantId)
+            }
+        })
+    } else {
+        await performScroll(target.plantId)
 
-        if (!el) return
+        if (target.action === 'water') {
+            await addDelay(500)
+            await waterPlant(target.plantId)
+        }
+    }
+}
 
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+const performScroll = async (plantId) => {
+    await nextTick()
 
-        await observeVisibility(el)
+    let el = document.querySelector(`[data-plant-id="${plantId}"]`)
 
-        plantsStore.setPlantVisible(newVal.plantId, true)
+    let attempts = 0
+    const maxAttempts = 20
 
-        scrollStore.clearScrollTarget()
+    while (!el && attempts < maxAttempts) {
+        await new Promise(r => setTimeout(r, 50))
 
-    },
-    { deep: true }
+        el = document.querySelector(`[data-plant-id="${plantId}"]`)
+
+        attempts++
+    }
+
+    if (!el) return
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+    await observeVisibility(el)
+
+    plantsStore.setPlantVisible(plantId, true)
+
+    scrollStore.clearScrollTarget()
+}
+
+watch(() => scrollStore.scrollTarget, checkAndScroll,
+    { deep: true, immediate: true }
 )
 
+watch(() => plants.value, async (val) => {
+    if (val?.length) {
+        await checkAndScroll()
+    }
+}, { deep: true })
 </script>
 
 <style lang="scss">

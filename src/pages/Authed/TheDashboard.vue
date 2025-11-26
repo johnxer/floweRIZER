@@ -97,7 +97,6 @@ watch(() => rooms.value, newVal => {
     } else {
         hasRooms.value = false;
     }
-    console.log('rooms', newVal.length)
 })
 
 const sortedRooms = computed(() => {
@@ -147,10 +146,8 @@ const hasPlants = ref(false)
 
 watch(plants, newVal => {
     if (!newVal.length) {
-        console.log('No plants')
         hasPlants.value = false
     } else {
-        console.log('plants', newVal)
         hasPlants.value = true
     }
 })

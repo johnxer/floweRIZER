@@ -6,14 +6,15 @@ export const useScrollStore = defineStore('useScrollStore', () => {
         type: null,
         roomId: null,
         plantId: null,
+        action: null,
     });
 
-    const setScrollTarget = ({ type = 'room', roomId = null, plantId = null }) => {
-        scrollTarget.value = { type, roomId, plantId };
+    const setScrollTarget = ({ type = 'room', roomId = null, plantId = null, action = null }) => {
+        scrollTarget.value = { type, roomId, plantId, action };
     };
 
     const clearScrollTarget = () => {
-        scrollTarget.value = { type: null, roomId: null, plantId: null };
+        scrollTarget.value = { type: null, roomId: null, plantId: null, action: null };
     };
 
     return {
