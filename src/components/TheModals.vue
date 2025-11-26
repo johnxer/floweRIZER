@@ -29,11 +29,11 @@
             </base-modal>
 
             <base-modal
-                :modal-toggle="uiStore.activeModal === 'plantHistory'"
+                :modal-toggle="uiStore.activeModal === 'plantDetails'"
                 @close-modal="uiStore.closeModal"
             >
-                <plant-history-content
-                    v-if="uiStore.activeModal === 'plantHistory'"
+                <plant-details-modal
+                    v-if="uiStore.activeModal === 'plantDetails'"
                     :room-id="uiStore.selectedModalData.roomId"
                     :plant-id="uiStore.selectedModalData.plantId"
                     @close-modal="uiStore.closeModal"
@@ -61,7 +61,7 @@ import { ref } from 'vue';
 import BaseModal from '@/components/base/BaseModal/BaseModal.vue';
 
 import AddNewPlantContent from '@/components/features/plants/AddNewPlantContent.vue';
-import PlantHistoryContent from '@/components/features/plants/PlantHistoryContent.vue';
+import PlantDetailsModal from '@/components/features/plants/PlantDetailsModal.vue';
 import AddNewRoomContent from '@/components/features/rooms/AddNewRoomContent.vue';
 import RoomHistoryContent from '@/components/features/rooms/RoomHistoryContent.vue';
 

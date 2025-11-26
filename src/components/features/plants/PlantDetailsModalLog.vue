@@ -1,18 +1,20 @@
 <template>
-
-    <base-modal-content>
-        <template #modalTitle>
-            <span class="noto-color-emoji-regular mr-2">🌱</span>Plant's history log
-        </template>
-        <div class="relative">
+    <div class="relative">
+        <transition
+            name="fade"
+            mode="out-in"
+        >
             <base-loader
-                v-if="isPendingPlant || isLoadingActions"
+                v-if="isPending || isLoadingActions"
                 class="static"
             >
                 Loading plant's history...
             </base-loader>
 
-            <div v-else>
+            <div v-else-if="props.error">
+                {{ props.error }}
+            </div>
+            <div v-else="props.data">
                 <ul class="flex flex-col gap-4">
                     <li class="grid ">
                         <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
@@ -62,8 +64,8 @@
                     </li>
                 </ul>
             </div>
-        </div>
-    </base-modal-content>
+        </transition>
+    </div>
 </template>
 
 <script setup>
@@ -74,33 +76,30 @@ import { format } from "date-fns";
 import { doc, getDoc } from "firebase/firestore";
 
 import BaseLoader from '@/components/base/BaseLoader.vue';
-import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 
-import { useGetDetails } from '@/composables';
-import { useAuthStore } from "../../../stores/useAuthStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const authStore = useAuthStore()
 
 const props = defineProps({
-    roomId: {
-        type: String,
+    data: {
+        type: Object,
         required: true
     },
-    plantId: {
-        type: String,
+    isPending: {
+        type: Boolean,
         required: true
+    },
+    error: {
+        type: [Object, null],
+        required: false,
+        default: null
     }
 })
 
-const {
-    error: errorPlant,
-    isPending: isPendingPlant,
-    data: detailsPlant,
-} = useGetDetails(`rooms/${props.roomId}/plants/${props.plantId}`)
-
 const formattedDate = computed(() => {
-    const createdAt = detailsPlant.value?.createdAt
+    const createdAt = props.data?.createdAt
     return createdAt?.toDate ? format(createdAt.toDate(), 'MMM d, yyyy') : '—'
 })
 
@@ -130,7 +129,7 @@ const formattedActions = ref([])
 const isLoadingActions = ref(false)
 
 watchEffect(async () => {
-    const log = detailsPlant.value?.log;
+    const log = props.data?.log;
 
     if (!log?.length) {
         formattedActions.value = []

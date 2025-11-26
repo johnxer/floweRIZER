@@ -131,13 +131,13 @@
                                                 type="button"
                                                 class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
                                                 v-close-popper="true"
-                                                @click="uiStore.openModal('plantHistory', { roomId: props.roomId, plantId: props.plant.id })"
+                                                @click="uiStore.openModal('plantDetails', { roomId: props.roomId, plantId: props.plant.id })"
                                             >
                                                 <span class="material-symbols-outlined text-xl">
-                                                    history
+                                                    local_florist
                                                 </span>
                                                 <span>
-                                                    History
+                                                    Details
                                                 </span>
                                             </button>
                                         </li>
@@ -204,6 +204,8 @@
 </template>
 
 <script setup>
+import { PLANT_PLACEHOLDER } from '@/constants';
+
 import { computed, onMounted, ref, watch } from 'vue';
 
 import { differenceInDays } from "date-fns";
@@ -216,8 +218,10 @@ import { usePlantsStore } from '@/stores/usePlantsStore';
 
 import { useDeleteData, useStorage, useUpdateData } from '@/composables';
 
+
 import { useUIStore } from '@/stores/useUIStore';
 import { addDelay, observeVisibility } from '@/utils';
+
 
 const {
     error: errorUpdateData,
@@ -245,8 +249,6 @@ const props = defineProps({
         required: true,
     }
 })
-
-const PLANT_PLACEHOLDER = 'https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u1f331.svg'
 
 const plantsStore = usePlantsStore()
 const uiStore = useUIStore()
