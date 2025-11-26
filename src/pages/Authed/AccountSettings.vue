@@ -213,15 +213,14 @@
                 </div>
 
                 <hr class="border-gray-200 dark:border-gray-800 my-6" />
-                <base-button
-                    btn-style="notRoundedMd"
-                    btn-size="base"
-                    btn-color="danger"
+                <button
+                    type="button"
                     :disabled="isPendingProfileUpdate"
+                    class="text-red-500 hover:text-red-900 cursor-pointer transition-all duration-600 underline hover:no-underline p-0"
                     @click="uiStore.openModal('confirmDeleteAccount')"
                 >
                     Delete account
-                </base-button>
+                </button>
 
             </div>
         </div>

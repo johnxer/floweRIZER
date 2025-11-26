@@ -13,7 +13,7 @@
                     >
                         <button
                             type="button"
-                            class="px-4 py-2 text-lg rounded-xl text-gray-400 hover:text-gray-600 transition-all"
+                            class="px-4 py-2 text-lg rounded-xl text-gray-400 hover:text-gray-600 transition-all duration-600"
                             :class="activeTabName === tab.name ? 'text-gray-600 dark:text-gray-400 bg-white' : 'cursor-pointer'"
                             @click="activeTabName = tab.name"
                         >
