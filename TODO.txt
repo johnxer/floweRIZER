@@ -2,8 +2,6 @@ TODO
 
 - account password change functionality
 
-- if clicking in the notfication on account page, should redirect to dashboard
-
 - allow to take picture from webcam or frontcam on phone on account settings page
 
 - add voice recognition support - to move and to water plants
