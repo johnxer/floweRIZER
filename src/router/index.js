@@ -32,6 +32,14 @@ const routes = [
         },
     },
     {
+        path: '/pw-recovery',
+        name: 'PwRecovery',
+        component: () => import('@/pages/NotAuthed/PwRecovery.vue'),
+        meta: {
+            title: 'Password recovery',
+        },
+    },
+    {
         path: '/dashboard',
         name: 'TheDashboard',
         component: () => import('@/pages/Authed/TheDashboard.vue'),
@@ -101,8 +109,8 @@ router.beforeEach((to, from, next) => {
     const isAuthenticated = !!auth.currentUser;
 
     if (to.meta.requiresAuth && !isAuthenticated) {
-        next({ name: 'NotAuthed', query: { redirect: to.fullPath } });
-    } else if (to.name === 'NotAuthed' && isAuthenticated) {
+        next({ name: 'TheLogin', query: { redirect: to.fullPath } });
+    } else if (to.name === 'TheLogin' && isAuthenticated) {
         if (from.name) {
             next(from.fullPath);
         } else {

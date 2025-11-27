@@ -1,5 +1,11 @@
 <template>
     <Card>
+        <div
+            v-if="isPending"
+            class="absolute inset-[5px] flex items-center justify-center bg-white/60 z-1 backdrop-blur-[5px]"
+        >
+            <Spinner class="size-20 text-primary" />
+        </div>
         <CardHeader>
             <the-logo-circle :project-title="projectName" />
             <CardTitle>Create an account</CardTitle>
@@ -8,76 +14,112 @@
             </CardDescription>
         </CardHeader>
         <CardContent>
-            <form>
-                <FieldGroup>
-                    <Field>
-                        <FieldLabel for="key"> Access code </FieldLabel>
-                        <Input
-                            id="key"
-                            type="text"
-                            placeholder="Enter code..."
-                            v-model.trim="form.code"
-                            @input="formErrors.code = null"
-                            required
-                        />
-                    </Field>
-                    <Field>
-                        <FieldLabel for="email"> Email </FieldLabel>
-                        <Input
-                            id="email"
-                            type="email"
-                            placeholder="Enter email..."
-                            v-model.trim="form.email"
-                            @input="formErrors.email = null"
-                            required
-                        />
-                        <FieldDescription>
-                            We'll use this to contact you. We will not share your email with
-                            anyone else.
-                        </FieldDescription>
-                    </Field>
-                    <Field>
-                        <FieldLabel for="password"> Password </FieldLabel>
-                        <Input
-                            id="password"
-                            type="password"
-                            placeholder="Enter password..."
-                            v-model.trim="form.password"
-                            @input="formErrors.password = null"
-                            required
-                        />
-                        <FieldDescription>Must be at least 8 characters long.</FieldDescription>
-                    </Field>
-                    <Field>
-                        <FieldLabel for="confirm-password"> Confirm Password </FieldLabel>
-                        <Input
-                            id="confirm-password"
-                            type="password"
-                            placeholder="Repeat password..."
-                            v-model.trim="form.passwordRepeat"
-                            @input="formErrors.passwordRepeat = null"
-                            required
-                        />
-                        <FieldDescription>Please confirm your password.</FieldDescription>
-                    </Field>
+            <Alert
+                v-if="error"
+                variant="destructive"
+                class="mb-6"
+            >
+                <AlertCircleIcon />
+                <AlertDescription>{{ error }}</AlertDescription>
+            </Alert>
+            <div>
+                <form
+                    @submit="onSubmitForm"
+                    novalidate
+                >
                     <FieldGroup>
-                        <Field>
-                            <Button type="submit"> Create Account </Button>
-                            <FieldDescription class="px-6 text-center">
-                                Already have an account?
-                                <router-link :to="{ name: 'TheLogin' }">Sign in</router-link>
-                            </FieldDescription>
-                        </Field>
+                        <FormField
+                            v-slot="{ componentField }"
+                            name="code"
+                        >
+                            <FormItem>
+                                <FormLabel>Access code</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="text"
+                                        placeholder="Enter code..."
+                                        v-bind="componentField"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <FormField
+                            v-slot="{ componentField }"
+                            name="email"
+                        >
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="email"
+                                        placeholder="Enter email..."
+                                        v-bind="componentField"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <FormField
+                            v-slot="{ componentField }"
+                            name="password"
+                        >
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        placeholder="Enter password..."
+                                        v-bind="componentField"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+
+                        <FormField
+                            v-slot="{ componentField }"
+                            name="passwordRepeat"
+                        >
+                            <FormItem>
+                                <FormLabel>Confirm Password</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        placeholder="Repeat password..."
+                                        v-bind="componentField"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+
+                        <FieldGroup>
+                            <Field>
+                                <Button type="submit"> Create Account </Button>
+                                <FieldDescription class="px-6 text-center">
+                                    Already have an account?
+                                    <router-link :to="{ name: 'TheLogin' }">Sign in</router-link>
+                                </FieldDescription>
+                            </Field>
+                        </FieldGroup>
                     </FieldGroup>
-                </FieldGroup>
-            </form>
+                </form>
+            </div>
         </CardContent>
     </Card>
 </template>
 
 
 <script setup>
+
+import { toTypedSchema } from '@vee-validate/zod';
+import { useForm } from 'vee-validate';
+import { useRouter } from 'vue-router';
+import * as z from 'zod';
+
 import { Button } from '@/components/ui/button';
+
 import {
     Card,
     CardContent,
@@ -85,21 +127,35 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+
 import {
     Field,
     FieldDescription,
-    FieldGroup,
-    FieldLabel,
+    FieldGroup
 } from '@/components/ui/field';
+
+import {
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form';
+
 import { Input } from '@/components/ui/input';
+
+import {
+    Alert,
+    AlertDescription
+} from '@/components/ui/alert';
+
+import { AlertCircleIcon } from 'lucide-vue-next';
+
+import { Spinner } from '@/components/ui/spinner';
 
 import TheLogoCircle from '@/components/layout/TheLogoCircle.vue';
 
 import { useAuthActions } from '@/composables';
-
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
 
 const {
     error,
@@ -107,85 +163,63 @@ const {
     signUpUser,
 } = useAuthActions()
 
-
-const form = ref({
-    code: '',
-    email: '',
-    password: '',
-    passwordRepeat: ''
-})
+const router = useRouter()
 
 const projectName = import.meta.env.VITE_PROJECT_NAME
 
-const router = useRouter()
-
-const formErrors = ref({})
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 const signUpCode = import.meta.env.VITE_SIGNUP_CODE
 
-const validateForm = () => {
-    formErrors.value = {}
-
-    if (!form.value.code) {
-        formErrors.value.code = 'Code cannot be empty'
-    } else if (form.value.code !== signUpCode) {
-        formErrors.value.code = 'Wrong signup code'
-    }
-
-    if (!form.value.email) {
-        formErrors.value.email = 'Email cannot be empty'
-    } else if (!emailPattern.test(form.value.email)) {
-        formErrors.value.email = 'Wrong email format'
-    }
-
-    // tady bude validace pres frequency counter
-
-    if (!form.value.password) {
-        formErrors.value.password = 'Password cannot be empty'
-    } else if (form.value.password.length < 8) {
-        formErrors.value.password = 'Password cannot be shorter than 8 chars'
-    }
+const formSchema = toTypedSchema(z.object({
+    email: z.string()
+        .min(1, { message: 'Email is required.' })
+        .email({ message: 'Invalid email format.' }),
+    password: z.string()
+        .min(1, { message: 'Password is required.' })
+        .min(8, { message: 'Password must be at least 8 characters.' }),
+    passwordRepeat: z.string()
+        .min(1, { message: 'Password is required.' })
+        .min(8, { message: 'Password must be at least 8 characters.' }),
+    code: z.string()
+        .min(1, { message: 'Code is required.' })
+        .refine((val) => val === signUpCode, {
+            message: 'Invalid sign up code. Please check your invitation.',
+        })
+})
+    .refine((data) => data.password === data.passwordRepeat, {
+        message: "Passwords do not match",
+        path: ["passwordRepeat"],
+    }));
 
 
-    if (!form.value.passwordRepeat) {
-        formErrors.value.passwordRepeat = 'Cannot be empty'
-    }
-    else if (form.value.passwordRepeat !== form.value.password) {
-        formErrors.value.passwordRepeat = 'Doesnt match the password'
-    }
+const { handleSubmit } = useForm({
+    validationSchema: formSchema,
+    validateOnMount: false,
 
-
-
-    return Object.keys(formErrors.value).length === 0;
-}
-
-const clearForm = () => {
-    form.value.code = '';
-    form.value.email = '';
-    form.value.password = '';
-    form.value.passwordRepeat = ''
-}
+    initialValues: {
+        code: '',
+        email: '',
+        password: '',
+        passwordRepeat: '',
+    },
+    validateOnBlur: false,
+    validateOnChange: false,
+    validateOnInput: false,
+    validateOnModelUpdate: false,
+})
 
 
 
-const submitForm = async () => {
-    if (!validateForm()) return
 
-    const data = {
-        email: form.value.email,
-        password: form.value.password,
-    }
-
-    const success = await signUpUser(data)
+const onSubmitForm = handleSubmit(async (values) => {
+    const success = await signUpUser({
+        email: values.email,
+        password: values.password,
+    })
 
     if (success) {
-        clearForm();
-
         router.push({ name: 'TheDashboard' })
     }
-}
+})
 
 
 </script>

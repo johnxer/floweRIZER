@@ -389,6 +389,7 @@
     --color-accent: var(--accent);
     --color-accent-foreground: var(--accent-foreground);
     --color-destructive: var(--destructive);
+    --color-success: var(--success);
     --color-border: var(--border);
     --color-input: var(--input);
     --color-ring: var(--ring);
@@ -412,9 +413,11 @@
 
 :root {
     --radius: 0.625rem;
-    --background: oklch(1 0 0);
+    /* --background: oklch(1 0 0); */
+    --background: theme('colors.gray.50');
     --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
+    /* --card: oklch(1 0 0); */
+    --card: theme('colors.white');
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
@@ -428,6 +431,7 @@
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
     --destructive: oklch(0.577 0.245 27.325);
+    --success: var(--primary);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
