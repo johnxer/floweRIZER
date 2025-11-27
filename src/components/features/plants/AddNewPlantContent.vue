@@ -134,15 +134,18 @@
                     >
                         <div class="flex gap-2 items-center text-gray-500">
                             <label class="inline-flex items-center cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    id="plant-wateredNow"
-                                    v-model="form.wateredNow"
-                                    @input="formErrors.wateredNow = null"
-                                    value="true"
-                                    class="sr-only peer"
-                                >
-                                <div class="relative w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:absolute after:top-[4px] after:start-[4px] after:bg-white dark:after:bg-gray-900 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-800"></div>
+
+                                <Switch>
+                                    <input
+                                        type="checkbox"
+                                        id="plant-wateredNow"
+                                        v-model="form.wateredNow"
+                                        @input="formErrors.wateredNow = null"
+                                        value="true"
+                                        class="sr-only peer"
+                                    >
+                                </Switch>
+                                <!-- <div class="relative w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:absolute after:top-[4px] after:start-[4px] after:bg-white dark:after:bg-gray-900 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-800"></div> -->
                                 <span class="ms-3">
                                     I've watered the plant today
                                 </span>
@@ -155,6 +158,7 @@
                     class="mt-8 w-full"
                     :class="{ 'animate-pulse': isPending }"
                     size="lg"
+                    variant="hover-outline"
                     :disabled="isPending"
                 >
                     {{ buttonLabel }}
@@ -178,6 +182,7 @@ import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 
 import { useGetDetails, useRecognizePlant, useSendData, useStorage, useUpdateData } from '@/composables';
 import { useAuthStore } from '@/stores/useAuthStore';

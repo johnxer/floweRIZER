@@ -2,19 +2,6 @@ import { auth } from '@/firebase/config';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
-    // {
-    //     path: '/',
-    //     name: 'Home',
-    //     component: () => import('@/pages/TheHome.vue')
-    // },
-    // {
-    //     path: '/',
-    //     name: 'NotAuthed',
-    //     component: () => import('@/pages/NotAuthed.vue'),
-    //     meta: {
-    //         title: 'Login or Sign up',
-    //     },
-    // },
     {
         path: '/',
         name: 'TheLogin',

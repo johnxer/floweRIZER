@@ -1,6 +1,6 @@
 <template>
     <base-container>
-        <div class="md:max-w-[400px] max-w-full mx-auto space-y-8">
+        <div class="md:max-w-[300px] max-w-full mx-auto space-y-8">
             <account-image />
             <div>
                 <account-form @update-in-progress="handleUpdateInProgress" />

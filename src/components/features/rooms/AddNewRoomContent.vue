@@ -28,7 +28,7 @@
                                 <base-input
                                     input-id="room-name"
                                     input-placeholder="Enter room name..."
-                                    :input-error="!!formErrors.name"
+                                    :input-error="formErrors.name"
                                     class="w-full"
                                     v-model.trim="form.name"
                                     @input="formErrors.name = null"

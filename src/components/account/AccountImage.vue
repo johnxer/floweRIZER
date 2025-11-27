@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="w-[200px] h-[200px] relative rounded-full overflow-hidden shadow-2xl border-2 border-white dark:border-gray-700 mx-auto">
+        <div class="w-[160px] h-[160px] relative rounded-full overflow-hidden shadow-xl border-2 border-white dark:border-gray-700 mx-auto">
             <transition
                 name="fade"
                 mode="out-in"
@@ -22,6 +22,7 @@
                         <base-loader
                             v-if="!isImageLoaded"
                             position="absolute"
+                            size="md"
                         />
                         <img
                             :src="userAvatarURL"
@@ -105,25 +106,32 @@
             name="fade"
             mode="out-in"
         >
-            <base-form-message-box
-                v-if="errorUploadImage || errorUpdateImage"
-                message-type="error"
-                class="mt-4"
+
+            <Alert
+                v-if="error"
+                variant="destructive"
+                class="mt-6"
             >
-                {{ errorUploadImage || errorUpdateImage }}
-            </base-form-message-box>
+                <AlertCircleIcon />
+                <AlertDescription>{{ error }}</AlertDescription>
+            </Alert>
         </transition>
         <transition
             name="fade"
             mode="out-in"
         >
-            <base-form-message-box
+
+            <Alert
                 v-if="isSuccessImage"
-                message-type="success"
-                class="mt-4"
+                variant="success"
+                class="mt-6"
             >
-                Image updated!
-            </base-form-message-box>
+                <CheckCircle2Icon />
+
+                <AlertDescription>
+                    Image updated!
+                </AlertDescription>
+            </Alert>
         </transition>
     </div>
 </template>
@@ -131,8 +139,14 @@
 <script setup>
 import { computed, ref } from 'vue';
 
-import BaseFormMessageBox from '@/components/base/BaseForm/BaseFormMessageBox.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
+
+import {
+    Alert,
+    AlertDescription
+} from '@/components/ui/alert';
+
+import { AlertCircleIcon, CheckCircle2Icon } from 'lucide-vue-next';
 
 import { auth } from '@/firebase/config';
 import { updateProfile } from 'firebase/auth';
@@ -176,7 +190,7 @@ const isPendingUpdateImage = ref(false)
 
 const isSuccessImage = ref(false)
 
-isSuccessImage.value = false
+const error = computed(() => errorUploadImage.value || errorProfileUpdate.value)
 
 const isPending = computed(() => isPendingUpload.value || isPendingUpdateImage.value)
 

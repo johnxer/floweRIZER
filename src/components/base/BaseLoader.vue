@@ -110,7 +110,7 @@ const bgColor = {
         class: 'bg-white/60'
     },
     body: {
-        class: 'bg-gray-50/80'
+        class: 'bg-gray-100/80'
     }
 }
 

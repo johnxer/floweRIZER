@@ -15,7 +15,7 @@
             >
             <router-link
                 class="inline-flex items-center text-xl text-primary-700 px-3 py-1 gap-1 group"
-                :to="isAuthed ? { name: 'TheDashboard' } : { name: 'NotAuthed' }"
+                :to="isAuthed ? { name: 'TheDashboard' } : { name: 'TheLogin' }"
             >
                 {{ isAuthed ? 'Go to dashboard' : 'Go to login page' }}
                 <span class="material-symbols-outlined text-2xl group-hover:translate-x-2 transition-transform duration-600">
