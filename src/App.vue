@@ -3,12 +3,6 @@
         v-if="isAuthed"
         :project-title="projectName"
     />
-    <the-logo-circle
-        v-else-if="!isAuthed && !isNotFound"
-        :project-title="projectName"
-        class="pt-8"
-        style="display: none;"
-    />
     <router-view v-slot="{ Component }">
         <transition
             name="fade"
@@ -35,7 +29,6 @@
 import TheChat from './components/features/chat/TheChat.vue';
 import SidebarMenu from './components/layout/SidebarMenu.vue';
 import TheHeader from './components/layout/TheHeader.vue';
-import TheLogoCircle from './components/layout/TheLogoCircle.vue';
 
 import { computed, ref, watchEffect } from 'vue';
 

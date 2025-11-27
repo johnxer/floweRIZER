@@ -69,7 +69,7 @@ const { logOutUser } = useAuth()
 
 const handleLogout = async () => {
     await logOutUser()
-    router.push({name: 'NotAuthed'})
+    router.push({ name: 'TheLogin' })
 }
 
 
