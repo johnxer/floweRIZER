@@ -13,12 +13,16 @@
                 >
                     {{ !isPendingRecognizePlant ? loadingTitle : 'Recognizing plant...' }}
                 </base-loader>
-                <base-form-message-box
+                <Alert
                     v-else-if="error"
-                    :message-type="'error'"
+                    variant="destructive"
+                    class="mb-6"
                 >
-                    {{ error }}
-                </base-form-message-box>
+                    <AlertCircleIcon />
+                    <AlertDescription>
+                        {{ error }}
+                    </AlertDescription>
+                </Alert>
             </transition>
             <form
                 @submit.prevent="submitForm"
@@ -173,7 +177,6 @@
 import { computed, ref, watch, watchEffect } from 'vue';
 
 import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
-import BaseFormMessageBox from '@/components/base/BaseForm/BaseFormMessageBox.vue';
 import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseTextarea from '@/components/base/BaseForm/BaseTextarea.vue';
@@ -183,6 +186,13 @@ import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+
+import {
+    Alert,
+    AlertDescription
+} from '@/components/ui/alert';
+
+import { AlertCircleIcon } from 'lucide-vue-next';
 
 import { useGetDetails, useRecognizePlant, useSendData, useStorage, useUpdateData } from '@/composables';
 import { useAuthStore } from '@/stores/useAuthStore';

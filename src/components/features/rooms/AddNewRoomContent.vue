@@ -12,6 +12,16 @@
                 >
                     {{ loadingTitle }}
                 </base-loader>
+                <Alert
+                    v-else-if="error"
+                    variant="destructive"
+                    class="mb-6"
+                >
+                    <AlertCircleIcon />
+                    <AlertDescription>
+                        {{ error }}
+                    </AlertDescription>
+                </Alert>
             </transition>
             <div>
                 <div>
@@ -89,15 +99,15 @@
                             </base-input-wrapper-authed>
                         </div>
 
-                        <base-button
-                            class="mt-8"
+                        <Button
+                            class="mt-8 w-full"
                             :class="{ 'animate-pulse': isPending }"
-                            btn-style="notRoundedMd"
-                            btn-size="base"
+                            size="lg"
+                            variant="hover-outline"
                             :disabled="isPending"
                         >
                             {{ buttonLabel }}
-                        </base-button>
+                        </Button>
 
                     </form>
                 </div>
@@ -109,13 +119,21 @@
 <script setup>
 import { computed, ref, watch, watchEffect } from 'vue';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseTextarea from '@/components/base/BaseForm/BaseTextarea.vue';
 import BaseUploadButton from '@/components/base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
+
+import { Button } from '@/components/ui/button';
+
+import {
+    Alert,
+    AlertDescription
+} from '@/components/ui/alert';
+
+import { AlertCircleIcon } from 'lucide-vue-next';
 
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';
@@ -161,6 +179,7 @@ const {
     updateData,
 } = useUpdateData()
 
+
 let errorRoom, isPendingRoom, detailsRoom
 
 if (localRoomId) {
@@ -175,7 +194,7 @@ if (localRoomId) {
     detailsRoom = ref(null)
 }
 
-// const error = computed(() => errorSendData.value || errorUpload.value)
+const error = computed(() => errorSendData.value || errorUpload.value || errorUpdate.value)
 const isPending = computed(() => isPendingRoom.value || isPendingSendData.value || isPendingUpload.value || isPendingUpdate.value)
 
 const form = ref({

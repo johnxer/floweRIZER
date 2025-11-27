@@ -113,7 +113,9 @@
                 class="mt-6"
             >
                 <AlertCircleIcon />
-                <AlertDescription>{{ error }}</AlertDescription>
+                <AlertDescription>
+                    {{ error }}
+                </AlertDescription>
             </Alert>
         </transition>
         <transition
