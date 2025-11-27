@@ -7,8 +7,8 @@
             <transition name="fade">
                 <base-loader
                     v-if="isPending"
-                    position-type="absolute"
-                    class="bg-white/80 dark:bg-gray-900/80 z-1"
+                    position="absolute"
+                    :has-bg="true"
                 >
                     {{ loadingTitle }}
                 </base-loader>

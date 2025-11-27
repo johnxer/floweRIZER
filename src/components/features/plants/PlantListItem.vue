@@ -29,9 +29,8 @@
                     class="bg-gray-200 dark:bg-gray-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
                 >
                     <base-loader
-                        class=""
-                        loader-size="sm"
-                        position-type="absolute"
+                        size="sm"
+                        position="absolute"
                     />
                 </div>
                 <div :class="{ 'absolute p-2 h-full w-full': !plant.imgSrc }">

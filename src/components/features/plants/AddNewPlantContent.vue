@@ -151,15 +151,14 @@
                         </div>
                     </base-input-wrapper-authed>
                 </div>
-                <base-button
-                    class="mt-8"
+                <Button
+                    class="mt-8 w-full"
                     :class="{ 'animate-pulse': isPending }"
-                    btn-style="notRoundedMd"
-                    btn-size="base"
+                    size="lg"
                     :disabled="isPending"
                 >
                     {{ buttonLabel }}
-                </base-button>
+                </Button>
             </form>
         </div>
     </base-modal-content>
@@ -177,6 +176,8 @@ import BaseTextarea from '@/components/base/BaseForm/BaseTextarea.vue';
 import BaseUploadButton from '@/components/base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
+
+import { Button } from '@/components/ui/button';
 
 import { useGetDetails, useRecognizePlant, useSendData, useStorage, useUpdateData } from '@/composables';
 import { useAuthStore } from '@/stores/useAuthStore';

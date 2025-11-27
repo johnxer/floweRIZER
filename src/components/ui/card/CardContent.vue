@@ -2,12 +2,15 @@
 import { cn } from "@/lib/utils";
 
 const props = defineProps({
-  class: { type: null, required: false },
+    class: { type: null, required: false },
 });
 </script>
 
 <template>
-  <div data-slot="card-content" :class="cn('px-6', props.class)">
-    <slot />
-  </div>
+    <div
+        data-slot="card-content"
+        :class="cn('px-4 md:px-6', props.class)"
+    >
+        <slot />
+    </div>
 </template>

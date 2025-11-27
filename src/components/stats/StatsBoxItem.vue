@@ -4,8 +4,14 @@
             <span class="material-symbols-outlined text-3xl">
                 {{ props.icon }}
             </span>
-            <base-loader v-if="props.isPending" loader-size="xs"/>
-            <span v-else class="text-xl">
+            <base-loader
+                v-if="props.isPending"
+                size="xs"
+            />
+            <span
+                v-else
+                class="text-xl"
+            >
                 {{ props.value }}
             </span>
         </div>

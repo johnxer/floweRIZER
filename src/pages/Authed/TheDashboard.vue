@@ -6,8 +6,8 @@
         >
             <base-loader
                 v-if="isPending"
-                class="flex items-center justify-center absolute top-[60px] md:bottom-[64px] h-[calc(100vh-60px-64px)] inset-x-[0] w-screen"
-                loader-size="lg"
+                :has-bg="true"
+                position="fixed"
             />
             <div
                 v-else-if="showPlaceholder"
@@ -16,18 +16,15 @@
                 <h2 class="text-xl mb-4 text-gray-700 dark:text-gray-500">
                     You have no rooms yet...
                 </h2>
-                <base-button
+                <Button
                     @click="uiStore.openModal('room')"
-                    btn-style="notRoundedMd"
-                    btn-size="base"
-                    :btn-full-width="false"
                     class="inline-flex gap-1"
                 >
                     <span class="material-symbols-outlined text-2xl">
                         add
                     </span>
                     Add a new room
-                </base-button>
+                </Button>
             </div>
             <div v-else>
                 <stats-box class="mb-10" />
@@ -40,18 +37,21 @@
                         />
                     </transition-group>
                 </div>
-                <transition name="fade">
-                    <button
+
+                <div class=" md:hidden text-end mt-2">
+                    <Button
                         type="button"
-                        class="md:hidden mt-2 flex items-center justify-end py-2 px-2 gap-1 w-full text-primary-500"
+                        class="inline-flex align-top items-center justify-end py-2 px-2 gap-1 text-primary"
+                        variant="link"
+                        size="lg"
                         @click="uiStore.openModal('room')"
                     >
-                        <span class="material-symbols-outlined text-2xl">
+                        <span class="material-symbols-outlined text-lg">
                             add
                         </span>
                         New room
-                    </button>
-                </transition>
+                    </Button>
+                </div>
             </div>
         </transition>
         <the-modals />
@@ -59,16 +59,16 @@
 </template>
 
 <script setup>
-
 import { computed, nextTick, ref, watch } from 'vue';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BaseContainer from '@/components/base/BaseContainer.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseRoom from '@/components/features/rooms/RoomCard.vue';
 
 import StatsBox from '@/components/stats/StatsBox.vue';
 import TheModals from '@/components/TheModals.vue';
+
+import { Button } from '@/components/ui/button';
 
 import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';

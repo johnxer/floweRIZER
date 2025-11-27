@@ -1,40 +1,27 @@
 <template>
     <div
         class="flex items-center justify-center"
-        :class="positionClasses"
+        :class="[
+            positionClasses,
+            bgColorClass,
+            {
+                'flex-col': hasText,
+                'z-1': hasBg,
+                'backdrop-blur-[5px]': hasBg && bgBlur,
+            }
+        ]"
     >
-        <div class="">
-            <svg
-                class="animate-spin text-primary dark:text-primary-800 mx-auto"
-                :class="[
-                    sizeClass,
-                    loaderClasses,
-                    { 'mb-3': hasText }
-                ]"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-            >
-                <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="2"
-                ></circle>
-                <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M3.8,19.3l1.5-1.3c-1.4-1.6-2.3-3.7-2.3-5.9C3,7,7,3,12,3V1C5.9,1,1,5.9,1,12s1,5.3,2.8,7.3Z"
-                ></path>
-            </svg>
-            <div
-                v-if="hasText"
-                class="text-gray-500 dark:text-gray-600 text-lg"
-            >
-                <slot />
-            </div>
+        <Spinner :class="[
+            sizeClass,
+            loaderClasses,
+            colorClass,
+            { 'mb-3': hasText }
+        ]" />
+        <div
+            v-if="hasText"
+            class="text-gray-500 dark:text-gray-600 text-base"
+        >
+            <slot />
         </div>
     </div>
 </template>
@@ -42,14 +29,36 @@
 <script setup>
 import { computed, useSlots } from 'vue';
 
+import Spinner from '@/components/ui/spinner/Spinner.vue';
+
 
 const props = defineProps({
-    positionType: {
+    position: {
         type: String,
         required: false,
         default: 'static'
     },
-    loaderSize: {
+    size: {
+        type: String,
+        required: false,
+        default: 'base'
+    },
+    color: {
+        type: String,
+        required: false,
+        default: 'base'
+    },
+    hasBg: {
+        type: Boolean,
+        required: false,
+        default: true
+    },
+    bgBlur: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    bgColor: {
         type: String,
         required: false,
         default: 'base'
@@ -57,13 +66,15 @@ const props = defineProps({
 })
 
 const positionMap = {
-    'absolute': {
-        position: 'absolute',
+    absolute: {
         classes: 'absolute inset-0 w-full h-full',
         spinnerClasses: ''
     },
-    'static': {
-        position: 'static',
+    fixed: {
+        classes: 'fixed inset-0 w-full h-full',
+        spinnerClasses: ''
+    },
+    static: {
         classes: '',
         spinnerClasses: 'mx-auto'
     }
@@ -77,15 +88,31 @@ const sizeMap = {
     sm: {
         class: 'size-10'
     },
+    md: {
+        class: 'size-15'
+    },
     base: {
         class: 'size-20'
     },
     lg: {
         class: 'size-30'
     },
-
 }
 
+const colorMap = {
+    base: {
+        class: 'text-gray-200'
+    },
+}
+
+const bgColor = {
+    base: {
+        class: 'bg-white/60'
+    },
+    body: {
+        class: 'bg-gray-50/80'
+    }
+}
 
 const slots = useSlots()
 
@@ -93,10 +120,14 @@ const hasText = computed(() => {
     return (slots.default && slots.default().length)
 })
 
-const positionClasses = computed(() => positionMap[props.positionType].classes)
-const loaderClasses = computed(() => positionMap[props.positionType].spinnerClasses)
+const positionClasses = computed(() => positionMap[props.position].classes)
+const loaderClasses = computed(() => positionMap[props.position].spinnerClasses)
 
-const sizeClass = computed(() => sizeMap[props.loaderSize].class)
+const sizeClass = computed(() => sizeMap[props.size].class)
+
+const colorClass = computed(() => colorMap[props.color].class)
+
+const bgColorClass = computed(() => bgColor[props.bgColor].class)
 
 </script>
 

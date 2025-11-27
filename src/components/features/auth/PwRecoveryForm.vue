@@ -1,92 +1,96 @@
 <template>
-    <Card>
-        <div
+    <div :class="cn('flex flex-col gap-4', props.class)">
+        <the-logo />
+        <base-loader
             v-if="isPending"
-            class="absolute inset-[5px] flex items-center justify-center bg-white/60 z-1 backdrop-blur-[5px]"
-        >
-            <Spinner class="size-20 text-primary" />
-        </div>
-        <CardHeader>
-            <the-logo-circle
-                v-if="projectName"
-                :project-title="projectName"
-            />
+            :has-bg="true"
+            position="fixed"
+        />
+        <Card class="shadow-none md:shadow-box bg-transparent md:bg-card">
 
-            <CardTitle>Password recovery</CardTitle>
-            <CardDescription>
-                Please enter your email address and we will send you a password reset link.
-            </CardDescription>
-        </CardHeader>
-        <CardContent>
-            <Alert
-                v-if="error"
-                variant="destructive"
-                class="mb-6"
-            >
-                <AlertCircleIcon />
-                <AlertDescription>{{ error }}</AlertDescription>
-            </Alert>
-            <Alert
-                v-else-if="isSuccess"
-                variant="success"
-                class="mb-6"
-            >
-                <CheckCircle2Icon />
-                <AlertTitle>Password reset link sent! </AlertTitle>
-                <AlertDescription>
-                    Please check your email.
-                </AlertDescription>
-            </Alert>
-            <div>
-                <form
-                    @submit="onSubmitForm"
-                    class="space-y-4"
+            <CardHeader class="p-0 md:p-6">
+                <CardTitle>Password recovery</CardTitle>
+                <CardDescription>
+                    Please enter your email address and we will send you a password reset link.
+                </CardDescription>
+            </CardHeader>
+            <CardContent class="p-0 md:p-6">
+                <Alert
+                    v-if="error"
+                    variant="destructive"
+                    class="mb-6"
                 >
-                    <FormField
-                        v-slot="{ componentField }"
-                        name="email"
+                    <AlertCircleIcon />
+                    <AlertDescription>{{ error }}</AlertDescription>
+                </Alert>
+                <Alert
+                    v-else-if="isSuccess"
+                    variant="success"
+                    class="mb-6"
+                >
+                    <CheckCircle2Icon />
+                    <AlertTitle>Password reset link sent! </AlertTitle>
+                    <AlertDescription>
+                        Please check your email.
+                    </AlertDescription>
+                </Alert>
+                <div>
+                    <form
+                        @submit="onSubmitForm"
+                        class="space-y-4"
                     >
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="email"
-                                    placeholder="Enter email..."
-                                    v-bind="componentField"
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    </FormField>
-                    <div class="grid grid-cols-1 md:grid-cols-[30%_1fr] gap-4 items-center">
-                        <router-link
-                            type="button"
-                            class="hover:text-primary transition-all duration-600 block text-center text-sm"
-                            :to="{ name: 'TheLogin' }"
+                        <FormField
+                            v-slot="{ componentField }"
+                            name="email"
                         >
-                            Cancel
-                        </router-link>
+                            <FormItem>
+                                <FormLabel>Email</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="email"
+                                        placeholder="Enter email..."
+                                        v-bind="componentField"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                        <div class="grid grid-cols-1 md:grid-cols-[30%_1fr] gap-4 items-center">
+                            <router-link
+                                type="button"
+                                class="hover:text-primary transition-all duration-600 block text-center text-sm order-2 md:order-1"
+                                :to="{ name: 'TheLogin' }"
+                            >
+                                Cancel
+                            </router-link>
 
-                        <Button
-                            type="submit"
-                            class=""
-                            :disabled="isPending"
-                        >
-                            <span v-if="isPending">Sending...</span>
-                            <span v-else>Reset password</span>
-                        </Button>
-                    </div>
-                </form>
-            </div>
-        </CardContent>
-    </Card>
+                            <Button
+                                type="submit"
+                                class="order-1 md:order-2"
+                                variant="hover-outline"
+                                :disabled="isPending"
+                            >
+                                <span v-if="isPending">Sending...</span>
+                                <span v-else>Reset password</span>
+                            </Button>
+                        </div>
+                    </form>
+                </div>
+            </CardContent>
+        </Card>
+    </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+import { useRouter } from 'vue-router';
+
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
-import { useRouter } from 'vue-router';
 import * as z from 'zod';
+
+import BaseLoader from '../../base/BaseLoader.vue';
 
 import {
     Card,
@@ -105,7 +109,6 @@ import {
 
 import { AlertCircleIcon, CheckCircle2Icon } from 'lucide-vue-next';
 
-import Spinner from '@/components/base/BaseLoader.vue';
 
 import {
     FormControl,
@@ -119,12 +122,16 @@ import { Input } from '@/components/ui/input';
 
 import { Button } from '@/components/ui/button';
 
-import TheLogoCircle from '@/components/layout/TheLogoCircle.vue';
+import TheLogo from '@/components/layout/TheLogo.vue';
+
 import { useAuthActions } from '@/composables';
 import { addDelay } from '@/utils';
-import { ref } from 'vue';
 
-const projectName = import.meta.env.VITE_PROJECT_NAME
+import { cn } from '@/lib/utils';
+
+const props = defineProps({
+    class: { type: null, required: false },
+});
 
 const router = useRouter()
 

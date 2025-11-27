@@ -5,37 +5,33 @@
             {{ detailsPlant?.name }}'{{ plantNameLastLetter ? '' : 's' }} details
         </template>
         <div class="relative">
-            <div class="bg-gray-100 rounded-xl p-2 mb-6">
-                <ul class="flex gap-2">
-                    <li
+            <Tabs v-model="activeTabName">
+                <TabsList>
+                    <TabsTrigger
                         v-for="tab in tabs"
                         :key="tab.name"
+                        :value="tab.name"
                     >
-                        <button
-                            type="button"
-                            class="px-4 py-2 text-lg rounded-xl text-gray-400 hover:text-gray-600 transition-all duration-600"
-                            :class="activeTabName === tab.name ? 'text-gray-600 dark:text-gray-400 bg-white' : 'cursor-pointer'"
-                            @click="activeTabName = tab.name"
-                        >
-                            {{ tab.label }}
-                        </button>
-                    </li>
-                </ul>
-            </div>
-            <div class="">
-                <component
-                    :is="currentTab"
-                    :data="detailsPlant"
-                    :isPending="isPendingPlant"
-                    :error="errorPlant"
-                />
-            </div>
+                        {{ tab.label }}
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent :value="activeTabName">
+                    <component
+                        :is="currentTab"
+                        :data="detailsPlant"
+                        :isPending="isPendingPlant"
+                        :error="errorPlant"
+                    />
+                </TabsContent>
+            </Tabs>
         </div>
     </base-modal-content>
 </template>
 
 
 <script setup>
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { computed, defineAsyncComponent, ref } from 'vue';
 
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';

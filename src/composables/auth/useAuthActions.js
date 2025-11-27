@@ -1,10 +1,15 @@
 import { ref } from 'vue';
 
 import { auth, db } from '@/firebase/config';
-import { createUserWithEmailAndPassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, deleteUser, EmailAuthProvider, reauthenticateWithCredential, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { useRouter } from 'vue-router';
+
+import { useAuthStore } from '@/stores/useAuthStore';
 
 export const useAuthActions = () => {
+    const router = useRouter();
+    const authStore = useAuthStore();
     const error = ref(null);
     const isPending = ref(false);
 
@@ -162,6 +167,42 @@ export const useAuthActions = () => {
     //     }
     // };
 
+    const logOutUser = async () => {
+        authStore.error = null;
+        authStore.isPending = true;
+
+        try {
+            await signOut(auth);
+
+            console.log('User is logging out');
+            return true;
+        } catch (err) {
+            error.value = err.message;
+        } finally {
+            isPending.value = false;
+        }
+    };
+
+    const handleLogout = async () => {
+        await logOutUser();
+        router.push({ name: 'TheLogin' });
+    };
+
+    const updateProfileData = async (data) => {
+        try {
+            await updateProfile(auth.currentUser, data);
+
+            authStore.user = { ...authStore.user, ...data };
+
+            return true;
+        } catch (err) {
+            authStore.error = err.message;
+            return false;
+        } finally {
+            authStore.isPending = false;
+        }
+    };
+
     return {
         error,
         isPending,
@@ -170,6 +211,8 @@ export const useAuthActions = () => {
         resetEmail,
         userReauthenticate,
         userDelete,
+        handleLogout,
+        updateProfileData,
         // userChangePassword,
     };
 };

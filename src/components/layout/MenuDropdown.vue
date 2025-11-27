@@ -52,25 +52,19 @@
 
 import { ref } from 'vue'
 
-import { useRouter } from 'vue-router'
-
-import { useAuth } from '@/composables'
+import { useAuthActions } from '@/composables'
 
 import MenuContent from './MenuContent.vue'
 
 const isOpen = ref(false)
-const router = useRouter()
+
 
 const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
 
-const { logOutUser } = useAuth()
+const { handleLogout } = useAuthActions()
 
-const handleLogout = async () => {
-    await logOutUser()
-    router.push({ name: 'TheLogin' })
-}
 
 
 </script>

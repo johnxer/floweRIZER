@@ -1,13 +1,18 @@
 <template>
     <div>
         <base-container v-if="isPending || !detailsRoom">
-            <base-loader />
+            <base-loader
+                v-if="isPending"
+                :has-bg="true"
+                :bg-blur="true"
+                position="fixed"
+            />
         </base-container>
         <div v-else>
             <div class="relative w-full h-[200px] md:h-[300px] overflow-hidden flex items-center justify-center shadow-xl before:absolute before:inset-0 before:bg-black/30">
                 <base-loader
                     v-if="!isImageLoaded"
-                    class="absolute"
+                    position="absolute"
                 />
                 <img
                     :src="detailsRoom.imgSrc || '/src/assets/images/room_default.jpg'"

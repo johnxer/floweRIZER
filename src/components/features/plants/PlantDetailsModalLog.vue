@@ -4,10 +4,7 @@
             name="fade"
             mode="out-in"
         >
-            <base-loader
-                v-if="isPending || isLoadingActions"
-                class="static"
-            >
+            <base-loader v-if="isPending || isLoadingActions">
                 Loading plant's history...
             </base-loader>
 

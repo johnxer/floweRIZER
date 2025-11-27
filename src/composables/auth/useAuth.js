@@ -1,5 +1,5 @@
 import { auth, db } from '@/firebase/config';
-import { onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -54,40 +54,7 @@ export const useAuth = () => {
         });
     };
 
-    const logOutUser = async () => {
-        authStore.error = null;
-        authStore.isPending = true;
-
-        try {
-            await signOut(auth);
-
-            console.log('User is logging out');
-            return true;
-        } catch (err) {
-            authStore.error = err.message;
-        } finally {
-            authStore.isPending = false;
-        }
-    };
-
-    const updateProfileData = async (data) => {
-        try {
-            await updateProfile(auth.currentUser, data);
-
-            authStore.user = { ...authStore.user, ...data };
-
-            return true;
-        } catch (err) {
-            authStore.error = err.message;
-            return false;
-        } finally {
-            authStore.isPending = false;
-        }
-    };
-
     return {
         initAuth,
-        logOutUser,
-        updateProfileData,
     };
 };

@@ -139,7 +139,7 @@
             >
                 <base-loader
                     v-if="isPending"
-                    position-type="absolute"
+                    position="absolute"
                 />
                 <div
                     v-else-if="plants"

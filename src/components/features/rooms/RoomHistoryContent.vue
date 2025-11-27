@@ -4,10 +4,7 @@
             <span class="noto-color-emoji-regular mr-2">🏠</span>Rooms's history log
         </template>
         <div class="relative">
-            <base-loader
-                v-if="isPendingRoom"
-                class="static"
-            >
+            <base-loader v-if="isPendingRoom">
                 Loading plant's history...
             </base-loader>
 

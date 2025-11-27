@@ -18,8 +18,7 @@
                     >
                         <base-loader
                             v-if="!isImageLoaded"
-                            loader-size="base"
-                            position-type="absolute"
+                            position="absolute"
                         />
                     </transition>
                     <img

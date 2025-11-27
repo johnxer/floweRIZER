@@ -1,8 +1,5 @@
 <template>
-    <the-header
-        v-if="isAuthed"
-        :project-title="projectName"
-    />
+    <the-header v-if="isAuthed" />
     <router-view v-slot="{ Component }">
         <transition
             name="fade"
@@ -44,8 +41,6 @@ const authStore = useAuthStore();
 const mobileStore = useMobileStore()
 
 const isAuthed = computed(() => !!authStore.user)
-
-const projectName = import.meta.env.VITE_PROJECT_NAME
 
 const route = useRoute();
 

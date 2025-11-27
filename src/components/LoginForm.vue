@@ -1,17 +1,13 @@
 <template>
-    <div :class="cn('flex flex-col gap-6', props.class)">
-        <Card>
-            <div
-                v-if="isPending"
-                class="absolute inset-[5px] flex items-center justify-center bg-white/60 z-1 backdrop-blur-[5px]"
-            >
-                <Spinner class="size-20 text-primary" />
-            </div>
-            <CardHeader>
-                <the-logo-circle
-                    v-if="projectName"
-                    :project-title="projectName"
-                />
+    <div :class="cn('flex flex-col gap-4', props.class)">
+        <the-logo />
+        <base-loader
+            v-if="isPending"
+            :has-bg="true"
+            position="fixed"
+        />
+        <Card class="shadow-none md:shadow-box bg-transparent md:bg-card">
+            <CardHeader class="p-0 md:p-6">
 
                 <CardTitle>Login to your account</CardTitle>
                 <CardDescription>
@@ -19,7 +15,7 @@
                 </CardDescription>
             </CardHeader>
 
-            <CardContent>
+            <CardContent class="p-0 md:p-6">
 
 
                 <Alert
@@ -77,8 +73,10 @@
                             </FormItem>
                         </FormField>
 
+
                         <Button
                             type="submit"
+                            variant="hover-outline"
                             class="w-full"
                             :disabled="isPending"
                         >
@@ -104,10 +102,15 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
-import { useRouter } from 'vue-router'
 import * as z from 'zod'
+
+import BaseLoader from '@/components/base/BaseLoader.vue'
+
+import TheLogo from '@/components/layout/TheLogo.vue'
 
 import { Button } from '@/components/ui/button'
 
@@ -134,11 +137,7 @@ import {
 
 import { AlertCircleIcon } from 'lucide-vue-next'
 
-import { Spinner } from '@/components/ui/spinner'
-
 import { Input } from '@/components/ui/input'
-
-import TheLogoCircle from '@/components/layout/TheLogoCircle.vue'
 
 import { useAuthActions } from '@/composables'
 
@@ -147,8 +146,6 @@ import { cn } from '@/lib/utils'
 const props = defineProps({
     class: { type: null, required: false },
 });
-
-const projectName = import.meta.env.VITE_PROJECT_NAME
 
 const router = useRouter()
 

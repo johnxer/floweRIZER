@@ -11,9 +11,8 @@
                 >
                     <base-loader
                         v-if="isPending || isPendingDelete"
-                        position-type="static"
+                        position="static"
                     >
-
                         Deleting user...
                     </base-loader>
                     <div
