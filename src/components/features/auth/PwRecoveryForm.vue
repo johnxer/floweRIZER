@@ -21,7 +21,9 @@
                     variant="destructive"
                     class="mb-6"
                 >
-                    <AlertCircleIcon />
+                    <span class="material-symbols-outlined">
+                        error
+                    </span>
                     <AlertDescription>{{ error }}</AlertDescription>
                 </Alert>
                 <Alert
@@ -29,7 +31,9 @@
                     variant="success"
                     class="mb-6"
                 >
-                    <CheckCircle2Icon />
+                    <span class="material-symbols-outlined">
+                        check_circle
+                    </span>
                     <AlertTitle>Password reset link sent! </AlertTitle>
                     <AlertDescription>
                         Please check your email.
@@ -110,8 +114,6 @@ import {
     AlertDescription,
     AlertTitle,
 } from '@/components/ui/alert';
-
-import { AlertCircleIcon, CheckCircle2Icon } from 'lucide-vue-next';
 
 import {
     FormControl,

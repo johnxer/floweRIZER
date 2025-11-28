@@ -18,7 +18,9 @@
                     variant="destructive"
                     class="mb-6"
                 >
-                    <AlertCircleIcon />
+                    <span class="material-symbols-outlined">
+                        error
+                    </span>
                     <AlertDescription>
                         {{ error }}
                     </AlertDescription>
@@ -188,7 +190,6 @@ import {
     AlertDescription
 } from '@/components/ui/alert';
 
-import { AlertCircleIcon } from 'lucide-vue-next';
 
 import { useGetDetails, useRecognizePlant, useSendData, useStorage, useUpdateData } from '@/composables';
 import { useAuthStore } from '@/stores/useAuthStore';

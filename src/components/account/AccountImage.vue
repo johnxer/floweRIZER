@@ -112,7 +112,9 @@
                 variant="destructive"
                 class="mt-6"
             >
-                <AlertCircleIcon />
+                <span class="material-symbols-outlined">
+                    error
+                </span>
                 <AlertDescription>
                     {{ error }}
                 </AlertDescription>
@@ -128,7 +130,9 @@
                 variant="success"
                 class="mt-6"
             >
-                <CheckCircle2Icon />
+                <span class="material-symbols-outlined">
+                    check_circle
+                </span>
 
                 <AlertDescription>
                     Image updated!
@@ -148,7 +152,6 @@ import {
     AlertDescription
 } from '@/components/ui/alert';
 
-import { AlertCircleIcon, CheckCircle2Icon } from 'lucide-vue-next';
 
 import { auth } from '@/firebase/config';
 import { updateProfile } from 'firebase/auth';

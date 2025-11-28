@@ -21,7 +21,9 @@
                     variant="destructive"
                     class="mb-6"
                 >
-                    <AlertCircleIcon />
+                    <span class="material-symbols-outlined">
+                        error
+                    </span>
                     <AlertDescription>{{ error }}</AlertDescription>
                 </Alert>
 
@@ -144,7 +146,6 @@ import {
     AlertDescription
 } from '@/components/ui/alert'
 
-import { AlertCircleIcon } from 'lucide-vue-next'
 
 import { Input } from '@/components/ui/input'
 
@@ -166,7 +167,6 @@ const formSchema = toTypedSchema(z.object({
         .email({ message: 'Invalid email format.' }),
     password: z.string()
         .min(1, { message: 'Password is required.' })
-        .min(8, { message: 'Password must be at least 8 characters.' }),
 }))
 
 const { handleSubmit } = useForm({

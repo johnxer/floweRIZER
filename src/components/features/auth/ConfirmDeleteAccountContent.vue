@@ -24,7 +24,9 @@
                             variant="destructive"
                             class="mb-6"
                         >
-                            <AlertCircleIcon />
+                            <span class="material-symbols-outlined">
+                                error
+                            </span>
                             <AlertDescription>{{ error }}</AlertDescription>
                         </Alert>
 
@@ -123,7 +125,6 @@ import {
     AlertDescription
 } from '@/components/ui/alert';
 
-import { AlertCircleIcon } from 'lucide-vue-next';
 
 import {
     FormControl,

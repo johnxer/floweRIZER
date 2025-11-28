@@ -51,9 +51,6 @@ const init = async () => {
     const pinia = createPinia();
     app.use(pinia);
 
-    // const authStore = useAuthStore();
-    // await authStore.initAuth();
-
     const { initAuth } = useAuth();
     await initAuth();
 

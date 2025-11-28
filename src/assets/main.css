@@ -9,7 +9,7 @@
 }
 
 @import 'tailwindcss';
-@plugin "tailwindcss-animate";
+/* @plugin "tailwindcss-animate"; */
 
 
 
@@ -165,6 +165,7 @@
     --animate-popOut: popOut 1s ease-in-out 1;
     --animate-plant-watered: plant-watered 1s cubic-bezier(0, 0, 0.2, 1);
     --animate-float: float-bounce 3s ease-in-out infinite;
+    --animate-spin-slow: spin 3s linear infinite;
 }
 
 @layer base {
