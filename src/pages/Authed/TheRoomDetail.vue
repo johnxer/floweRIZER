@@ -21,10 +21,7 @@
                     loading="lazy"
                     @load="onLoad"
                 >
-                <base-page-title
-                    class="absolute p-4 md:p-6"
-                    :is-default-title="false"
-                >
+                <h2 class="font-semibold inline-flex align-top items-center gap-4 absolute p-4 md:p-6 text-shadow-lg text-white dark:text-white/80 text-3xl md:text-4xl">
                     <span class="inline-flex align-top items-center gap-3">
                         <span class="material-symbols-outlined">
                             {{ detailsRoom.icon }}
@@ -92,7 +89,7 @@
                             </template>
                         </v-dropdown>
                     </span>
-                </base-page-title>
+                </h2>
             </div>
             <base-container>
                 <div class="lg:max-w-[500px] md:max-w-[400px] max-w-full mx-auto">
@@ -176,7 +173,6 @@ import { useRouter } from "vue-router";
 import BaseButton from "@/components/base/BaseButtons/BaseButton.vue";
 import BaseContainer from "@/components/base/BaseContainer.vue";
 import BaseLoader from '@/components/base/BaseLoader.vue';
-import BasePageTitle from '@/components/base/BasePageTitle.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
 import BasePlantListItem from '@/components/features/plants/PlantListItem.vue';
 
