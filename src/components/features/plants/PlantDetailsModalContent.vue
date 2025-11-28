@@ -11,7 +11,7 @@
                 {{ props.error }}
             </div>
             <div v-else="props.data">
-                <div class="relative rounded-xl bg-gray-50 h-[400px] flex items-center justify-center overflow-hidden">
+                <div class="relative rounded-xl bg-gray-50 dark:bg-gray-950 h-[400px] flex items-center justify-center overflow-hidden">
                     <transition
                         name="fade"
                         mode="out-in"
@@ -23,7 +23,7 @@
                     </transition>
                     <img
                         :src="props.data?.imgSrc || PLANT_PLACEHOLDER"
-                        class="w-full rounded-xl object-cover"
+                        class="w-full h-full rounded-xl object-cover"
                         loading="lazy"
                         @load="onLoad"
                     />

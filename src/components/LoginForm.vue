@@ -4,10 +4,11 @@
         <base-loader
             v-if="isPending"
             :has-bg="true"
+            :bg-blur="true"
             position="fixed"
         />
-        <Card class="shadow-none md:shadow-box bg-transparent md:bg-card">
-            <CardHeader class="p-0 md:p-6">
+        <Card>
+            <CardHeader>
 
                 <CardTitle>Login to your account</CardTitle>
                 <CardDescription>
@@ -15,7 +16,7 @@
                 </CardDescription>
             </CardHeader>
 
-            <CardContent class="p-0 md:p-6">
+            <CardContent>
 
 
                 <Alert
@@ -31,69 +32,73 @@
                         @submit="onSubmitForm"
                         class="space-y-4"
                     >
-                        <FormField
-                            v-slot="{ componentField }"
-                            name="email"
-                        >
-                            <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="email"
-                                        placeholder="Enter email..."
-                                        v-bind="componentField"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
-
-                        <FormField
-                            v-slot="{ componentField }"
-                            name="password"
-                        >
-                            <FormItem>
-                                <div class="flex items-center justify-between">
-                                    <FormLabel>Password</FormLabel>
-                                    <router-link
-                                        :to="{ name: 'PwRecovery' }"
-                                        class="text-sm underline-offset-4 hover:underline hover:text-primary transition-all duration-600"
-                                    >
-                                        Forgot your password?
-                                    </router-link>
-                                </div>
-                                <FormControl>
-                                    <Input
-                                        type="password"
-                                        placeholder="Enter password..."
-                                        v-bind="componentField"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
-
-
-                        <Button
-                            type="submit"
-                            variant="hover-outline"
-                            class="w-full"
-                            :disabled="isPending"
-                        >
-                            <span v-if="isPending">Loading...</span>
-                            <span v-else>Login</span>
-                        </Button>
-
-                        <div class="text-center text-sm text-muted-foreground mt-4">
-                            Don't have an account?
-                            <router-link
-                                :to="{ name: 'TheSignup' }"
-                                class="underline underline-offset-4 hover:text-primary"
+                        <FieldGroup>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="email"
                             >
-                                Sign up
-                            </router-link>
-                        </div>
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="email"
+                                            placeholder="Enter email..."
+                                            v-bind="componentField"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
 
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="password"
+                            >
+                                <FormItem>
+                                    <div class="flex items-center justify-between">
+                                        <FormLabel>Password</FormLabel>
+                                        <router-link
+                                            :to="{ name: 'PwRecovery' }"
+                                            class="text-sm underline-offset-4 hover:underline hover:text-primary transition-all duration-600"
+                                        >
+                                            Forgot your password?
+                                        </router-link>
+                                    </div>
+                                    <FormControl>
+                                        <Input
+                                            type="password"
+                                            placeholder="Enter password..."
+                                            v-bind="componentField"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
+
+                            <FieldGroup>
+                                <Field>
+                                    <Button
+                                        type="submit"
+                                        variant="hover-outline"
+                                        class="w-full"
+                                        :disabled="isPending"
+                                    >
+                                        <span v-if="isPending">Loading...</span>
+                                        <span v-else>Login</span>
+                                    </Button>
+
+                                    <FieldDescription class="px-6 text-center">
+                                        Don't have an account?
+                                        <router-link
+                                            :to="{ name: 'TheSignup' }"
+                                            class="underline underline-offset-4 hover:text-primary"
+                                        >
+                                            Sign up
+                                        </router-link>
+                                    </FieldDescription>
+                                </Field>
+                            </FieldGroup>
+                        </FieldGroup>
                     </form>
                 </div>
             </CardContent>
@@ -123,11 +128,12 @@ import {
 } from '@/components/ui/card'
 
 import {
+    FieldGroup,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
+    FormMessage
 } from '@/components/ui/form'
 
 import {

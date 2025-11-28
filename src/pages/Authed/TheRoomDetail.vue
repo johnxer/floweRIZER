@@ -15,8 +15,8 @@
                     position="absolute"
                 />
                 <img
-                    :src="detailsRoom.imgSrc || '/src/assets/images/room_default.jpg'"
-                    class="w-full object-cover dark:brightness-50"
+                    :src="detailsRoom.imgSrc || 'https://firebasestorage.googleapis.com/v0/b/flower-organizer.firebasestorage.app/o/src%2Froom_default.jpg?alt=media&token=78221b3b-c3e9-4be4-aaf3-ceb83c0fc4f6'"
+                    class="w-full h-full object-cover dark:brightness-50"
                     :alt="roomName"
                     loading="lazy"
                     @load="onLoad"

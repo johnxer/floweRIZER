@@ -59,27 +59,21 @@
                         </template>
 
                         <template #actions>
-                            <base-button
-                                btn-style="notRoundedMd"
-                                btn-size="sm"
-                                btn-color="neutralAlt"
-                                :btn-full-width="false"
+                            <Button
+                                variant="outline"
                                 class="min-w-1/3"
                                 v-close-popper="true"
                             >
                                 Cancel
-                            </base-button>
-                            <base-button
-                                btn-style="notRoundedMd"
-                                btn-size="sm"
-                                btn-color="danger"
-                                :btn-full-width="false"
+                            </Button>
+                            <Button
+                                variant="destructive"
                                 class="min-w-1/2"
                                 v-close-popper="true"
                                 @click="handleResetImage"
                             >
                                 Yes, reset it
-                            </base-button>
+                            </Button>
                         </template>
                     </base-popover-content>
                 </template>
@@ -91,7 +85,7 @@
 
                 <label
                     :for="inputId"
-                    class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-1 md:px-2 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-flex overflow-hidden text-center shrink-0 gap-2 items-center justify-center"
+                    class="align-top whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer duration-600 border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 flex gap-2 items-center justify-center"
                 >
                     <span class="material-symbols-outlined text-2xl">
                         photo
@@ -122,11 +116,9 @@
                         ref="mobileCameraInput"
                     />
 
-                    <base-button
+                    <Button
                         type="button"
-                        btn-style="notRoundedMd"
-                        btn-size="base"
-                        btn-color="neutralAlt"
+                        variant="outline"
                         class="flex gap-2 items-center justify-center"
                         @click="handleMobilePhotoCapture"
                     >
@@ -134,7 +126,7 @@
                             photo_camera
                         </span>
                         Take photo
-                    </base-button>
+                    </Button>
                 </div>
             </div>
             <div
@@ -155,8 +147,9 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
+
+import { Button } from '@/components/ui/button';
 
 import { useMobileStore } from '@/stores/useMobileStore';
 

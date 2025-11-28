@@ -55,36 +55,32 @@
                                 </p>
                             </div>
                             <div class="flex gap-2 justify-center md:justify-end">
-                                <base-button
+                                <Button
                                     v-tooltip="{
                                         content: 'The information may not be accurate. Use at your own risk.',
                                         container: 'body',
                                     }"
                                     type="button"
-                                    btn-style="notRoundedMd"
-                                    btn-size="sm"
-                                    :btn-full-width="false"
-                                    class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
+                                    variant="hover-outline"
+                                    size="sm"
                                     @click="handleRecognizePlant"
                                 >
                                     <span class="material-symbols-outlined text-lg">
                                         done
                                     </span>
                                     Yes
-                                </base-button>
-                                <base-button
+                                </Button>
+                                <Button
                                     type="button"
-                                    btn-style="notRoundedMd"
-                                    btn-size="sm"
-                                    btn-color="neutralAlt"
-                                    :btn-full-width="false"
+                                    variant="outline"
+                                    size="sm"
                                     class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
                                 >
                                     <span class="material-symbols-outlined text-lg">
                                         close
                                     </span>
                                     No
-                                </base-button>
+                                </Button>
                             </div>
                         </div>
                     </transition>
@@ -176,7 +172,6 @@
 
 import { computed, ref, watch, watchEffect } from 'vue';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
 import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
 import BaseTextarea from '@/components/base/BaseForm/BaseTextarea.vue';

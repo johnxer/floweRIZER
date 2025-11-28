@@ -4,17 +4,18 @@
         <base-loader
             v-if="isPending"
             :has-bg="true"
+            :bg-blur="true"
             position="fixed"
         />
-        <Card class="shadow-none md:shadow-box bg-transparent md:bg-card">
+        <Card class="">
 
-            <CardHeader class="p-0 md:p-6">
+            <CardHeader>
                 <CardTitle>Password recovery</CardTitle>
                 <CardDescription>
                     Please enter your email address and we will send you a password reset link.
                 </CardDescription>
             </CardHeader>
-            <CardContent class="p-0 md:p-6">
+            <CardContent>
                 <Alert
                     v-if="error"
                     variant="destructive"

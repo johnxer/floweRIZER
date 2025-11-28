@@ -7,14 +7,14 @@
             :bg-blur="true"
             position="fixed"
         />
-        <Card class="shadow-none md:shadow-box bg-transparent md:bg-card">
-            <CardHeader class="p-0 md:p-6">
+        <Card>
+            <CardHeader>
                 <CardTitle>Create an account</CardTitle>
                 <CardDescription>
                     Enter your information below to create your account
                 </CardDescription>
             </CardHeader>
-            <CardContent class="p-0 md:p-6">
+            <CardContent>
                 <Alert
                     v-if="error"
                     variant="destructive"

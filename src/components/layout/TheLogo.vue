@@ -24,11 +24,11 @@ const props = defineProps({
 
 const sizeMap = {
     lg: {
-        logo: 'size-14',
+        logo: 'size-12',
         text: 'text-2xl'
     },
     base: {
-        logo: 'size-10',
+        logo: 'size-8',
         text: 'text-xl'
     },
 }
