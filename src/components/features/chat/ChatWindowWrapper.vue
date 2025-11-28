@@ -50,17 +50,15 @@
             <span class="text-lg text-gray-400 dark:text-gray-400">
                 Chat has ended
             </span>
-            <base-button
+            <Button
                 class="mt-4"
                 type="button"
-                :btn-full-width="false"
-                btn-style="notRoundedMd"
-                btn-size="sm"
-                btn-color="baseAlt"
+                size="sm"
+                variant="hover-outline"
                 @click="handleStartChat"
             >
                 Start a new chat
-            </base-button>
+            </Button>
         </div>
         <div
             v-else
@@ -162,8 +160,10 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 import { formatDistanceToNow } from 'date-fns';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
+
+import { Button } from '@/components/ui/button';
+
 
 import { useAuthStore } from '@/stores/useAuthStore';
 

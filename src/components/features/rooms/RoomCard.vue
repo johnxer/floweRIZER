@@ -92,27 +92,23 @@
                                 </template>
 
                                 <template #actions>
-                                    <base-button
-                                        btn-style="notRoundedMd"
-                                        btn-size="sm"
-                                        btn-color="neutralAlt"
-                                        :btn-full-width="false"
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
                                         class="min-w-1/3"
                                         v-close-popper="true"
                                     >
                                         Cancel
-                                    </base-button>
-                                    <base-button
-                                        btn-style="notRoundedMd"
-                                        btn-size="sm"
-                                        btn-color="danger"
-                                        :btn-full-width="false"
-                                        class="min-w-1/2"
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        variant="destructive"
+                                        class="min-w-3/5"
                                         v-close-popper="true"
                                         @click="handleDeleteRoom"
                                     >
                                         Yes, delete it
-                                    </base-button>
+                                    </Button>
                                 </template>
                             </base-popover-content>
                         </template>
@@ -245,7 +241,10 @@ import vDraggable from 'vuedraggable';
 import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
+
 import PlantListItem from '@/components/features/plants/PlantListItem.vue';
+
+import { Button } from '@/components/ui/button';
 
 import { useDragStore } from '@/stores/useDragStore';
 import { usePlantsStore } from '@/stores/usePlantsStore';
