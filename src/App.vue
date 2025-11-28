@@ -13,10 +13,6 @@
         v-if="isAuthed"
         :is-chat-open="isChatOpen"
     />
-    <!-- <sidebar-menu
-        v-if="isAuthed && mobileStore.isMobile"
-        @toggle-chat="toggleChat"
-    /> -->
 </template>
 
 <script setup>
@@ -31,13 +27,10 @@ import { computed, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useAuthStore } from './stores/useAuthStore';
-import { useMobileStore } from './stores/useMobileStore.js';
 
 import { generateOklchShades } from './utils';
 
 const authStore = useAuthStore();
-
-const mobileStore = useMobileStore()
 
 const isAuthed = computed(() => !!authStore.user)
 
@@ -58,12 +51,6 @@ watchEffect(() => {
 })
 
 const isChatOpen = ref(false)
-
-const toggleChat = () => {
-    isChatOpen.value = !isChatOpen.value
-}
-
-const isNotFound = computed(() => route.name === 'NotFound')
 
 </script>
 

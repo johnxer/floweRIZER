@@ -192,21 +192,7 @@
                         v-if="!dragStore.isDragging"
                         class="w-full text-center my-2"
                     >
-                        <base-button
-                            type="button"
-                            class="py-1 px-2 md:pl-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-auto md:w-auto"
-                            :btn-full-width="false"
-                            btn-style="notRoundedMd"
-                            btn-size="custom"
-                            @click="uiStore.openModal('plant', { roomId: props.room.id })"
-                        >
-                            <span class="material-symbols-outlined text-xl mr-1">
-                                add
-                            </span>
-                            <span class="w-auto md:w-0 group-hover/card:w-[42px] overflow-hidden transition-all duration-400 text-sm flex">
-                                Plant
-                            </span>
-                        </base-button>
+                        <add-plant-button :room-id="props.room.id" />
                         <div
                             v-if="plants.length === 0"
                             class="text-xs text-gray-400 dark:text-gray-600 mt-2"
@@ -238,10 +224,10 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 
 import vDraggable from 'vuedraggable';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
 
+import AddPlantButton from '@/components/features/plants/AddPlantButton.vue';
 import PlantListItem from '@/components/features/plants/PlantListItem.vue';
 
 import { Button } from '@/components/ui/button';
