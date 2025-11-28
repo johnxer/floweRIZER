@@ -1,5 +1,4 @@
 <template>
-
     <base-menu-link
         link-destination="TheDashboard"
         link-icon="potted_plant"

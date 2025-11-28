@@ -29,7 +29,23 @@
         <template #popper>
             <div class="text-base max-w-[300px] font-normal p-6">
                 <ul class="space-y-3">
-                    <menu-content />
+                    <base-menu-link
+                        link-destination="TheDashboard"
+                        link-icon="potted_plant"
+                        link-title="Dashboard"
+                        v-close-popper="true"
+                        class="w-1/3 md:w-full"
+                        :extra-classes="{ 'reset-is-active': !!isChatActive && isMobile }"
+                    />
+                    <base-menu-link
+                        link-destination="Account"
+                        link-icon="face"
+                        link-title="Profile"
+                        v-close-popper="true"
+                        :is-profile="true"
+                        class="w-1/3 md:w-full order-3 md:order-2"
+                        :extra-classes="{ 'reset-is-active': !!isChatActive && isMobile }"
+                    />
                     <li>
                         <button
                             class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center"
@@ -50,15 +66,26 @@
 
 <script setup>
 
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import { useAuthActions } from '@/composables'
+import BaseMenuLink from '@/components/base/BaseMenuLink.vue';
 
-import MenuContent from './MenuContent.vue'
+import { useAuthActions } from '@/composables';
+
+import { useMobileStore } from '@/stores/useMobileStore';
 
 const isOpen = ref(false)
 
+defineProps({
+    isChatActive: {
+        type: Boolean,
+        required: false
+    }
+})
 
+const {
+    isMobile
+} = useMobileStore()
 const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 

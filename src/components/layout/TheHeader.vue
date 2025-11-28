@@ -5,14 +5,6 @@
     >
         <div class="container mx-auto flex items-center justify-between header-min-h">
             <router-link :to="{ name: 'TheDashboard' }">
-                <!-- <h1 class="text-xl md:text-2xl font-bold text-primary flex gap-3">
-                    <span class="noto-color-emoji-regular">
-                        🌱
-                    </span>
-                    <span class="flex">
-                        <span class="text-primary-500">{{ firstString }}</span> <span class="text-primary-700">{{ secondString }}</span>
-                    </span>
-                </h1> -->
                 <the-logo size="base" />
             </router-link>
             <slot name="center" />
@@ -33,7 +25,7 @@
                         </span>
                         New room
                     </Button>
-                    <div class="md:hidden">
+                    <!-- <div class="md:hidden">
                         <button
                             class="text-gray-400 dark:text-gray-600 hover:text-red-500 dark:hover:text-red-900 cursor-pointer transition-colors duration-600 flex p-2"
                             @click="handleLogout"
@@ -43,8 +35,8 @@
                             </span>
                         </button>
 
-                    </div>
-                    <div class="hidden md:flex">
+                    </div> -->
+                    <div class="">
                         <menu-dropdown />
                     </div>
                 </div>

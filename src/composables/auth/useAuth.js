@@ -34,6 +34,7 @@ export const useAuth = () => {
                             await setDoc(unassignedRoomReference, {
                                 name: 'Unassigned',
                                 createdAt: serverTimestamp(),
+                                imgSrc: 'https://firebasestorage.googleapis.com/v0/b/flower-organizer.firebasestorage.app/o/src%2Froom_default.jpg?alt=media&token=78221b3b-c3e9-4be4-aaf3-ceb83c0fc4f6',
                                 isSystem: true,
                             });
                         } else if (!lastLoginStored || lastSignIn > lastLoginStored) {

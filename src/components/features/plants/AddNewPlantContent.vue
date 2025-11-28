@@ -8,7 +8,7 @@
             <transition name="fade">
                 <base-loader
                     v-if="isPending"
-                    position-type="absolute"
+                    position="absolute"
                     class="bg-white/80 dark:bg-gray-900/80 z-1"
                 >
                     {{ !isPendingRecognizePlant ? loadingTitle : 'Recognizing plant...' }}
@@ -75,6 +75,7 @@
                                     variant="outline"
                                     size="sm"
                                     class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
+                                    @click="isAISuggestionBoxShown = false"
                                 >
                                     <span class="material-symbols-outlined text-lg">
                                         close

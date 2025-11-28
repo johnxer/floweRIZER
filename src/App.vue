@@ -13,10 +13,10 @@
         v-if="isAuthed"
         :is-chat-open="isChatOpen"
     />
-    <sidebar-menu
+    <!-- <sidebar-menu
         v-if="isAuthed && mobileStore.isMobile"
         @toggle-chat="toggleChat"
-    />
+    /> -->
 </template>
 
 <script setup>
@@ -24,7 +24,6 @@
 
 
 import TheChat from './components/features/chat/TheChat.vue';
-import SidebarMenu from './components/layout/SidebarMenu.vue';
 import TheHeader from './components/layout/TheHeader.vue';
 
 import { computed, ref, watchEffect } from 'vue';

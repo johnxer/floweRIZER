@@ -22,6 +22,7 @@ export const buttonVariants = cva("inline-flex align-top items-center justify-ce
             icon: 'size-9',
             'icon-sm': 'size-8',
             'icon-lg': 'size-10',
+            'icon-xl': 'size-14',
         },
     },
     defaultVariants: {
