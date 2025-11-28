@@ -1,11 +1,10 @@
 <template>
-    <base-button
+    <Button
         type="button"
         @click="uiStore.openModal('plant', { roomId: props.roomId })"
-        class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-auto md:w-auto"
-        :btn-full-width="false"
-        btn-style="notRoundedMd"
-        btn-size="custom"
+        class="gap-0 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-auto md:w-auto"
+        size="custom"
+        variant="hover-outline"
     >
         <span class="material-symbols-outlined text-xl mr-1">
             add
@@ -16,15 +15,14 @@
         >
             Plant
         </span>
-    </base-button>
-
+    </Button>
 </template>
 
 <script setup>
 
-import { useUIStore } from "@/stores/useUIStore";
+import { Button } from "@/components/ui/button";
 
-import BaseButton from "../../base/BaseButtons/BaseButton.vue";
+import { useUIStore } from "@/stores/useUIStore";
 
 const props = defineProps({
     roomId: {

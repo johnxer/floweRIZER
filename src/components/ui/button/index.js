@@ -9,7 +9,6 @@ export const buttonVariants = cva("inline-flex align-top items-center justify-ce
             destructive: 'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
             outline: 'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
             'hover-outline': 'bg-primary text-primary-foreground border-2 border-transparent hover:bg-transparent hover:text-primary hover:border-primary',
-            'outline-hover': 'bg-transparent text-primary border-2 border-primary hover:bg-primary hover:text-primary-foreground hover:border-transparent',
             secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
             ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
             link: 'text-primary underline-offset-4 hover:underline',
@@ -23,6 +22,7 @@ export const buttonVariants = cva("inline-flex align-top items-center justify-ce
             'icon-sm': 'size-8',
             'icon-lg': 'size-10',
             'icon-xl': 'size-14',
+            custom: '',
         },
     },
     defaultVariants: {

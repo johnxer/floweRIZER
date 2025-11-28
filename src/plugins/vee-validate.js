@@ -1,9 +1,9 @@
 import { configure } from 'vee-validate';
 
 configure({
-    validateOnBlur: false,
-    validateOnChange: false,
-    validateOnInput: false,
-    validateOnModelUpdate: false,
+    validateOnBlur: true,
+    validateOnChange: true,
+    validateOnInput: true,
+    validateOnModelUpdate: true,
     validateOnMount: false,
 });
