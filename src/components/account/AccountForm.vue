@@ -12,50 +12,52 @@
         </transition>
         <form
             @submit.prevent="onSubmitForm"
-            class="space-y-4"
+            novalidate
         >
-            <FormField
-                v-slot="{ componentField }"
-                name="userName"
-            >
-                <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                        <Input
-                            type="text"
-                            placeholder="Enter username..."
-                            v-bind="componentField"
-                        />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-            </FormField>
+            <FieldGroup>
+                <FormField
+                    v-slot="{ componentField }"
+                    name="userName"
+                >
+                    <FormItem>
+                        <FormLabel>Username</FormLabel>
+                        <FormControl>
+                            <Input
+                                type="text"
+                                placeholder="Enter username..."
+                                v-bind="componentField"
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
 
-            <FormField
-                v-slot="{ componentField }"
-                name="email"
-            >
-                <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                        <Input
-                            type="email"
-                            placeholder="Enter email..."
-                            v-bind="componentField"
-                            readonly
-                        />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-            </FormField>
+                <FormField
+                    v-slot="{ componentField }"
+                    name="email"
+                >
+                    <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                            <Input
+                                type="email"
+                                placeholder="Enter email..."
+                                v-bind="componentField"
+                                readonly
+                            />
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
 
-            <Button
-                :disabled="isPendingProfileUpdate"
-                size="lg"
-                class="w-full"
-            >
-                Save
-            </Button>
+                <Button
+                    :disabled="isPendingProfileUpdate"
+                    size="lg"
+                    class="w-full"
+                >
+                    Save
+                </Button>
+            </FieldGroup>
         </form>
     </div>
 </template>
@@ -78,8 +80,13 @@ import {
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
+    FormMessage
 } from '@/components/ui/form';
+
+
+import {
+    FieldGroup
+} from '@/components/ui/field';
 
 import { Input } from '@/components/ui/input';
 
@@ -126,10 +133,6 @@ const { handleSubmit } = useForm({
         email: emailValue,
         userName: userNameValue || '',
     },
-    validateOnBlur: false,
-    validateOnChange: false,
-    validateOnInput: false,
-    validateOnModelUpdate: false,
 })
 
 const onSubmitForm = handleSubmit(async (values) => {

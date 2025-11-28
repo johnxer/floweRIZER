@@ -38,43 +38,47 @@
                 <div>
                     <form
                         @submit="onSubmitForm"
-                        class="space-y-4"
+                        novalidate
                     >
-                        <FormField
-                            v-slot="{ componentField }"
-                            name="email"
-                        >
-                            <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="email"
-                                        placeholder="Enter email..."
-                                        v-bind="componentField"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
-                        <div class="grid grid-cols-1 md:grid-cols-[30%_1fr] gap-4 items-center">
-                            <router-link
-                                type="button"
-                                class="hover:text-primary transition-all duration-600 block text-center text-sm order-2 md:order-1"
-                                :to="{ name: 'TheLogin' }"
+                        <FieldGroup>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="email"
                             >
-                                Cancel
-                            </router-link>
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="email"
+                                            placeholder="Enter email..."
+                                            v-bind="componentField"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
+                            <FieldGroup>
+                                <Field class="grid grid-cols-1 md:grid-cols-[30%_1fr] gap-4 items-center">
+                                    <router-link
+                                        type="button"
+                                        class="hover:text-primary transition-all duration-600 block text-center text-sm order-2 md:order-1"
+                                        :to="{ name: 'TheLogin' }"
+                                    >
+                                        Cancel
+                                    </router-link>
 
-                            <Button
-                                type="submit"
-                                class="order-1 md:order-2"
-                                variant="hover-outline"
-                                :disabled="isPending"
-                            >
-                                <span v-if="isPending">Sending...</span>
-                                <span v-else>Reset password</span>
-                            </Button>
-                        </div>
+                                    <Button
+                                        type="submit"
+                                        class="order-1 md:order-2"
+                                        variant="hover-outline"
+                                        :disabled="isPending"
+                                    >
+                                        <span v-if="isPending">Sending...</span>
+                                        <span v-else>Reset password</span>
+                                    </Button>
+                                </Field>
+                            </FieldGroup>
+                        </FieldGroup>
                     </form>
                 </div>
             </CardContent>
@@ -109,7 +113,6 @@ import {
 
 import { AlertCircleIcon, CheckCircle2Icon } from 'lucide-vue-next';
 
-
 import {
     FormControl,
     FormField,
@@ -117,6 +120,11 @@ import {
     FormLabel,
     FormMessage
 } from '@/components/ui/form';
+
+import {
+    Field,
+    FieldGroup
+} from '@/components/ui/field';
 
 import { Input } from '@/components/ui/input';
 
@@ -152,10 +160,6 @@ const { handleSubmit, } = useForm({
     initialValues: {
         email: ''
     },
-    validateOnBlur: false,
-    validateOnChange: false,
-    validateOnInput: false,
-    validateOnModelUpdate: false,
 })
 
 const isSuccess = ref(false)

@@ -40,38 +40,40 @@
                         >
                             <div
                                 v-if="showPwForm"
-                                class="mt-6 rounded-xl bg-gray-100 dark:bg-gray-800 p-4"
+                                class="mt-6 rounded-xl bg-gray-50 dark:bg-gray-800 p-4"
                             >
                                 <p class="mb-2">
                                     Please enter your password to confirm deletion.
                                 </p>
                                 <form
-                                    @submit.prevent="onSubmitForm"
-                                    class="grid grid-cols-1 md:grid-cols-[60%_1fr] gap-4 items-start"
+                                    @submit="onSubmitForm"
+                                    novalidate
                                 >
-                                    <FormField
-                                        v-slot="{ componentField }"
-                                        name="password"
-                                    >
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input
-                                                    type="password"
-                                                    placeholder="Enter password..."
-                                                    v-bind="componentField"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    </FormField>
+                                    <FieldGroup class="grid grid-cols-1 md:grid-cols-[60%_1fr] gap-4 items-start">
+                                        <FormField
+                                            v-slot="{ componentField }"
+                                            name="password"
+                                        >
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input
+                                                        type="password"
+                                                        placeholder="Enter password..."
+                                                        v-bind="componentField"
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        </FormField>
 
-                                    <Button
-                                        variant="destructive"
-                                        class="min-w-1/2"
-                                        @click="handleDeleteUser"
-                                    >
-                                        Delete account
-                                    </Button>
+                                        <Button
+                                            variant="destructive"
+                                            class="min-w-1/2"
+                                            @click="handleDeleteUser"
+                                        >
+                                            Delete account
+                                        </Button>
+                                    </FieldGroup>
                                 </form>
                             </div>
                             <div
@@ -129,6 +131,10 @@ import {
     FormItem,
     FormMessage
 } from '@/components/ui/form';
+
+import {
+    FieldGroup
+} from '@/components/ui/field';
 
 import { Input } from '@/components/ui/input';
 
@@ -189,10 +195,6 @@ const { handleSubmit } = useForm({
     initialValues: {
         password: '',
     },
-    validateOnBlur: false,
-    validateOnChange: false,
-    validateOnInput: false,
-    validateOnModelUpdate: false,
 })
 
 const onSubmitForm = handleSubmit(async (values) => {

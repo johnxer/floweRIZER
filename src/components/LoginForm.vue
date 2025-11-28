@@ -9,7 +9,6 @@
         />
         <Card>
             <CardHeader>
-
                 <CardTitle>Login to your account</CardTitle>
                 <CardDescription>
                     Enter your email below to login to your account
@@ -17,8 +16,6 @@
             </CardHeader>
 
             <CardContent>
-
-
                 <Alert
                     v-if="error"
                     variant="destructive"
@@ -27,10 +24,11 @@
                     <AlertCircleIcon />
                     <AlertDescription>{{ error }}</AlertDescription>
                 </Alert>
+
                 <div>
                     <form
                         @submit="onSubmitForm"
-                        class="space-y-4"
+                        novalidate
                     >
                         <FieldGroup>
                             <FormField
@@ -177,10 +175,6 @@ const { handleSubmit } = useForm({
         email: '',
         password: '',
     },
-    validateOnBlur: false,
-    validateOnChange: false,
-    validateOnInput: false,
-    validateOnModelUpdate: false,
 })
 
 const onSubmitForm = handleSubmit(async (values) => {

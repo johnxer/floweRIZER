@@ -12,6 +12,7 @@ import 'floating-vue/dist/style.css';
 
 import './assets/main.css';
 import { useAuth } from './composables';
+import './plugins/vee-validate';
 
 const app = createApp(App);
 

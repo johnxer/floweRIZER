@@ -216,10 +216,6 @@ const { handleSubmit } = useForm({
         password: '',
         passwordRepeat: '',
     },
-    validateOnBlur: false,
-    validateOnChange: false,
-    validateOnInput: false,
-    validateOnModelUpdate: false,
 })
 
 
