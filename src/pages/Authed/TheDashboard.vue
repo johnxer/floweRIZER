@@ -27,7 +27,27 @@
                 </Button>
             </div>
             <div v-else>
-                <stats-box class="mb-10" />
+                <stats-box class="mb-6" />
+                <div class="mb-6 text-end">
+                    <div class="w-full md:w-[180px] flex md:inline-flex align-top">
+                        <Select @update:model-value="performScroll">
+                            <SelectTrigger class="w-full">
+                                <SelectValue placeholder="Select room" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem
+                                        v-for="room in sortedRooms"
+                                        :key="room.id"
+                                        :value="room.id"
+                                    >
+                                        {{ room.name }}
+                                    </SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
                 <div class="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-10 lg:gap-8 items-start">
                     <transition-group name="fade">
                         <base-room
@@ -70,11 +90,19 @@ import TheModals from '@/components/TheModals.vue';
 
 import { Button } from '@/components/ui/button';
 
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from '@/components/ui/select';
+
+import { useGetAllPlants, useGetData } from '@/composables';
 import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 import { useUIStore } from '@/stores/useUIStore';
-
-import { useGetAllPlants, useGetData } from '@/composables';
 
 import { observeVisibility } from '@/utils';
 
@@ -154,6 +182,74 @@ watch(plants, newVal => {
 
 const showPlaceholder = computed(() => !hasRooms.value && !hasPlants.value)
 
+
+
+const performScroll = async (roomId) => {
+
+    console.log(roomId)
+    const el = document.querySelector(`[data-room-id="${roomId}"]`)
+
+    if (!el) return
+
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+    scrollStore.clearScrollTarget()
+}
+
+
+
+// const checkAndScroll = async () => {
+//     const target = scrollStore.scrollTarget
+//     if (target.type !== 'room' || !target.roomId) return
+
+//     if (isPending.value) {
+//         const unwatch = watch(isPending, async (newVal) => {
+//             if (!newVal) {
+//                 unwatch()
+//                 await performScroll(target.roomId)
+//             }
+//         })
+//     } else {
+//         await performScroll(target.roomId)
+//     }
+// }
+
+// const performScroll = async (roomId) => {
+//     await nextTick()
+
+//     let el = document.querySelector(`[data-room-id="${roomId}"]`)
+
+//     let attempts = 0
+//     const maxAttempts = 20
+
+//     // while (!el && attempts < maxAttempts) {
+//     //     await addDelay(50)
+
+//     el = document.querySelector(`[data-room-id="${roomId}"]`)
+
+//     //     attempts++
+//     // }
+
+//     if (!el) return
+
+//     el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+//     await observeVisibility(el)
+
+//     // roomsStore.setRoomVisible(roomId, true)
+
+//     scrollStore.clearScrollTarget()
+// }
+
+// watch(() => scrollStore.scrollTarget, checkAndScroll,
+//     { deep: true, immediate: true }
+// )
+
+// watch(() => rooms.value, async (newVal) => {
+//     if (newVal?.length) {
+//         await checkAndScroll()
+//     }
+// }, { deep: true })
 
 </script>
 
