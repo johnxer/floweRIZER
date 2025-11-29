@@ -2,6 +2,8 @@ TODO
 
 - add possibility to add photo/data to history log
 
+- Add a dropdown with rooms to quick jump to the room on the top
+
 - gallery with slider, that aggregates the photos
 
 * add the gemini AI plant identification based on a photo - In progress, should add new fields - toxicity, light requirements
