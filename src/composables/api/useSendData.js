@@ -52,6 +52,8 @@ export const useSendData = () => {
         try {
             const payload = { ...data };
 
+            console.log(payload);
+
             if (type === 'plants') {
                 if (payload.wateredNow) {
                     payload.lastWateredDate = serverTimestamp();

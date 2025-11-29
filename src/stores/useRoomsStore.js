@@ -4,35 +4,35 @@ import { ref } from 'vue';
 export const useRoomsStore = defineStore('useRoomsStore', () => {
     const roomIcons = [
         {
-            name: 'Terrace',
+            label: 'Terrace',
             icon: 'balcony',
         },
         {
-            name: 'Kitchen',
+            label: 'Kitchen',
             icon: 'fork_spoon',
         },
         {
-            name: 'Living room',
+            label: 'Living room',
             icon: 'meeting_room',
         },
         {
-            name: 'Bathroom',
+            label: 'Bathroom',
             icon: 'shower',
         },
         {
-            name: 'Garden',
+            label: 'Garden',
             icon: 'outdoor_garden',
         },
         {
-            name: 'Hallway',
+            label: 'Hallway',
             icon: 'hallway',
         },
         {
-            name: 'Bedroom',
+            label: 'Bedroom',
             icon: 'king_bed',
         },
         {
-            name: 'Child bedroom',
+            label: 'Child bedroom',
             icon: 'crib',
         },
     ];

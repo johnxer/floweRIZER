@@ -27,7 +27,7 @@
                 </Alert>
                 <div>
                     <form
-                        @submit="onSubmitForm"
+                        @submit.prevent="onSubmitForm"
                         novalidate
                     >
                         <FieldGroup>

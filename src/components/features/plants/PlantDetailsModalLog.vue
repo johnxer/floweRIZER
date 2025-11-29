@@ -51,7 +51,7 @@
                                 </template>
                                 <template v-else-if="action.action !== 'watered'">
                                     changed
-                                    <template v-if="action.action === 'name'">
+                                    <template v-if="action.action === 'name' || action.action === 'light requirements'">
                                         from <strong>{{ action.originalVal }}</strong> to <strong>{{ action.newVal }}</strong>
                                     </template>
                                 </template>
@@ -169,6 +169,7 @@ watchEffect(async () => {
     isLoadingActions.value = false
 
 })
+
 
 </script>
 

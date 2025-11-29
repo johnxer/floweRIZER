@@ -48,7 +48,7 @@
                                     Please enter your password to confirm deletion.
                                 </p>
                                 <form
-                                    @submit="onSubmitForm"
+                                    @submit.prevent="onSubmitForm"
                                     novalidate
                                 >
                                     <FieldGroup class="grid grid-cols-1 md:grid-cols-[60%_1fr] gap-4 items-start">

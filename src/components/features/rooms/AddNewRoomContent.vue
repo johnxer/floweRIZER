@@ -28,7 +28,7 @@
             <div>
                 <div>
                     <form
-                        @submit="onSubmitForm"
+                        @submit.prevent="onSubmitForm"
                         novalidate
                     >
                         <div class="space-y-4">
@@ -67,7 +67,7 @@
                                                     :key="icon.icon"
                                                     type="button"
                                                     @click="componentField.onChange(icon.icon)"
-                                                    class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+                                                    class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-600 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
                                                     :class="[
                                                         componentField.modelValue === icon.icon
                                                             ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
@@ -78,7 +78,7 @@
                                                         {{ icon.icon }}
                                                     </span>
                                                     <span class="text-xs text-center truncate w-full">
-                                                        {{ icon.name }}
+                                                        {{ icon.label }}
                                                     </span>
                                                 </button>
                                             </div>
