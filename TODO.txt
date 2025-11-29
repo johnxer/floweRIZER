@@ -2,6 +2,10 @@ TODO
 
 - account password change functionality
 
+- add possibility to add photo/data to history log
+
+- gallery with slider, that aggregates the photos
+
 * add the gemini AI plant identification based on a photo - In progress, should add new fields - toxicity, loght requirements
 
 - allow to take picture from webcam or frontcam on phone on account settings page
