@@ -30,175 +30,175 @@
                 @submit.prevent="onSubmitForm"
                 novalidate
             >
-                <div class="space-y-4">
-                    <FieldGroup>
-                        <FormField
-                            v-slot="{ componentField }"
-                            name="file"
-                        >
-                            <FormItem>
-                                <FormLabel>
-                                    Image
-                                </FormLabel>
-                                <FormControl>
-                                    <base-upload-button
-                                        input-id="plant-image"
-                                        :existing-image-src="existingImageSrc"
-                                        @send-file="(file) => {
-                                            handleFile(file);
-                                            componentField.onChange(file);
-                                        }"
-                                        @remove-file="(args) => {
-                                            handleRemoveFile(args);
-                                            componentField.onChange(null);
-                                        }"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
+                <FieldGroup>
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="file"
+                    >
+                        <FormItem>
+                            <FormLabel>
+                                Image
+                            </FormLabel>
+                            <FormControl>
+                                <base-upload-button
+                                    input-id="plant-image"
+                                    :existing-image-src="existingImageSrc"
+                                    @send-file="(file) => {
+                                        handleFile(file);
+                                        componentField.onChange(file);
+                                    }"
+                                    @remove-file="(args) => {
+                                        handleRemoveFile(args);
+                                        componentField.onChange(null);
+                                    }"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
 
-                        <transition name="fade">
-                            <div
-                                v-if="isAISuggestionBoxShown"
-                                class="border-2 border-primary-500 rounded-xl p-4 md:flex md:gap-4 md:items-center md:justify-between"
-                            >
-                                <div class="flex gap-2 items-center mb-4 md:mb-0">
-                                    <span class="material-symbols-outlined text-3xl text-gray-500">
-                                        smart_toy
-                                    </span>
-                                    <p class="text-gray-500 leading-4">
-                                        Use AI to fill the fields for you?<br />
-                                        <small class="text-gray-400">(Existing data will be replaced)</small>
-                                    </p>
-                                </div>
-                                <div class="flex gap-2 justify-center md:justify-end">
-                                    <Button
-                                        v-tooltip="{
-                                            content: 'The information may not be accurate. Use at your own risk.',
-                                            container: 'body',
-                                        }"
-                                        type="button"
-                                        variant="hover-outline"
-                                        size="sm"
-                                        @click="handleRecognizePlant"
-                                    >
-                                        <span class="material-symbols-outlined text-lg">
-                                            done
-                                        </span>
-                                        Yes
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        size="sm"
-                                        class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
-                                        @click="isAISuggestionBoxShown = false"
-                                    >
-                                        <span class="material-symbols-outlined text-lg">
-                                            close
-                                        </span>
-                                        No
-                                    </Button>
-                                </div>
+                    <transition name="fade">
+                        <div
+                            v-if="isAISuggestionBoxShown"
+                            class="border-2 border-primary-500 rounded-xl p-4 md:flex md:gap-4 md:items-center md:justify-between"
+                        >
+                            <div class="flex gap-2 items-center mb-4 md:mb-0">
+                                <span class="material-symbols-outlined text-3xl text-gray-500 w-8">
+                                    smart_toy
+                                </span>
+                                <p class="text-gray-500 leading-4">
+                                    Use AI to fill the fields for you?<br />
+                                    <small class="text-gray-400">(Existing data will be replaced)</small>
+                                </p>
                             </div>
-                        </transition>
+                            <div class="grid grid-cols-2 md:flex gap-4 justify-center md:justify-end pl-10 md:pl-0">
+                                <Button
+                                    v-tooltip="{
+                                        content: 'The information may not be accurate. Use at your own risk.',
+                                        container: 'body',
+                                    }"
+                                    type="button"
+                                    variant="hover-outline"
+                                    size="sm"
+                                    @click="handleRecognizePlant"
+                                >
+                                    <span class="material-symbols-outlined text-lg">
+                                        done
+                                    </span>
+                                    Yes
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
+                                    @click="isAISuggestionBoxShown = false"
+                                >
+                                    <span class="material-symbols-outlined text-lg">
+                                        close
+                                    </span>
+                                    No
+                                </Button>
+                            </div>
+                        </div>
+                    </transition>
 
-                        <FormField
-                            v-slot="{ componentField }"
-                            name="name"
-                        >
-                            <FormItem>
-                                <FormLabel>
-                                    Name
-                                </FormLabel>
-                                <FormControl>
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="name"
+                    >
+                        <FormItem>
+                            <FormLabel>
+                                Name
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    type="text"
+                                    placeholder="Enter plant name..."
+                                    v-bind="componentField"
+                                    max-length="30"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
+
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="desc"
+                    >
+                        <FormItem>
+                            <FormLabel>
+                                Description
+                            </FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Enter plant description..."
+                                    class="resize-none"
+                                    v-bind="componentField"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="lightRequirements"
+                    >
+                        <FormItem>
+                            <FormLabel>
+                                Light requirements
+                            </FormLabel>
+                            <FormControl>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button
+                                        v-for="icon in plantsStore.lightIcons"
+                                        :key="icon.icon"
+                                        type="button"
+                                        @click="componentField.onChange(icon.label.toLowerCase())"
+                                        class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-600 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+                                        :class="[
+                                            componentField.modelValue === icon.label.toLowerCase()
+                                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
+                                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
+                                        ]"
+                                    >
+                                        <span class="material-symbols-outlined text-2xl mb-1">
+                                            {{ icon.icon }}
+                                        </span>
+                                        <span class="text-xs text-center truncate w-full">
+                                            {{ icon.label }}
+                                        </span>
+                                    </button>
+                                </div>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="watering"
+                    >
+                        <FormItem>
+                            <FormControl>
+                                <FormLabel class="flex gap-2 items-center">
+                                    Needs water every
                                     <Input
-                                        type="text"
-                                        placeholder="Enter plant name..."
+                                        type="number"
+                                        placeholder="..."
                                         v-bind="componentField"
-                                        max-length="30"
+                                        max-length="3"
+                                        class="w-[80px]"
+                                        min="1"
                                     />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
-
-                        <FormField
-                            v-slot="{ componentField }"
-                            name="desc"
-                        >
-                            <FormItem>
-                                <FormLabel>
-                                    Description
+                                    days
                                 </FormLabel>
-                                <FormControl>
-                                    <Textarea
-                                        placeholder="Enter plant description..."
-                                        class="resize-none"
-                                        v-bind="componentField"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
-                        <FormField
-                            v-slot="{ componentField }"
-                            name="lightRequirements"
-                        >
-                            <FormItem>
-                                <FormLabel>
-                                    Light requirements
-                                </FormLabel>
-                                <FormControl>
-                                    <div class="grid grid-cols-3 gap-2">
-                                        <button
-                                            v-for="icon in plantsStore.lightIcons"
-                                            :key="icon.icon"
-                                            type="button"
-                                            @click="componentField.onChange(icon.label.toLowerCase())"
-                                            class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-600 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
-                                            :class="[
-                                                componentField.modelValue === icon.label.toLowerCase()
-                                                    ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
-                                                    : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
-                                            ]"
-                                        >
-                                            <span class="material-symbols-outlined text-2xl mb-1">
-                                                {{ icon.icon }}
-                                            </span>
-                                            <span class="text-xs text-center truncate w-full">
-                                                {{ icon.label }}
-                                            </span>
-                                        </button>
-                                    </div>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
-                        <FormField
-                            v-slot="{ componentField }"
-                            name="watering"
-                        >
-                            <FormItem>
-                                <FormControl>
-                                    <FormLabel class="flex gap-2 items-center">
-                                        Needs water every
-                                        <Input
-                                            type="number"
-                                            placeholder="..."
-                                            v-bind="componentField"
-                                            max-length="3"
-                                            class="w-[80px]"
-                                            min="1"
-                                        />
-                                        days
-                                    </FormLabel>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
 
+                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
                         <FormField
                             v-if="!localPlantId"
                             v-slot="{ value, handleChange }"
@@ -220,18 +220,19 @@
                                 <FormMessage />
                             </FormItem>
                         </FormField>
+                    </div>
+                    <Button
+                        class="w-full"
+                        :class="{ 'animate-pulse': isPending }"
+                        size="lg"
+                        variant="hover-outline"
+                        :disabled="isPending"
+                    >
+                        {{ buttonLabel }}
+                    </Button>
+                </FieldGroup>
 
-                    </FieldGroup>
-                </div>
-                <Button
-                    class="mt-8 w-full"
-                    :class="{ 'animate-pulse': isPending }"
-                    size="lg"
-                    variant="hover-outline"
-                    :disabled="isPending"
-                >
-                    {{ buttonLabel }}
-                </Button>
+
             </form>
         </div>
     </base-modal-content>

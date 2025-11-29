@@ -31,107 +31,105 @@
                         @submit.prevent="onSubmitForm"
                         novalidate
                     >
-                        <div class="space-y-4">
-                            <FieldGroup>
-                                <FormField
-                                    v-slot="{ componentField }"
-                                    name="name"
-                                >
-                                    <FormItem>
-                                        <FormLabel>
-                                            Name
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="text"
-                                                placeholder="Enter room name..."
-                                                v-bind="componentField"
-                                                max-length="30"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </FormField>
-                                <FormField
-                                    v-slot="{ componentField }"
-                                    name="icon"
-                                >
-                                    <FormItem>
-                                        <FormLabel>
-                                            Icon
-                                        </FormLabel>
-                                        <FormControl>
-                                            <div class="grid grid-cols-4 gap-2">
-                                                <button
-                                                    v-for="icon in roomsStore.roomIcons"
-                                                    :key="icon.icon"
-                                                    type="button"
-                                                    @click="componentField.onChange(icon.icon)"
-                                                    class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-600 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
-                                                    :class="[
-                                                        componentField.modelValue === icon.icon
-                                                            ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
-                                                            : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
-                                                    ]"
-                                                >
-                                                    <span class="material-symbols-outlined text-2xl mb-1">
-                                                        {{ icon.icon }}
-                                                    </span>
-                                                    <span class="text-xs text-center truncate w-full">
-                                                        {{ icon.label }}
-                                                    </span>
-                                                </button>
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </FormField>
-                                <FormField
-                                    v-slot="{ componentField }"
-                                    name="file"
-                                >
-                                    <FormItem>
-                                        <FormLabel>
-                                            Image
-                                        </FormLabel>
-                                        <FormControl>
-                                            <base-upload-button
-                                                input-id="room-image"
-                                                :existing-image-src="existingImageSrc"
-                                                @send-file="(file) => {
-                                                    handleFile(file);
-                                                    componentField.onChange(file);
-                                                }"
-                                                @remove-file="(args) => {
-                                                    handleRemoveFile(args);
-                                                    componentField.onChange(null);
-                                                }"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </FormField>
+                        <FieldGroup>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="name"
+                            >
+                                <FormItem>
+                                    <FormLabel>
+                                        Name
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            placeholder="Enter room name..."
+                                            v-bind="componentField"
+                                            max-length="30"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="icon"
+                            >
+                                <FormItem>
+                                    <FormLabel>
+                                        Icon
+                                    </FormLabel>
+                                    <FormControl>
+                                        <div class="grid grid-cols-3 md:grid-cols-4 gap-2">
+                                            <button
+                                                v-for="icon in roomsStore.roomIcons"
+                                                :key="icon.icon"
+                                                type="button"
+                                                @click="componentField.onChange(icon.icon)"
+                                                class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-600 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+                                                :class="[
+                                                    componentField.modelValue === icon.icon
+                                                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
+                                                        : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
+                                                ]"
+                                            >
+                                                <span class="material-symbols-outlined text-2xl mb-1">
+                                                    {{ icon.icon }}
+                                                </span>
+                                                <span class="text-xs text-center truncate w-full">
+                                                    {{ icon.label }}
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="file"
+                            >
+                                <FormItem>
+                                    <FormLabel>
+                                        Image
+                                    </FormLabel>
+                                    <FormControl>
+                                        <base-upload-button
+                                            input-id="room-image"
+                                            :existing-image-src="existingImageSrc"
+                                            @send-file="(file) => {
+                                                handleFile(file);
+                                                componentField.onChange(file);
+                                            }"
+                                            @remove-file="(args) => {
+                                                handleRemoveFile(args);
+                                                componentField.onChange(null);
+                                            }"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
 
-                                <FormField
-                                    v-slot="{ componentField }"
-                                    name="desc"
-                                >
-                                    <FormItem>
-                                        <FormLabel>
-                                            Description
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Textarea
-                                                placeholder="Enter room description..."
-                                                class="resize-none"
-                                                v-bind="componentField"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                </FormField>
-                            </FieldGroup>
-                        </div>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="desc"
+                            >
+                                <FormItem>
+                                    <FormLabel>
+                                        Description
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            placeholder="Enter room description..."
+                                            class="resize-none"
+                                            v-bind="componentField"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
+                        </FieldGroup>
 
                         <Button
                             class="mt-8 w-full"
