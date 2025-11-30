@@ -35,7 +35,6 @@
                         link-title="Dashboard"
                         v-close-popper="true"
                         class="w-1/3 md:w-full"
-                        :extra-classes="{ 'reset-is-active': !!isChatActive && isMobile }"
                     />
                     <base-menu-link
                         link-destination="Account"
@@ -44,7 +43,13 @@
                         v-close-popper="true"
                         :is-profile="true"
                         class="w-1/3 md:w-full order-3 md:order-2"
-                        :extra-classes="{ 'reset-is-active': !!isChatActive && isMobile }"
+                    />
+                    <base-menu-link
+                        link-destination="AboutProject"
+                        link-icon="favorite"
+                        link-title="About"
+                        v-close-popper="true"
+                        class="w-1/3 md:w-full order-3 md:order-2"
                     />
                     <li>
                         <button

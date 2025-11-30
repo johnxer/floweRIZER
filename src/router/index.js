@@ -45,6 +45,15 @@ const routes = [
         },
     },
     {
+        path: '/about-project',
+        name: 'AboutProject',
+        component: () => import('@/pages/Authed/AboutProject.vue'),
+        meta: {
+            title: 'About project',
+            // requiresAuth: true,
+        },
+    },
+    {
         path: '/room/:roomId',
         name: 'TheRoomDetail',
         component: () => import('@/pages/Authed/TheRoomDetail.vue'),

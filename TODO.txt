@@ -6,7 +6,7 @@ TODO
 
 - gallery with slider, that aggregates the photos
 
-- Add possibilty to mass actions on plants - remove, move, ...
+- add possibilty to mass actions on plants - remove, move, ...
 
 - account password change functionality
 
@@ -16,7 +16,7 @@ TODO
 
 - add voice recognition support - to move and to water plants
 
-- footer with github link - prbbly will be moved and display elsewhere
+- page about project with github link + linked in + libraries used  
 
 - show used library page
 

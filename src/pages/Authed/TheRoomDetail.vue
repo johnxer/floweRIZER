@@ -21,7 +21,7 @@
                     loading="lazy"
                     @load="onLoad"
                 >
-                <h2 class="font-semibold inline-flex align-top items-center gap-4 absolute p-4 md:p-6 text-shadow-lg text-white dark:text-white/80 text-3xl md:text-4xl">
+                <h2 class="inline-flex align-top items-center gap-4 absolute p-4 md:p-6 text-shadow-lg text-white dark:text-white/80 text-3xl md:text-4xl">
                     <span class="inline-flex align-top items-center gap-3">
                         <span class="material-symbols-outlined">
                             {{ detailsRoom.icon }}
@@ -92,7 +92,7 @@
                 </v-dropdown>
             </div>
             <base-container>
-                <div class="lg:max-w-[500px] md:max-w-[400px] max-w-full mx-auto">
+                <div class="md:max-w-[500px] max-w-full mx-auto">
                     <div class="text-gray-400 dark:text-gray-500 text-sm mb-1">
                         Created on {{ formattedDate }}
                     </div>

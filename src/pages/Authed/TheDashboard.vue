@@ -30,13 +30,17 @@
                 <stats-box class="mb-6" />
                 <div class="mb-6 text-end">
                     <div class="w-full md:w-[180px] flex md:inline-flex align-top">
-                        <Select @update:model-value="performScroll">
+                        <Select
+                            v-model="selectedRoom"
+                            @update:model-value="performScroll"
+                        >
                             <SelectTrigger class="w-full">
                                 <SelectValue placeholder="Select room" />
                             </SelectTrigger>
                             <SelectContent class="animate-popper-slide">
                                 <SelectGroup>
                                     <SelectItem
+                                        :show-indicator-icon="false"
                                         v-for="room in sortedRooms"
                                         :key="room.id"
                                         :value="room.id"
@@ -117,6 +121,7 @@ const roomsStore = useRoomsStore()
 const uiStore = useUIStore()
 
 const hasRooms = ref(false);
+const selectedRoom = ref('');
 
 watch(() => rooms.value, newVal => {
     roomsStore.rooms = newVal;
@@ -195,6 +200,8 @@ const performScroll = async (roomId) => {
     });
 
     scrollStore.clearScrollTarget()
+
+    selectedRoom.value = ''
 }
 
 </script>

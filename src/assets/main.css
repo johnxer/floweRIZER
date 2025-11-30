@@ -315,7 +315,7 @@
 
     /* vue-router is active */
 
-    .is-active:not(.reset-is-active) {
+    .is-active {
         @apply text-primary dark:text-primary-700;
     }
 
