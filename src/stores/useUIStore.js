@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useUIStore = defineStore('useUIStore', () => {
+    const headerHeight = 60;
+
     const activeModal = ref(null);
     const selectedModalData = ref({});
 
@@ -17,9 +19,10 @@ export const useUIStore = defineStore('useUIStore', () => {
     };
 
     return {
+        headerHeight,
         activeModal,
         selectedModalData,
         openModal,
         closeModal,
-    };  
+    };
 });

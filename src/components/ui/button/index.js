@@ -11,6 +11,7 @@ export const buttonVariants = cva("inline-flex align-top items-center justify-ce
             'hover-outline': 'bg-primary text-primary-foreground border-2 border-transparent hover:bg-transparent hover:text-primary hover:border-primary',
             secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
             ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+            'ghost-primary': 'text-primary hover:bg-primary/10 hover:text-primary-700 dark:hover:bg-primary/50',
             link: 'text-primary underline-offset-4 hover:underline',
             'link-dummy': 'underline-offset-4 hover:underline',
         },

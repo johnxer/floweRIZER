@@ -16,12 +16,17 @@
                     </TabsTrigger>
                 </TabsList>
                 <TabsContent :value="activeTabName">
-                    <component
-                        :is="currentTab"
-                        :data="detailsPlant"
-                        :isPending="isPendingPlant"
-                        :error="errorPlant"
-                    />
+                    <KeepAlive>
+                        <component
+                            :is="currentTab"
+                            :data="detailsPlant"
+                            :isPending="isPendingPlant"
+                            :error="errorPlant"
+                            :room-id="props.roomId"
+                            :plant-id="props.plantId"
+                            :plant-name="detailsPlant?.name"
+                        />
+                    </KeepAlive>
                 </TabsContent>
             </Tabs>
         </div>

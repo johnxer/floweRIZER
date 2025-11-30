@@ -101,13 +101,13 @@ const sizeMap = {
 
 const colorMap = {
     base: {
-        class: 'text-gray-200'
+        class: 'text-gray-200 dark:text-gray-600'
     },
 }
 
 const bgColor = {
     base: {
-        class: 'bg-white/60'
+        class: 'bg-white/60 dark:bg-gray-900/60'
     },
     body: {
         class: 'bg-gray-100/80'

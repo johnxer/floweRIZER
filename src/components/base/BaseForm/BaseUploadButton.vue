@@ -9,19 +9,11 @@
             v-if="!!imageToShow"
             class="relative w-full h-[200px] rounded-xl"
         >
-            <div
-                v-if="!isImageLoaded"
-                class="bg-gray-200 dark:bg-gray-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
-            >
-                <div class="size-8 rounded-full bg-gray-300 dark:bg-gray-900 absolute top-[80px] -ml-[70px]" />
-                <div class="absolute bottom-0 flex items-end justify-center w-full pl-[90px]">
-                    <div class="w-0 h-0 border-l-[60px] border-l-transparent border-r-[60px] border-r-transparent border-b-[80px] border-b-gray-300 dark:border-b-gray-900 absolute" />
-                    <div class="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[40px] border-b-gray-300 dark:border-b-gray-900 absolute -ml-[160px]" />
-                </div>
-            </div>
+            <base-image-wireframe v-if="!isImageLoaded" />
+
             <img
                 :src="imageToShow"
-                class="w-full h-full inset-0 object-cover absolute rounded-xl"
+                class="w-full h-full inset-0 object-cover absolute rounded-xl transition-opacity duration-600"
                 :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
                 loading="lazy"
                 @load="onLoad"
@@ -35,7 +27,7 @@
             </div>
 
             <v-dropdown
-                v-if="isResetImageShown"
+                v-if="isResetImageShown && props.showReset"
                 trap-focus
                 popper-class="popper-slide-small min-w-[200px]"
                 class="absolute bottom-2 right-2"
@@ -147,6 +139,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 
+import BaseImageWireframe from '@/components/base/BaseImageWireframe.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
 
 import { Button } from '@/components/ui/button';
@@ -162,6 +155,11 @@ const props = defineProps({
         type: String,
         required: false,
         default: null
+    },
+    showReset: {
+        type: Boolean,
+        required: false,
+        default: true
     }
 })
 
@@ -210,8 +208,6 @@ const handleFile = (e) => {
 }
 
 const imageToShow = computed(() => !!previewUrl.value ? previewUrl.value : existingImageURL.value)
-
-
 
 const onLoad = () => {
     isImageLoaded.value = true

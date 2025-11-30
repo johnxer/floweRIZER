@@ -341,6 +341,8 @@ onMounted(async () => {
     if (el) {
         await observeVisibility(el, { threshold: 0.2, rootMargin: '150px' })
 
+        console.log(el)
+
         if (el.dataset.src) {
             el.src = el.dataset.src
             el.removeAttribute('data-src')

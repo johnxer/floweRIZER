@@ -161,8 +161,6 @@ import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
 import { Button } from '@/components/ui/button';
 
-
-
 import {
     FieldGroup
 } from '@/components/ui/field';
@@ -180,11 +178,8 @@ import {
     AlertDescription
 } from '@/components/ui/alert';
 
-
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-
-
 
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';
@@ -348,8 +343,6 @@ const scrollStore = useScrollStore()
 
 
 const onSubmitForm = handleSubmit(async (values) => {
-
-
     let log = []
 
     const data = {

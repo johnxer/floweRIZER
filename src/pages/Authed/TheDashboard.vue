@@ -151,7 +151,7 @@ watch(
 
         if (!el) return
 
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
         await observeVisibility(el)
 
@@ -164,9 +164,9 @@ watch(
 )
 
 const {
-    data: plants,
     error: errorPlants,
-    isPending: isPendingPlants
+    isPending: isPendingPlants,
+    data: plants,
 } = useGetAllPlants()
 
 
@@ -182,74 +182,20 @@ watch(plants, newVal => {
 
 const showPlaceholder = computed(() => !hasRooms.value && !hasPlants.value)
 
-
-
 const performScroll = async (roomId) => {
-
-    console.log(roomId)
     const el = document.querySelector(`[data-room-id="${roomId}"]`)
 
     if (!el) return
 
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const y = el.getBoundingClientRect().top + window.scrollY - uiStore.headerHeight - 15; // 15px is for offset to keep the circle with icon visible
+
+    window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+    });
 
     scrollStore.clearScrollTarget()
 }
-
-
-
-// const checkAndScroll = async () => {
-//     const target = scrollStore.scrollTarget
-//     if (target.type !== 'room' || !target.roomId) return
-
-//     if (isPending.value) {
-//         const unwatch = watch(isPending, async (newVal) => {
-//             if (!newVal) {
-//                 unwatch()
-//                 await performScroll(target.roomId)
-//             }
-//         })
-//     } else {
-//         await performScroll(target.roomId)
-//     }
-// }
-
-// const performScroll = async (roomId) => {
-//     await nextTick()
-
-//     let el = document.querySelector(`[data-room-id="${roomId}"]`)
-
-//     let attempts = 0
-//     const maxAttempts = 20
-
-//     // while (!el && attempts < maxAttempts) {
-//     //     await addDelay(50)
-
-//     el = document.querySelector(`[data-room-id="${roomId}"]`)
-
-//     //     attempts++
-//     // }
-
-//     if (!el) return
-
-//     el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-
-//     await observeVisibility(el)
-
-//     // roomsStore.setRoomVisible(roomId, true)
-
-//     scrollStore.clearScrollTarget()
-// }
-
-// watch(() => scrollStore.scrollTarget, checkAndScroll,
-//     { deep: true, immediate: true }
-// )
-
-// watch(() => rooms.value, async (newVal) => {
-//     if (newVal?.length) {
-//         await checkAndScroll()
-//     }
-// }, { deep: true })
 
 </script>
 

@@ -59,16 +59,14 @@ const route = useRoute()
 
 const isScrolled = ref(false)
 
-const headerHeight = 60;
-
 const handleScroll = () => {
-    const scrolled = window.scrollY > headerHeight
+    const scrolled = window.scrollY > uiStore.headerHeight
     if (scrolled !== isScrolled.value) {
         isScrolled.value = scrolled
     }
 }
 
-document.documentElement.style.setProperty('--headerHeight', `${headerHeight}px`)
+document.documentElement.style.setProperty('--headerHeight', `${uiStore.headerHeight}px`)
 
 const isShown = computed(() => route.name === 'TheDashboard' && !mobileStore.isMobile)
 
