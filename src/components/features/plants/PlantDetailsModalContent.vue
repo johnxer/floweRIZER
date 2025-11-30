@@ -20,7 +20,7 @@
                         loading="lazy"
                         @load="onLoad"
                     />
-                    <h3 class="absolute left-4 top-4 px-4 py-2 bg-black/70 text-white rounded-lg">
+                    <h3 class="absolute left-2 top-2 md:left-4 md:top-4 px-4 py-2 bg-black/70 text-white rounded-lg">
                         <div class="text-base mb-2">
                             {{ props.data?.name }}
                         </div>

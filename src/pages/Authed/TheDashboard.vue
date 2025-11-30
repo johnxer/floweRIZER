@@ -34,7 +34,7 @@
                             <SelectTrigger class="w-full">
                                 <SelectValue placeholder="Select room" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent class="animate-popper-slide">
                                 <SelectGroup>
                                     <SelectItem
                                         v-for="room in sortedRooms"

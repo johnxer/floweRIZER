@@ -6,7 +6,7 @@ TODO
 
 - gallery with slider, that aggregates the photos
 
-* add the gemini AI plant identification based on a photo - In progress, should add new fields - toxicity, light requirements
+- Add possibilty to mass actions on plants - remove, move, ...
 
 - account password change functionality
 

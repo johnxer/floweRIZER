@@ -6,12 +6,12 @@ const plantSchema = {
 
     properties: {
         name: { type: 'string' },
-        description: { type: 'string' },
+        desc: { type: 'string' },
         wateringFrequency: { type: 'number' },
         lightRequirements: { type: 'string' },
         isToxic: { type: 'boolean' },
     },
-    required: ['name', 'description', 'wateringFrequency', 'lightRequirements', 'isToxic'],
+    required: ['name', 'desc', 'wateringFrequency', 'lightRequirements', 'isToxic'],
 };
 
 export const useRecognizePlant = () => {
@@ -51,7 +51,7 @@ export const useRecognizePlant = () => {
 2. If the image contains a person, animal, artificial object, or if it is ambiguous and NOT clearly a plant, you MUST return:
 {
   "name": "No plant identified",
-  "description": "The image does not appear to contain a plant.",
+  "desc": "The image does not appear to contain a plant.",
   "wateringFrequency": 0,
   "lightRequirements": "low",
   "isToxic": false
@@ -59,7 +59,7 @@ export const useRecognizePlant = () => {
 3. If it IS a plant, identify it and return:
 {
   "name": "Common Plant Name",
-  "description": "Brief 2-3 sentence description.",
+  "desc": "Brief 2-3 sentence description.",
   "wateringFrequency": <number of days>,
   "lightRequirements": "low" | "medium" | "high",
   "isToxic": <boolean>

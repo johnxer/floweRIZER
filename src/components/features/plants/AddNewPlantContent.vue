@@ -198,9 +198,11 @@
                         </FormItem>
                     </FormField>
 
-                    <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
+                    <div
+                        v-if="!localPlantId"
+                        class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl"
+                    >
                         <FormField
-                            v-if="!localPlantId"
                             v-slot="{ value, handleChange }"
                             name="wateredNow"
                         >
