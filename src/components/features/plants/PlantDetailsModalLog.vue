@@ -330,6 +330,9 @@ const actionIconMap = {
     image: {
         icon: 'edit'
     },
+    'light requirements': {
+        icon: 'sunny'
+    },
     'custom photo': {
         icon: 'photo'
     },
@@ -373,15 +376,34 @@ watchEffect(async () => {
     formattedActions.value = log.map(a => {
         const date = a.date?.toDate ? a.date.toDate() : new Date(a.date)
 
-        return {
-            ...a,
+        const roomMoveData = roomMap.get(a.origin) ? {
+            originName: roomMap.get(a.origin) ?? null,
+            targetName: roomMap.get(a.target) ?? '<room deleted>'
+        } : null
+
+        const { origin, target, ...rest } = a
+
+        const action = {
+            ...rest,
             icon: actionIconMap[a.action]?.icon || '',
             formattedDate: format(date, 'MMM d, yyyy'),
-            originName: roomMap.get(a.origin) ?? null,
-            targetName: roomMap.get(a.target) ?? '<room deleted>',
+            ...roomMoveData,
             rawDate: date
         }
+
+        if (a.action === 'custom photo' || a.action === 'custom note') {
+            delete action.originalVal
+        }
+
+        if (action.originalVal === null) {
+            action.originalVal = '<not set>'
+        }
+
+        return action
     }).sort((a, b) => b.rawDate - a.rawDate)
+
+
+
 
     isLoadingActions.value = false
 })
@@ -408,11 +430,6 @@ const onSelectAddTextNote = () => {
     handleAddRecord()
     isAddTextNoteShown.value = true
 }
-
-// const formSchema = toTypedSchema(z.object({
-//     desc: z.string().min(1, { message: 'Description is required.' }),
-//     file: z.any().refine((val) => val, { message: 'Image is required.' }),
-// }))
 
 const isPhoto = computed(() => isAddPhotoShown.value)
 const isNote = computed(() => isAddTextNoteShown.value)
