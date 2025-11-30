@@ -66,8 +66,8 @@
                                 <span class="material-symbols-outlined text-3xl text-gray-500 w-8">
                                     smart_toy
                                 </span>
-                                <p class="text-gray-500 leading-4">
-                                    Use AI to fill the fields for you?<br />
+                                <p class="text-gray-500 leading-5">
+                                    Use AI to fill the fields?<br />
                                     <small class="text-gray-400">(Existing data will be replaced)</small>
                                 </p>
                             </div>
@@ -569,18 +569,22 @@ const handleRecognizePlant = async () => {
 
     if (!fileToProcess) return;
 
-    const data = await identifyPlantWithGemini(fileToProcess, 'image/jpeg');
-    if (!data) return;
+    try {
+        const data = await identifyPlantWithGemini(fileToProcess, 'image/jpeg');
+        if (!data) return;
 
-    console.log('ai data', data)
+        console.log('ai data', data)
 
-    setValues({
-        name: data.name,
-        desc: data.desc,
-        watering: data.wateringFrequency,
-        lightRequirements: data.lightRequirements,
-    });
-    isAISuggestionBoxShown.value = false;
+        setValues({
+            name: data.name,
+            desc: data.desc,
+            watering: data.wateringFrequency,
+            lightRequirements: data.lightRequirements,
+        });
+        isAISuggestionBoxShown.value = false;
+    } catch (e) {
+        console.error('Plant recognition failed:', e);
+    }
 };
 
 </script>

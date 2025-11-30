@@ -135,9 +135,9 @@
                                                 class="w-full"
                                                 :class="{ 'animate-pulse': isPending }"
                                                 variant="hover-outline"
-                                                :disabled="isPending"
+                                                :disabled="isPending || !formSchema.value"
                                             >
-                                                Add photo
+                                                {{ addCustomLogButtonLabel }}
                                             </Button>
                                         </FieldGroup>
                                     </FieldGroup>
@@ -496,6 +496,10 @@ const setImgRef = (el) => {
     }, 100)
 }
 
+
+const addCustomLogButtonLabel = computed(() => {
+    return isAddTextNoteShown.value ? 'Add note' : 'Add photo'
+})
 
 </script>
 
