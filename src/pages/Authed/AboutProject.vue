@@ -183,7 +183,7 @@
                     <p class="text-sm">
                         MIT License
                         <br /><br />
-                        Copyright (c) 2025 Jan Filas
+                        Copyright &copy; 2025 Jan Filas
                         <br /><br />
                         Permission is hereby granted, free of charge, to any person obtaining a copy
                         of this software and associated documentation files (the "Software"), to deal

@@ -2,8 +2,6 @@ TODO
 
 - add possibility to remove photo/data to history log
 
-- Make the plant recognizer more strict, if plant not recognize, dont fill the form
-
 - gallery with slider, that aggregates the photos
 
 - add possibilty to mass actions on plants - remove, move, ...
@@ -15,10 +13,6 @@ TODO
 - allow to take picture from webcam or frontcam on phone on account settings page
 
 - add voice recognition support - to move and to water plants
-
-- page about project with github link + linked in + libraries used  
-
-- show used library page
 
 * 404 page style - In progress
 
