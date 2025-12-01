@@ -166,6 +166,16 @@
                                 class="text-primary hover:underline"
                             >https://sortablejs.github.io/Vue.Draggable</a>
                         </li>
+                        <li>
+                            <strong>Vue3 Carousel</strong> - Modern and lightweight carousel component for Vue 3
+                            <br />
+                            <a
+                                href="https://ismail9k.github.io/vue3-carousel/"
+                                target="_blank"
+                                class="text-primary hover:underline"
+                            >https://ismail9k.github.io/vue3-carousel/</a>
+                        </li>
+
                     </ul>
                 </CardContent>
             </Card>
