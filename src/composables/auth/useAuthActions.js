@@ -137,36 +137,6 @@ export const useAuthActions = () => {
         }
     };
 
-    // const userChangePassword = async () => {
-    //     error.value = null;
-    //     isPending.value = true;
-
-    //     const user = auth.currentUser;
-
-    //     if (!user) {
-    //         error.value = 'User not logged in.';
-    //         isPending.value = false;
-    //         return false;
-    //     }
-
-    //     try {
-    //         // updatePassword(user, newPassword);
-    //         updatePassword(user, '123123123123');
-    //         return true;
-    //     } catch (err) {
-    //         if (err.code === 'auth/requires-recent-login') {
-    //             error.value = 'Please log in again to delete your account.';
-    //         } else {
-    //             error.value = err.message;
-    //         }
-
-    //         console.log(error.value);
-    //         return false;
-    //     } finally {
-    //         isPending.value = false;
-    //     }
-    // };
-
     const logOutUser = async () => {
         authStore.error = null;
         authStore.isPending = true;

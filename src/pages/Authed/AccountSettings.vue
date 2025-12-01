@@ -17,16 +17,26 @@
                         >
                             ChangePw
                 </base-button> -->
-                <Button
-                    type="button"
-                    :disabled="isPendingProfileUpdate"
-                    variant="link-dummy"
-                    class="text-red-500 hover:text-red-900 disabled:cursor-not-allowed disabled:text-red-300 dark:disabled:text-red-800 p-0 h-auto"
-                    @click="uiStore.openModal('confirmDeleteAccount')"
-                >
-                    Delete account
-                </Button>
+                <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <Button
+                        type="button"
+                        :disabled="isPendingProfileUpdate"
+                        variant="outline"
+                        @click="uiStore.openModal('passwordChange')"
+                    >
+                        Change password
+                    </Button>
 
+                    <Button
+                        type="button"
+                        :disabled="isPendingProfileUpdate"
+                        variant="link-dummy"
+                        class="text-red-500 hover:text-red-900 disabled:cursor-not-allowed disabled:text-red-300 dark:disabled:text-red-800 p-0 h-auto"
+                        @click="uiStore.openModal('confirmDeleteAccount')"
+                    >
+                        Delete account
+                    </Button>
+                </div>
             </div>
         </div>
         <teleport to="body">
@@ -35,6 +45,13 @@
                 @close-modal="uiStore.closeModal"
             >
                 <confirm-delete-account-content @close-modal="uiStore.closeModal" />
+            </base-modal>
+            <base-modal
+                modal-size="sm"
+                :modal-toggle="uiStore.activeModal === 'passwordChange'"
+                @close-modal="uiStore.closeModal"
+            >
+                <password-change-content @close-modal="uiStore.closeModal" />
             </base-modal>
         </teleport>
     </base-container>
@@ -49,6 +66,7 @@ import BaseModal from '@/components/base/BaseModal/BaseModal.vue';
 import AccountForm from '@/components/account/AccountForm.vue';
 import AccountImage from '@/components/account/AccountImage.vue';
 import ConfirmDeleteAccountContent from '@/components/features/auth/ConfirmDeleteAccountContent.vue';
+import PasswordChangeContent from '@/components/features/auth/PasswordChangeContent.vue';
 
 import { Button } from '@/components/ui/button';
 

@@ -219,9 +219,6 @@ const { handleSubmit } = useForm({
     },
 })
 
-
-
-
 const onSubmitForm = handleSubmit(async (values) => {
     const success = await signUpUser({
         email: values.email,

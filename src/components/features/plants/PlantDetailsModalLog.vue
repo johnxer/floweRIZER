@@ -135,7 +135,7 @@
                                                 class="w-full"
                                                 :class="{ 'animate-pulse': isPending }"
                                                 variant="hover-outline"
-                                                :disabled="isPending || !formSchema.value"
+                                                :disabled="isPending || !meta.valid"
                                             >
                                                 {{ addCustomLogButtonLabel }}
                                             </Button>
@@ -229,7 +229,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watchEffect } from "vue";
+import { computed, nextTick, ref, watchEffect } from "vue";
 
 import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
@@ -441,7 +441,7 @@ const formSchema = computed(() => toTypedSchema(
     })
 ))
 
-const { handleSubmit, setValues, resetForm } = useForm({
+const { handleSubmit, setValues, resetForm, meta } = useForm({
     validationSchema: formSchema,
     initialValues: {
         desc: '',
@@ -499,18 +499,16 @@ const onLoad = (id) => {
     loadedImages.value.add(id)
 }
 
-const setImgRef = (el) => {
+const setImgRef = async (el) => {
     if (!el || !el.dataset.src) return
 
-    setTimeout(() => {
-        observeVisibility(el, { threshold: 0, rootMargin: '300px' })
-            .then(() => {
-                if (el.dataset.src) {
-                    el.src = el.dataset.src
-                    el.removeAttribute('data-src')
-                }
-            })
-    }, 100)
+    await nextTick()
+    await observeVisibility(el, { threshold: 0, rootMargin: '300px' })
+
+    if (el.dataset.src) {
+        el.src = el.dataset.src
+        el.removeAttribute('data-src')
+    }
 }
 
 

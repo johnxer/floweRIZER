@@ -35,7 +35,7 @@
                             @update:model-value="performScroll"
                         >
                             <SelectTrigger class="w-full">
-                                <SelectValue placeholder="Select room" />
+                                <SelectValue placeholder="Jump to room..." />
                             </SelectTrigger>
                             <SelectContent class="animate-popper-slide">
                                 <SelectGroup>

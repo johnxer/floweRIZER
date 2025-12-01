@@ -19,17 +19,21 @@
                         v-else
                         class="text-gray-600 dark:text-gray-500"
                     >
-                        <Alert
-                            v-if="error"
-                            variant="destructive"
-                            class="mb-6"
+                        <transition
+                            name="fade"
+                            mode="out-in"
                         >
-                            <span class="material-symbols-outlined">
-                                error
-                            </span>
-                            <AlertDescription>{{ error }}</AlertDescription>
-                        </Alert>
-
+                            <Alert
+                                v-if="error"
+                                variant="destructive"
+                                class="mb-6"
+                            >
+                                <span class="material-symbols-outlined">
+                                    error
+                                </span>
+                                <AlertDescription>{{ error }}</AlertDescription>
+                            </Alert>
+                        </transition>
                         <p class="mb-2">
                             Once your account is deleted, all your personal data, preferences, and saved items will be permanently removed.
                         </p>

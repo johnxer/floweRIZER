@@ -51,7 +51,7 @@
                     <CardTitle>Used plugins</CardTitle>
                     <CardDescription>
                         <p>
-
+                            Built with these awesome tools
                         </p>
                     </CardDescription>
                 </CardHeader>
@@ -173,16 +173,14 @@
                 <CardHeader>
                     <CardTitle>License</CardTitle>
                     <CardDescription>
-                        <p>
-
-                        </p>
+                        MIT License
                     </CardDescription>
                 </CardHeader>
 
                 <CardContent class="space-y-4">
                     <p class="text-sm">
-                        MIT License
-                        <br /><br />
+
+
                         Copyright &copy; 2025 Jan Filas
                         <br /><br />
                         Permission is hereby granted, free of charge, to any person obtaining a copy
