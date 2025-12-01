@@ -10,7 +10,10 @@ TODO
 
 - add voice recognition support - to move and to water plants
 
+- add different Homes option
+
 - add fertilization option (frequency + fertilized now) and include it into log + notification 
+
 
 - GRID view
 
