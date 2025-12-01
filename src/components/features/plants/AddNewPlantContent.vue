@@ -5,7 +5,10 @@
             {{ modalTitle }}
         </template>
         <div class="relative">
-            <transition name="fade">
+            <transition
+                name="fade"
+                mode="out-in"
+            >
                 <base-loader
                     v-if="isPending"
                     position="absolute"

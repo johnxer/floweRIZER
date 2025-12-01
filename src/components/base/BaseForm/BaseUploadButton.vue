@@ -3,8 +3,6 @@
         class="flex items-center"
         :class="{ 'flex-col items-start gap-4': !!imageToShow }"
     >
-
-
         <div
             v-if="!!imageToShow"
             class="relative w-full h-[200px] rounded-xl"
@@ -73,7 +71,7 @@
 
         </div>
         <div class="flex gap-2 md:gap-4 flex-col md:flex-row w-full md:w-auto">
-            <div :class="{ 'grid grid-cols-[1fr_auto_1fr] gap-2 items-center': mobileStore.isMobile }">
+            <div :class="{ 'flex flex-wrap gap-2 items-center': mobileStore.isMobile }">
 
                 <label
                     :for="inputId"

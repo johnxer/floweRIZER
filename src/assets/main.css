@@ -475,8 +475,8 @@
     --vc-icn-width: var(--vc-nav-width);
 
     /* Carousel Pagination */
-    --vc-pgn-active-color: theme('colors.primary.500');
-    --vc-pgn-background-color: theme('colors.gray.100');
+    --vc-pgn-active-color: theme('colors.gray.500');
+    --vc-pgn-background-color: theme('colors.white');
     --vc-pgn-border-radius: theme('borderRadius.full');
     --vc-pgn-gap: 6px;
     --vc-pgn-height: 4px;

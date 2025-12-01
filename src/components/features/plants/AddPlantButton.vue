@@ -2,7 +2,7 @@
     <Button
         type="button"
         @click="uiStore.openModal('plant', { roomId: props.roomId })"
-        class="gap-0 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-auto md:w-auto"
+        class="gap-0 py-1 pl-1 pr-3 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-auto md:w-auto"
         size="custom"
         variant="hover-outline"
     >

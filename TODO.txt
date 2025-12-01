@@ -1,7 +1,5 @@
 TODO
 
-- add possibility to remove photo/data to history log
-
 - add possibilty to mass actions on plants - remove, move, ...
  
 - clean the main.css file
@@ -10,13 +8,11 @@ TODO
 
 - add voice recognition support - to move and to water plants
 
-* 404 page style - In progress
-
 - add fertilization option (frequency + fertilized now) and include it into log + notification 
 
 - GRID view
 
-- custom color
+- custom main color
 
 TBD:
 
@@ -24,6 +20,6 @@ TBD:
 
 ? add a box with stats - rooms, plants, etc...some graphics - DONE, but can in the future add more stats
 
-? style the profile button in the menu on mobile to stand outside - Doesnt make sense, it's not important action. Should be the Dashboard instead.
-
 ? allow custom google icon via code input
+
+? custom room color
