@@ -28,7 +28,38 @@
             </div>
             <div v-else>
                 <stats-box class="mb-6" />
-                <div class="mb-6 text-end">
+                <div class="mb-6 flex gap-2 justify-end items-center">
+                    <button
+                        v-tooltip="{
+                            content: multiSelectTootlipText,
+                            container: 'body'
+                        }"
+                        type="button"
+                        class="relative transition-colors duration-600 inline-flex align-top p-2 cursor-pointer hover:text-gray-600 dark:text-gray-600 hover:dark:text-primary-600 text-3xl"
+                        :class="uiStore.isMultiSelectEnabled ? 'text-primary' : 'text-gray-400'"
+                        @click="toggleMultiSelected"
+                    >
+                        <span class="material-symbols-outlined">
+                            flaky
+                        </span>
+                    </button>
+                    <transition name="fade">
+                        <div v-if="uiStore.isMinOnePlantSelected">
+                            <button
+                                v-tooltip="{
+                                    content: 'Delete selected plants',
+                                    container: 'body'
+                                }"
+                                type="button"
+                                class="relative transition-colors duration-600 inline-flex align-top p-2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-gray-600 hover:dark:text-primary-600 text-3xl"
+                                @click="multiPlantDelete"
+                            >
+                                <span class="material-symbols-outlined">
+                                    delete
+                                </span>
+                            </button>
+                        </div>
+                    </transition>
                     <div class="w-full md:w-[180px] flex md:inline-flex align-top">
                         <Select
                             v-model="selectedRoom"
@@ -103,12 +134,13 @@ import {
     SelectValue
 } from '@/components/ui/select';
 
-import { useGetAllPlants, useGetData } from '@/composables';
 import { useRoomsStore } from '@/stores/useRoomsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 import { useUIStore } from '@/stores/useUIStore';
 
 import { observeVisibility } from '@/utils';
+
+import { useDeleteData, useFetchDocument, useGetAllPlants, useGetData, useStorage } from '@/composables';
 
 
 const {
@@ -116,6 +148,22 @@ const {
     isPending,
     data: rooms
 } = useGetData('rooms')
+
+const {
+    error: errorDeleteData,
+    isPending: isPendingDeleteData,
+    deleteData
+} = useDeleteData()
+
+const {
+    deleteImageByUrl
+} = useStorage()
+
+const {
+    fetchDocument,
+    error: errorFetchDocument,
+    isPending: isPendingFetchDocument
+} = useFetchDocument()
 
 const roomsStore = useRoomsStore()
 const uiStore = useUIStore()
@@ -174,7 +222,6 @@ const {
     data: plants,
 } = useGetAllPlants()
 
-
 const hasPlants = ref(false)
 
 watch(plants, newVal => {
@@ -202,6 +249,55 @@ const performScroll = async (roomId) => {
     scrollStore.clearScrollTarget()
 
     selectedRoom.value = ''
+}
+
+const toggleMultiSelected = () => {
+    uiStore.isMultiSelectEnabled = !uiStore.isMultiSelectEnabled
+
+    if (uiStore.isMultiSelectEnabled) uiStore.clearSelection()
+}
+
+const multiSelectTootlipText = computed(() => uiStore.isMultiSelectEnabled ? 'Disable multiple select' : 'Enable multiple select')
+
+const multiPlantDelete = async () => {
+    for (let i = 0; i < uiStore.plantSelectedList.length; i++) {
+
+        const plant = await fetchDocument(`rooms/${uiStore.plantSelectedList[i].roomId}/plants/${uiStore.plantSelectedList[i].plantId}`)
+
+
+        const plantLogImages = plant?.log?.filter(l => l.action === 'custom photo').map(l => l.newVal) ?? []
+
+        const filesArray = [
+            ...(plant?.imgSrc ? [plant.imgSrc] : []),
+            ...plantLogImages
+
+        ]
+
+        console.log(filesArray)
+
+        const deleteImages = async () => {
+            for (let i = 0; i < filesArray.length; i++) {
+                await deleteImageByUrl(filesArray[i])
+            }
+            return true
+        }
+
+        const filesDeleted = await deleteImages();
+
+        if (!filesDeleted) {
+            console.log('files not deleted')
+            return;
+        }
+
+        const success = await deleteData(uiStore.plantSelectedList[i].plantId, `rooms/${uiStore.plantSelectedList[i].roomId}/plants`)
+
+
+        if (!success) {
+            uiStore.clearSelection()
+            console.log('all done')
+            return
+        }
+    }
 }
 
 </script>

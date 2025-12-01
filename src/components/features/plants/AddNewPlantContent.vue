@@ -395,6 +395,7 @@ const { handleSubmit, setValues, resetForm, values } = useForm({
         watering: 3,
         file: null,
         wateredNow: false,
+        lightRequirements: '',
     },
 })
 
@@ -464,7 +465,7 @@ const onSubmitForm = handleSubmit(async (values) => {
         name: values.name,
         desc: values.desc,
         wateringFrequency: values.watering,
-        lightRequirements: values.lightRequirements,
+        lightRequirements: values.lightRequirements || null,
         ...(!localPlantId && { wateredNow: values.wateredNow })
     }
 

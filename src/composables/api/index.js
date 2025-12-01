@@ -1,4 +1,5 @@
 export { useDeleteData } from './useDeleteData';
+export { useFetchDocument } from './useFetchDocument';
 export { useFindRoomIdByPlantId } from './useFindRoomIdByPlantId';
 export { useGetAllPlants } from './useGetAllPlants';
 export { useGetData } from './useGetData';

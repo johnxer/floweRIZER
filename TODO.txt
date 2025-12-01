@@ -1,6 +1,8 @@
 TODO
 
-- add possibilty to mass actions on plants - remove, move, ...
+* in progress... add possibilty to mass actions on plants - remove, move, ... - remove images also from custom records - logs
+
+- When removing plant, also delete log images (if any) - forgot about it
  
 - clean the main.css file
 
