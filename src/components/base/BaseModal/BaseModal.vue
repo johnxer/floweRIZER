@@ -32,7 +32,7 @@
                     >
                         <DialogPanel
                             class="w-full sm:my-8 py-8 relative"
-                            :class="`max-w-${props.modalSize}`"
+                            :class="modalSizeValue"
                         >
                             <button
                                 type="button"
@@ -60,6 +60,8 @@
 
 <script setup>
 
+import { computed } from 'vue';
+
 const props = defineProps({
     modalToggle: {
         type: Boolean,
@@ -84,5 +86,17 @@ const emit = defineEmits(['close-modal'])
 const handlecloseModal = () => {
     emit('close-modal', false)
 }
+
+const sizeMap = {
+    sm: 'max-w-sm',
+    lg: 'max-w-lg',
+    xl: 'max-w-xl',
+}
+
+
+const modalSizeValue = computed(() => {
+    return sizeMap[props.modalSize]
+})
+
 
 </script>

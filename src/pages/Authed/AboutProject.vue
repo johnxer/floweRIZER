@@ -48,7 +48,7 @@
             </Card>
             <Card>
                 <CardHeader>
-                    <CardTitle>Used plugins</CardTitle>
+                    <CardTitle>Used tools &amp; plugins</CardTitle>
                     <CardDescription>
                         <p>
                             Built with these awesome tools
