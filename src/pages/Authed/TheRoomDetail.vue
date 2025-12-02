@@ -121,7 +121,7 @@
                             <div class="group/card">
                                 <transition-group
                                     v-if="existPlants"
-                                    name="fade"
+                                    name="pop-list"
                                     tag="ul"
                                     class="space-y-4 mb-4"
                                 >

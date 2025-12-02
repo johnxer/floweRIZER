@@ -4,28 +4,25 @@ import { computed, ref } from 'vue';
 export const useUIStore = defineStore('useUIStore', () => {
     const isMultiSelectEnabled = ref(false);
 
-    const selectedPlants = ref(new Set());
+    const selectedPlants = ref(new Map());
 
     const isMinOnePlantSelected = computed(() => selectedPlants.value.size > 0);
 
-    const plantSelectedList = ref([]);
+    const plantSelectedList = computed(() => [...selectedPlants.value.values()]);
 
     const togglePlantSelection = ({ plantId, roomId }) => {
-        const newSet = new Set(selectedPlants.value);
-        if (newSet.has({ plantId, roomId })) {
-            newSet.delete({ plantId, roomId });
+        const key = `${roomId}_${plantId}`;
+        const newMap = new Map(selectedPlants.value);
+        if (newMap.has(key)) {
+            newMap.delete(key);
         } else {
-            newSet.add({ plantId, roomId });
+            newMap.set(key, { plantId, roomId });
         }
-        selectedPlants.value = newSet;
-
-        plantSelectedList.value = [...newSet];
-
-        console.log(plantSelectedList.value);
+        selectedPlants.value = newMap;
     };
 
     const clearSelection = () => {
-        selectedPlants.value = new Set();
+        selectedPlants.value = new Map();
     };
 
     const headerHeight = 60;

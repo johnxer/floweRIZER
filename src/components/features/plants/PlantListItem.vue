@@ -7,11 +7,16 @@
             v-if="uiStore.isMultiSelectEnabled"
             class="flex items-center"
         >
-            <input
+            <base-single-checkbox
+                :id="`plant-${plant.id}`"
+                :model-value="uiStore.selectedPlants.has(`${props.roomId}_${plant.id}`)"
+                @update:model-value="uiStore.togglePlantSelection({ plantId: plant.id, roomId: props.roomId })"
+            />
+            <!-- <input
                 type="checkbox"
                 :checked="uiStore.selectedPlants.has({ plantId: plant.id, roomId: props.roomId })"
                 @change="uiStore.togglePlantSelection({ plantId: plant.id, roomId: props.roomId })"
-            />
+            /> -->
         </div>
 
         <div
@@ -226,6 +231,7 @@ import { differenceInDays } from "date-fns";
 
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
+import BaseSingleCheckbox from '../../base/BaseForm/BaseSingleCheckbox.vue';
 
 import { useMobileStore } from '@/stores/useMobileStore';
 import { usePlantsStore } from '@/stores/usePlantsStore';
@@ -333,6 +339,9 @@ const handleDeletePlant = async () => {
 
     if (successDelete) success = await deleteData(documentId, collectionPath)
 }
+
+
+
 
 const isOpen = ref(false)
 

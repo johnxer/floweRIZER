@@ -11,16 +11,22 @@
             />
             <div
                 v-else-if="showPlaceholder"
-                class="max-w-[300px] mx-auto text-center"
+                class="max-w-[300px] md:max-w-[400px] mx-auto text-center"
             >
                 <h2 class="text-xl mb-4 text-gray-700 dark:text-gray-500">
                     You have no rooms yet...
                 </h2>
+                <img
+                    src="https://firebasestorage.googleapis.com/v0/b/flower-organizer.firebasestorage.app/o/src%2Fno_room.png?alt=media&token=de4384f2-2f9f-4b1f-b582-b6a439ab9e3c"
+                    class="mb-4"
+                    alt="Empty room"
+                />
                 <Button
                     @click="uiStore.openModal('room')"
                     class="inline-flex gap-1"
+                    variant="hover-outline"
                 >
-                    <span class="material-symbols-outlined text-2xl">
+                    <span class="material-symbols-outlined text-xl">
                         add
                     </span>
                     Add a new room
@@ -28,7 +34,7 @@
             </div>
             <div v-else>
                 <stats-box class="mb-6" />
-                <div class="mb-6 flex gap-2 justify-end items-center">
+                <div class="mb-10 md:mb-6 flex gap-2 justify-end items-center">
                     <button
                         v-tooltip="{
                             content: multiSelectTootlipText,
@@ -36,7 +42,7 @@
                         }"
                         type="button"
                         class="relative transition-colors duration-600 inline-flex align-top p-2 cursor-pointer hover:text-gray-600 dark:text-gray-600 hover:dark:text-primary-600 text-3xl"
-                        :class="uiStore.isMultiSelectEnabled ? 'text-primary' : 'text-gray-400'"
+                        :class="uiStore.isMultiSelectEnabled ? 'text-gray-500' : 'text-gray-300'"
                         @click="toggleMultiSelected"
                     >
                         <span class="material-symbols-outlined">
@@ -45,6 +51,7 @@
                     </button>
                     <transition name="fade">
                         <div v-if="uiStore.isMinOnePlantSelected">
+
                             <button
                                 v-tooltip="{
                                     content: 'Delete selected plants',
@@ -291,12 +298,11 @@ const multiPlantDelete = async () => {
 
         const success = await deleteData(uiStore.plantSelectedList[i].plantId, `rooms/${uiStore.plantSelectedList[i].roomId}/plants`)
 
+        if (!success) return
 
-        if (!success) {
-            uiStore.clearSelection()
-            console.log('all done')
-            return
-        }
+        uiStore.clearSelection()
+
+        uiStore.isMultiSelectEnabled = false
     }
 }
 

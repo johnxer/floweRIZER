@@ -10,8 +10,8 @@
             </h1>
             <img
                 alt="404 Not Found"
-                src="https://firebasestorage.googleapis.com/v0/b/flower-organizer.firebasestorage.app/o/src%2F404_new.svg?alt=media&token=b72fa78d-fa1e-4084-90d2-7e7f2571fdfb"
-                class="w-3/5 sm:w-2/5 mb-4"
+                src="https://firebasestorage.googleapis.com/v0/b/flower-organizer.firebasestorage.app/o/src%2F404_sad_plant.png?alt=media&token=39dd4ef7-eb61-4355-9f4f-c5f3834fb2b0"
+                class="w-2/5 sm:w-2/5 mb-4"
             >
             <router-link
                 class="inline-flex items-center text-xl text-primary-700 px-3 py-1 gap-1 group"

@@ -281,6 +281,21 @@
         @apply translate-y-0 opacity-100;
     }
 
+    .pop-list-enter-active {
+        @apply animate-pop;
+        position: relative;
+    }
+    .pop-list-leave-active {
+        @apply transition-all duration-500 ease-in;
+        position: absolute;
+    }
+    .pop-list-leave-to {
+        @apply opacity-0 scale-50;
+    }
+    .pop-list-move {
+        @apply transition-all duration-500 ease-out;
+    }
+
     /* / VUE.JS transitions */
 
     /* Custom heigth classes */
@@ -542,3 +557,28 @@
 }
 
 @import './modules/carousel.css';
+
+/**  Checkbox**/
+
+.checkbox-wrapper {
+    @apply relative;
+}
+.checkbox-wrapper input {
+    @apply absolute opacity-0 cursor-pointer;
+}
+.checkbox-wrapper input + label {
+    @apply border-2 border-gray-300 rounded-sm flex items-center justify-center w-5 h-5 cursor-pointer text-gray-300 text-lg transition-all duration-600;
+}
+.checkbox-wrapper input + label span {
+    @apply opacity-0 transition-opacity duration-600;
+}
+.checkbox-wrapper input:checked + label {
+    @apply border-gray-500 text-gray-500;
+}
+
+.checkbox-wrapper input:checked + label span {
+    @apply opacity-100;
+}
+.checkbox-wrapper label {
+    @apply cursor-pointer;
+}

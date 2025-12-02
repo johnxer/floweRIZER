@@ -182,7 +182,7 @@
                                 :plant="element"
                                 :room-id="props.room.id"
                                 :data-plant-id="element.id"
-                                class="cursor-move w-full"
+                                class="w-full"
                                 :is-draggable="true"
                             />
                         </template>
