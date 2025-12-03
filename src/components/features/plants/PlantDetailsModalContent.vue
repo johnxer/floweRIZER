@@ -71,7 +71,7 @@
                     v-if="props.data?.desc?.length > 0"
                     class="mt-4 "
                 >
-                    <p class="text-gray-500 dark:text-gray-500">
+                    <p class="text-foreground">
                         {{ shortenDesc }}
                     </p>
                     <button
