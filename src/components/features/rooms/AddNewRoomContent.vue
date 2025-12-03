@@ -61,25 +61,15 @@
                                     </FormLabel>
                                     <FormControl>
                                         <div class="grid grid-cols-3 md:grid-cols-4 gap-2">
-                                            <button
+                                            <base-button-select
                                                 v-for="icon in roomsStore.roomIcons"
                                                 :key="icon.icon"
-                                                type="button"
+                                                :value="icon.icon"
+                                                :label="icon.label"
                                                 @click="componentField.onChange(icon.icon)"
-                                                class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-600 hover:bg-gray-50 dark:hover:bg-neutral-800/50 cursor-pointer"
-                                                :class="[
-                                                    componentField.modelValue === icon.icon
-                                                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
-                                                        : 'border-gray-200 dark:border-neutral-700 text-gray-500 dark:text-neutral-600'
-                                                ]"
-                                            >
-                                                <span class="material-symbols-outlined text-2xl mb-1">
-                                                    {{ icon.icon }}
-                                                </span>
-                                                <span class="text-xs text-center truncate w-full">
-                                                    {{ icon.label }}
-                                                </span>
-                                            </button>
+                                                :selected="componentField.modelValue === icon.icon"
+                                                :icon="icon"
+                                            />
                                         </div>
                                     </FormControl>
                                     <FormMessage />
@@ -155,6 +145,7 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { useForm } from 'vee-validate';
 import * as z from 'zod';
 
+import BaseButtonSelect from '@/components/base/BaseForm/BaseButtonSelect.vue';
 import BaseUploadButton from '@/components/base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
