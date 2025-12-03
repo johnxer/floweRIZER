@@ -5,18 +5,8 @@
             <div>
                 <account-form @update-in-progress="handleUpdateInProgress" />
 
-
                 <hr class="border-gray-200 dark:border-gray-800 my-6" />
-                <!-- <base-button
-                            class="mt-8"
-                            btn-style="notRoundedMd"
-                            :disabled="isPendingProfileUpdate"
-                            btn-size="base"
-                            @click="handlePwChange"
-                            type="button"
-                        >
-                            ChangePw
-                </base-button> -->
+
                 <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
                     <Button
                         type="button"
@@ -31,7 +21,7 @@
                         type="button"
                         :disabled="isPendingProfileUpdate"
                         variant="link-dummy"
-                        class="text-red-500 hover:text-red-900 disabled:cursor-not-allowed disabled:text-red-300 dark:disabled:text-red-800 p-0 h-auto"
+                        class="text-destructive hover:text-red-900 dark:hover:text-red-600 disabled:cursor-not-allowed disabled:text-red-300 dark:disabled:text-red-800 p-0 h-auto"
                         @click="uiStore.openModal('confirmDeleteAccount')"
                     >
                         Delete account

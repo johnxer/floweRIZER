@@ -16,7 +16,7 @@
                 leave-from=""
                 leave-to="opacity-0"
             >
-                <div class="fixed inset-0 bg-gray-500/75 transition-opacity dark:bg-gray-900/50" />
+                <div class="fixed inset-0 bg-gray-500/75 transition-opacity dark:bg-neutral-900/50" />
             </TransitionChild>
 
             <div class="fixed inset-0 z-10 w-screen overflow-y-auto modal-backdrop">
@@ -45,7 +45,7 @@
                                     close
                                 </span>
                             </button>
-                            <div class="transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all dark:bg-gray-900">
+                            <div class="transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all dark:bg-neutral-900">
                                 <div>
                                     <slot />
                                 </div>

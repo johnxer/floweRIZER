@@ -1,14 +1,13 @@
 <template>
-
     <div
         v-if="!roomsStore.hiddenRooms.includes(room.id) && (!room.isSystem || (room.isSystem && plants?.length > 0))"
         :data-room-id="room.id"
         class="group/card flex flex-col rounded-xl md:p-2 relative items-center md:items-start"
-        :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-gray-800/70 border-dashed' : 'bg-white dark:bg-gray-900/50 shadow-box'"
+        :class="!!room.isSystem ? 'border-3 border-gray-200 dark:border-neutral-800/70 border-dashed' : 'bg-white dark:bg-card shadow-box'"
     >
         <div
             v-if="!room.isSystem"
-            class="text-2xl size-[40px] absolute top-[-20px] md:left-[-20px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 bg-white dark:bg-gray-950 rounded-full flex items-center justify-center shadow-xl dark:shadow-none"
+            class="text-2xl size-[40px] absolute top-[-20px] md:left-[-20px] text-primary-500/50 peer-hover:text-primary-600 transition-colors duration-600 bg-white dark:bg-neutral-900 rounded-full flex items-center justify-center shadow-xl dark:shadow-none"
         >
             <span class="material-symbols-outlined">
                 {{ room.icon }}
@@ -16,7 +15,7 @@
         </div>
 
         <div
-            class="text-base md:text-xl font-semibold text-gray-600 flex items-start gap-2 peer group mb-2 justify-between md:pt-2 px-2 w-full"
+            class="text-base md:text-xl font-semibold text-gray-600 dark:text-neutral-500 flex items-start gap-2 peer group mb-2 justify-between md:pt-2 px-2 w-full"
             :class="!!room.isSystem ? 'pt-2' : 'pt-6'"
         >
             <router-link
@@ -36,7 +35,7 @@
                 >
                     <button
                         type="button"
-                        class="text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
+                        class="text-gray-500 hover:text-gray-400 dark:text-neutral-600 dark:hover:text-neutral-400 transition-all duration-600 cursor-pointer flex"
                         v-tooltip="{
                             content: 'History',
                             container: 'body'
@@ -49,7 +48,7 @@
                     </button>
                     <button
                         type="button"
-                        class="text-gray-500 hover:text-gray-400 dark:text-gray-600 transition-all duration-600 cursor-pointer flex"
+                        class="text-gray-500 hover:text-gray-400 dark:text-neutral-600 dark:hover:text-neutral-400 transition-all duration-600 cursor-pointer flex"
                         v-tooltip="{
                             content: 'Edit room',
                             container: 'body'
@@ -69,7 +68,7 @@
                     >
                         <button
                             type="button"
-                            class="text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex"
+                            class="text-gray-500 hover:text-red-500 dark:text-red-900 dark:hover:text-red-700 transition-all duration-600 cursor-pointer flex"
                             :class="{ 'md:opacity-100 text-red-500 dark:text-red-900': isOpen }"
                             v-tooltip="{
                                 content: 'Delete room',
@@ -94,7 +93,7 @@
                                 <template #actions>
                                     <Button
                                         size="sm"
-                                        variant="outline"
+                                        variant="secondary"
                                         class="min-w-1/3"
                                         v-close-popper="true"
                                     >
@@ -154,7 +153,7 @@
                                 ? 'p-2'
                                 : 'flex flex-col items-start justify-start ',
                             isDragOver
-                                ? 'bg-gray-200/25 dark:bg-gray-950/25'
+                                ? 'bg-gray-200/25 dark:bg-neutral-950/25'
                                 : '',
                             dragStore.isDragging
                                 ? 'min-h-[120px] lg:min-h-[calc(var(--spacing) * 2 + 160px)] grow p-2'
@@ -195,14 +194,14 @@
                         <add-plant-button :room-id="props.room.id" />
                         <div
                             v-if="plants.length === 0"
-                            class="text-xs text-gray-400 dark:text-gray-600 mt-2"
+                            class="text-xs text-gray-400 dark:text-neutral-600 mt-2"
                         >
-                            or <span class="text-gray-500 font-semibold">drag one</span> from another room
+                            or <span class="text-gray-500 dark:text-neutral-500 font-semibold">drag one</span> from another room
                         </div>
                     </div>
                     <div v-else-if="dragStore.isDragging">
-                        <div class="absolute flex inset-0 items-center justify-center before:border-2 before:border-dashed before:border-gray-300 dark:before:border-gray-600 before:absolute before:inset-[3px] md:before:inset-0 before:rounded-xl pointer-events-none before:bg-gray-100/50 dark:before:bg-gray-700/50">
-                            <div class="text-gray-400 dark:text-gray-500 text-center">
+                        <div class="absolute flex inset-0 items-center justify-center before:border-2 before:border-dashed before:border-gray-300 dark:before:border-neutral-600 before:absolute before:inset-[3px] md:before:inset-0 before:rounded-xl pointer-events-none before:bg-gray-100/50 dark:before:bg-neutral-700/50">
+                            <div class="text-gray-400 dark:text-neutral-500 text-center">
                                 <span class="material-symbols-outlined text-[4rem] mb-2">
                                     potted_plant
                                 </span>

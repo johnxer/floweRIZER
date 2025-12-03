@@ -5,7 +5,7 @@
     >
         <button
             class="relative transition-colors duration-600 flex p-2"
-            :class="hasNotifications ? 'cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600' : 'cursor-default text-gray-200 dark:text-gray-800'"
+            :class="hasNotifications ? 'cursor-pointer text-gray-400 dark:text-neutral-600 hover:dark:text-primary-600' : 'cursor-default text-gray-200 dark:text-gray-800'"
             :disabled="!hasNotifications"
         >
             <span class="material-symbols-outlined text-2xl relative">
@@ -37,7 +37,7 @@
                             </span>
                             <div
                                 v-html="notification.action"
-                                class="text-gray-600 dark:text-gray-500"
+                                class="text-foreground"
                             />
                         </div>
                         <div class="text-end flex justify-end gap-6">

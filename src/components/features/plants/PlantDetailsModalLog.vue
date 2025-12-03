@@ -172,12 +172,12 @@
                         :key="action.id"
                         class="grid "
                     >
-                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
+                        <div class="text-gray-400 dark:text-neutral-600 text-xs ml-[40px]">
                             {{ action.formattedDate }}
 
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
-                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0">
+                        <div class="text-gray-600 dark:text-neutral-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-neutral-500 bg-gray-100 dark:bg-neutral-800 rounded-full flex items-center justify-center shrink-0">
                                 <span class="material-symbols-outlined">
                                     {{ action.icon }}
                                 </span>
@@ -205,12 +205,12 @@
                                 <template v-if="action.action == 'custom note' || action.action == 'custom photo'">
                                     <div class="relative">
                                         <template v-if="action.action === 'custom note'">
-                                            <div class="mt-2 bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl">
+                                            <div class="mt-2 bg-gray-100 dark:bg-neutral-800 px-4 py-2 rounded-xl">
                                                 {{ action.newVal }}
                                             </div>
                                         </template>
                                         <template v-else>
-                                            <div class="relative rounded-xl bg-gray-50 dark:bg-gray-950 h-[200px] flex items-center justify-center overflow-hidden mt-2">
+                                            <div class="relative rounded-xl bg-gray-50 dark:bg-neutral-950 h-[200px] flex items-center justify-center overflow-hidden mt-2">
                                                 <base-image-wireframe v-if="!loadedImages.has(action.id)" />
                                                 <img
                                                     :ref="setImgRef"
@@ -238,7 +238,7 @@
                                                     container: 'body'
                                                 }"
                                                 type="button"
-                                                class="rounded-full bg-white p-2 text-xl text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex items-center justify-center shadow-popover"
+                                                class="rounded-full bg-white dark:bg-neutral-800 p-2 text-xl text-gray-500 hover:text-red-500 dark:text-red-900 transition-all duration-600 cursor-pointer flex items-center justify-center shadow-popover"
                                             >
                                                 <span class="material-symbols-outlined"> delete </span>
                                             </button>
@@ -255,7 +255,7 @@
                                                     <template #actions>
                                                         <Button
                                                             size="sm"
-                                                            variant="outline"
+                                                            variant="secondary"
                                                             class="min-w-1/3"
                                                             v-close-popper="true"
                                                         >
@@ -282,11 +282,11 @@
                         </div>
                     </li>
                     <li class="grid">
-                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
+                        <div class="text-gray-400 dark:text-neutral-600 text-xs ml-[40px]">
                             {{ formattedDate }}
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
-                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 p-2 rounded-full flex items-center justify-center shrink-0">
+                        <div class="text-gray-600 dark:text-neutral-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-neutral-500 bg-gray-100 dark:bg-neutral-800 p-2 rounded-full flex items-center justify-center shrink-0">
                                 <span class="material-symbols-outlined">
                                     add
                                 </span>

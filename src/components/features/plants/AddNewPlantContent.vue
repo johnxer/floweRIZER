@@ -66,12 +66,12 @@
                             class="border-2 border-primary-500 rounded-xl p-4 md:flex md:gap-4 md:items-center md:justify-between"
                         >
                             <div class="flex gap-2 items-center mb-4 md:mb-0">
-                                <span class="material-symbols-outlined text-3xl text-gray-500 w-8">
+                                <span class="material-symbols-outlined text-3xl text-gray-500 dark:text-neutral-500 w-8">
                                     smart_toy
                                 </span>
-                                <p class="text-gray-500 leading-5">
+                                <p class="text-gray-500 dark:text-neutral-500 leading-5">
                                     Use AI to fill the fields?<br />
-                                    <small class="text-gray-400">(Existing data will be replaced)</small>
+                                    <small class="text-gray-400 dark:text-neutral-600">(Existing data will be replaced)</small>
                                 </p>
                             </div>
                             <div class="grid grid-cols-2 md:flex gap-4 justify-center md:justify-end pl-10 md:pl-0">
@@ -159,11 +159,11 @@
                                         :key="icon.icon"
                                         type="button"
                                         @click="componentField.onChange(icon.label.toLowerCase())"
-                                        class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-600 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+                                        class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-600 hover:bg-gray-50 dark:hover:bg-neutral-800/50 cursor-pointer"
                                         :class="[
                                             componentField.modelValue === icon.label.toLowerCase()
                                                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
-                                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
+                                                : 'border-gray-200 dark:border-neutral-700 text-gray-500 dark:text-neutral-600'
                                         ]"
                                     >
                                         <span class="material-symbols-outlined text-2xl mb-1">
@@ -203,7 +203,7 @@
 
                     <div
                         v-if="!localPlantId"
-                        class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl"
+                        class="bg-gray-50 dark:bg-neutral-800/20 p-4 rounded-xl"
                     >
                         <FormField
                             v-slot="{ value, handleChange }"

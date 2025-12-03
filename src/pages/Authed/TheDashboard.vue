@@ -36,7 +36,7 @@
                 <stats-box class="mb-4" />
                 <div
                     class="mb-8 md:mb-4 flex gap-2 justify-end items-center py-2"
-                    :class="uiStore.isMultiSelectEnabled ? 'sticky top-[var(--headerHeight)] z-1 bg-gray-100 before:absolute before:inset-y-0 before:-inset-x-[var(--spacing)_*_4] before:bg-gray-100 before:z-0' : ''"
+                    :class="uiStore.isMultiSelectEnabled ? 'sticky top-[var(--headerHeight)] z-1 bg-gray-100 before:absolute before:inset-y-0 before:-inset-x-[var(--spacing)_*_4] before:bg-gray-100 dark:before:bg-neutral-900 before:z-0' : ''"
                 >
                     <button
                         v-tooltip="{
@@ -44,8 +44,8 @@
                             container: 'body'
                         }"
                         type="button"
-                        class="relative transition-colors duration-600 inline-flex align-top p-2 cursor-pointer hover:text-gray-600 dark:text-gray-600 hover:dark:text-primary-600 text-3xl"
-                        :class="uiStore.isMultiSelectEnabled ? 'text-gray-500' : 'text-gray-300'"
+                        class="relative transition-colors duration-600 inline-flex align-top p-2 cursor-pointer hover:text-gray-600 hover:dark:text-primary-600 text-3xl"
+                        :class="uiStore.isMultiSelectEnabled ? 'text-gray-500 dark:text-neutral-600' : 'text-gray-300 dark:text-neutral-500'"
                         @click="toggleMultiSelected"
                     >
                         <span class="material-symbols-outlined">
@@ -61,7 +61,7 @@
                                     container: 'body'
                                 }"
                                 type="button"
-                                class="relative transition-colors duration-600 inline-flex align-top p-2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-gray-600 hover:dark:text-primary-600 text-3xl"
+                                class="relative transition-colors duration-600 inline-flex align-top p-2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-neutral-600 hover:dark:text-primary-600 text-3xl"
                                 @click="multiPlantDelete"
                             >
                                 <span class="material-symbols-outlined">
@@ -275,17 +275,18 @@ const toggleMultiSelected = () => {
 const multiSelectTootlipText = computed(() => uiStore.isMultiSelectEnabled ? 'Disable multiple select' : 'Enable multiple select')
 
 const multiPlantDelete = async () => {
+    console.log(uiStore.plantSelectedList)
+    console.log(uiStore.plantSelectedList.length)
+
     for (let i = 0; i < uiStore.plantSelectedList.length; i++) {
 
         const plant = await fetchDocument(`rooms/${uiStore.plantSelectedList[i].roomId}/plants/${uiStore.plantSelectedList[i].plantId}`)
-
 
         const plantLogImages = plant?.log?.filter(l => l.action === 'custom photo').map(l => l.newVal) ?? []
 
         const filesArray = [
             ...(plant?.imgSrc ? [plant.imgSrc] : []),
             ...plantLogImages
-
         ]
 
         console.log(filesArray)
@@ -308,10 +309,10 @@ const multiPlantDelete = async () => {
 
         if (!success) return
 
-        uiStore.clearSelection()
-
-        uiStore.isMultiSelectEnabled = false
     }
+
+    uiStore.isMultiSelectEnabled = false
+    uiStore.clearSelection()
 }
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div>
         <base-modal-content>
             <template #modalTitle>
                 Change password
@@ -17,7 +17,7 @@
                     </base-loader>
                     <div
                         v-else-if="isSuccess"
-                        class="text-gray-600 dark:text-gray-500"
+                        class="text-foreground"
                     >
                         Password changed successfully.
                         <div class="mt-6">
@@ -31,7 +31,7 @@
                     </div>
                     <div
                         v-else
-                        class="text-gray-600 dark:text-gray-500"
+                        class=""
                     >
                         <transition
                             name="fade"

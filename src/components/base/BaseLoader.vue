@@ -19,7 +19,7 @@
         ]" />
         <div
             v-if="hasText"
-            class="text-gray-500 dark:text-gray-600 text-base"
+            class="text-gray-500 dark:text-neutral-600 text-base"
         >
             <slot />
         </div>
@@ -101,16 +101,16 @@ const sizeMap = {
 
 const colorMap = {
     base: {
-        class: 'text-gray-200 dark:text-gray-600'
+        class: 'text-gray-200 dark:text-neutral-600'
     },
 }
 
 const bgColor = {
     base: {
-        class: 'bg-white/60 dark:bg-gray-900/60'
+        class: 'bg-white/60 dark:bg-neutral-900/80'
     },
     body: {
-        class: 'bg-gray-100/80'
+        class: 'bg-gray-100/80 dark:bg-neutral-900/80'
     }
 }
 

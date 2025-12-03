@@ -9,106 +9,9 @@
 }
 
 @import 'tailwindcss';
-/* @plugin "tailwindcss-animate"; */
 
-@theme {
-    --radius: 0.5rem;
-
-    --animate-accordion-down: accordion-down 0.2s ease-out;
-    --animate-accordion-up: accordion-up 0.2s ease-out;
-
-    @keyframes accordion-down {
-        from {
-            height: 0;
-        }
-        to {
-            height: var(--radix-accordion-content-height);
-        }
-    }
-    @keyframes accordion-up {
-        from {
-            height: var(--radix-accordion-content-height);
-        }
-        to {
-            height: 0;
-        }
-    }
-}
-
-@layer base {
-    :root {
-        --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 222.2 84% 4.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 222.2 84% 4.9%;
-        /* --primary: 222.2 47.4% 11.2%; */
-        --primary: var(--primary-color-user-500);
-        --primary-foreground: 210 40% 98%;
-        --secondary: 210 40% 96.1%;
-        --secondary-foreground: 222.2 47.4% 11.2%;
-        --muted: 210 40% 96.1%;
-        --muted-foreground: 215.4 16.3% 46.9%;
-        --accent: 210 40% 96.1%;
-        --accent-foreground: 222.2 47.4% 11.2%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 210 40% 98%;
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-        --ring: 222.2 84% 4.9%;
-        --radius: 0.5rem;
-    }
-
-    .dark {
-        --background: 222.2 84% 4.9%;
-        --foreground: 210 40% 98%;
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
-        --popover: 222.2 84% 4.9%;
-        --popover-foreground: 210 40% 98%;
-        /* --primary: 210 40% 98%; */
-        --primary: var(--primary-color-user-500);
-        --primary-foreground: 222.2 47.4% 11.2%;
-        --secondary: 217.2 32.6% 17.5%;
-        --secondary-foreground: 210 40% 98%;
-        --muted: 217.2 32.6% 17.5%;
-        --muted-foreground: 215 20.2% 65.1%;
-        --accent: 217.2 32.6% 17.5%;
-        --accent-foreground: 210 40% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 210 40% 98%;
-        --border: 217.2 32.6% 17.5%;
-        --input: 217.2 32.6% 17.5%;
-        --ring: 212.7 26.8% 83.9%;
-    }
-
-    * {
-        @apply border-border;
-    }
-    body {
-        @apply bg-background text-foreground;
-    }
-}
-
-/**
- * ----------------------------------------------------------------
- * Animations Module
- * ----------------------------------------------------------------
- * Imports all custom @keyframes definitions and animation
- * utility classes from the dedicated animations module.
- */
 @import './modules/animations.css';
 
-/**
- * ----------------------------------------------------------------
- * Custom Dark Mode Variant
- * ----------------------------------------------------------------
- * Defines a custom `dark:` variant for Tailwind CSS, which
- * activates when an element is inside a parent with the `.dark`
- * class. This allows for custom dark mode styling like
- * `dark:bg-black`.
- */
 @custom-variant dark (&:where(.dark, .dark *));
 
 .material-symbols-outlined {
@@ -152,12 +55,6 @@
     --color-primary-800: var(--primary-color-user-800);
     --color-primary-900: var(--primary-color-user-900);
 
-    /*--ease-fluid: cubic-bezier(0.3, 0, 0, 1);
-    --ease-snappy: cubic-bezier(0.2, 0, 0, 1); 
-    */
-
-    /* for custom font, that generates class "font-nunito" */
-    --font-nunito: 'Nunito', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
     --font-roboto: 'Roboto', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
 
     --text-2xs: 0.625rem;
@@ -184,7 +81,11 @@
     }
 
     body {
-        @apply bg-gray-100 text-gray-900 font-roboto antialiased dark:bg-gray-950 transition-colors duration-600;
+        @apply bg-background text-foreground font-roboto antialiased transition-colors duration-600;
+    }
+
+    * {
+        @apply border-border outline-ring/50;
     }
 
     input[type='color'] {
@@ -381,7 +282,7 @@
 }
 
 .v-popper--theme-dropdown .v-popper__inner {
-    @apply border-none rounded-xl shadow-popover bg-white dark:bg-gray-900;
+    @apply border-none rounded-xl shadow-popover bg-white dark:bg-neutral-950;
 }
 .v-popper--theme-dropdown .v-popper__arrow-inner,
 .v-popper--theme-dropdown .v-popper__arrow-outer {
@@ -437,41 +338,26 @@
 
 :root {
     --radius: 0.625rem;
-    /* --background: oklch(1 0 0); */
     --background: theme('colors.gray.100');
-    --foreground: oklch(0.145 0 0);
-    /* --card: oklch(1 0 0); */
+    --foreground: theme('colors.gray.500');
     --card: theme('colors.white');
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    /* --primary: oklch(0.205 0 0); */
+    --card-foreground: theme('colors.gray.500');
+    --popover: theme('colors.white');
+    --popover-foreground: theme('colors.gray.500');
     --primary: var(--primary-color-user-500);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
+    --primary-foreground: theme('colors.white');
+    --secondary: theme('colors.gray.200');
+    --secondary-foreground: theme('colors.gray.500');
+    --muted: theme('colors.gray.300');
+    --muted-foreground: theme('colors.gray.400');
     --accent: oklch(0.97 0 0);
     --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
+    --destructive: theme('colors.red.500');
     --success: var(--primary);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --border: theme('colors.gray.200');
+    /* --input: oklch(0.922 0 0); */
+    --input: theme('colors.gray.300');
+    --ring: theme('colors.gray.200');
 
     /* Carousel */
 
@@ -506,55 +392,51 @@
  */
 
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    /* --popover: oklch(0.205 0 0); */
-    --popover: theme('colors.gray.900');
-    /* --popover-foreground: oklch(0.985 0 0); */
-    --popover-foreground: theme('colors.gray.600');
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
+    --background: theme('colors.neutral.900');
+    --foreground: theme('colors.neutral.500');
+    --card: theme('colors.neutral.800');
+    --card-foreground: theme('colors.neutral.500');
+    --popover: theme('colors.neutral.800');
+    --popover-foreground: theme('colors.neutral.500');
+    --primary: theme('colors.primary.700');
+    --primary-foreground: theme('colors.white / 0.6');
     --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
+    --secondary-foreground: theme('colors.neutral.400');
     --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    /* --accent: oklch(0.269 0 0); */
-    --accent: theme('colors.gray.800');
-    /* --accent-foreground: oklch(0.985 0 0); */
-    --accent-foreground: theme('colors.gray.400');
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    /* --input: oklch(1 0 0 / 15%); */
-    --input: theme('colors.gray.600');
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --muted-foreground: theme('colors.neutral.600');
+    --accent: theme('colors.neutral.800');
+    --accent-foreground: theme('colors.neutral.400');
+    --destructive: theme('colors.red.900');
+    --border: theme('colors.neutral.700');
+    --input: theme('colors.neutral.700');
+    --ring: theme('colors.neutral.600');
+
+    /* Carousel */
+
+    /* Carousel Navigation */
+    --vc-nav-background: theme('colors.neutral.800 / 0.5');
+    --vc-nav-bg-hover: theme('colors.neutral.800 / 0.7');
+    --vc-nav-color: theme('colors.neutral.300');
+    --vc-nav-color-hover: theme('colors.primary.600');
+    --vc-nav-shadow: theme('boxShadow.box-lg');
+
+    /* Carousel Pagination */
+    --vc-pgn-active-color: theme('colors.neutral.500');
+    --vc-pgn-background-color: theme('colors.white');
+    --vc-pgn-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
 }
 
 /*---break---
  */
 
-@layer base {
+/* @layer base {
     * {
         @apply border-border outline-ring/50;
     }
     body {
         @apply bg-background text-foreground;
     }
-}
+} */
 
 @import './modules/carousel.css';
 
@@ -567,13 +449,13 @@
     @apply absolute opacity-0 cursor-pointer;
 }
 .checkbox-wrapper input + label {
-    @apply border-2 border-gray-300 rounded-sm flex items-center justify-center w-5 h-5 cursor-pointer text-gray-300 text-lg transition-all duration-600;
+    @apply border-2 border-gray-300 dark:border-neutral-600 rounded-sm flex items-center justify-center w-5 h-5 cursor-pointer text-gray-300 text-lg transition-all duration-600;
 }
 .checkbox-wrapper input + label span {
     @apply opacity-0 transition-opacity duration-600;
 }
 .checkbox-wrapper input:checked + label {
-    @apply border-gray-500 text-gray-500;
+    @apply border-gray-500 text-gray-500 dark:border-neutral-400 dark:text-neutral-400;
 }
 
 .checkbox-wrapper input:checked + label span {

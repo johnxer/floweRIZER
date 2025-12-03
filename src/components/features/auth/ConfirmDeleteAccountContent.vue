@@ -17,7 +17,7 @@
                     </base-loader>
                     <div
                         v-else
-                        class="text-gray-600 dark:text-gray-500"
+                        class="text-foreground"
                     >
                         <transition
                             name="fade"
@@ -46,7 +46,7 @@
                         >
                             <div
                                 v-if="showPwForm"
-                                class="mt-6 rounded-xl bg-gray-50 dark:bg-gray-800 p-4"
+                                class="mt-6 rounded-xl bg-gray-50 dark:bg-neutral-800/20 p-4"
                             >
                                 <p class="mb-2">
                                     Please enter your password to confirm deletion.
@@ -192,7 +192,6 @@ const handleDeleteUser = async () => {
 const formSchema = toTypedSchema(z.object({
     password: z.string()
         .min(1, { message: 'Password is required.' })
-        .min(8, { message: 'Password must be at least 8 characters.' }),
 }))
 
 const { handleSubmit } = useForm({

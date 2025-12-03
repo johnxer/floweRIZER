@@ -15,11 +15,11 @@
                         :key="action.id"
                         class="grid "
                     >
-                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
+                        <div class="text-gray-400 dark:text-neutral-600 text-xs ml-[40px]">
                             {{ action.formattedDate }}
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
-                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0">
+                        <div class="text-gray-600 dark:text-neutral-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-neutral-500 bg-gray-100 dark:bg-neutral-800 rounded-full flex items-center justify-center shrink-0">
                                 <span class="material-symbols-outlined">
                                     {{ action.icon }}
                                 </span>
@@ -37,11 +37,11 @@
                         </div>
                     </li>
                     <li class="grid">
-                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
+                        <div class="text-gray-400 dark:text-neutral-600 text-xs ml-[40px]">
                             {{ formattedDate }}
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
-                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0">
+                        <div class="text-gray-600 dark:text-neutral-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-neutral-500 bg-gray-100 dark:bg-neutral-800 rounded-full flex items-center justify-center shrink-0">
                                 <span class="material-symbols-outlined">
                                     add
                                 </span>

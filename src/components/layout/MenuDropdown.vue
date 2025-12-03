@@ -5,7 +5,7 @@
         @show="onShow"
         @hide="onHide"
     >
-        <button class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600">
+        <button class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-neutral-600 hover:dark:text-primary-600">
             <transition
                 name="icon-transform"
                 mode="out-in"
@@ -53,7 +53,7 @@
                     />
                     <li>
                         <button
-                            class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center"
+                            class="text-foreground hover:text-destructive cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center"
                             v-close-popper="true"
                             @click="handleLogout"
                         >

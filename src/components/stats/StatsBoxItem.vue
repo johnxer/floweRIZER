@@ -15,7 +15,7 @@
                 {{ props.value }}
             </span>
         </div>
-        <div class="text-gray-400 dark:text-gray-500 text-xs md:text-sm">
+        <div class="text-gray-400 dark:text-neutral-500 text-xs md:text-sm">
             {{ props.label }}
         </div>
     </div>

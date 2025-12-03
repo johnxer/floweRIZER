@@ -8,7 +8,7 @@
                 content: themeStore.activeThemeTooltip,
                 container: 'body'
             }"
-            class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600"
+            class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-neutral-600 hover:dark:text-primary-600"
         >
             <span class="material-symbols-outlined text-2xl">
                 {{ themeStore.activeThemeIcon }}

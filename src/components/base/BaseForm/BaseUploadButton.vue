@@ -50,7 +50,7 @@
 
                         <template #actions>
                             <Button
-                                variant="outline"
+                                variant="secondary"
                                 class="min-w-1/3"
                                 v-close-popper="true"
                             >
@@ -121,7 +121,7 @@
             </div>
             <div
                 v-if="selectFileName"
-                class="text-sm text-gray-500 inline-flex align-top gap-1 items-center"
+                class="text-sm text-muted-foreground inline-flex align-top gap-1 items-center"
             >
                 <span class="material-symbols-outlined text-2xl">
                     image

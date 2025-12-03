@@ -23,16 +23,16 @@
             class="group rounded-xl transition-all duration-600 relative grid md:grid-cols-[60px_1fr] p-2 md:gap-4"
             :class="[
                 mobileStore.isMobile && isDraggable ? 'grid-cols-[auto_60px_1fr]' : 'grid-cols-[60px_1fr]',
-                isDraggable && unassignedRoomPlant && 'bg-gray-200 dark:bg-gray-900 hover:bg-gray-300/75 dark:hover:bg-gray-900/50',
-                isDraggable && !unassignedRoomPlant && 'bg-gray-100 dark:bg-gray-950 hover:bg-gray-200 dark:hover:bg-gray-950/50',
+                isDraggable && unassignedRoomPlant && 'bg-gray-200 dark:bg-neutral-800/50 hover:bg-gray-300/75 dark:hover:bg-neutral-800/75',
+                isDraggable && !unassignedRoomPlant && 'bg-gray-100 dark:bg-neutral-950/50 hover:bg-gray-200 dark:hover:bg-neutral-950/75',
                 !mobileStore.isMobile && 'js-plant-handle',
-                isDraggable ? 'cursor-move' : 'bg-gray-50 dark:bg-gray-900'
+                isDraggable ? 'cursor-move' : 'bg-gray-50 dark:bg-neutral-900'
             ]"
         >
             <button
                 v-if="mobileStore.isMobile && isDraggable"
                 type="button"
-                class="size-5 h-full left-0 text-xl text-gray-400 dark:text-gray-600 mr-2 flex items-center js-plant-handle"
+                class="size-5 h-full left-0 text-xl text-gray-400 dark:text-neutral-600 mr-2 flex items-center js-plant-handle"
             >
                 <span class="material-symbols-outlined">
                     drag_handle
@@ -41,11 +41,11 @@
             <div class="relative mr-4 md:mr-0">
                 <div
                     class="w-full h-0 pb-[100%] overflow-hidden rounded-full relative shrink-0 shadow-popover"
-                    :class="isWatered ? '' : 'grayscale'"
+                    :class="isWatered ? '' : 'grayscale dark:opacity-50'"
                 >
                     <div
                         v-if="!isImageLoaded"
-                        class="bg-gray-200 dark:bg-gray-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
+                        class="bg-gray-200 dark:bg-neutral-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
                     >
                         <base-loader
                             size="sm"
@@ -70,11 +70,11 @@
                 </div>
                 <div
                     class="rounded-full size-6 flex items-center justify-center absolute -top-1 -right-1 shadow-popover"
-                    :class="isWatered ? 'bg-gray-100 dark:bg-gray-800' : 'bg-gray-100 dark:bg-gray-800 '"
+                    :class="isWatered ? 'bg-gray-100 dark:bg-neutral-800' : 'bg-gray-100 dark:bg-neutral-800 '"
                 >
                     <span
                         class="material-symbols-outlined w-full text-center text-sm"
-                        :class="isWatered ? 'text-primary-300 dark:text-primary-200' : 'text-gray-400 dark:text-gray-500'"
+                        :class="isWatered ? 'text-primary-300 dark:text-primary-200' : 'text-gray-400 dark:text-neutral-500'"
                     >
                         {{ isWatered ? 'humidity_high' : 'water_drop' }}
                     </span>
@@ -88,10 +88,10 @@
             <div class="grid grid-cols-[auto_1fr] gap-3 items-center w-full">
                 <div class="grid grid-cols-[auto_1fr] gap-3 items-center">
                     <div class="min-w-0">
-                        <div class="text-sm text-gray-700 dark:text-gray-600 font-semibold overflow-hidden text-ellipsis">
+                        <div class="text-sm text-gray-700 dark:text-neutral-600 font-semibold overflow-hidden text-ellipsis">
                             {{ plant.name }}
                         </div>
-                        <div class="text-xs text-gray-400 dark:text-gray-700">
+                        <div class="text-xs text-gray-400 dark:text-neutral-700">
                             {{ lastWateredDaysAgo }}
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                 <div class="text-end">
                     <div
                         class="inline-flex justify-end  rounded-full transition-colors duration-600"
-                        :class="unassignedRoomPlant ? 'bg-gray-100 dark:bg-gray-950' : 'bg-gray-50 group-hover:bg-gray-100 dark:bg-gray-900 dark:group-hover:bg-gray-900'"
+                        :class="unassignedRoomPlant ? 'bg-gray-100 dark:bg-neutral-900' : 'bg-gray-50 group-hover:bg-gray-100 dark:bg-neutral-950/50 dark:group-hover:bg-neutral-950'"
                     >
                         <button
                             v-tooltip="{
@@ -109,7 +109,7 @@
                                 disabled: isWatered
                             }"
                             type="button"
-                            class="js-water-btn cursor-pointer py-2 pl-2 pr-1 transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 text-2xl flex items-center disabled:cursor-not-allowed disabled:text-gray-500/20 dark:disabled:text-gray-800 "
+                            class="js-water-btn cursor-pointer py-2 pl-2 pr-1 transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 text-2xl flex items-center disabled:cursor-not-allowed disabled:text-gray-500/20 dark:disabled:text-neutral-800 "
                             :disabled="isWatered"
                             :class="[
                                 isWatered ? '' : 'animate-float',
@@ -129,7 +129,7 @@
                         >
                             <button
                                 type="button"
-                                class="js-actions-btn py-2 pr-2 pl-1 text-2xl text-gray-400 hover:text-gray-700 dark:text-gray-700 dark:hover:text-gray-500 cursor-pointer flex transition-all duration-600"
+                                class="js-actions-btn py-2 pr-2 pl-1 text-2xl text-gray-400 hover:text-gray-700 dark:text-neutral-700 dark:hover:text-neutral-500 cursor-pointer flex transition-all duration-600"
                                 :class="{ 'text-gray-700 dark:text-gray-500': isOpen }"
                                 v-tooltip="{
                                     content: 'Plant actions',
@@ -147,7 +147,7 @@
                                             <li>
                                                 <button
                                                     type="button"
-                                                    class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
+                                                    class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 dark:text-neutral-500 dark:hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
                                                     v-close-popper="true"
                                                     @click="uiStore.openModal('plantDetails', { roomId: props.roomId, plantId: props.plant.id })"
                                                 >
@@ -162,7 +162,7 @@
                                             <li>
                                                 <button
                                                     type="button"
-                                                    class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
+                                                    class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 dark:text-neutral-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
                                                     v-close-popper="true"
                                                     @click="uiStore.openModal('plant', { roomId: props.roomId, plantId: props.plant.id })"
                                                 >

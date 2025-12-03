@@ -1,7 +1,7 @@
 <template>
     <header
         class="px-4 md:px-6 sticky top-0 z-2 transition-all duration-600"
-        :class="isScrolled ? 'bg-gray-100 dark:bg-gray-950 shadow-2xl' : 'bg-transparent dark:bg-transparent shadow-none'"
+        :class="isScrolled ? 'bg-gray-100 dark:bg-neutral-950 shadow-2xl' : 'bg-transparent dark:bg-transparent shadow-none'"
     >
         <div class="container mx-auto flex items-center justify-between header-min-h">
             <router-link :to="{ name: 'TheDashboard' }">

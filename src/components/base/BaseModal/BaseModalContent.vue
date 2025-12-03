@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="bg-gray-50 px-4 py-3 sm:flex sm:px-6 dark:bg-gray-900 text-xl md:text-2xl border-b border-gray-200 text-gray-700 dark:text-gray-500 dark:border-gray-800">
+        <div class="bg-gray-50 px-4 py-3 sm:flex sm:px-6 dark:bg-neutral-900 text-xl md:text-2xl border-b border-gray-200 text-foreground dark:border-neutral-800">
             <h4 class="flex">
                 <slot name="modalTitle" />
             </h4>
