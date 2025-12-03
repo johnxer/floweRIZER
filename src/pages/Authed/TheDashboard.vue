@@ -33,8 +33,11 @@
                 </Button>
             </div>
             <div v-else>
-                <stats-box class="mb-6" />
-                <div class="mb-10 md:mb-6 flex gap-2 justify-end items-center">
+                <stats-box class="mb-4" />
+                <div
+                    class="mb-8 md:mb-4 flex gap-2 justify-end items-center py-2"
+                    :class="uiStore.isMultiSelectEnabled ? 'sticky top-[var(--headerHeight)] z-1 bg-gray-100 before:absolute before:inset-y-0 before:-inset-x-[var(--spacing)_*_4] before:bg-gray-100 before:z-0' : ''"
+                >
                     <button
                         v-tooltip="{
                             content: multiSelectTootlipText,
@@ -67,7 +70,7 @@
                             </button>
                         </div>
                     </transition>
-                    <div class="w-full md:w-[180px] flex md:inline-flex align-top">
+                    <div class="w-full md:w-[180px] flex md:inline-flex align-top relative z-1">
                         <Select
                             v-model="selectedRoom"
                             @update:model-value="performScroll"
@@ -211,7 +214,12 @@ watch(
 
         if (!el) return
 
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        const y = el.getBoundingClientRect().top + window.scrollY - uiStore.headerHeight - 25; // 25px is for offset to keep the circle with icon visible
+
+        window.scrollTo({
+            top: y,
+            behavior: 'smooth'
+        });
 
         await observeVisibility(el)
 
@@ -246,7 +254,7 @@ const performScroll = async (roomId) => {
 
     if (!el) return
 
-    const y = el.getBoundingClientRect().top + window.scrollY - uiStore.headerHeight - 15; // 15px is for offset to keep the circle with icon visible
+    const y = el.getBoundingClientRect().top + window.scrollY - uiStore.headerHeight - 25; // 25px is for offset to keep the circle with icon visible
 
     window.scrollTo({
         top: y,

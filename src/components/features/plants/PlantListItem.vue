@@ -340,9 +340,6 @@ const handleDeletePlant = async () => {
     if (successDelete) success = await deleteData(documentId, collectionPath)
 }
 
-
-
-
 const isOpen = ref(false)
 
 const onShow = () => (isOpen.value = true)

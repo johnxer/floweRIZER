@@ -409,6 +409,13 @@ const checkAndScroll = async () => {
         if (target.action === 'water') {
             await addDelay(500)
             await waterPlant(target.plantId)
+        } else {
+            const el = document.querySelector(`[data-plant-id="${target.plantId}"]`)
+
+            if (!el) return
+
+            el.classList.add('animate-pop')
+            setTimeout(() => el.classList.remove('animate-pop'), 1000)
         }
     }
 }
@@ -431,7 +438,13 @@ const performScroll = async (plantId) => {
 
     if (!el) return
 
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+    const y = el.getBoundingClientRect().top + window.scrollY - uiStore.headerHeight - 20; // 20px is for offset to give some space from the top
+
+    window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+    });
 
     await observeVisibility(el)
 
