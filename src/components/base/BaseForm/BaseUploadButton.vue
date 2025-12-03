@@ -3,25 +3,15 @@
         class="flex items-center"
         :class="{ 'flex-col items-start gap-4': !!imageToShow }"
     >
-
-
         <div
             v-if="!!imageToShow"
             class="relative w-full h-[200px] rounded-xl"
         >
-            <div
-                v-if="!isImageLoaded"
-                class="bg-gray-200 dark:bg-gray-800 animate-pulse absolute w-full h-full inset-0 rounded-xl flex justify-center"
-            >
-                <div class="size-8 rounded-full bg-gray-300 dark:bg-gray-900 absolute top-[80px] -ml-[70px]" />
-                <div class="absolute bottom-0 flex items-end justify-center w-full pl-[90px]">
-                    <div class="w-0 h-0 border-l-[60px] border-l-transparent border-r-[60px] border-r-transparent border-b-[80px] border-b-gray-300 dark:border-b-gray-900 absolute" />
-                    <div class="w-0 h-0 border-l-[30px] border-l-transparent border-r-[30px] border-r-transparent border-b-[40px] border-b-gray-300 dark:border-b-gray-900 absolute -ml-[160px]" />
-                </div>
-            </div>
+            <base-image-wireframe v-if="!isImageLoaded" />
+
             <img
                 :src="imageToShow"
-                class="w-full h-full inset-0 object-cover absolute rounded-xl"
+                class="w-full h-full inset-0 object-cover absolute rounded-xl transition-opacity duration-600"
                 :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
                 loading="lazy"
                 @load="onLoad"
@@ -35,7 +25,7 @@
             </div>
 
             <v-dropdown
-                v-if="isResetImageShown"
+                v-if="isResetImageShown && props.showReset"
                 trap-focus
                 popper-class="popper-slide-small min-w-[200px]"
                 class="absolute bottom-2 right-2"
@@ -59,27 +49,21 @@
                         </template>
 
                         <template #actions>
-                            <base-button
-                                btn-style="notRoundedMd"
-                                btn-size="sm"
-                                btn-color="neutralAlt"
-                                :btn-full-width="false"
+                            <Button
+                                variant="secondary"
                                 class="min-w-1/3"
                                 v-close-popper="true"
                             >
                                 Cancel
-                            </base-button>
-                            <base-button
-                                btn-style="notRoundedMd"
-                                btn-size="sm"
-                                btn-color="danger"
-                                :btn-full-width="false"
+                            </Button>
+                            <Button
+                                variant="destructive"
                                 class="min-w-1/2"
                                 v-close-popper="true"
                                 @click="handleResetImage"
                             >
                                 Yes, reset it
-                            </base-button>
+                            </Button>
                         </template>
                     </base-popover-content>
                 </template>
@@ -87,11 +71,11 @@
 
         </div>
         <div class="flex gap-2 md:gap-4 flex-col md:flex-row w-full md:w-auto">
-            <div :class="{ 'grid grid-cols-[1fr_auto_1fr] gap-2 items-center': mobileStore.isMobile }">
+            <div :class="{ 'flex flex-wrap gap-2 items-center': mobileStore.isMobile }">
 
                 <label
                     :for="inputId"
-                    class="relative border border-2 cursor-pointer transition-all duration-600 disabled:cursor-not-allowed px-1 md:px-2 py-2 text-base rounded-lg cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-transparent hover:text-gray-400 disabled:bg-gray-500/50 disabled:border-gray-500/0 disabled:hover:text-white inline-flex overflow-hidden text-center shrink-0 gap-2 items-center justify-center"
+                    class="align-top whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer duration-600 border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 h-9 px-4 py-2 has-[>svg]:px-3 flex gap-2 items-center justify-center"
                 >
                     <span class="material-symbols-outlined text-2xl">
                         photo
@@ -122,11 +106,9 @@
                         ref="mobileCameraInput"
                     />
 
-                    <base-button
+                    <Button
                         type="button"
-                        btn-style="notRoundedMd"
-                        btn-size="base"
-                        btn-color="neutralAlt"
+                        variant="outline"
                         class="flex gap-2 items-center justify-center"
                         @click="handleMobilePhotoCapture"
                     >
@@ -134,12 +116,12 @@
                             photo_camera
                         </span>
                         Take photo
-                    </base-button>
+                    </Button>
                 </div>
             </div>
             <div
                 v-if="selectFileName"
-                class="text-sm text-gray-500 inline-flex align-top gap-1 items-center"
+                class="text-sm text-muted-foreground inline-flex align-top gap-1 items-center"
             >
                 <span class="material-symbols-outlined text-2xl">
                     image
@@ -155,8 +137,10 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
+import BaseImageWireframe from '@/components/base/BaseImageWireframe.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
+
+import { Button } from '@/components/ui/button';
 
 import { useMobileStore } from '@/stores/useMobileStore';
 
@@ -169,6 +153,11 @@ const props = defineProps({
         type: String,
         required: false,
         default: null
+    },
+    showReset: {
+        type: Boolean,
+        required: false,
+        default: true
     }
 })
 
@@ -217,8 +206,6 @@ const handleFile = (e) => {
 }
 
 const imageToShow = computed(() => !!previewUrl.value ? previewUrl.value : existingImageURL.value)
-
-
 
 const onLoad = () => {
     isImageLoaded.value = true

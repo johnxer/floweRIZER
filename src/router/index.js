@@ -2,17 +2,28 @@ import { auth } from '@/firebase/config';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
-    // {
-    //     path: '/',
-    //     name: 'Home',
-    //     component: () => import('@/pages/TheHome.vue')
-    // },
     {
         path: '/',
-        name: 'NotAuthed',
-        component: () => import('@/pages/NotAuthed.vue'),
+        name: 'TheLogin',
+        component: () => import('@/pages/NotAuthed/TheLogin.vue'),
         meta: {
-            title: 'Login or Sign up',
+            title: 'Login',
+        },
+    },
+    {
+        path: '/signup',
+        name: 'TheSignup',
+        component: () => import('@/pages/NotAuthed/TheSignup.vue'),
+        meta: {
+            title: 'Sign up',
+        },
+    },
+    {
+        path: '/pw-recovery',
+        name: 'PwRecovery',
+        component: () => import('@/pages/NotAuthed/PwRecovery.vue'),
+        meta: {
+            title: 'Password recovery',
         },
     },
     {
@@ -31,6 +42,15 @@ const routes = [
         meta: {
             title: 'Account',
             requiresAuth: true,
+        },
+    },
+    {
+        path: '/about-project',
+        name: 'AboutProject',
+        component: () => import('@/pages/Authed/AboutProject.vue'),
+        meta: {
+            title: 'About project',
+            // requiresAuth: true,
         },
     },
     {
@@ -85,8 +105,8 @@ router.beforeEach((to, from, next) => {
     const isAuthenticated = !!auth.currentUser;
 
     if (to.meta.requiresAuth && !isAuthenticated) {
-        next({ name: 'NotAuthed', query: { redirect: to.fullPath } });
-    } else if ((to.name === 'NotAuthed' && isAuthenticated)) {
+        next({ name: 'TheLogin', query: { redirect: to.fullPath } });
+    } else if (to.name === 'TheLogin' && isAuthenticated) {
         if (from.name) {
             next(from.fullPath);
         } else {
@@ -96,6 +116,5 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
 
 export default router;

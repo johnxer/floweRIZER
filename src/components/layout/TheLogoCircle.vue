@@ -1,15 +1,14 @@
 <template>
-    <div class="h-[100px] mx-auto overflow-hidden relative flex items-center justify-center mb-8">
-        <h1 class="text-xl font-bold flex flex-col items-center justify-center">
-            <span class="noto-color-emoji-regular text-5xl mb-2">
-                🌱
-            </span>
-            <span class="flex">
-                <span class="text-primary-500">{{ firstString }}</span> <span class="text-primary-700">{{ secondString }}</span>
-            </span>
-        </h1>
-
-    </div>
+    <h1 class="text-2xl font-bold flex items-center justify-center gap-2">
+        <img
+            src="https://firebasestorage.googleapis.com/v0/b/flower-organizer.firebasestorage.app/o/src%2Flogo_shape.svg?alt=media&token=1d8cdd31-196e-4bd4-a8d1-cdff24b60fd7"
+            class="size-14"
+            :alt="props.projectTitle"
+        />
+        <span class="flex">
+            <span class="text-primary-500">{{ firstString }}</span> <span class="text-primary-700">{{ secondString }}</span>
+        </span>
+    </h1>
 </template>
 
 <script setup>

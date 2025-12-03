@@ -1,35 +1,30 @@
 TODO
 
-- account password change functionality
+* in progress... add possibilty to mass actions on plants - remove, move, ... - remove images also from custom records - logs
 
-- add possibility to add photo/data to history log
-
-- gallery with slider, that aggregates the photos
-
-* add the gemini AI plant identification based on a photo - In progress, should add new fields - toxicity, loght requirements
+- When removing plant, also delete log images (if any) - forgot about it
+ 
+- clean the main.css file
 
 - allow to take picture from webcam or frontcam on phone on account settings page
 
 - add voice recognition support - to move and to water plants
 
-- add to room log the plants movement.
-
-- footer with github link - prbbly will be moved and display elsewhere
-
-- show used library page
-
-* 404 page style - In progress
+- add different Homes option
 
 - add fertilization option (frequency + fertilized now) and include it into log + notification 
 
+
 - GRID view
 
-- custom color
+- custom main color
 
 TBD:
 
+? add to room log the plants movement.
+
 ? add a box with stats - rooms, plants, etc...some graphics - DONE, but can in the future add more stats
 
-? style the profile button in the menu on mobile to stand outside - Doesnt make sense, it's not important action. Should be the Dashboard instead.
-
 ? allow custom google icon via code input
+
+? custom room color

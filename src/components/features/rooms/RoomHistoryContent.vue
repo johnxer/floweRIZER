@@ -4,41 +4,22 @@
             <span class="noto-color-emoji-regular mr-2">🏠</span>Rooms's history log
         </template>
         <div class="relative">
-            <base-loader
-                v-if="isPendingRoom"
-                class="static"
-            >
+            <base-loader v-if="isPendingRoom">
                 Loading plant's history...
             </base-loader>
 
             <div v-else>
                 <ul class="flex flex-col gap-4">
-                    <li class="grid">
-                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
-                            {{ formattedDate }}
-                        </div>
-                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
-                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0">
-                                <span class="material-symbols-outlined">
-                                    add
-                                </span>
-                            </span>
-                            <span class="self-center text-sm md:text-base">
-                                Room added
-                            </span>
-                        </div>
-                    </li>
                     <li
-                        v-for="action in formattedActions"
+                        v-for="action in sortedActions"
                         :key="action.id"
                         class="grid "
                     >
-                        <div class="text-gray-400 dark:text-gray-600 text-xs ml-[40px]">
+                        <div class="text-gray-400 dark:text-neutral-600 text-xs ml-[40px]">
                             {{ action.formattedDate }}
-
                         </div>
-                        <div class="text-gray-600 dark:text-gray-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
-                            <span class="size-[30px] text-xl text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center shrink-0">
+                        <div class="text-gray-600 dark:text-neutral-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-neutral-500 bg-gray-100 dark:bg-neutral-800 rounded-full flex items-center justify-center shrink-0">
                                 <span class="material-symbols-outlined">
                                     {{ action.icon }}
                                 </span>
@@ -53,6 +34,21 @@
                                 </template>
                             </span>
 
+                        </div>
+                    </li>
+                    <li class="grid">
+                        <div class="text-gray-400 dark:text-neutral-600 text-xs ml-[40px]">
+                            {{ formattedDate }}
+                        </div>
+                        <div class="text-gray-600 dark:text-neutral-500 grid grid-cols-[30px_1fr] gap-[10px] items-start">
+                            <span class="size-[30px] text-xl text-gray-400 dark:text-neutral-500 bg-gray-100 dark:bg-neutral-800 rounded-full flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined">
+                                    add
+                                </span>
+                            </span>
+                            <span class="self-center text-sm md:text-base">
+                                Room added
+                            </span>
                         </div>
                     </li>
                 </ul>
@@ -132,11 +128,11 @@ watchEffect(async () => {
             ...a,
             icon: actionIconMap[a.action]?.icon || '',
             formattedDate: format(date, 'MMM d, yyyy'),
+            rawDate: date
         }
-    })
+    }).sort((a, b) => b.rawDate - a.rawDate)
 
     isLoadingActions.value = false
-
 })
 
 </script>

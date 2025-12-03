@@ -5,6 +5,21 @@ import { defineStore } from 'pinia';
 import { addDelay } from '@/utils';
 
 export const usePlantsStore = defineStore('usePlantsStore', () => {
+    const lightIcons = [
+        {
+            label: 'Low',
+            icon: 'cloud',
+        },
+        {
+            label: 'Medium',
+            icon: 'partly_cloudy_day',
+        },
+        {
+            label: 'High',
+            icon: 'sunny',
+        },
+    ];
+
     const setPlantVisible = (plantId, visible) => {
         isPlantVisible.value[plantId] = visible;
     };
@@ -40,6 +55,7 @@ export const usePlantsStore = defineStore('usePlantsStore', () => {
     };
 
     return {
+        lightIcons,
         isPlantVisible,
         setPlantVisible,
         wateredNow,

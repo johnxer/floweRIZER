@@ -1,9 +1,9 @@
 <template>
     <li>
         <router-link
-            class="text-gray-600 hover:text-primary-500 cursor-pointer transition-colors duration-600 block py-1 md:py-2 flex gap-1 md:gap-2 items-center flex-col md:flex-row text-sm md:text-base"
+            class="text-foreground hover:text-primary cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center flex-row text-base"
             :class="extraClasses"
-            :to="{name: linkDestination}"
+            :to="{ name: linkDestination }"
         >
             <span class="material-symbols-outlined text-2xl md:text-3xl">
                 {{ linkIcon }}

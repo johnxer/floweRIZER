@@ -1,96 +1,98 @@
 <template>
     <div>
         <base-container v-if="isPending || !detailsRoom">
-            <base-loader />
+            <base-loader
+                v-if="isPending"
+                :has-bg="true"
+                :bg-blur="true"
+                position="fixed"
+            />
         </base-container>
         <div v-else>
             <div class="relative w-full h-[200px] md:h-[300px] overflow-hidden flex items-center justify-center shadow-xl before:absolute before:inset-0 before:bg-black/30">
                 <base-loader
                     v-if="!isImageLoaded"
-                    class="absolute"
+                    position="absolute"
                 />
                 <img
-                    :src="detailsRoom.imgSrc || '/src/assets/images/room_default.jpg'"
-                    class="w-full object-cover dark:brightness-50"
+                    :src="detailsRoom.imgSrc || 'https://firebasestorage.googleapis.com/v0/b/flower-organizer.firebasestorage.app/o/src%2Froom_default.jpg?alt=media&token=05848635-1659-41ec-9f86-b6406d1b165e'"
+                    class="w-full h-full object-cover dark:brightness-50"
                     :alt="roomName"
                     loading="lazy"
                     @load="onLoad"
                 >
-                <base-page-title
-                    class="absolute p-4 md:p-6"
-                    :is-default-title="false"
-                >
+                <h2 class="inline-flex align-top items-center gap-4 absolute p-4 md:p-6 text-shadow-lg text-white dark:text-white/80 text-3xl md:text-4xl">
                     <span class="inline-flex align-top items-center gap-3">
                         <span class="material-symbols-outlined">
                             {{ detailsRoom.icon }}
                         </span>
                         {{ roomName }}
-
-                        <v-dropdown
-                            v-if="props.roomId !== 'unassigned'"
-                            trap-focus
-                            @show="onShow"
-                            @hide="onHide"
-                            popper-class="popper-slide-small"
-                        >
-                            <button
-                                type="button"
-                                class="p-2 text-xl md:text-2xl dark:text-white/80 cursor-pointer flex transition-all duration-600 rounded-full bg-black/40 hover:bg-black/80 text-white/80 hover:text-white/90"
-                                :class="{ 'bg-black/80 text-white/90 dark:text-gray-500': isOpen }"
-                                v-tooltip="{
-                                    content: 'Room actions',
-                                    container: 'body'
-                                }"
-                            >
-                                <span class="material-symbols-outlined">
-                                    more_vert
-                                </span>
-                            </button>
-                            <template #popper>
-                                <base-popover-content>
-                                    <template #desc>
-                                        <ul class="space-y-2">
-                                            <li>
-                                                <button
-                                                    type="button"
-                                                    class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
-                                                    @click="editRoom"
-                                                    v-close-popper
-                                                >
-                                                    <span class="material-symbols-outlined text-xl">
-                                                        edit
-                                                    </span>
-                                                    <span>
-                                                        Edit room
-                                                    </span>
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button
-                                                    type="button"
-                                                    class="flex gap-2 items-center text-base text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex transition-all duration-600 p-2"
-                                                    @click="deleteRoom"
-                                                >
-                                                    <span class="material-symbols-outlined text-xl">
-                                                        delete
-                                                    </span>
-                                                    <span>
-                                                        Delete room
-                                                    </span>
-                                                </button>
-
-                                            </li>
-                                        </ul>
-                                    </template>
-                                </base-popover-content>
-
-                            </template>
-                        </v-dropdown>
                     </span>
-                </base-page-title>
+                </h2>
+                <v-dropdown
+                    v-if="props.roomId !== 'unassigned'"
+                    trap-focus
+                    @show="onShow"
+                    @hide="onHide"
+                    popper-class="popper-slide-small"
+                    class="absolute top-2 right-2"
+                >
+                    <button
+                        type="button"
+                        class="p-2 text-xl md:text-2xl dark:text-white/80 cursor-pointer flex transition-all duration-600 rounded-full bg-black/40 hover:bg-black/80 text-white/80 hover:text-white/90"
+                        :class="{ 'bg-black/80 text-white/90 dark:text-gray-500': isOpen }"
+                        v-tooltip="{
+                            content: 'Room actions',
+                            container: 'body'
+                        }"
+                    >
+                        <span class="material-symbols-outlined">
+                            more_vert
+                        </span>
+                    </button>
+                    <template #popper>
+                        <base-popover-content>
+                            <template #desc>
+                                <ul class="space-y-2">
+                                    <li>
+                                        <button
+                                            type="button"
+                                            class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
+                                            @click="editRoom"
+                                            v-close-popper
+                                        >
+                                            <span class="material-symbols-outlined text-xl">
+                                                edit
+                                            </span>
+                                            <span>
+                                                Edit room
+                                            </span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            type="button"
+                                            class="flex gap-2 items-center text-base text-gray-500 hover:text-red-500 dark:text-red-900 600 cursor-pointer flex transition-all duration-600 p-2"
+                                            @click="deleteRoom"
+                                        >
+                                            <span class="material-symbols-outlined text-xl">
+                                                delete
+                                            </span>
+                                            <span>
+                                                Delete room
+                                            </span>
+                                        </button>
+
+                                    </li>
+                                </ul>
+                            </template>
+                        </base-popover-content>
+
+                    </template>
+                </v-dropdown>
             </div>
             <base-container>
-                <div class="lg:max-w-[500px] md:max-w-[400px] max-w-full mx-auto">
+                <div class="md:max-w-[500px] max-w-full mx-auto">
                     <div class="text-gray-400 dark:text-gray-500 text-sm mb-1">
                         Created on {{ formattedDate }}
                     </div>
@@ -119,11 +121,11 @@
                             <div class="group/card">
                                 <transition-group
                                     v-if="existPlants"
-                                    name="fade"
+                                    name="pop-list"
                                     tag="ul"
                                     class="space-y-4 mb-4"
                                 >
-                                    <base-plant-list-item
+                                    <plant-list-item
                                         v-for="plant in plants"
                                         :key="plant.id"
                                         :plant="plant"
@@ -133,24 +135,10 @@
                                     />
                                 </transition-group>
                                 <div class="text-center">
-                                    <base-button
-                                        type="button"
-                                        @click="uiStore.openModal('plant', { roomId: props.roomId })"
-                                        class="mb-2 py-1 px-1 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-2/5 md:w-auto"
-                                        :btn-full-width="false"
-                                        btn-style="notRoundedMd"
-                                        btn-size="custom"
-                                    >
-                                        <span class="material-symbols-outlined text-xl mr-1">
-                                            add
-                                        </span>
-                                        <span
-                                            class="transition-all duration-400 text-sm flex"
-                                            :class="existPlants ? 'md:w-0 group-hover/card:w-[42px] overflow-hidden' : 'w-[42px]'"
-                                        >
-                                            Plant
-                                        </span>
-                                    </base-button>
+                                    <add-plant-button
+                                        :room-id="props.roomId"
+                                        :exist-plants="!!existPlants"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -168,13 +156,12 @@ import { computed, ref } from "vue";
 import { format } from "date-fns";
 import { useRouter } from "vue-router";
 
-import BaseButton from "@/components/base/BaseButtons/BaseButton.vue";
 import BaseContainer from "@/components/base/BaseContainer.vue";
 import BaseLoader from '@/components/base/BaseLoader.vue';
-import BasePageTitle from '@/components/base/BasePageTitle.vue';
 import BasePopoverContent from '@/components/base/BasePopoverContent.vue';
-import BasePlantListItem from '@/components/features/plants/PlantListItem.vue';
 
+import AddPlantButton from '@/components/features/plants/AddPlantButton.vue';
+import PlantListItem from '@/components/features/plants/PlantListItem.vue';
 import TheModals from "@/components/TheModals.vue";
 
 import { useUIStore } from "@/stores/useUIStore";

@@ -7,97 +7,129 @@
             <transition name="fade">
                 <base-loader
                     v-if="isPending"
-                    position-type="absolute"
-                    class="bg-white/80 dark:bg-gray-900/80 z-1"
+                    position="absolute"
+                    :has-bg="true"
                 >
                     {{ loadingTitle }}
                 </base-loader>
+                <Alert
+                    v-else-if="error"
+                    variant="destructive"
+                    class="mb-6"
+                >
+                    <span class="material-symbols-outlined">
+                        error
+                    </span>
+                    <AlertDescription>
+                        {{ error }}
+                    </AlertDescription>
+                </Alert>
             </transition>
             <div>
                 <div>
                     <form
-                        @submit.prevent="submitForm"
+                        @submit.prevent="onSubmitForm"
                         novalidate
                     >
-                        <div class="space-y-4">
-                            <base-input-wrapper-authed
-                                field-label="Name"
-                                field-id="room-name"
-                                :errorText="formErrors.name"
+                        <FieldGroup>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="name"
                             >
-                                <base-input
-                                    input-id="room-name"
-                                    input-placeholder="Enter room name..."
-                                    :input-error="!!formErrors.name"
-                                    class="w-full"
-                                    v-model.trim="form.name"
-                                    @input="formErrors.name = null"
-                                />
-                            </base-input-wrapper-authed>
-
-                            <base-input-wrapper-authed
-                                field-label="Icon"
-                                field-id="room-icon"
-                                :errorText="formErrors.icon"
+                                <FormItem>
+                                    <FormLabel>
+                                        Name
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            placeholder="Enter room name..."
+                                            v-bind="componentField"
+                                            max-length="30"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="icon"
                             >
-                                <div class="grid grid-cols-4 gap-2">
-                                    <button
-                                        v-for="icon in roomsStore.roomIcons"
-                                        :key="icon.icon"
-                                        type="button"
-                                        @click="form.icon = icon.icon; formErrors.icon = null"
-                                        class="flex flex-col items-center justify-center p-2 rounded-lg border-2 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
-                                        :class="[
-                                            form.icon === icon.icon
-                                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-600'
-                                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400'
-                                        ]"
-                                    >
-                                        <span class="material-symbols-outlined text-2xl mb-1">
-                                            {{ icon.icon }}
-                                        </span>
-                                        <span class="text-xs text-center truncate w-full">
-                                            {{ icon.name }}
-                                        </span>
-                                    </button>
-                                </div>
-
-                            </base-input-wrapper-authed>
-
-                            <base-input-wrapper-authed
-                                field-label="Image"
-                                field-id="room-image"
+                                <FormItem>
+                                    <FormLabel>
+                                        Icon
+                                    </FormLabel>
+                                    <FormControl>
+                                        <div class="grid grid-cols-3 md:grid-cols-4 gap-2">
+                                            <base-button-select
+                                                v-for="icon in roomsStore.roomIcons"
+                                                :key="icon.icon"
+                                                :value="icon.icon"
+                                                :label="icon.label"
+                                                @click="componentField.onChange(icon.icon)"
+                                                :selected="componentField.modelValue === icon.icon"
+                                                :icon="icon"
+                                            />
+                                        </div>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="file"
                             >
-                                <base-upload-button
-                                    input-id="room-image"
-                                    :existing-image-src="existingImageSrc"
-                                    @send-file="handleFile"
-                                    @remove-file="handleRemoveFile"
-                                />
+                                <FormItem>
+                                    <FormLabel>
+                                        Image
+                                    </FormLabel>
+                                    <FormControl>
+                                        <base-upload-button
+                                            input-id="room-image"
+                                            :existing-image-src="existingImageSrc"
+                                            @send-file="(file) => {
+                                                handleFile(file);
+                                                componentField.onChange(file);
+                                            }"
+                                            @remove-file="(args) => {
+                                                handleRemoveFile(args);
+                                                componentField.onChange(null);
+                                            }"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
 
-                            </base-input-wrapper-authed>
-
-                            <base-input-wrapper-authed
-                                field-label="Description"
-                                field-id="room-description"
+                            <FormField
+                                v-slot="{ componentField }"
+                                name="desc"
                             >
-                                <base-textarea
-                                    textarea-id="room-description"
-                                    textarea-placeholder="Enter room description..."
-                                    v-model.trim="form.desc"
-                                />
-                            </base-input-wrapper-authed>
-                        </div>
+                                <FormItem>
+                                    <FormLabel>
+                                        Description
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            placeholder="Enter room description..."
+                                            class="resize-none"
+                                            v-bind="componentField"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            </FormField>
+                        </FieldGroup>
 
-                        <base-button
-                            class="mt-8"
+                        <Button
+                            class="mt-8 w-full"
                             :class="{ 'animate-pulse': isPending }"
-                            btn-style="notRoundedMd"
-                            btn-size="base"
+                            size="lg"
+                            variant="hover-outline"
                             :disabled="isPending"
                         >
                             {{ buttonLabel }}
-                        </base-button>
+                        </Button>
 
                     </form>
                 </div>
@@ -109,13 +141,36 @@
 <script setup>
 import { computed, ref, watch, watchEffect } from 'vue';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
-import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
-import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
-import BaseTextarea from '@/components/base/BaseForm/BaseTextarea.vue';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useForm } from 'vee-validate';
+import * as z from 'zod';
+
+import BaseButtonSelect from '@/components/base/BaseForm/BaseButtonSelect.vue';
 import BaseUploadButton from '@/components/base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
+
+import { Button } from '@/components/ui/button';
+
+import {
+    FieldGroup
+} from '@/components/ui/field';
+
+import {
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage
+} from '@/components/ui/form';
+
+import {
+    Alert,
+    AlertDescription
+} from '@/components/ui/alert';
+
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useRoomsStore } from '@/stores/useRoomsStore';
@@ -161,6 +216,7 @@ const {
     updateData,
 } = useUpdateData()
 
+
 let errorRoom, isPendingRoom, detailsRoom
 
 if (localRoomId) {
@@ -175,16 +231,8 @@ if (localRoomId) {
     detailsRoom = ref(null)
 }
 
-// const error = computed(() => errorSendData.value || errorUpload.value)
+const error = computed(() => errorSendData.value || errorUpload.value || errorUpdate.value)
 const isPending = computed(() => isPendingRoom.value || isPendingSendData.value || isPendingUpload.value || isPendingUpdate.value)
-
-const form = ref({
-    name: '',
-    icon: '',
-    file: null,
-    // color: color,
-    desc: ''
-})
 
 const existingImageSrc = ref('')
 
@@ -196,12 +244,9 @@ let originalData = {}
 
 const handleFile = (file) => {
     existingImageSrc.value = null
-    form.value.file = file;
 }
 
 const handleRemoveFile = ({ toDefault }) => {
-    form.value.file = null;
-
     console.log('toDefault', toDefault)
 
     if (!toDefault) {
@@ -214,11 +259,33 @@ const handleRemoveFile = ({ toDefault }) => {
     }
 }
 
+const formSchema = toTypedSchema(z.object({
+    name: z.string()
+        .min(1, { message: 'Name is required.' }),
+    icon: z.string()
+        .min(1, { message: 'Icon is required.' }),
+    desc: z.string().optional(),
+    file: z.any().optional(),
+}))
+
+const { handleSubmit, setValues, resetForm } = useForm({
+    validationSchema: formSchema,
+    initialValues: {
+        name: '',
+        icon: '',
+        desc: '',
+    },
+})
+
 watch(detailsRoom, (newVal) => {
     if (newVal) {
-        form.value.name = newVal.name || '';
-        form.value.icon = newVal.icon || '';
-        form.value.desc = newVal.desc || '';
+        setValues({
+            name: newVal.name || '',
+            icon: newVal.icon || '',
+            desc: newVal.desc || ''
+        })
+
+
         existingImageSrc.value = newVal.imgSrc
 
         if (!isInitialImageUrlSet) {
@@ -250,28 +317,11 @@ const buttonLabel = computed(() => {
     }
 })
 
-const formErrors = ref({})
 
-const validateForm = () => {
-    formErrors.value = {}
-
-    if (!form.value.name) {
-        formErrors.value.name = 'Room name cannot be empty'
-    }
-
-    if (!form.value.icon) {
-        formErrors.value.icon = 'Room icon has to be selected'
-    }
-
-    return Object.keys(formErrors.value).length === 0
-}
 
 const clearForm = () => {
-    form.value.name = ''
-    form.value.icon = ''
-    form.value.imgSrc = ''
-    // form.value.color = color
-    form.value.desc = ''
+    resetForm()
+    existingImageSrc.value = ''
 }
 
 const emit = defineEmits(['close-modal', 'is-pending'])
@@ -282,19 +332,18 @@ watchEffect(() => {
 
 const scrollStore = useScrollStore()
 
-const submitForm = async () => {
-    if (!validateForm()) return;
 
+const onSubmitForm = handleSubmit(async (values) => {
     let log = []
 
     const data = {
-        name: form.value.name,
-        icon: form.value.icon,
+        name: values.name,
+        icon: values.icon,
         // color: form.value.color,
-        desc: form.value.desc,
+        desc: values.desc,
     }
 
-    if (localRoomId && !form.value.file && !existingImageSrc.value && oldImageUrl) {
+    if (localRoomId && !values.file && !existingImageSrc.value && oldImageUrl) {
         data.imgSrc = null;
 
         addLog(log, 'image', oldImageUrl, null)
@@ -307,8 +356,8 @@ const submitForm = async () => {
         addLog(log, 'image', oldImageUrl, existingImageSrc.value)
     }
 
-    if (form.value.file) {
-        const resizedFile = await resizeImageBitmap(form.value.file)
+    if (values.file) {
+        const resizedFile = await resizeImageBitmap(values.file)
 
         const uploadSuccess = await uploadImage('rooms', authStore.user, resizedFile)
 
@@ -341,8 +390,6 @@ const submitForm = async () => {
         success = await updateData(data, `rooms/${localRoomId}`)
     }
 
-
-
     if (!!success) {
         if (oldImageUrl !== existingImageSrc.value) {
             await deleteImageByUrl(oldImageUrl)
@@ -361,7 +408,7 @@ const submitForm = async () => {
         uiStore.closeModal()
         emit('close-modal', false)
     }
-}
+})
 </script>
 
 <style lang="scss" scoped>

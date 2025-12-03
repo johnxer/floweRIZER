@@ -1,13 +1,5 @@
 <template>
-    <the-header
-        v-if="isAuthed"
-        :project-title="projectName"
-    />
-    <the-logo-circle
-        v-else-if="!isAuthed && !isNotFound"
-        :project-title="projectName"
-        class="pt-8"
-    />
+    <the-header v-if="isAuthed" />
     <router-view v-slot="{ Component }">
         <transition
             name="fade"
@@ -21,10 +13,6 @@
         v-if="isAuthed"
         :is-chat-open="isChatOpen"
     />
-    <sidebar-menu
-        v-if="isAuthed && mobileStore.isMobile"
-        @toggle-chat="toggleChat"
-    />
 </template>
 
 <script setup>
@@ -32,26 +20,19 @@
 
 
 import TheChat from './components/features/chat/TheChat.vue';
-import SidebarMenu from './components/layout/SidebarMenu.vue';
 import TheHeader from './components/layout/TheHeader.vue';
-import TheLogoCircle from './components/layout/TheLogoCircle.vue';
 
 import { computed, ref, watchEffect } from 'vue';
 
 import { useRoute } from 'vue-router';
 
 import { useAuthStore } from './stores/useAuthStore';
-import { useMobileStore } from './stores/useMobileStore.js';
 
 import { generateOklchShades } from './utils';
 
 const authStore = useAuthStore();
 
-const mobileStore = useMobileStore()
-
 const isAuthed = computed(() => !!authStore.user)
-
-const projectName = import.meta.env.VITE_PROJECT_NAME
 
 const route = useRoute();
 
@@ -70,12 +51,6 @@ watchEffect(() => {
 })
 
 const isChatOpen = ref(false)
-
-const toggleChat = () => {
-    isChatOpen.value = !isChatOpen.value
-}
-
-const isNotFound = computed(() => route.name === 'NotFound')
 
 </script>
 

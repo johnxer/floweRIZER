@@ -1,6 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
-import path from 'path';
+import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -12,7 +12,7 @@ export default defineConfig({
                     'vendor-vue': ['vue', 'vue-router', 'pinia'],
                     'vendor-firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
                     'vendor-ui': ['@headlessui/vue', 'floating-vue', 'sortablejs', 'vuedraggable'],
-                    'vendor-utils': ['date-fns', 'uuid'],
+                    'vendor-utils': ['date-fns'],
                     'vendor-ai': ['@google/genai'],
                 },
             },
@@ -20,7 +20,8 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src'),
+            // '@': path.resolve(__dirname, 'src'),
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
     },
 });

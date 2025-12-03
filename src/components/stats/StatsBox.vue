@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-xl p-2 md:p-4 bg-white dark:bg-gray-900 shadow-box">
+    <div class="rounded-xl p-2 md:p-4 bg-white dark:bg-card shadow-box">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-x-6 mad:gap-y-0 items-start">
             <stats-box-item
                 icon="home"

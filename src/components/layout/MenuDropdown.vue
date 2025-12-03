@@ -5,7 +5,7 @@
         @show="onShow"
         @hide="onHide"
     >
-        <button class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600">
+        <button class="relative transition-colors duration-600 flex p-2 cursor-pointer text-gray-400 dark:text-neutral-600 hover:dark:text-primary-600">
             <transition
                 name="icon-transform"
                 mode="out-in"
@@ -29,10 +29,31 @@
         <template #popper>
             <div class="text-base max-w-[300px] font-normal p-6">
                 <ul class="space-y-3">
-                    <menu-content />
+                    <base-menu-link
+                        link-destination="TheDashboard"
+                        link-icon="potted_plant"
+                        link-title="Dashboard"
+                        v-close-popper="true"
+                        class="w-1/3 md:w-full"
+                    />
+                    <base-menu-link
+                        link-destination="Account"
+                        link-icon="face"
+                        link-title="Profile"
+                        v-close-popper="true"
+                        :is-profile="true"
+                        class="w-1/3 md:w-full order-3 md:order-2"
+                    />
+                    <base-menu-link
+                        link-destination="AboutProject"
+                        link-icon="favorite"
+                        link-title="About"
+                        v-close-popper="true"
+                        class="w-1/3 md:w-full order-3 md:order-2"
+                    />
                     <li>
                         <button
-                            class="text-gray-600 hover:text-red-500 cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center"
+                            class="text-foreground hover:text-destructive cursor-pointer transition-colors duration-600 py-2 flex gap-2 items-center"
                             v-close-popper="true"
                             @click="handleLogout"
                         >
@@ -50,27 +71,32 @@
 
 <script setup>
 
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import { useRouter } from 'vue-router'
+import BaseMenuLink from '@/components/base/BaseMenuLink.vue';
 
-import { useAuth } from '@/composables'
+import { useAuthActions } from '@/composables';
 
-import MenuContent from './MenuContent.vue'
+import { useMobileStore } from '@/stores/useMobileStore';
 
 const isOpen = ref(false)
-const router = useRouter()
 
+defineProps({
+    isChatActive: {
+        type: Boolean,
+        required: false
+    }
+})
+
+const {
+    isMobile
+} = useMobileStore()
 const onShow = () => (isOpen.value = true)
 const onHide = () => (isOpen.value = false)
 
 
-const { logOutUser } = useAuth()
+const { handleLogout } = useAuthActions()
 
-const handleLogout = async () => {
-    await logOutUser()
-    router.push({name: 'NotAuthed'})
-}
 
 
 </script>

@@ -5,7 +5,7 @@
     >
         <button
             class="relative transition-colors duration-600 flex p-2"
-            :class="hasNotifications ? 'cursor-pointer text-gray-400 dark:text-gray-600 hover:dark:text-primary-600' : 'cursor-default text-gray-200 dark:text-gray-800'"
+            :class="hasNotifications ? 'cursor-pointer text-gray-400 dark:text-neutral-600 hover:dark:text-primary-600' : 'cursor-default text-gray-200 dark:text-gray-800'"
             :disabled="!hasNotifications"
         >
             <span class="material-symbols-outlined text-2xl relative">
@@ -37,7 +37,7 @@
                             </span>
                             <div
                                 v-html="notification.action"
-                                class="text-gray-600 dark:text-gray-500"
+                                class="text-foreground"
                             />
                         </div>
                         <div class="text-end flex justify-end gap-6">
@@ -45,7 +45,7 @@
                                 type="button"
                                 class="mt-2 cursor-pointer transition-all duration-600 text-primary-500 hover:text-primary-700 dark:hover:text-primary-700 inline-flex align-top items-center gap-1"
                                 @click="handleWatering(notification.id)"
-                                v-close-popper="isLastNotification || !isDashboard"
+                                v-close-popper="isLastNotification || !isDashboard || mobileStore.isMobile"
                             >
                                 <span class="material-symbols-outlined text-lg">
                                     humidity_high
@@ -71,11 +71,14 @@ import { useGetDataByUserId } from '@/composables';
 
 import { useScrollStore } from '@/stores/useScrollStore';
 
+import { useMobileStore } from '@/stores/useMobileStore';
+import { addDelay } from '@/utils';
 import { useRoute, useRouter } from 'vue-router';
-import { addDelay } from '../../utils';
 
 const route = useRoute()
 const router = useRouter()
+
+const mobileStore = useMobileStore()
 
 const {
     error,

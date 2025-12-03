@@ -1,7 +1,7 @@
 <template>
     <div>
         <base-floating-button
-            class="bottom-6 text-2xl hidden md:flex"
+            class="bottom-6 text-2xl flex"
             @click="toggleChat"
             :class="{ 'hover:scale-110': !showChat }"
             :tooltip-content="tooltipContentText"

@@ -6,12 +6,12 @@ const plantSchema = {
 
     properties: {
         name: { type: 'string' },
-        description: { type: 'string' },
+        desc: { type: 'string' },
         wateringFrequency: { type: 'number' },
         lightRequirements: { type: 'string' },
         isToxic: { type: 'boolean' },
     },
-    required: ['name', 'description', 'wateringFrequency', 'lightRequirements', 'isToxic'],
+    required: ['name', 'desc', 'wateringFrequency', 'lightRequirements', 'isToxic'],
 };
 
 export const useRecognizePlant = () => {
@@ -46,17 +46,26 @@ export const useRecognizePlant = () => {
                 apiKey: API_KEY,
             });
 
-            const prompt = `Identify this plant and return ONLY a valid JSON object with this exact structure:
+            const prompt = `Analyze the provided image.
+1. STRICTLY check if the main subject of the image is a real plant.
+2. If the image contains a person, animal, artificial object, or if it is ambiguous and NOT clearly a plant, you MUST return:
 {
-  "name": "common plant name",
-  "desc": "brief 2-3 sentence description",
-  "wateringFrequency": 7,
-  "lightRequirements": "low|medium|high",
-  "isToxic": true or false
+  "name": "No plant identified",
+  "desc": "The image does not appear to contain a plant.",
+  "wateringFrequency": 0,
+  "lightRequirements": "low",
+  "isToxic": false
+}
+3. If it IS a plant, identify it and return:
+{
+  "name": "Common Plant Name",
+  "desc": "Brief 2-3 sentence description.",
+  "wateringFrequency": <number of days>,
+  "lightRequirements": "low" | "medium" | "high",
+  "isToxic": <boolean>
 }
 
 IMPORTANT: Return ONLY the JSON object, no markdown, no additional text, no explanations.`;
-
             const result = await client.models.generateContent({
                 model: MODEL_NAME,
                 contents: [
@@ -94,6 +103,10 @@ IMPORTANT: Return ONLY the JSON object, no markdown, no additional text, no expl
 
             if (!parsedJson || !parsedJson.name) {
                 throw new Error('Invalid response format from Gemini');
+            }
+
+            if (parsedJson.name === 'No plant identified') {
+                throw new Error('No plant identified in the image. Please try another photo.');
             }
 
             return parsedJson;

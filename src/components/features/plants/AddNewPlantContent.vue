@@ -5,183 +5,277 @@
             {{ modalTitle }}
         </template>
         <div class="relative">
-            <transition name="fade">
+            <transition
+                name="fade"
+                mode="out-in"
+            >
                 <base-loader
                     v-if="isPending"
-                    position-type="absolute"
+                    position="absolute"
                     class="bg-white/80 dark:bg-gray-900/80 z-1"
                 >
                     {{ !isPendingRecognizePlant ? loadingTitle : 'Recognizing plant...' }}
                 </base-loader>
-                <base-form-message-box
+                <Alert
                     v-else-if="error"
-                    :message-type="'error'"
+                    variant="destructive"
+                    class="mb-6"
                 >
-                    {{ error }}
-                </base-form-message-box>
+                    <span class="material-symbols-outlined">
+                        error
+                    </span>
+                    <AlertDescription>
+                        {{ error }}
+                    </AlertDescription>
+                </Alert>
             </transition>
             <form
-                @submit.prevent="submitForm"
+                @submit.prevent="onSubmitForm"
                 novalidate
             >
-                <div class="space-y-4">
-                    <base-input-wrapper-authed
-                        field-label="Image"
-                        field-id="plant-image"
+                <FieldGroup>
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="file"
                     >
-                        <base-upload-button
-                            input-id="plant-image"
-                            :existing-image-src="existingImageSrc"
-                            @send-file="handleFile"
-                            @remove-file="handleRemoveFile"
-                        />
-                    </base-input-wrapper-authed>
+                        <FormItem>
+                            <FormLabel>
+                                Image
+                            </FormLabel>
+                            <FormControl>
+                                <base-upload-button
+                                    input-id="plant-image"
+                                    :existing-image-src="existingImageSrc"
+                                    @send-file="(file) => {
+                                        handleFile(file);
+                                        componentField.onChange(file);
+                                    }"
+                                    @remove-file="(args) => {
+                                        handleRemoveFile(args);
+                                        componentField.onChange(null);
+                                    }"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
+
                     <transition name="fade">
                         <div
                             v-if="isAISuggestionBoxShown"
                             class="border-2 border-primary-500 rounded-xl p-4 md:flex md:gap-4 md:items-center md:justify-between"
                         >
                             <div class="flex gap-2 items-center mb-4 md:mb-0">
-                                <span class="material-symbols-outlined text-3xl text-gray-500">
+                                <span class="material-symbols-outlined text-3xl text-gray-500 dark:text-neutral-500 w-8">
                                     smart_toy
                                 </span>
-                                <p class="text-gray-500 leading-4">
-                                    Use AI to fill the fields for you?<br />
-                                    <small class="text-gray-400">(Existing data will be replaced)</small>
+                                <p class="text-gray-500 dark:text-neutral-500 leading-5">
+                                    Use AI to fill the fields?<br />
+                                    <small class="text-gray-400 dark:text-neutral-600">(Existing data will be replaced)</small>
                                 </p>
                             </div>
-                            <div class="flex gap-2 justify-center md:justify-end">
-                                <base-button
+                            <div class="grid grid-cols-2 md:flex gap-4 justify-center md:justify-end pl-10 md:pl-0">
+                                <Button
                                     v-tooltip="{
                                         content: 'The information may not be accurate. Use at your own risk.',
                                         container: 'body',
                                     }"
                                     type="button"
-                                    btn-style="notRoundedMd"
-                                    btn-size="sm"
-                                    :btn-full-width="false"
-                                    class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
+                                    variant="hover-outline"
+                                    size="sm"
                                     @click="handleRecognizePlant"
                                 >
                                     <span class="material-symbols-outlined text-lg">
                                         done
                                     </span>
                                     Yes
-                                </base-button>
-                                <base-button
+                                </Button>
+                                <Button
                                     type="button"
-                                    btn-style="notRoundedMd"
-                                    btn-size="sm"
-                                    btn-color="neutralAlt"
-                                    :btn-full-width="false"
+                                    variant="outline"
+                                    size="sm"
                                     class="inline-flex align-top gap-1 items-center min-w-[70px] justify-center"
+                                    @click="isAISuggestionBoxShown = false"
                                 >
                                     <span class="material-symbols-outlined text-lg">
                                         close
                                     </span>
                                     No
-                                </base-button>
+                                </Button>
                             </div>
                         </div>
                     </transition>
-                    <base-input-wrapper-authed
-                        field-label="Name"
-                        field-id="plant-name"
-                        :errorText="formErrors.name"
-                    >
-                        <base-input
-                            input-id="plant-name"
-                            input-placeholder="Enter plant name..."
-                            class="w-full"
-                            :input-error="formErrors.name"
-                            v-model.trim="form.name"
-                            @input="formErrors.name = null"
-                        />
-                    </base-input-wrapper-authed>
-                    <base-input-wrapper-authed
-                        field-label="Description"
-                        field-id="plant-description"
-                    >
-                        <base-textarea
-                            textarea-id="plant-description"
-                            textarea-placeholder="Enter plant description..."
-                            v-model.trim="form.desc"
-                        />
-                    </base-input-wrapper-authed>
-                    <base-input-wrapper-authed
-                        field-id="plant-watering"
-                        :errorText="formErrors.watering"
-                    >
-                        <div class="flex gap-2 items-center text-gray-500">
-                            Needs water every
-                            <base-input
-                                input-type="number"
-                                input-id="plant-watering"
-                                input-placeholder="..."
-                                class="w-[80px]"
-                                v-model.trim="form.watering"
-                                :error="!!formErrors.watering"
-                                @input="formErrors.watering = null"
-                                min="1"
-                            />
-                            days
-                        </div>
-                    </base-input-wrapper-authed>
-                    <base-input-wrapper-authed
-                        v-if="!localPlantId"
-                        field-id="plant-wateredNow"
-                        :errorText="formErrors.wateredNow"
-                    >
-                        <div class="flex gap-2 items-center text-gray-500">
-                            <label class="inline-flex items-center cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    id="plant-wateredNow"
-                                    v-model="form.wateredNow"
-                                    @input="formErrors.wateredNow = null"
-                                    value="true"
-                                    class="sr-only peer"
-                                >
-                                <div class="relative w-10 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full after:absolute after:top-[4px] after:start-[4px] after:bg-white dark:after:bg-gray-900 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary dark:peer-checked:bg-primary-800"></div>
-                                <span class="ms-3">
-                                    I've watered the plant today
-                                </span>
-                            </label>
 
-                        </div>
-                    </base-input-wrapper-authed>
-                </div>
-                <base-button
-                    class="mt-8"
-                    :class="{ 'animate-pulse': isPending }"
-                    btn-style="notRoundedMd"
-                    btn-size="base"
-                    :disabled="isPending"
-                >
-                    {{ buttonLabel }}
-                </base-button>
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="name"
+                    >
+                        <FormItem>
+                            <FormLabel>
+                                Name
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    type="text"
+                                    placeholder="Enter plant name..."
+                                    v-bind="componentField"
+                                    max-length="30"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
+
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="desc"
+                    >
+                        <FormItem>
+                            <FormLabel>
+                                Description
+                            </FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Enter plant description..."
+                                    class="resize-none"
+                                    v-bind="componentField"
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="lightRequirements"
+                    >
+                        <FormItem>
+                            <FormLabel>
+                                Light requirements
+                            </FormLabel>
+                            <FormControl>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <base-button-select
+                                        v-for="icon in plantsStore.lightIcons"
+                                        :key="icon.icon"
+                                        :value="icon.icon"
+                                        :label="icon.label"
+                                        @click="componentField.onChange(icon.label.toLowerCase())"
+                                        :selected="componentField.modelValue === icon.label.toLowerCase()"
+                                        :icon="icon"
+                                    />
+                                </div>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
+                    <FormField
+                        v-slot="{ componentField }"
+                        name="watering"
+                    >
+                        <FormItem>
+                            <FormControl>
+                                <FormLabel class="flex gap-2 items-center">
+                                    Needs water every
+                                    <Input
+                                        type="number"
+                                        placeholder="..."
+                                        v-bind="componentField"
+                                        max-length="3"
+                                        class="w-[80px]"
+                                        min="1"
+                                    />
+                                    days
+                                </FormLabel>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
+
+                    <div
+                        v-if="!localPlantId"
+                        class="bg-gray-50 dark:bg-neutral-800/20 p-4 rounded-xl"
+                    >
+                        <FormField
+                            v-slot="{ value, handleChange }"
+                            name="wateredNow"
+                        >
+                            <FormItem>
+                                <FormControl>
+                                    <FormLabel class="flex gap-2 items-center">
+                                        <Switch
+                                            id="plant-wateredNow"
+                                            :model-value="value"
+                                            @update:model-value="handleChange"
+                                        />
+                                        <span class="ms-3">
+                                            I've watered the plant today
+                                        </span>
+                                    </FormLabel>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
+                    </div>
+                    <Button
+                        class="w-full"
+                        :class="{ 'animate-pulse': isPending }"
+                        size="lg"
+                        variant="hover-outline"
+                        :disabled="isPending"
+                    >
+                        {{ buttonLabel }}
+                    </Button>
+                </FieldGroup>
+
+
             </form>
         </div>
     </base-modal-content>
 </template>
 
 <script setup>
-
 import { computed, ref, watch, watchEffect } from 'vue';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
-import BaseFormMessageBox from '@/components/base/BaseForm/BaseFormMessageBox.vue';
-import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
-import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
-import BaseTextarea from '@/components/base/BaseForm/BaseTextarea.vue';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useForm } from 'vee-validate';
+import * as z from 'zod';
+
+import BaseButtonSelect from '@/components/base/BaseForm/BaseButtonSelect.vue';
 import BaseUploadButton from '@/components/base/BaseForm/BaseUploadButton.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
+import { Button } from '@/components/ui/button';
+
+import { Switch } from '@/components/ui/switch';
+
+import {
+    FieldGroup
+} from '@/components/ui/field';
+
+import {
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage
+} from '@/components/ui/form';
+
+import {
+    Alert,
+    AlertDescription
+} from '@/components/ui/alert';
+
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+
 import { useGetDetails, useRecognizePlant, useSendData, useStorage, useUpdateData } from '@/composables';
+
 import { useAuthStore } from '@/stores/useAuthStore';
+import { usePlantsStore } from '@/stores/usePlantsStore';
 import { useScrollStore } from '@/stores/useScrollStore';
 import { useUIStore } from '@/stores/useUIStore';
+
 import { addLog, resizeImageBitmap } from '@/utils';
 import { getBlob, getStorage, ref as storageRef } from "firebase/storage";
 
@@ -199,6 +293,7 @@ const props = defineProps({
 
 const authStore = useAuthStore()
 const uiStore = useUIStore()
+const plantsStore = usePlantsStore()
 const scrollStore = useScrollStore()
 
 const localPlantId = props.plantId
@@ -241,14 +336,6 @@ const {
 const error = computed(() => errorSendData.value || errorUpload.value || errorPlant.value || errorRecognizePlant.value)
 const isPending = computed(() => isPendingSendData.value || isPendingUpload.value || isPendingUpdate.value || isPendingRecognizePlant.value)
 
-const form = ref({
-    name: '',
-    desc: '',
-    file: null,
-    watering: 3,
-    ...(!localPlantId && { wateredNow: false })
-})
-
 const existingImageSrc = ref('')
 
 let oldImageUrl = null;
@@ -261,13 +348,10 @@ const isAISuggestionBoxShown = ref(false)
 
 const handleFile = (file) => {
     existingImageSrc.value = null
-    form.value.file = file;
     isAISuggestionBoxShown.value = true
 }
 
 const handleRemoveFile = ({ toDefault }) => {
-    form.value.file = null;
-
 
     if (!toDefault) {
         isAISuggestionBoxShown.value = false
@@ -282,12 +366,41 @@ const handleRemoveFile = ({ toDefault }) => {
     }
 }
 
+const formSchema = toTypedSchema(z.object({
+    name: z.string()
+        .min(1, { message: 'Name is required.' }),
+    desc: z.string().optional(),
+    watering: z.number()
+        .min(1, { message: 'Watering frequency is required.' })
+        .max(365, { message: 'Watering frequency is too high.' }),
+    file: z.any().optional(),
+    lightRequirements: z.string().optional(),
+    wateredNow: z.boolean().optional(),
+}))
+
+const { handleSubmit, setValues, resetForm, values } = useForm({
+    validationSchema: formSchema,
+    initialValues: {
+        name: '',
+        desc: '',
+        watering: 3,
+        file: null,
+        wateredNow: false,
+        lightRequirements: '',
+    },
+})
+
+
+
 watch(detailsPlant, (newVal) => {
     if (newVal) {
-        form.value.name = newVal.name || '';
-        form.value.desc = newVal.desc || '';
-        form.value.watering = newVal.wateringFrequency || 3;
-        form.value.wateredNow = newVal.wateredNow || false;
+        setValues({
+            name: newVal.name || '',
+            desc: newVal.desc || '',
+            watering: newVal.wateringFrequency || 3,
+            wateredNow: newVal.wateredNow || false,
+            lightRequirements: newVal.lightRequirements || '',
+        });
         existingImageSrc.value = newVal.imgSrc
 
         if (newVal.imgSrc) {
@@ -303,7 +416,9 @@ watch(detailsPlant, (newVal) => {
             originalData = {
                 name: newVal.name,
                 imageSrc: newVal.imgSrc,
-                desc: newVal.desc
+                desc: newVal.desc,
+                watering: newVal.watering,
+                lightRequirements: newVal.lightRequirements,
             }
 
             areOriginalFieldsLoaded = true;
@@ -313,24 +428,8 @@ watch(detailsPlant, (newVal) => {
 
 const formErrors = ref({})
 
-const validateForm = () => {
-    formErrors.value = {}
-
-    if (!form.value.name) {
-        formErrors.value.name = "Plant's name cannot be empty"
-    }
-
-    if (!form.value.watering || form.value.watering === 0) {
-        formErrors.value.watering = "Watrering frequency cannot be empty or 0 days"
-    }
-
-    return Object.keys(formErrors.value).length === 0
-}
-
 const clearForm = () => {
-    form.value.name = ''
-    form.value.file = null
-    form.value.desc = ''
+    resetForm()
 }
 
 const emit = defineEmits(['close-modal', 'is-pending'])
@@ -339,12 +438,11 @@ watchEffect(() => {
     emit('is-pending', isPending.value)
 })
 
-const submitForm = async () => {
-    if (!validateForm()) return
+const onSubmitForm = handleSubmit(async (values) => {
 
     let log = []
 
-    if (form.value.wateredNow) {
+    if (values.wateredNow) {
         log = [
             {
                 id: crypto.randomUUID(),
@@ -355,13 +453,16 @@ const submitForm = async () => {
     }
 
     const data = {
-        name: form.value.name,
-        desc: form.value.desc,
-        wateringFrequency: form.value.watering,
-        ...(!localPlantId && { wateredNow: !!form.value.wateredNow })
+        name: values.name,
+        desc: values.desc,
+        wateringFrequency: values.watering,
+        lightRequirements: values.lightRequirements || null,
+        ...(!localPlantId && { wateredNow: values.wateredNow })
     }
 
-    if (localPlantId && !form.value.file && !existingImageSrc.value && oldImageUrl) {
+    console.log(data)
+
+    if (localPlantId && !values.file && !existingImageSrc.value && oldImageUrl) {
         data.imgSrc = null;
 
         addLog(log, 'image', oldImageUrl, null)
@@ -371,10 +472,12 @@ const submitForm = async () => {
         addLog(log, 'name', originalData.name, data.name)
         addLog(log, 'image', originalData.imgSrc, data.imgSrc)
         addLog(log, 'description', originalData.desc, data.desc)
+        addLog(log, 'watering', originalData.watering, data.watering)
+        addLog(log, 'light requirements', originalData.lightRequirements, data.lightRequirements)
     }
 
-    if (form.value.file) {
-        const resizedFile = await resizeImageBitmap(form.value.file, 400, 400)
+    if (values.file) {
+        const resizedFile = await resizeImageBitmap(values.file, 400, 400)
 
         const uploadSuccess = await uploadImage('plants', authStore.user, resizedFile)
 
@@ -423,7 +526,7 @@ const submitForm = async () => {
         uiStore.closeModal()
         emit('close-modal', false)
     }
-}
+})
 
 const modalTitle = computed(() => `${localPlantId ? 'Edit' : 'Add'} plant`)
 
@@ -443,7 +546,7 @@ const extractStoragePath = (downloadUrl) => {
 };
 
 const handleRecognizePlant = async () => {
-    let fileToProcess = form.value.file;
+    let fileToProcess = values.file;
 
     if (!fileToProcess && existingImageSrc.value) {
         try {
@@ -463,13 +566,22 @@ const handleRecognizePlant = async () => {
 
     if (!fileToProcess) return;
 
-    const data = await identifyPlantWithGemini(fileToProcess, 'image/jpeg');
-    if (!data) return;
+    try {
+        const data = await identifyPlantWithGemini(fileToProcess, 'image/jpeg');
+        if (!data) return;
 
-    form.value.name = data.name;
-    form.value.desc = data.desc;
-    form.value.watering = data.wateringFrequency;
-    isAISuggestionBoxShown.value = false;
+        console.log('ai data', data)
+
+        setValues({
+            name: data.name,
+            desc: data.desc,
+            watering: data.wateringFrequency,
+            lightRequirements: data.lightRequirements,
+        });
+        isAISuggestionBoxShown.value = false;
+    } catch (e) {
+        console.error('Plant recognition failed:', e);
+    }
 };
 
 </script>

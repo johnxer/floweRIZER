@@ -10,23 +10,30 @@
                     mode="out-in"
                 >
                     <base-loader
-                        v-if="isPending || isPendingDelete"
-                        position-type="static"
+                        v-if="isPending"
+                        position="static"
                     >
-
                         Deleting user...
                     </base-loader>
                     <div
                         v-else
-                        class="text-gray-600 dark:text-gray-500"
+                        class="text-foreground"
                     >
-                        <base-form-message-box
-                            v-if="error"
-                            message-type="error"
+                        <transition
+                            name="fade"
+                            mode="out-in"
                         >
-                            {{ error || errorDelete }}
-                        </base-form-message-box>
-
+                            <Alert
+                                v-if="error"
+                                variant="destructive"
+                                class="mb-6"
+                            >
+                                <span class="material-symbols-outlined">
+                                    error
+                                </span>
+                                <AlertDescription>{{ error }}</AlertDescription>
+                            </Alert>
+                        </transition>
                         <p class="mb-2">
                             Once your account is deleted, all your personal data, preferences, and saved items will be permanently removed.
                         </p>
@@ -39,66 +46,60 @@
                         >
                             <div
                                 v-if="showPwForm"
-                                class="mt-6 rounded-xl bg-gray-100 p-4"
+                                class="mt-6 rounded-xl bg-gray-50 dark:bg-neutral-800/20 p-4"
                             >
                                 <p class="mb-2">
                                     Please enter your password to confirm deletion.
                                 </p>
                                 <form
-                                    @submit.prevent="submitForm()"
+                                    @submit.prevent="onSubmitForm"
                                     novalidate
-                                    class="grid grid-cols-1 md:grid-cols-[60%_1fr] gap-4 items-start"
                                 >
-                                    <base-input-wrapper-authed
-                                        field-id="password"
-                                        :errorText="formErrors.password"
-                                    >
-                                        <base-input
-                                            input-type="password"
-                                            input-id="password"
-                                            input-placeholder="Enter password..."
-                                            :input-error="!!formErrors.password"
-                                            class="w-full"
-                                            v-model.trim="form.password"
-                                            @click="formErrors.password = null"
-                                        />
-                                    </base-input-wrapper-authed>
-                                    <base-button
-                                        btn-style="notRoundedMd"
-                                        btn-size="base"
-                                        btn-color="danger"
-                                        :btn-full-width="false"
-                                        class="min-w-1/2"
-                                        @click="handleDeleteUser"
-                                    >
-                                        Delete account
-                                    </base-button>
+                                    <FieldGroup class="grid grid-cols-1 md:grid-cols-[60%_1fr] gap-4 items-start">
+                                        <FormField
+                                            v-slot="{ componentField }"
+                                            name="password"
+                                        >
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input
+                                                        type="password"
+                                                        placeholder="Enter password..."
+                                                        v-bind="componentField"
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        </FormField>
+
+                                        <Button
+                                            variant="destructive"
+                                            class="min-w-1/2"
+                                            @click="handleDeleteUser"
+                                        >
+                                            Delete account
+                                        </Button>
+                                    </FieldGroup>
                                 </form>
                             </div>
                             <div
-                                class="mt-6 flex justify-between"
+                                class="mt-6 flex flex-col md:flex-row justify-between gap-4"
                                 v-else
                             >
-                                <base-button
-                                    btn-style="notRoundedMd"
-                                    btn-size="base"
-                                    btn-color="neutralAlt"
-                                    :btn-full-width="false"
-                                    class="min-w-1/3"
+                                <Button
+                                    class="min-w-1/3 order-2 md:order-1"
+                                    variant="outline"
                                     @click="handleCloseModal"
                                 >
                                     Keep my account
-                                </base-button>
-                                <base-button
-                                    btn-style="notRoundedMd"
-                                    btn-size="base"
-                                    btn-color="danger"
-                                    :btn-full-width="false"
-                                    class="min-w-1/2"
+                                </Button>
+                                <Button
+                                    variant="destructive"
+                                    class="min-w-2/3 order-1 md:order-2"
                                     @click="handleDeleteUser"
                                 >
                                     Yes, delete my account
-                                </base-button>
+                                </Button>
 
                             </div>
                         </transition>
@@ -110,16 +111,37 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useRouter } from 'vue-router';
 
-import BaseButton from '@/components/base/BaseButtons/BaseButton.vue';
-import BaseFormMessageBox from '@/components/base/BaseForm/BaseFormMessageBox.vue';
-import BaseInput from '@/components/base/BaseForm/BaseInput.vue';
-import BaseInputWrapperAuthed from '@/components/base/BaseForm/BaseInputWrapperAuthed.vue';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useForm } from 'vee-validate';
+import * as z from 'zod';
+
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
+
+import { Button } from '@/components/ui/button';
+
+import {
+    Alert,
+    AlertDescription
+} from '@/components/ui/alert';
+
+
+import {
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage
+} from '@/components/ui/form';
+
+import {
+    FieldGroup
+} from '@/components/ui/field';
+
+import { Input } from '@/components/ui/input';
 
 import { useAuthStore } from '@/stores/useAuthStore';
 
@@ -127,8 +149,8 @@ import { useAuthActions, useDeleteData, useStorage } from '@/composables';
 import { auth } from '@/firebase/config';
 
 const {
-    error,
-    isPending,
+    error: errorAuth,
+    isPending: isPendingAuth,
     userDelete,
     userReauthenticate
 } = useAuthActions()
@@ -153,29 +175,6 @@ const emit = defineEmits(['close-modal'])
 
 const router = useRouter()
 
-const form = ref({
-    password: ''
-})
-
-const formErrors = ref({})
-
-const validateForm = () => {
-    formErrors.value = {};
-    // tady bude validace pres frequency counter
-
-    if (!form.value.password) {
-        formErrors.value.password = 'Password cannot be empty'
-    } else if (form.value.password.length < 8) {
-        formErrors.value.password = 'Password cannot be shorter than 8 chars'
-    }
-
-    return Object.keys(formErrors.value).length === 0
-}
-
-const clearForm = () => {
-    form.value.password = '';
-
-}
 
 const handleCloseModal = () => {
     emit('close-modal')
@@ -183,19 +182,32 @@ const handleCloseModal = () => {
 
 const showPwForm = ref(false)
 
+const error = computed(() => errorAuth.value || errorDelete.value || errorStorage.value)
+const isPending = computed(() => isPendingAuth.value || isPendingDelete.value || isPendingStorage.value)
+
 const handleDeleteUser = async () => {
     showPwForm.value = true
 }
 
-const submitForm = async () => {
-    if (!validateForm()) return
+const formSchema = toTypedSchema(z.object({
+    password: z.string()
+        .min(1, { message: 'Password is required.' })
+}))
 
-    const reAuthed = await userReauthenticate(authStore.user?.email, form.value.password)
+const { handleSubmit } = useForm({
+    validationSchema: formSchema,
+    initialValues: {
+        password: '',
+    },
+})
+
+const onSubmitForm = handleSubmit(async (values) => {
+    const reAuthed = await userReauthenticate(authStore.user?.email, values.password)
 
     authStore.user = auth.currentUser
 
     if (!reAuthed) {
-        clearForm()
+        values.password = ''
         return
     }
 
@@ -215,14 +227,14 @@ const submitForm = async () => {
 
     if (!authDeleted) return
 
-    clearForm()
+    values.password = ''
 
     showPwForm.value = false
 
     handleCloseModal()
 
-    router.push({ name: 'NotAuthed' })
-}
+    router.push({ name: 'TheLogin' })
+})
 
 
 

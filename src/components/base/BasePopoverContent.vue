@@ -1,17 +1,18 @@
 <template>
     <div class="p-4">
-        <div 
+        <div
             v-if="showTitleSlot"
-            class="text-lg mb-2 text-gray-600 dark:text-gray-500 font-semibold "
+            class="text-base mb-2 text-gray-600 dark:text-neutral-500 font-semibold "
         >
             <slot name="title" />
         </div>
-        <div 
+        <div
             v-if="showDescSlot"
-            class="text-gray-600 dark:text-gray-500 text-sm">
+            class="text-gray-600 dark:text-neutral-500 text-sm"
+        >
             <slot name="desc" />
         </div>
-        <div 
+        <div
             v-if="showActionsSlot"
             class="mt-4 flex justify-between gap-5"
         >
