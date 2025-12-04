@@ -11,7 +11,7 @@
             <div v-else>
                 <ul class="flex flex-col gap-4">
                     <li
-                        v-for="action in sortedActions"
+                        v-for="action in formattedActions"
                         :key="action.id"
                         class="grid "
                     >
