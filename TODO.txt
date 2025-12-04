@@ -1,6 +1,6 @@
 TODO
 
-* in progress... add possibilty to mass actions on plants - remove, move, ... - remove images also from custom records - logs
+- dark mode chat and height on mobile 
 
 - When removing plant, also delete log images (if any) - forgot about it
  
