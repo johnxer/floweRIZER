@@ -1,7 +1,7 @@
 <template>
     <div>
         <base-floating-button
-            class="bottom-6 text-2xl flex"
+            class="bottom-4 md:bottom-6 right-2 md:right-6 text-2xl flex"
             @click="toggleChat"
             :class="{ 'hover:scale-110': !showChat }"
             :tooltip-content="tooltipContentText"
@@ -16,7 +16,7 @@
         >
             <div
                 v-if="showChat"
-                class="fixed bottom-[calc(var(--bottomBarHeight)_+_var(--spacing)_*_2)] md:bottom-22 md:right-6 w-[calc(100vw_-_var(--spacing)_*_4)] md:w-84 mx-2 md:mx-auto md:h-120 top-2 md:top-auto bg-white dark:bg-gray-900 shadow-xl rounded-xl z-4 transition-all"
+                class="fixed bottom-22 md:bottom-24 md:right-6 w-[calc(100vw_-_var(--spacing)_*_4)] md:w-84 mx-2 md:mx-auto md:h-120 top-2 md:top-auto bg-white dark:bg-neutral-800 shadow-xl rounded-xl z-4 transition-all"
             >
                 <chat-window-wrapper @minimize-chat="toggleChat" />
             </div>

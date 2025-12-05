@@ -6,7 +6,7 @@
             placement: 'left',
         }"
         size="icon-xl"
-        class="fixed right-6 shadow-xl z-4 hover:scale-110"
+        class="fixed shadow-xl z-4 hover:scale-110"
     >
         <slot />
     </Button>

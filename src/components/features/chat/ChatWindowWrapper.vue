@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col h-full">
-        <div class="bg-white rounded-t-xl px-4 py-3 shadow-lg relative z-1 flex justify-between items-center dark:bg-gray-800">
+        <div class="bg-white rounded-t-xl px-4 py-3 shadow-lg relative z-1 flex justify-between items-center dark:bg-neutral-800">
             <div class="text-lg md:text-xl">
                 <span class="text-primary font-bold">Flower</span><span class="text-primary-700">Chat</span>
             </div>
@@ -23,7 +23,7 @@
                     v-tooltip="{
                         content: 'Minimize chat',
                     }"
-                    class="text-gray-500 hover:text-primary cursor-pointer transition-colors duration-600 text-3xl flex dark:text-gray-400"
+                    class="text-gray-500 hover:text-primary cursor-pointer transition-colors duration-600 text-3xl flex dark:text-neutral-400"
                     v-close-popper="true"
                     @click="handleMinimizeChat"
                 >
@@ -41,27 +41,7 @@
             Loading chat...
         </base-loader>
         <div
-            v-else-if="!activeChatId"
-            class="p-4 text-center grow-1 flex flex-col items-center justify-center"
-        >
-            <span class="material-symbols-outlined text-8xl mb-2 text-gray-200 dark:text-gray-700">
-                chat_dashed
-            </span>
-            <span class="text-lg text-gray-400 dark:text-gray-400">
-                Chat has ended
-            </span>
-            <Button
-                class="mt-4"
-                type="button"
-                size="sm"
-                variant="hover-outline"
-                @click="handleStartChat"
-            >
-                Start a new chat
-            </Button>
-        </div>
-        <div
-            v-else
+            v-else-if="activeChatId"
             class="p-4 overflow-auto grow-1"
             ref="scrollWrapper"
         >
@@ -142,11 +122,31 @@
                 </li>
             </transition-group>
         </div>
-        <div class="border-t border-gray-200 dark:border-gray-800">
+        <div
+            v-else
+            class="p-4 text-center grow-1 flex flex-col items-center justify-center"
+        >
+            <span class="material-symbols-outlined text-8xl mb-2 text-gray-200 dark:text-neutral-700">
+                chat_dashed
+            </span>
+            <span class="text-lg text-gray-400 dark:text-neutral-400">
+                Chat has ended
+            </span>
+            <Button
+                class="mt-4"
+                type="button"
+                size="sm"
+                variant="hover-outline"
+                @click="handleStartChat"
+            >
+                Start a new chat
+            </Button>
+        </div>
+        <div class="border-t border-gray-200 dark:border-neutral-800">
             <input
                 type="text"
                 placeholder="Write your question..."
-                class="px-4 py-3 w-full focus:outline-0 bg-gray-50 focus:bg-gray-50 transition-colors duration-600 rounded-b-xl text-sm dark:bg-gray-800 dark:text-white/75 dark:focus:bg-gray-800 disabled:animate-pulse disabled:text-gray-400 disabled:cursor-wait"
+                class="px-4 py-3 w-full focus:outline-0 bg-gray-50 focus:bg-gray-50 transition-colors duration-600 rounded-b-xl text-sm dark:bg-neutral-900/50 dark:text-white/75 dark:focus:bg-neutral-800 disabled:animate-pulse disabled:text-gray-400 disabled:cursor-wait"
                 @keyup.enter="submitQuestion"
                 :disabled="isPendingAI"
                 v-model.trim="question"
@@ -162,7 +162,6 @@ import { formatDistanceToNow } from 'date-fns';
 
 import BaseLoader from '@/components/base/BaseLoader.vue';
 
-import { Button } from '@/components/ui/button';
 
 
 import { useAuthStore } from '@/stores/useAuthStore';
