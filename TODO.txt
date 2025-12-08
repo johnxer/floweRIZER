@@ -1,7 +1,5 @@
 TODO
 
-- dark mode chat and height on mobile 
-
 - When removing plant, also delete log images (if any) - forgot about it
  
 - clean the main.css file

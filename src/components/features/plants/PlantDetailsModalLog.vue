@@ -480,9 +480,6 @@ watchEffect(async () => {
         return action
     }).sort((a, b) => b.rawDate - a.rawDate)
 
-
-
-
     isLoadingActions.value = false
 })
 
@@ -610,7 +607,6 @@ const handleDeleteRecord = async (id) => {
     };
 
     let successDeleteImage;
-
 
     if (props.data.log.find(log => log.id === id)?.action === 'custom photo') {
         successDeleteImage = await deleteImageByUrl(props.data.log.find(log => log.id === id)?.newVal)

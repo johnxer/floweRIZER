@@ -337,6 +337,8 @@ const handleDeletePlant = async () => {
 
     if (documentImgSrc) successDelete = await deleteImageByUrl(props.plant.imgSrc)
 
+    
+
     if (successDelete) success = await deleteData(documentId, collectionPath)
 }
 
