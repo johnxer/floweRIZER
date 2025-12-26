@@ -5,7 +5,8 @@
     >
         <Dialog
             class="relative z-10"
-            @close="() => { if (!props.isModalPending) handlecloseModal() }"
+            :initial-focus="cancelButtonRef"
+            @close="() => { if (!isModalPending) handlecloseModal() }"
         >
             <TransitionChild
                 as="template"
@@ -37,8 +38,8 @@
                             <button
                                 type="button"
                                 class="absolute top-0 text-3xl text-white dark:text-white/50 right-0 cursor-pointer hover:opacity-50 transiton-opacity duration-600 disabled:opacity-50 disabled:cursor-default"
-                                @click="() => { if (!props.isModalPending) handlecloseModal() }"
-                                :disabled="props.isModalPending"
+                                @click="() => { if (!isModalPending) handlecloseModal() }"
+                                :disabled="isModalPending"
                                 ref="cancelButtonRef"
                             >
                                 <span class="material-symbols-outlined">
@@ -58,41 +59,40 @@
     </TransitionRoot>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
-import { computed } from 'vue';
-
-const props = defineProps({
-    modalToggle: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-    isModalPending: {
-        type: Boolean,
-        required: false
-    },
-    modalSize: {
-        type: String,
-        required: false,
-        default: 'lg'
-    }
-})
+import { computed, ref } from 'vue';
 
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 
-const emit = defineEmits(['close-modal'])
+type ModalSize = 'sm' | 'lg' | 'xl';
+
+type Props = {
+    modalToggle?: boolean;
+    isModalPending?: boolean;
+    modalSize?: ModalSize
+}
+
+const cancelButtonRef = ref<HTMLButtonElement | null>(null);
+
+const props = withDefaults(defineProps<Props>(), {
+    modalToggle: false,
+    modalSize: 'lg'
+})
+
+const emit = defineEmits<{
+ (e: 'close-modal', value: boolean): void
+}>()
 
 const handlecloseModal = () => {
     emit('close-modal', false)
 }
 
-const sizeMap = {
+const sizeMap: Record<ModalSize, string> = {
     sm: 'max-w-sm',
     lg: 'max-w-lg',
     xl: 'max-w-xl',
 }
-
 
 const modalSizeValue = computed(() => {
     return sizeMap[props.modalSize]

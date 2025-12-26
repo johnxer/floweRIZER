@@ -26,44 +26,10 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, useSlots } from 'vue';
 
 import Spinner from '@/components/ui/spinner/Spinner.vue';
-
-
-const props = defineProps({
-    position: {
-        type: String,
-        required: false,
-        default: 'static'
-    },
-    size: {
-        type: String,
-        required: false,
-        default: 'base'
-    },
-    color: {
-        type: String,
-        required: false,
-        default: 'base'
-    },
-    hasBg: {
-        type: Boolean,
-        required: false,
-        default: true
-    },
-    bgBlur: {
-        type: Boolean,
-        required: false,
-        default: false
-    },
-    bgColor: {
-        type: String,
-        required: false,
-        default: 'base'
-    }
-})
 
 const positionMap = {
     absolute: {
@@ -78,7 +44,7 @@ const positionMap = {
         classes: '',
         spinnerClasses: 'mx-auto'
     }
-}
+} as const;
 
 
 const sizeMap = {
@@ -97,37 +63,66 @@ const sizeMap = {
     lg: {
         class: 'size-30'
     },
-}
+} as const;
 
 const colorMap = {
     base: {
         class: 'text-gray-200 dark:text-neutral-600'
     },
-}
+} as const;
 
-const bgColor = {
+const bgColorMap = {
     base: {
         class: 'bg-white/60 dark:bg-neutral-900/80'
     },
     body: {
         class: 'bg-gray-100/80 dark:bg-neutral-900/80'
     }
+} as const;
+
+
+type Position = keyof typeof positionMap;
+
+type Size = keyof typeof sizeMap;
+
+type Color = keyof typeof colorMap;
+
+type BgColor = keyof typeof bgColorMap;
+
+type Props = {
+    position?: Position;
+    size?: Size;
+    color?: Color;
+    hasBg?: boolean;
+    bgBlur?: boolean;
+    bgColor?: BgColor;
 }
 
+const props = withDefaults(defineProps<Props>(), {
+    position: 'static',
+    size: 'base',
+    color: 'base',
+    hasBg: true,
+    bgBlur: false,
+    bgColor: 'base',
+})
+
 const slots = useSlots()
+
+const { position, size, color, bgColor } = props;
 
 const hasText = computed(() => {
     return (slots.default && slots.default().length)
 })
 
-const positionClasses = computed(() => positionMap[props.position].classes)
-const loaderClasses = computed(() => positionMap[props.position].spinnerClasses)
+const positionClasses = computed(() => positionMap[position].classes)
+const loaderClasses = computed(() => positionMap[position].spinnerClasses)
 
-const sizeClass = computed(() => sizeMap[props.size].class)
+const sizeClass = computed(() => sizeMap[size].class)
 
-const colorClass = computed(() => colorMap[props.color].class)
+const colorClass = computed(() => colorMap[color].class)
 
-const bgColorClass = computed(() => bgColor[props.bgColor].class)
+const bgColorClass = computed(() => bgColorMap[bgColor].class)
 
 </script>
 

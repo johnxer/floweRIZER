@@ -25,7 +25,7 @@
             </div>
 
             <v-dropdown
-                v-if="isResetImageShown && props.showReset"
+                v-if="isResetImageShown && showReset"
                 trap-focus
                 popper-class="popper-slide-small min-w-[200px]"
                 class="absolute bottom-2 right-2"
@@ -82,7 +82,7 @@
                     </span>
                     Select photo
                     <input
-                        :id="props.inputId"
+                        :id="inputId"
                         type="file"
                         class="hidden"
                         accept="image/png, image/jpeg, image/jpg, image/gif"
@@ -134,7 +134,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 
 import BaseImageWireframe from '@/components/base/BaseImageWireframe.vue';
@@ -144,37 +144,34 @@ import { Button } from '@/components/ui/button';
 
 import { useMobileStore } from '@/stores/useMobileStore';
 
-const props = defineProps({
-    inputId: {
-        type: String,
-        required: true
-    },
-    existingImageSrc: {
-        type: String,
-        required: false,
-        default: null
-    },
-    showReset: {
-        type: Boolean,
-        required: false,
-        default: true
-    }
+type Props = {
+    inputId: string;
+    existingImageSrc?: string | null;
+    showReset?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    existingImageSrc: null,
+    showReset: true
 })
 
 const mobileStore = useMobileStore()
 
-
-const emit = defineEmits(['send-file', 'remove-file'])
+// const emit = defineEmits(['send-file', 'remove-file'])
+const emit = defineEmits<{
+    (e: 'send-file', file: File): void
+    (e: 'remove-file', payload: {toDefault: boolean}): void
+}>()
 
 const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
 
-const fileInput = ref(null)
+const fileInput = ref<HTMLInputElement | null>(null)
 
-const selectFileName = ref(null)
+const selectFileName = ref<string | null>(null)
 
-const previewUrl = ref(null)
+const previewUrl = ref<string | null>(null)
 
-const file = ref(null)
+const file = ref<File | null>(null)
 
 const isImageLoaded = ref(false)
 
@@ -187,20 +184,21 @@ watch(() => props.existingImageSrc, newVal => {
     }
 })
 
-const handleFile = (e) => {
-    file.value = e.target.files[0];
+const handleFile = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    const selectedFile = target.files?.[0];
 
-    selectFileName.value = file.value.name
+    if (!selectedFile || !allowedFormats.includes(selectedFile.type)) return
 
-    console.log(selectFileName.value)
+    isImageLoaded.value = false
+    file.value = selectedFile;
+    selectFileName.value = selectedFile.name
 
     if (previewUrl.value) {
         URL.revokeObjectURL(previewUrl.value)
     }
+
     previewUrl.value = URL.createObjectURL(file.value)
-
-
-    if (!selectFileName.value || !allowedFormats.includes(file.value.type)) return
 
     emit('send-file', file.value)
 }
@@ -211,10 +209,10 @@ const onLoad = () => {
     isImageLoaded.value = true
 }
 
-const mobileCameraInput = ref(null)
+const mobileCameraInput = ref<HTMLInputElement | null>(null)
 
 const handleMobilePhotoCapture = () => {
-    mobileCameraInput.value.click()
+    mobileCameraInput.value?.click()
 }
 
 const isResetImageShown = computed(() => (existingImageURL.value || previewUrl.value))
@@ -235,14 +233,11 @@ const handleResetImage = () => {
 
         previewUrl.value = existingImageURL.value || null
 
-
-
         isImageLoaded.value = false
 
+        if (fileInput.value) fileInput.value.value = '';
 
-        if (fileInput.value) {
-            fileInput.value.value = ''
-        }
+        if (mobileCameraInput.value) mobileCameraInput.value.value = ''; 
 
     }
 }

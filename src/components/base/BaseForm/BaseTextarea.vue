@@ -9,32 +9,27 @@
     />
 </template>
 
-<script setup>
-defineProps({
-    modelValue: {
-        type: [String, Number],
-        default: ''
-    },
-    textareaId: {
-        type: String,
-        required: true
-    },
-    textareaPlaceholder: {
-        type: String,
-        required: false,
-        default: ''
-    },
-    textareaError: {
-        type: Boolean,
-        required: false,
-        default: false
-    }
+<script setup lang="ts">
+type Props = {
+    modelValue: string | number;
+    textareaId: string;
+    textareaPlaceholder?: string;
+    textareaError?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+    modelValue: '',
+    textareaPlaceholder: '',
+    textareaError: false
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: Props['modelValue']): void
+}>()
 
-const handleInput = (e) => {
-    emit('update:modelValue', e.target.value)
+const handleInput = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    emit('update:modelValue', target.value)
 }
 
 </script>

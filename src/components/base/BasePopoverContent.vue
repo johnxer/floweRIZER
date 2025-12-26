@@ -21,15 +21,21 @@
     </div>
 </template>
 
-<script setup>
-import { computed } from 'vue';
+<script setup lang="ts">
+import { computed, useSlots } from 'vue';
 
-const slots = defineSlots()
+defineSlots<{
+  default?: (props: {}) => any
+  title?: (props: {}) => any
+  desc?: (props: {}) => any
+  actions?: (props: {}) => any
+}>()
 
-const showTitleSlot = computed(() => !!slots.title?.())
-const showDescSlot = computed(() => !!slots.desc?.())
-const showActionsSlot = computed(() => !!slots.actions?.())
+const slots = useSlots()
 
+const showTitleSlot = computed(() => !!slots.title)
+const showDescSlot = computed(() => !!slots.desc)
+const showActionsSlot = computed(() => !!slots.actions)
 
 </script>
 

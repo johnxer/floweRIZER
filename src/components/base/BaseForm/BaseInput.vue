@@ -12,41 +12,30 @@
     >
 </template>
 
-<script setup>
-defineProps({
-    modelValue: {
-        type: [String, Number],
-        default: ''
-    },
-    inputType: {
-        type: String,
-        required: false,
-        default: 'text'
-    },
-    inputId: {
-        type: String,
-        required: true
-    },
-    inputPlaceholder: {
-        type: String,
-        required: false,
-        default: ''
-    },
-    inputError: {
-        type: String,
-        default: ''
-    },
-    // extraClasses: {
-    //     type: String,
-    //     required: false,
-    //     default: ''
-    // }
+<script setup lang="ts">
+
+type Props = {
+    modelValue: string | number;
+    inputType?: string;
+    inputId: string;
+    inputPlaceholder?: string;
+    inputError?: string;
+}
+
+withDefaults(defineProps<Props>(), {
+    modelValue: '',
+    inputType: 'text',
+    inputPlaceholder: '',
+    inputError: ''
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: Props['modelValue']): void
+}>()
 
-const handleInput = (e) => {
-    emit('update:modelValue', e.target.value)
+const handleInput = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    emit('update:modelValue', target.value)
 }
 
 </script>

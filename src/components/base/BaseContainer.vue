@@ -7,17 +7,15 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
+type Props = {
+    isAuthed?: boolean
+}
 
-defineProps({
-    isAuthed: {
-        type: Boolean,
-        required: false,
-        default: true,
-    }
+withDefaults(defineProps<Props>(), {
+    isAuthed: true
 })
-
 
 </script>
 

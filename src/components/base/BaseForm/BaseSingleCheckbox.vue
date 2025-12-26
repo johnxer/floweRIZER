@@ -2,11 +2,11 @@
     <div class="checkbox-wrapper">
         <input
             type="checkbox"
-            :id="props.id"
-            :checked="props.modelValue"
-            @change="emit('update:modelValue', $event.target.checked)"
+            :id="id"
+            :checked="modelValue"
+            @change="handleChange"
         />
-        <label :for="props.id">
+        <label :for="id">
             <span class="material-symbols-outlined">
                 check
             </span>
@@ -14,19 +14,22 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps({
-    id: {
-        type: String,
-        required: true,
-    },
-    modelValue: {
-        type: Boolean,
-        required: true,
-    },
-})
+<script setup lang="ts">
+    type Props = {
+        id: string;
+        modelValue: boolean;
+    }
 
-const emit = defineEmits(['update:modelValue'])
+defineProps<Props>()
+
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: Props['modelValue']): void
+}>()
+
+const handleChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    emit('update:modelValue', target.checked);
+};
 </script>
 
 <style lang="scss" scoped></style>

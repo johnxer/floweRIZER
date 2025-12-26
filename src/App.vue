@@ -17,8 +17,6 @@
 
 <script setup>
 
-
-
 import TheChat from './components/features/chat/TheChat.vue';
 import TheHeader from './components/layout/TheHeader.vue';
 
