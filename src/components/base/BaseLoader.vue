@@ -109,20 +109,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 const slots = useSlots()
 
-const { position, size, color, bgColor } = props;
-
 const hasText = computed(() => {
     return (slots.default && slots.default().length)
 })
 
-const positionClasses = computed(() => positionMap[position].classes)
-const loaderClasses = computed(() => positionMap[position].spinnerClasses)
+const positionClasses = computed(() => positionMap[props.position].classes)
+const loaderClasses = computed(() => positionMap[props.position].spinnerClasses)
 
-const sizeClass = computed(() => sizeMap[size].class)
+const sizeClass = computed(() => sizeMap[props.size].class)
 
-const colorClass = computed(() => colorMap[color].class)
+const colorClass = computed(() => colorMap[props.color].class)
 
-const bgColorClass = computed(() => bgColorMap[bgColor].class)
+const bgColorClass = computed(() => bgColorMap[props.bgColor].class)
 
 </script>
 

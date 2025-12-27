@@ -4,14 +4,14 @@
             name="fade"
             mode="out-in"
         >
-            <base-loader v-if="props.isPending">
+            <base-loader v-if="isPending">
                 Loading plant details...
             </base-loader>
-            <div v-else-if="props.error">
-                {{ props.error }}
+            <div v-else-if="error">
+                {{ error }}
             </div>
 
-            <div v-else="props.data">
+            <div v-else="data">
                 <div v-if="hasCustomPhotos">
                     <Carousel
                         v-bind="carouselConfig"
@@ -45,7 +45,7 @@
                     <div class="relative rounded-xl bg-gray-50 dark:bg-gray-950 h-[300px] flex items-center justify-center overflow-hidden">
                         <base-image-wireframe v-if="!isImageLoaded" />
                         <img
-                            :src="props.data?.imgSrc || PLANT_PLACEHOLDER"
+                            :src="data?.imgSrc || PLANT_PLACEHOLDER"
                             class="w-full h-full inset-0 object-cover absolute rounded-xl transition-opacity duration-600"
                             :class="isImageLoaded ? 'opacity-100' : 'opacity-0'"
                             loading="lazy"
@@ -53,13 +53,13 @@
                         />
                         <h3 class="absolute left-2 top-2 md:left-4 md:top-4 px-4 py-2 bg-black/70 text-white rounded-lg">
                             <div class="text-base mb-2">
-                                {{ props.data?.name }}
+                                {{ data?.name }}
                             </div>
                             <div class="flex items-center gap-2 text-xs">
                                 <span class="material-symbols-outlined text-base">
                                     water_drop
                                 </span>
-                                Needs water every {{ props.data?.wateringFrequency }} days
+                                Needs water every {{ data?.wateringFrequency }} days
                             </div>
                         </h3>
 
@@ -68,7 +68,7 @@
 
 
                 <div
-                    v-if="props.data?.desc?.length > 0"
+                    v-if="data?.desc?.length > 0"
                     class="mt-4 "
                 >
                     <p class="text-foreground">
@@ -88,7 +88,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 
 import { PLANT_PLACEHOLDER } from '@/constants';
@@ -103,7 +103,7 @@ import {
     Slide
 } from 'vue3-carousel';
 
-// import 'vue3-carousel/carousel.css';
+
 
 const carouselConfig = {
     itemsToShow: 1,
@@ -113,23 +113,15 @@ const carouselConfig = {
     transitionEasing: "cubic-bezier(0.4, 0, 0.2, 1)"
 }
 
-const props = defineProps({
-    data: {
-        type: Object,
-        required: true
-    },
-    isPending: {
-        type: Boolean,
-        required: true
-    },
-    error: {
-        type: [Object, null],
-        required: false,
-        default: null
-    }
-})
+type Props = {
+    data: object;
+    isPending: boolean;
+    error?: object | null
+}
 
-const showMore = ref(false)
+const props = defineProps<Props>()
+
+const showMore = ref<boolean>(false)
 
 const toggleShowMore = () => {
     showMore.value = !showMore.value
@@ -154,22 +146,19 @@ const onLoad = () => {
 }
 
 
-const hasCustomPhotos = computed(() => {
-    const log = props.data?.log || []
-    return log.filter(item => item.action === 'custom photo').length > 0
-})
-
 const images = computed(() => {
     const log = props.data?.log || []
-    const logImages = log.filter(item => item.action === 'custom photo').map(item => item.newVal)
+    const logImages = log.filter(item => item.action === 'customPhoto' && item.newVal).map(item => item.newVal)
 
-    const allImages = [
+    return [
         props.data?.imgSrc || PLANT_PLACEHOLDER,
         ...logImages,
     ]
-
-    return allImages
 })
+
+const hasCustomPhotos = computed(() => images.value.length > 1);
+
+
 
 
 </script>

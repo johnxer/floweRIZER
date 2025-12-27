@@ -11,16 +11,9 @@
     </h1>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 
-
-const props = defineProps({
-    size: {
-        type: String,
-        default: 'lg'
-    }
-})
 
 const sizeMap = {
     lg: {
@@ -32,6 +25,16 @@ const sizeMap = {
         text: 'text-xl'
     },
 }
+
+type SizeKey = keyof typeof sizeMap
+
+type Props = {
+    size?: SizeKey;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    size:  'lg'
+})
 
 const size = computed(() => sizeMap[props.size])
 

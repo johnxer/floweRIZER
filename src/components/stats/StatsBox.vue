@@ -28,7 +28,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import { useGetAllPlants, useGetData } from '@/composables';
 import { useRoomsStore } from '@/stores/useRoomsStore';

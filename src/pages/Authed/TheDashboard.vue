@@ -282,7 +282,7 @@ const multiPlantDelete = async () => {
 
         const plant = await fetchDocument(`rooms/${uiStore.plantSelectedList[i].roomId}/plants/${uiStore.plantSelectedList[i].plantId}`)
 
-        const plantLogImages = plant?.log?.filter(l => l.action === 'custom photo').map(l => l.newVal) ?? []
+        const plantLogImages = plant?.log?.filter(l => l.action === 'customPhoto').map(l => l.newVal) ?? []
 
         const filesArray = [
             ...(plant?.imgSrc ? [plant.imgSrc] : []),

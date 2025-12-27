@@ -69,7 +69,7 @@
     </v-dropdown>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import { ref } from 'vue';
 
@@ -81,12 +81,11 @@ import { useMobileStore } from '@/stores/useMobileStore';
 
 const isOpen = ref(false)
 
-defineProps({
-    isChatActive: {
-        type: Boolean,
-        required: false
-    }
-})
+type Props = {
+    isChatActive?: boolean
+}
+
+defineProps<Props>();
 
 const {
     isMobile
@@ -96,8 +95,6 @@ const onHide = () => (isOpen.value = false)
 
 
 const { handleLogout } = useAuthActions()
-
-
 
 </script>
 

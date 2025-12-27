@@ -9,14 +9,9 @@
         >
             <base-single-checkbox
                 :id="`plant-${plant.id}`"
-                :model-value="uiStore.selectedPlants.has(`${props.roomId}_${plant.id}`)"
-                @update:model-value="uiStore.togglePlantSelection({ plantId: plant.id, roomId: props.roomId })"
+                :model-value="uiStore.selectedPlants.has(`${roomId}_${plant.id}`)"
+                @update:model-value="uiStore.togglePlantSelection({ plantId: plant.id, roomId: roomId })"
             />
-            <!-- <input
-                type="checkbox"
-                :checked="uiStore.selectedPlants.has({ plantId: plant.id, roomId: props.roomId })"
-                @change="uiStore.togglePlantSelection({ plantId: plant.id, roomId: props.roomId })"
-            /> -->
         </div>
 
         <div
@@ -149,7 +144,7 @@
                                                     type="button"
                                                     class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 dark:text-neutral-500 dark:hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
                                                     v-close-popper="true"
-                                                    @click="uiStore.openModal('plantDetails', { roomId: props.roomId, plantId: props.plant.id })"
+                                                    @click="uiStore.openModal('plantDetails', { roomId: roomId, plantId: plant.id })"
                                                 >
                                                     <span class="material-symbols-outlined text-xl">
                                                         local_florist
@@ -164,7 +159,7 @@
                                                     type="button"
                                                     class="flex gap-2 items-center text-base text-gray-500 hover:text-primary-500 dark:text-neutral-500 hover:text-primary-500 cursor-pointer transition-all duration-600 p-2"
                                                     v-close-popper="true"
-                                                    @click="uiStore.openModal('plant', { roomId: props.roomId, plantId: props.plant.id })"
+                                                    @click="uiStore.openModal('plant', { roomId: roomId, plantId: plant.id })"
                                                 >
                                                     <span class="material-symbols-outlined text-xl">
                                                         edit
@@ -222,7 +217,9 @@
     </li>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { Plant } from '@/types/plant';
+
 import { PLANT_PLACEHOLDER } from '@/constants';
 
 import { computed, onMounted, ref, watch } from 'vue';
@@ -249,25 +246,16 @@ const {
     waterPlant
 } = useUpdateData()
 
-const props = defineProps({
-    plant: {
-        type: Object,
-        required: true
-    },
-    showMoreDetails: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
-    isDraggable: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
-    roomId: {
-        type: String,
-        required: true,
-    }
+type Props = {
+    plant: Plant;
+    showMoreDetails?: boolean;
+    isDraggable?: boolean;
+    roomId: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    showMoreDetails: false,
+    isDraggable: false,
 })
 
 const plantsStore = usePlantsStore()
@@ -318,7 +306,7 @@ const handleWatering = async () => {
 
 const isWatered = computed(() => {
     if (getDaysAgo.value === null) return false
-    return props.plant.wateringFrequency > (getDaysAgo.value)
+    return (props.plant.wateringFrequency || 0) > (getDaysAgo.value)
 })
 
 const handleDeletePlant = async () => {

@@ -36,7 +36,7 @@
     </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 
 import { useRoute } from 'vue-router';

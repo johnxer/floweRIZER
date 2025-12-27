@@ -2,7 +2,7 @@
     <base-modal-content>
         <template #modalTitle>
             <span class="noto-color-emoji-regular mr-2">🌱</span>
-            {{ detailsPlant?.name }}'{{ plantNameLastLetter ? '' : 's' }} details
+            {{ modalTitle }}
         </template>
         <div class="relative">
             <Tabs v-model="activeTabName">
@@ -22,8 +22,8 @@
                             :data="detailsPlant"
                             :isPending="isPendingPlant"
                             :error="errorPlant"
-                            :room-id="props.roomId"
-                            :plant-id="props.plantId"
+                            :room-id="roomId"
+                            :plant-id="plantId"
                             :plant-name="detailsPlant?.name"
                         />
                     </KeepAlive>
@@ -34,28 +34,22 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { computed, defineAsyncComponent, ref } from 'vue';
 
 import BaseModalContent from '@/components/base/BaseModal/BaseModalContent.vue';
 
-import { useUIStore } from '@/stores/useUIStore';
 
 import { useGetDetails } from '@/composables';
 
+type Props = {
+    roomId: string;
+    plantId: string;
+}
 
-const props = defineProps({
-    roomId: {
-        type: String,
-        required: true
-    },
-    plantId: {
-        type: String,
-        required: true
-    }
-})
+const props = defineProps<Props>();
 
 const {
     data: detailsPlant,
@@ -63,6 +57,14 @@ const {
     isPending: isPendingPlant,
 } = useGetDetails(`rooms/${props.roomId}/plants/${props.plantId}`)
 
+
+type TabName = 'details' | 'log';
+
+type TabItem = {
+    name: TabName;
+    label: string;
+    component: ReturnType<typeof defineAsyncComponent>;
+}
 
 const detailsTab = defineAsyncComponent({
     loader: () => import('./PlantDetailsModalContent.vue'),
@@ -76,21 +78,22 @@ const logTab = defineAsyncComponent({
     delay: 200
 })
 
-
-const tabs = [
+const tabs: TabItem[] = [
     { name: 'details', label: 'Details', component: detailsTab },
     { name: 'log', label: 'History log', component: logTab }
 ]
 
-const activeTabName = ref('details')
+const activeTabName = ref<TabName>('details')
 
 const currentTab = computed(() => {
-    return tabs.find(tab => tab.name === activeTabName.value)?.component
+    return tabs.find(tab => tab.name === activeTabName.value)?.component ?? detailsTab;
 })
 
+const modalTitle = computed(() => {
+    const plantName = detailsPlant.value?.name;
+    if (!plantName) return 'Plant details'
+    return plantName.endsWith('s') ? `${plantName}' details` : `${plantName}'s details`
+})
 
-const plantNameLastLetter = computed(() => detailsPlant.value?.name?.slice(-1) === 's')
-
-const uiStore = useUIStore()
 
 </script>

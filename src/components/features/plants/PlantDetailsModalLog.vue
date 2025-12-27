@@ -4,14 +4,14 @@
             name="fade"
             mode="out-in"
         >
-            <base-loader v-if="props.isPending || isLoadingActions">
+            <base-loader v-if="isPending || isLoadingActions">
                 Loading plant's history...
             </base-loader>
 
-            <div v-else-if="props.error">
-                {{ props.error }}
+            <div v-else-if="error">
+                {{ error }}
             </div>
-            <div v-else="props.data">
+            <div v-else="data">
                 <transition
                     name="fade"
                     mode="out-in"
@@ -183,10 +183,10 @@
                                 </span>
                             </span>
                             <span class="self-center text-sm md:text-base">
-                                <span :class="{ 'mt-1 block': action.action === 'custom photo' }">
+                                <span :class="{ 'mt-1 block': action.action === 'customPhoto' }">
 
                                     <span class="inline-flex align-top">
-                                        {{ action.action === 'custom note' || action.action === 'custom photo' ? "Plant's" : "Plant" }}
+                                        {{ action.action === 'customNote' || action.action === 'customPhoto' ? "Plant's" : "Plant" }}
                                     </span>
 
                                     {{ action.action }}
@@ -196,15 +196,15 @@
                                         to <strong>{{ action.targetName }}</strong>
                                     </template>
 
-                                    <template v-else-if="action.action === 'name' || action.action === 'light requirements'">
+                                    <template v-else-if="action.action === 'name' || action.action === 'lightRequirements'">
                                         changed from <strong>{{ action.originalVal }}</strong>
                                         to <strong>{{ action.newVal }}</strong>
                                     </template>
 
                                 </span>
-                                <template v-if="action.action == 'custom note' || action.action == 'custom photo'">
+                                <template v-if="action.action == 'customNote' || action.action == 'customPhoto'">
                                     <div class="relative">
-                                        <template v-if="action.action === 'custom note'">
+                                        <template v-if="action.action === 'customNote'">
                                             <div class="mt-2 bg-gray-100 dark:bg-neutral-800 px-4 py-2 rounded-xl">
                                                 {{ action.newVal }}
                                             </div>
@@ -215,7 +215,7 @@
                                                 <img
                                                     :ref="setImgRef"
                                                     :data-src="action.newVal"
-                                                    :alt="props.plantName"
+                                                    :alt="plantName"
                                                     loading="lazy"
                                                     class="w-full h-full inset-0 object-cover absolute rounded-xl transition-opacity duration-600"
                                                     :class="loadedImages.has(action.id) ? 'opacity-100' : 'opacity-0'"
@@ -302,7 +302,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { Plant, PlantActions, PlantLog } from '@/types/plant';
+
 import { computed, nextTick, ref, watchEffect } from "vue";
 
 import { toTypedSchema } from '@vee-validate/zod';
@@ -361,36 +363,22 @@ import { addLog, observeVisibility, resizeImageBitmap } from "@/utils";
 
 const authStore = useAuthStore()
 
-const props = defineProps({
-    data: {
-        type: Object,
-        required: true
-    },
-    isPending: {
-        type: Boolean,
-        required: true
-    },
-    error: {
-        type: [Object, null],
-        required: false,
-        default: null
-    },
-    roomId: {
-        type: String,
-        required: true
-    },
-    plantName: {
-        type: String,
-        required: true
-    }
-})
+type Props = {
+    data: Plant;
+    isPending: Boolean;
+    error?: object | null;
+    roomId: string;
+    plantName: string;
+}
+
+const props = defineProps<Props>()
 
 const formattedDate = computed(() => {
     const createdAt = props.data?.createdAt
     return createdAt?.toDate ? format(createdAt.toDate(), 'MMM d, yyyy') : '—'
 })
 
-const actionIconMap = {
+const actionIconMap: Record<PlantActions, {icon: string}> = {
     watered: {
         icon: 'humidity_high'
     },
@@ -409,18 +397,18 @@ const actionIconMap = {
     image: {
         icon: 'edit'
     },
-    'light requirements': {
+    lightRequirements: {
         icon: 'sunny'
     },
-    'custom photo': {
+    customPhoto: {
         icon: 'photo'
     },
-    'custom note': {
+    customNote: {
         icon: 'sticky_note_2'
     }
-}
+} as const;
 
-const formattedActions = ref([])
+const formattedActions = ref<Array<PlantLog>>([])
 
 const isLoadingActions = ref(false)
 
@@ -469,7 +457,7 @@ watchEffect(async () => {
             rawDate: date
         }
 
-        if (a.action === 'custom photo' || a.action === 'custom note') {
+        if (a.action === 'customPhoto' || a.action === 'customNote') {
             delete action.originalVal
         }
 
@@ -528,7 +516,7 @@ const { handleSubmit, setValues, resetForm, meta } = useForm({
 })
 
 const onSubmitForm = handleSubmit(async (values) => {
-    let log = []
+    let log = <Array<PlantLog>>[]
 
     const existingLog = props.data?.log || [];
 
@@ -541,10 +529,10 @@ const onSubmitForm = handleSubmit(async (values) => {
 
 
         if (uploadSuccess) {
-            addLog(log, 'custom photo', null, url.value)
+            addLog(log, 'customPhoto', null, url.value)
         }
     } else if (isAddTextNoteShown.value) {
-        addLog(log, 'custom note', null, values.desc)
+        addLog(log, 'customNote', null, values.desc)
     }
 
     props.data.log = [
@@ -573,11 +561,11 @@ const onCancelAddRecord = () => {
 
 const loadedImages = ref(new Set())
 
-const onLoad = (id) => {
+const onLoad = (id: string) => {
     loadedImages.value.add(id)
 }
 
-const setImgRef = async (el) => {
+const setImgRef = async (el: HTMLImageElement) => {
     if (!el || !el.dataset.src) return
 
     await nextTick()
@@ -602,8 +590,8 @@ const error = computed(() => {
     return errorUpload.value || errorUpdate.value
 })
 
-const handleDeleteRecord = async (id) => {
-    const updatedLog = props.data.log.filter(log => log.id !== id)
+const handleDeleteRecord = async (id: string) => {
+    const updatedLog = props.data?.log.filter(log => log.id !== id)
 
     const data = {
         log: updatedLog
@@ -612,7 +600,7 @@ const handleDeleteRecord = async (id) => {
     let successDeleteImage;
 
 
-    if (props.data.log.find(log => log.id === id)?.action === 'custom photo') {
+    if (props.data?.log.find(log => log.id === id)?.action === 'customPhoto') {
         successDeleteImage = await deleteImageByUrl(props.data.log.find(log => log.id === id)?.newVal)
     }
 

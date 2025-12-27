@@ -473,7 +473,7 @@ const onSubmitForm = handleSubmit(async (values) => {
         addLog(log, 'image', originalData.imgSrc, data.imgSrc)
         addLog(log, 'description', originalData.desc, data.desc)
         addLog(log, 'watering', originalData.watering, data.watering)
-        addLog(log, 'light requirements', originalData.lightRequirements, data.lightRequirements)
+        addLog(log, 'lightRequirements', originalData.lightRequirements, data.lightRequirements)
     }
 
     if (values.file) {

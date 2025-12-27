@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export type PlantActions = 'watered' | 'image' | 'description' | 'icon' | 'lightRequirements' | 'customPhoto' | 'customNote' | 'name' | 'moved'
 
 export interface PlantLog {
@@ -22,5 +24,6 @@ export interface Plant {
     userId: string;
     wateringFrequency?: number;
     lastWateredAt?: string
+    createdAt: Timestamp
 }
 

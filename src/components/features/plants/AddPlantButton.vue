@@ -1,7 +1,7 @@
 <template>
     <Button
         type="button"
-        @click="uiStore.openModal('plant', { roomId: props.roomId })"
+        @click="handleAddPlant"
         class="gap-0 py-1 pl-1 pr-3 md:pr-0 inline-flex align-top items-center leading-none justify-center md:justify-start w-auto md:w-auto"
         size="custom"
         variant="hover-outline"
@@ -11,35 +11,33 @@
         </span>
         <span
             class="transition-all duration-400 text-sm flex"
-            :class="props.existPlants ? 'md:w-0 group-hover/card:w-[42px] overflow-hidden' : 'w-[42px]'"
+            :class="existPlants ? 'md:w-0 group-hover/card:w-[42px] overflow-hidden' : 'w-[42px]'"
         >
             Plant
         </span>
     </Button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import { Button } from "@/components/ui/button";
 
 import { useUIStore } from "@/stores/useUIStore";
 
-const props = defineProps({
-    roomId: {
-        type: String,
-        required: true
-    },
-    existPlants: {
-        type: Boolean,
-        required: false,
-        default: true
-    }
+type Props = {
+    roomId: string;
+    existPlants?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    existPlants: true
 })
 
+const handleAddPlant = () => {
+    uiStore.openModal('plant', { roomId: props.roomId })
+}
 
 const uiStore = useUIStore()
-
-
 </script>
 
-<style lang="sass"></style>
+<style lang="scss"></style>

@@ -62,7 +62,7 @@
     </v-dropdown>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 
 import { differenceInDays } from 'date-fns';
@@ -111,10 +111,6 @@ const typeNotificationsMap = [
         id: 1,
         action: 'Water plant ##plantName## within 24 hours'
     },
-    // {
-    //     id: 2,
-    //     action: 'Fertilize ##plantName## this week'
-    // }
 ]
 
 const notifications = computed(() => {

@@ -65,7 +65,7 @@
     </v-dropdown>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useThemeStore } from '@/stores/useThemeStore';
 
 const themeStore = useThemeStore()

@@ -3,7 +3,7 @@
         <img
             src="https://firebasestorage.googleapis.com/v0/b/flower-organizer.firebasestorage.app/o/src%2Flogo_shape.svg?alt=media&token=1d8cdd31-196e-4bd4-a8d1-cdff24b60fd7"
             class="size-14"
-            :alt="props.projectTitle"
+            :alt="projectTitle"
         />
         <span class="flex">
             <span class="text-primary-500">{{ firstString }}</span> <span class="text-primary-700">{{ secondString }}</span>
@@ -11,15 +11,13 @@
     </h1>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
+type Props = {
+    projectTitle: string
+}
 
-const props = defineProps({
-    projectTitle: {
-        type: String,
-        required: true
-    }
-})
+const props = defineProps<Props>()
 
 const matchString = /[A-Z]/;
 
