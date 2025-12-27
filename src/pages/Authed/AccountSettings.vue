@@ -47,7 +47,7 @@
     </base-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 
 import BaseContainer from '@/components/base/BaseContainer.vue';
@@ -66,7 +66,7 @@ const uiStore = useUIStore()
 
 const isPendingProfileUpdate = ref(false)
 
-const handleUpdateInProgress = (value) => {
+const handleUpdateInProgress = (value: boolean) => {
     isPendingProfileUpdate.value = value
 }
 

@@ -1,6 +1,6 @@
-<script setup>
-import { useVModel } from "@vueuse/core";
+<script setup lang="ts">
 import { cn } from "@/lib/utils";
+import { useVModel } from "@vueuse/core";
 
 const props = defineProps({
   class: { type: null, required: false },

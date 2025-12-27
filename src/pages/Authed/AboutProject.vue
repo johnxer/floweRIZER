@@ -218,7 +218,7 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 import BaseContainer from '@/components/base/BaseContainer.vue';
 
 import {

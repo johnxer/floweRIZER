@@ -21,15 +21,21 @@ export const useRecognizePlant = () => {
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const MODEL_NAME = import.meta.env.VITE_GEMINI_MODEL_NAME || 'gemini-2.0-flash-exp';
 
-    const fileToBase64 = (file) =>
+    const fileToBase64 = (file: Blob) =>
         new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onload = () => {
+                if (reader.result) {
+                    resolve(reader.result.toString().split(',')[1]);
+                } else {
+                    reject(new Error('Failed to read file as base64'));
+                }
+            };
             reader.onerror = reject;
             reader.readAsDataURL(file);
         });
 
-    const identifyPlantWithGemini = async (file, mimeType) => {
+    const identifyPlantWithGemini = async (file: Blob, mimeType: string) => {
         try {
             isPending.value = true;
             error.value = null;

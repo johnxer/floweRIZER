@@ -1,6 +1,6 @@
-<script setup>
-import { SelectLabel } from "reka-ui";
+<script setup lang="ts">
 import { cn } from "@/lib/utils";
+import { SelectLabel } from "reka-ui";
 
 const props = defineProps({
   for: { type: String, required: false },

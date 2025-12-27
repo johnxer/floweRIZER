@@ -23,7 +23,7 @@ document.addEventListener(
     'click',
     (e) => {
         const el = e.target;
-        if (el && el.closest('.v-popper__popper')) {
+        if (el instanceof Element && el.closest('.v-popper__popper')) {
             requestAnimationFrame(() => {
                 if (document.activeElement instanceof HTMLElement) {
                     document.activeElement.blur();

@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
+import { cn } from "@/lib/utils";
 import { reactiveOmit } from "@vueuse/core";
 import { TabsContent } from "reka-ui";
-import { cn } from "@/lib/utils";
 
 const props = defineProps({
   value: { type: [String, Number], required: true },

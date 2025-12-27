@@ -131,12 +131,12 @@
                                         :plant="plant"
                                         :show-more-details="true"
                                         :data-plant-id="plant.id"
-                                        :room-id="props.roomId"
+                                        :room-id="roomId"
                                     />
                                 </transition-group>
                                 <div class="text-center">
                                     <add-plant-button
-                                        :room-id="props.roomId"
+                                        :room-id="roomId"
                                         :exist-plants="!!existPlants"
                                     />
                                 </div>
@@ -150,7 +150,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from "vue";
 
 import { format } from "date-fns";
@@ -168,12 +168,11 @@ import { useUIStore } from "@/stores/useUIStore";
 
 import { useDeleteData, useGetData, useGetDetails, useMoveData, useStorage } from '@/composables';
 
-const props = defineProps({
-    roomId: {
-        type: String,
-        required: true
-    },
-})
+type Props = {
+    roomId: String;
+}
+
+const props = defineProps<Props>()
 
 const uiStore = useUIStore()
 
@@ -219,20 +218,6 @@ const formattedDate = computed(() => {
 })
 
 const isModalOpen = ref(false)
-
-const toggleModal = (state) => {
-    if (typeof state === 'boolean') {
-        isModalOpen.value = state
-        if (state === false) {
-            editPlantId.value = null
-        }
-    } else {
-        isModalOpen.value = !isModalOpen.value
-        if (!isModalOpen.value) {
-            editPlantId.value = null
-        }
-    }
-}
 
 const isOpen = ref(false)
 

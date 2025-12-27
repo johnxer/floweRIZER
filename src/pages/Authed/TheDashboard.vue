@@ -123,7 +123,7 @@
     </base-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue';
 
 import BaseContainer from '@/components/base/BaseContainer.vue';

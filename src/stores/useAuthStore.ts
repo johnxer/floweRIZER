@@ -17,7 +17,6 @@ export const useAuthStore = defineStore('useAuthStore', () => {
         error,
         isPending,
         isLogin,
-        isLogin,
         showPwRecovery,
         uid,
     };

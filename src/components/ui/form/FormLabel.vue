@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { Label } from '@/components/ui/label';
 import { cn } from "@/lib/utils";
 import { useFormField } from "./useFormField";

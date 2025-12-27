@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
+import { cn } from "@/lib/utils";
 import { reactiveOmit } from "@vueuse/core";
 import { Separator } from "reka-ui";
-import { cn } from "@/lib/utils";
 
 const props = defineProps({
   orientation: { type: String, required: false, default: "horizontal" },

@@ -1,6 +1,6 @@
-<script setup>
-import { computed } from "vue";
+<script setup lang="ts">
 import { cn } from "@/lib/utils";
+import { computed } from "vue";
 
 const props = defineProps({
   class: { type: null, required: false },

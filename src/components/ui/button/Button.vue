@@ -1,6 +1,6 @@
-<script setup>
-import { Primitive } from "reka-ui";
+<script setup lang="ts">
 import { cn } from "@/lib/utils";
+import { Primitive } from "reka-ui";
 import { buttonVariants } from ".";
 
 const props = defineProps({

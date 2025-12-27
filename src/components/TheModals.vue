@@ -55,7 +55,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 
 import BaseModal from '@/components/base/BaseModal/BaseModal.vue';
@@ -71,7 +71,7 @@ const uiStore = useUIStore()
 
 const isModalPending = ref(false)
 
-const handleIsPending = (val) => {
+const handleIsPending = (val: boolean) => {
     isModalPending.value = val;
 }
 
